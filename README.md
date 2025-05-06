@@ -1,8 +1,8 @@
 # GT Telemetry #
 
-[![Build Status](https://github.com/vwhitteron/gt-telemetry/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/vwhitteron/gt-telemetry/actions?query=branch%3Amain)
+[![Build Status](https://github.com/zetetos/gt-telemetry/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/zetetos/gt-telemetry/actions?query=branch%3Amain)
 [![codecov](https://codecov.io/gh/vwhitteron/gt-telemetry/branch/main/graph/badge.svg)](https://codecov.io/gh/vwhitteron/gt-telemetry)
-[![Go Report Card](https://goreportcard.com/badge/github.com/vwhitteron/gt-telemetry)](https://goreportcard.com/report/github.com/vwhitteron/gt-telemetry)
+[![Go Report Card](https://goreportcard.com/badge/github.com/zetetos/gt-telemetry)](https://goreportcard.com/report/github.com/zetetos/gt-telemetry)
 
 GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 
@@ -26,13 +26,13 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 To start using gt-telemetry, install Go 1.21 or above. From your project, run the following command to retrieve the module:
 
 ```bash
-go get github.com/vwhitteron/gt-telemetry
+go get github.com/zetetos/gt-telemetry
 ```
 
 ## Usage ##
 
 ```go
-import telemetry_client "github.com/vwhitteron/gt-telemetry"
+import telemetry_client "github.com/zetetos/gt-telemetry"
 ```
 
 Construct a new GT client and start reading the telemetry stream. All configuration fields are optional with the default values show in the example.

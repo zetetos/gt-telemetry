@@ -12,9 +12,9 @@ import (
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"github.com/rs/zerolog"
 
-	"github.com/vwhitteron/gt-telemetry/internal/gttelemetry"
-	"github.com/vwhitteron/gt-telemetry/internal/telemetrysrc"
-	"github.com/vwhitteron/gt-telemetry/internal/vehicles"
+	"github.com/zetetos/gt-telemetry/internal/gttelemetry"
+	"github.com/zetetos/gt-telemetry/internal/telemetrysrc"
+	"github.com/zetetos/gt-telemetry/internal/vehicles"
 )
 
 type statistics struct {

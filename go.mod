@@ -1,4 +1,4 @@
-module github.com/vwhitteron/gt-telemetry
+module github.com/zetetos/gt-telemetry
 
 go 1.23.6
 

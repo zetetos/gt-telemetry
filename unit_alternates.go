@@ -3,7 +3,7 @@ package telemetry
 import (
 	"fmt"
 
-	"github.com/vwhitteron/gt-telemetry/internal/utils"
+	"github.com/zetetos/gt-telemetry/internal/utils"
 )
 
 func (t *transformer) CurrentGearString() string {

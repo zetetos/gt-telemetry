@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/vwhitteron/gt-telemetry/internal/gttelemetry"
-	"github.com/vwhitteron/gt-telemetry/internal/vehicles"
+	"github.com/zetetos/gt-telemetry/internal/gttelemetry"
+	"github.com/zetetos/gt-telemetry/internal/vehicles"
 )
 
 type TransformerTestSuite struct {

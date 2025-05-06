@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	telemetry_client "github.com/vwhitteron/gt-telemetry"
+	telemetry_client "github.com/zetetos/gt-telemetry"
 )
 
 func main() {

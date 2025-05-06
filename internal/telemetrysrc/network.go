@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/vwhitteron/gt-telemetry/internal/utils"
+	"github.com/zetetos/gt-telemetry/internal/utils"
 )
 
 type UDPReader struct {
