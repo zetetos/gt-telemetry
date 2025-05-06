@@ -2,6 +2,8 @@ module github.com/zetetos/gt-telemetry
 
 go 1.23.6
 
+retract [v1.0.0, v1.5.1] // broken versions during migration to the zetetos org
+
 require (
 	github.com/kaitai-io/kaitai_struct_go_runtime v0.10.0
 	github.com/rs/zerolog v1.34.0
