@@ -4515,8 +4515,7 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "Year": 1951
-    ,
+    "Year": 1951,
     "CarID": 3423,
     "OpenCockpit": false,
     "CarType": "street"
@@ -4925,6 +4924,17 @@
     "Aspiration": "TC",
     "Year": 2019,
     "CarID": 3469,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
+  "3470": {
+    "Model": "812 Superfast '17",
+    "Manufacturer": "Ferrari",
+    "Category": "",
+    "Drivetrain": "FR",
+    "Aspiration": "NA",
+    "Year": 2017,
+    "CarID": 3470,
     "OpenCockpit": false,
     "CarType": "street"
   },
@@ -5882,6 +5892,39 @@
     "Aspiration": "NA",
     "Year": 2001,
     "CarID": 3567,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
+  "3570": {
+    "Model": "Corvette Z06 (C5) '01",
+    "Manufacturer": "Chevrolet",
+    "Category": "",
+    "Drivetrain": "FR",
+    "Aspiration": "NA",
+    "Year": 2001,
+    "CarID": 3570,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
+  "3571": {
+    "Model": "Carry KC '12",
+    "Manufacturer": "Suzuki",
+    "Category": "",
+    "Drivetrain": "FR",
+    "Aspiration": "NA",
+    "Year": 2012,
+    "CarID": 3571,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
+  "3572": {
+    "Model": "CR-V e:HEV EX • Black Edition '21",
+    "Manufacturer": "Honda",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "NA",
+    "Year": 2021,
+    "CarID": 3572,
     "OpenCockpit": false,
     "CarType": "street"
   }
