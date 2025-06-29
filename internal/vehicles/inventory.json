@@ -560,6 +560,17 @@
     "OpenCockpit": false,
     "CarType": "street"
   },
+  "761": {
+    "Model": "Delta HF Integrale Rally Car '92",
+    "Manufacturer": "Lancia",
+    "Category": "Gr.B",
+    "Drivetrain": "4WD",
+    "Aspiration": "TC",
+    "Year": 1992,
+    "CarID": 761,
+    "OpenCockpit": false,
+    "CarType": "race"
+  },
   "773": {
     "Model": "R32 GT-R V･spec II '94",
     "Manufacturer": "Nissan",
@@ -5925,6 +5936,28 @@
     "Aspiration": "NA",
     "Year": 2021,
     "CarID": 3572,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
+  "3573": {
+    "Model": "BX 19 TRS '87",
+    "Manufacturer": "Citroën",
+    "Category": "",
+    "Drivetrain": "FF",
+    "Aspiration": "NA",
+    "Year": 1987,
+    "CarID": 3573,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
+  "3574": {
+    "Model": "2008 Allure '21",
+    "Manufacturer": "Peugeot",
+    "Category": "",
+    "Drivetrain": "FF",
+    "Aspiration": "TC",
+    "Year": 2021,
+    "CarID": 3574,
     "OpenCockpit": false,
     "CarType": "street"
   }
