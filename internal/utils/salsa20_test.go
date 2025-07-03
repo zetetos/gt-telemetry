@@ -52,6 +52,8 @@ var validSalsa20Content = []byte{
 
 var magicPacketHeader = []byte{0x30, 0x53, 0x37, 0x47}
 
+const ivSeed = 0xDEADBEAF
+
 const standardPacketSize = 296
 
 type Salsa20TestSuite struct {
@@ -67,7 +69,7 @@ func (suite *Salsa20TestSuite) TestEmptySalsa20ContentReturnsNilWithError() {
 	encodedValue := []byte{}
 
 	// Act
-	gotValue, err := Salsa20Decode(encodedValue)
+	gotValue, err := Salsa20Decode(ivSeed, encodedValue)
 
 	// Assert
 	suite.Nil(gotValue)
@@ -80,7 +82,7 @@ func (suite *Salsa20TestSuite) TestTruncatedSalsa20ContentReturnsNilWithError() 
 	encodedValue := bytes.Repeat([]byte{0x00}, wantLen)
 
 	// Act
-	gotValue, err := Salsa20Decode(encodedValue)
+	gotValue, err := Salsa20Decode(ivSeed, encodedValue)
 
 	// Assert
 	suite.Nil(gotValue)
@@ -93,7 +95,7 @@ func (suite *Salsa20TestSuite) TestInvalidSalsa20MagicValueReturnsNilWithError()
 	copy(encodedValue[:4], validSalsa20Content[4:])
 
 	// Act
-	gotValue, err := Salsa20Decode(encodedValue)
+	gotValue, err := Salsa20Decode(ivSeed, encodedValue)
 
 	// Assert
 	suite.Nil(gotValue)
@@ -105,7 +107,7 @@ func TestValidSalsa20ContentReturnsDecodedData(t *testing.T) {
 	wantValue := magicPacketHeader
 
 	// Act
-	gotValue, err := Salsa20Decode(validSalsa20Content)
+	gotValue, err := Salsa20Decode(ivSeed, validSalsa20Content)
 	require.NoError(t, err)
 
 	// Assert

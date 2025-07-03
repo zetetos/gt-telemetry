@@ -39,7 +39,7 @@ jobs:
       - name: Generate coverage report
         run: make test/cover
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4.0.1
+        uses: codecov/codecov-action@v5.0.6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: vwhitteron/gt-telemetry

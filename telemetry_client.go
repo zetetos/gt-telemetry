@@ -2,6 +2,7 @@ package telemetry
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"net"
 	"net/url"
@@ -30,10 +31,12 @@ type statistics struct {
 	PacketsDropped    int
 	PacketsInvalid    int
 	PacketsTotal      int
+	PacketSize        int
 }
 
 type GTClientOpts struct {
 	Source       string
+	Format       telemetrysrc.TelemetryFormat
 	LogLevel     string
 	Logger       *zerolog.Logger
 	StatsEnabled bool
@@ -43,6 +46,7 @@ type GTClientOpts struct {
 type GTClient struct {
 	log              zerolog.Logger
 	source           string
+	format           telemetrysrc.TelemetryFormat
 	DecipheredPacket []byte
 	Finished         bool
 	Statistics       *statistics
@@ -86,14 +90,28 @@ func NewGTClient(opts GTClientOpts) (*GTClient, error) {
 		opts.Source = "udp://255.255.255.255:33739"
 	}
 
-	inventory, err := vehicles.NewInventory(opts.VehicleDB)
+	if opts.Format == "" {
+		opts.Format = telemetrysrc.TelemetryFormatTilde
+	}
+
+	var inventoryJSON []byte
+	if opts.VehicleDB != "" {
+		var err error
+		inventoryJSON, err = os.ReadFile(opts.VehicleDB)
+		if err != nil {
+			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
+		}
+	}
+
+	inventory, err := vehicles.NewInventory(inventoryJSON)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("setting up new inventory: %w", err)
 	}
 
 	return &GTClient{
 		log:              log,
 		source:           opts.Source,
+		format:           opts.Format,
 		DecipheredPacket: []byte{},
 		Finished:         false,
 		Statistics: &statistics{
@@ -129,7 +147,7 @@ func (c *GTClient) Run() {
 		if err != nil {
 			c.log.Fatal().Err(err).Msg("failed to parse port")
 		}
-		telemetrySource = telemetrysrc.NewNetworkUDPReader(host, port, c.log)
+		telemetrySource = telemetrysrc.NewNetworkUDPReader(host, port, c.format, c.log)
 	case "file":
 		telemetrySource = telemetrysrc.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
 	default:
@@ -193,6 +211,8 @@ func (c *GTClient) collectStats() {
 	c.Statistics.PacketsTotal++
 
 	if c.Statistics.packetIDLast != c.Telemetry.SequenceID() {
+		c.Statistics.PacketSize, _ = c.Telemetry.RawTelemetry.PacketSize()
+
 		if c.Statistics.packetIDLast == 0 {
 			c.Statistics.packetIDLast = c.Telemetry.SequenceID()
 			return

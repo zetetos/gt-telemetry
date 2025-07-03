@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/zetetos/gt-telemetry/internal/gttelemetry"
+	"github.com/zetetos/gt-telemetry/internal/telemetrysrc"
 	"github.com/zetetos/gt-telemetry/internal/utils"
 	"github.com/zetetos/gt-telemetry/internal/vehicles"
 )
@@ -46,10 +47,22 @@ type RevLight struct {
 	Active bool
 }
 
+type RotationalEnvelope struct {
+	Pitch float32
+	Yaw   float32
+	Roll  float32
+}
+
 type SymmetryAxes struct {
 	Pitch float32
 	Yaw   float32
 	Roll  float32
+}
+
+type TranslationalEnvelope struct {
+	Sway  float32
+	Heave float32
+	Surge float32
 }
 
 type Vector struct {
@@ -92,6 +105,10 @@ func (t *transformer) AngularVelocityVector() Vector {
 
 func (t *transformer) BestLaptime() time.Duration {
 	return time.Duration(t.RawTelemetry.BestLaptime) * time.Millisecond
+}
+
+func (t *transformer) BrakePedalPercent() float32 {
+	return float32(t.RawTelemetry.BrakeRaw) / 2.55
 }
 
 func (t *transformer) BrakePercent() float32 {
@@ -169,6 +186,10 @@ func (t *transformer) DifferentialRatio() float32 {
 	return diffRatio
 }
 
+func (t *transformer) EnergyRecovery() float32 {
+	return t.RawTelemetry.EnergyRecovery
+}
+
 func (t *transformer) EngineRPM() float32 {
 	val := t.RawTelemetry.EngineRpm
 
@@ -230,27 +251,18 @@ func (t *transformer) FuelLevelPercent() float32 {
 	return val
 }
 
-func (t *transformer) Transmission() Transmission {
-	ratios := t.RawTelemetry.TransmissionGearRatio
-	if ratios == nil {
-		return Transmission{
-			Gears:      0,
-			GearRatios: make([]float32, 8),
-		}
+func (t *transformer) GameVersion() string {
+	isGT7, err := t.RawTelemetry.HeaderIsGt7()
+	if err != nil && isGT7 {
+		return "gt7"
 	}
 
-	// TODO: figure out how to support vehicles with more than 8 gears (Lexus LC500)
-	gearCount := 0
-	for _, ratio := range ratios.Gear {
-		if ratio > 0 {
-			gearCount++
-		}
+	isGT6, err := t.RawTelemetry.HeaderIsGt6()
+	if err != nil && isGT6 {
+		return "gt6"
 	}
 
-	return Transmission{
-		Gears:      gearCount,
-		GearRatios: ratios.Gear,
-	}
+	return "unknown"
 }
 
 func (t *transformer) GroundSpeedMetersPerSecond() float32 {
@@ -298,8 +310,22 @@ func (t *transformer) RideHeightMeters() float32 {
 	return t.RawTelemetry.RideHeight
 }
 
+func (t *transformer) RotationEnvelope() RotationalEnvelope {
+	rotation := t.RawTelemetry.RotationalEnvelope
+	if rotation == nil {
+		return RotationalEnvelope{}
+	}
+
+	return RotationalEnvelope{
+		Pitch: rotation.Pitch,
+		Yaw:   rotation.Yaw,
+		Roll:  rotation.Roll,
+	}
+}
+
+// To be deprecated in favor of RotationalEnvelope()
 func (t *transformer) RotationVector() SymmetryAxes {
-	rotation := t.RawTelemetry.RotationAxes
+	rotation := t.RawTelemetry.RotationalEnvelope
 	if rotation == nil {
 		return SymmetryAxes{}
 	}
@@ -317,6 +343,14 @@ func (t *transformer) SequenceID() uint32 {
 
 func (t *transformer) StartingPosition() int16 {
 	return t.RawTelemetry.StartingPosition
+}
+
+func (t *transformer) SteeringWheelAngleDegrees() float32 {
+	return utils.RadiansToDegrees(t.RawTelemetry.SteeringWheelAngleRadians)
+}
+
+func (t *transformer) SteeringWheelAngleRadians() float32 {
+	return t.RawTelemetry.SteeringWheelAngleRadians
 }
 
 func (t *transformer) SuggestedGear() uint64 {
@@ -342,12 +376,71 @@ func (t *transformer) SuspensionHeightMeters() CornerSet {
 	}
 }
 
+func (t *transformer) TelemetryFormat() telemetrysrc.TelemetryFormat {
+	isFormatTilde, err := t.RawTelemetry.HasSectionTilde()
+	if err != nil && isFormatTilde {
+		return telemetrysrc.TelemetryFormatTilde
+	}
+
+	isFormatB, err := t.RawTelemetry.HasSectionB()
+	if err != nil && isFormatB {
+		return telemetrysrc.TelemetryFormatB
+	}
+
+	isFormatA, err := t.RawTelemetry.HasSectionA()
+	if err != nil && isFormatA {
+		return telemetrysrc.TelemetryFormatA
+	}
+
+	return "unknown"
+}
+
+func (t *transformer) ThrottlePedalPercent() float32 {
+	return float32(t.RawTelemetry.ThrottleRaw) / 2.55
+}
+
 func (t *transformer) ThrottlePercent() float32 {
 	return float32(t.RawTelemetry.Throttle) / 2.55
 }
 
 func (t *transformer) TimeOfDay() time.Duration {
 	return time.Duration(t.RawTelemetry.TimeOfDay) * time.Millisecond
+}
+
+func (t *transformer) TranslationEnvelope() TranslationalEnvelope {
+	translation := t.RawTelemetry.TranslationalEnvelope
+	if translation == nil {
+		return TranslationalEnvelope{}
+	}
+
+	return TranslationalEnvelope{
+		Sway:  translation.Sway,
+		Heave: translation.Heave,
+		Surge: translation.Surge,
+	}
+}
+
+func (t *transformer) Transmission() Transmission {
+	ratios := t.RawTelemetry.TransmissionGearRatio
+	if ratios == nil {
+		return Transmission{
+			Gears:      0,
+			GearRatios: make([]float32, 8),
+		}
+	}
+
+	// TODO: figure out how to support vehicles with more than 8 gears (Lexus LC500)
+	gearCount := 0
+	for _, ratio := range ratios.Gear {
+		if ratio > 0 {
+			gearCount++
+		}
+	}
+
+	return Transmission{
+		Gears:      gearCount,
+		GearRatios: ratios.Gear,
+	}
 }
 
 func (t *transformer) TransmissionTopSpeedRatio() float32 {
@@ -420,10 +513,36 @@ func (t *transformer) TyreTemperatureCelsius() CornerSet {
 	}
 }
 
-func (t *transformer) VehicleID() uint32 {
-	t.updateVehicle()
+func (t *transformer) Unknown0x12C() float32 {
+	return t.RawTelemetry.Unknown0x12c
+}
 
-	return t.RawTelemetry.VehicleId
+func (t *transformer) Unknown0x13E() uint8 {
+	return t.RawTelemetry.Unknown0x13e
+}
+
+func (t *transformer) Unknown0x13F() uint8 {
+	return t.RawTelemetry.Unknown0x13f
+}
+
+func (t *transformer) Unknown0x140() float32 {
+	return t.RawTelemetry.Unknown0x140
+}
+
+func (t *transformer) Unknown0x144() float32 {
+	return t.RawTelemetry.Unknown0x144
+}
+
+func (t *transformer) Unknown0x148() float32 {
+	return t.RawTelemetry.Unknown0x148
+}
+
+func (t *transformer) Unknown0x14C() float32 {
+	return t.RawTelemetry.Unknown0x14c
+}
+
+func (t *transformer) Unknown0x154() float32 {
+	return t.RawTelemetry.Unknown0x154
 }
 
 func (t *transformer) VehicleAspiration() string {
@@ -438,12 +557,6 @@ func (t *transformer) VehicleAspirationExpanded() string {
 	return t.vehicle.ExpandedAspiration()
 }
 
-func (t *transformer) VehicleType() string {
-	t.updateVehicle()
-
-	return t.vehicle.CarType
-}
-
 func (t *transformer) VehicleCategory() string {
 	t.updateVehicle()
 
@@ -454,6 +567,18 @@ func (t *transformer) VehicleDrivetrain() string {
 	t.updateVehicle()
 
 	return t.vehicle.Drivetrain
+}
+
+func (t *transformer) VehicleHasOpenCockpit() bool {
+	t.updateVehicle()
+
+	return t.vehicle.OpenCockpit
+}
+
+func (t *transformer) VehicleID() int {
+	t.updateVehicle()
+
+	return t.vehicle.CarID
 }
 
 func (t *transformer) VehicleManufacturer() string {
@@ -468,16 +593,29 @@ func (t *transformer) VehicleModel() string {
 	return t.vehicle.Model
 }
 
-func (t *transformer) VehicleHasOpenCockpit() bool {
+func (t *transformer) VehicleType() string {
 	t.updateVehicle()
 
-	return t.vehicle.OpenCockpit
+	return t.vehicle.CarType
 }
 
 func (t *transformer) VehicleYear() int {
 	t.updateVehicle()
 
 	return t.vehicle.Year
+}
+
+func (t *transformer) VelocityVector() Vector {
+	velocity := t.RawTelemetry.VelocityVector
+	if velocity == nil {
+		return Vector{}
+	}
+
+	return Vector{
+		X: velocity.VectorX,
+		Y: velocity.VectorY,
+		Z: velocity.VectorZ,
+	}
 }
 
 func (t *transformer) WheelSpeedMetersPerSecond() CornerSet {
@@ -506,25 +644,12 @@ func (t *transformer) WheelSpeedRadiansPerSecond() CornerSet {
 	}
 }
 
-func (t *transformer) VelocityVector() Vector {
-	velocity := t.RawTelemetry.VelocityVector
-	if velocity == nil {
-		return Vector{}
-	}
-
-	return Vector{
-		X: velocity.VectorX,
-		Y: velocity.VectorY,
-		Z: velocity.VectorZ,
-	}
-}
-
 func (t *transformer) WaterTemperatureCelsius() float32 {
 	return t.RawTelemetry.WaterTemperature
 }
 
 func (t *transformer) updateVehicle() {
-	if uint32(t.vehicle.ID) != t.RawTelemetry.VehicleId {
+	if uint32(t.vehicle.CarID) != t.RawTelemetry.VehicleId {
 		vehicle, err := t.inventory.GetVehicleByID(int(t.RawTelemetry.VehicleId))
 		if err != nil {
 			t.vehicle = vehicles.Vehicle{}

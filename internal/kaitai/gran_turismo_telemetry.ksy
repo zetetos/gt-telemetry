@@ -7,16 +7,16 @@ meta:
 seq:
   - id: header
     type: header
-    -doc: File header
+    -doc: File header section
   - id: map_position_coordinates
     type: coordinate
     -doc: Positional coordinates of vehicle on map in meters
   - id: velocity_vector
     type: vector
     -doc: Vehicle velocity vector in meters per second
-  - id: rotation_axes
-    type: symmetry_axes
-    -doc: Body rotation axes (-1 to 1)
+  - id: rotational_envelope
+    type: rotational_envelope
+    -doc: Body rotation around axes (-1 to 1)
   - id: heading
     type: f4
     -doc: Orientation to North from 0.0(south) to 1.0(north).
@@ -140,14 +140,76 @@ seq:
   - id: vehicle_id
     type: u4
     -doc: ID of the vehicle
+  - id: steering_wheel_angle_radians
+    type: f4
+    if: has_section_b
+    -doc: Steering wheel angular position in radians
+  - id: unknown0x12c
+    type: f4
+    if: has_section_b
+    -doc: |
+      Unkown value, possibly front axle slip angle related to drift scoring.
+      Increases in value when front end slip angle is high and resets to zero when the car spins out
+  - id: translational_envelope
+    type: translational_envelope
+    if: has_section_b
+    -doc: Body forces along axes (-1 to 1)
+  - id: throttle_raw
+    type: u1
+    if: has_section_tilde
+    -doc: Raw throttle percent from driver input, live sessions only
+  - id: brake_raw
+    type: u1
+    if: has_section_tilde
+    -doc: Raw brake percent from driver input, live sessions only
+  - id: unknown0x13e
+    type: u1
+    if: has_section_tilde
+    -doc: Unknown value, possibly bitfield related to EV
+  - id: unknown0x13f
+    type: u1
+    if: has_section_tilde
+    -doc: Unknown value, possibly bitfield
+  - id: unknown0x140
+    type: f4
+    if: has_section_tilde
+    -doc: Unknown value, possibly FL torque vectoring
+  - id: unknown0x144
+    type: f4
+    if: has_section_tilde
+    -doc: Unknown value, possibly FR torque vectoring
+  - id: unknown0x148
+    type: f4
+    if: has_section_tilde
+    -doc: Unknown value, possibly RL torque vectoring
+  - id: unknown0x14c
+    type: f4
+    if: has_section_tilde
+    -doc: Unknown value, possibly RR torque vectoring
+  - id: energy_recovery
+    type: f4
+    if: has_section_tilde
+    -doc: Energy recovery value in FIXME
+  - id: unknown0x154
+    type: f4
+    if: has_section_tilde
+    -doc: Unknown value
 types:
   header:
-    doc: Magic file header
+    doc: |
+      Magic file header
+      0x30 0x53 0x37 0x47 = GT Sport and GT7
+      0x47 0x37 0x53 0x30 = GT6
     seq:
       - id: magic
-        contents: [0x30, 0x53, 0x37, 0x47]
+        type: u4
+        valid:
+          any-of:
+          - 810760007
+          - 1194808112
+
   vector:
-    doc: Vector
+    doc: 3D direction vector
     seq:
       - id: vector_x
         type: f4
@@ -156,7 +218,7 @@ types:
       - id: vector_z
         type: f4
   coordinate:
-    doc: Vector
+    doc: 3D position coordinates
     seq:
       - id: coordinate_x
         type: f4
@@ -164,8 +226,17 @@ types:
         type: f4
       - id: coordinate_z
         type: f4
-  symmetry_axes:
-    doc: Symmetry axes
+  translational_envelope:
+    doc: 6DOF translational envelope
+    seq:
+      - id: sway
+        type: f4
+      - id: heave
+        type: f4
+      - id: surge
+        type: f4
+  rotational_envelope:
+    doc: 6DOF rotational envelope
     seq:
       - id: pitch
         type: f4
@@ -174,7 +245,7 @@ types:
       - id: roll
         type: f4
   corner_set:
-    doc: Data set representing each wheel or suspension component at each corner of the vehicle
+    doc: Data set representing each wheel or suspension component at the corners of the vehicle
     seq:
       - id: front_left
         type: f4
@@ -185,7 +256,7 @@ types:
       - id: rear_right
         type: f4
   flags:
-    doc: Various flags for the current state of play and instrument cluster lights
+    doc: Various flags for the current state of play and instrument cluster indicators
     seq:
       - id: live
         type: b1
@@ -220,7 +291,9 @@ types:
       - id: flag16
         type: b1
   transmission_gear:
-    doc: Transmission gear selection information
+    doc: |
+      Transmission gear selection information.
+      0 = reverse, 15 = neutral
     seq:
       - id: current
         type: b4
@@ -233,3 +306,22 @@ types:
         type: f4
         repeat: expr
         repeat-expr: 8
+instances:
+  packet_size:
+    doc: The total size in bytes of the telemetry packet
+    value: _io.size
+  header_is_gt6:
+    doc: True when the telemetry data is sent from Gran Turismo 6
+    value: header.magic == 810760007
+  header_is_gt7:
+    doc: True when the telemetry data is sent from Gran Turismo 7 or Sport
+    value: header.magic == 1194808112
+  has_section_a:
+    doc: True when the telemetry data contains data requested with format "A"
+    value: _io.size >= 296
+  has_section_b:
+    doc: True when the telemetry data contains data requested with format "B"
+    value: _io.size > 296
+  has_section_tilde:
+    doc: True when the telemetry data contains data requested with format "~"
+    value: _io.size > 316

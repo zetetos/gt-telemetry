@@ -41,3 +41,7 @@ func MetersPerSecondToMilesPerHour(mps float32) float32 {
 func RadiansPerSecondToRevolutionsPerMinute(rps float32) float32 {
 	return rps * (60 / (2 * math.Pi))
 }
+
+func RadiansToDegrees(r float32) float32 {
+	return r * (180 / math.Pi)
+}
