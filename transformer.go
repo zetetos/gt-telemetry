@@ -107,12 +107,12 @@ func (t *transformer) BestLaptime() time.Duration {
 	return time.Duration(t.RawTelemetry.BestLaptime) * time.Millisecond
 }
 
-func (t *transformer) BrakePercent() float32 {
-	return float32(t.RawTelemetry.Brake) / 2.55
-}
-
 func (t *transformer) BrakePedalPercent() float32 {
 	return float32(t.RawTelemetry.BrakeRaw) / 2.55
+}
+
+func (t *transformer) BrakePercent() float32 {
+	return float32(t.RawTelemetry.Brake) / 2.55
 }
 
 func (t *transformer) CalculatedVmax() Vmax {
@@ -265,29 +265,6 @@ func (t *transformer) GameVersion() string {
 	return "unknown"
 }
 
-func (t *transformer) Transmission() Transmission {
-	ratios := t.RawTelemetry.TransmissionGearRatio
-	if ratios == nil {
-		return Transmission{
-			Gears:      0,
-			GearRatios: make([]float32, 8),
-		}
-	}
-
-	// TODO: figure out how to support vehicles with more than 8 gears (Lexus LC500)
-	gearCount := 0
-	for _, ratio := range ratios.Gear {
-		if ratio > 0 {
-			gearCount++
-		}
-	}
-
-	return Transmission{
-		Gears:      gearCount,
-		GearRatios: ratios.Gear,
-	}
-}
-
 func (t *transformer) GroundSpeedMetersPerSecond() float32 {
 	return t.RawTelemetry.GroundSpeed
 }
@@ -418,12 +395,12 @@ func (t *transformer) TelemetryFormat() telemetrysrc.TelemetryFormat {
 	return "unknown"
 }
 
-func (t *transformer) ThrottlePercent() float32 {
-	return float32(t.RawTelemetry.Throttle) / 2.55
-}
-
 func (t *transformer) ThrottlePedalPercent() float32 {
 	return float32(t.RawTelemetry.ThrottleRaw) / 2.55
+}
+
+func (t *transformer) ThrottlePercent() float32 {
+	return float32(t.RawTelemetry.Throttle) / 2.55
 }
 
 func (t *transformer) TimeOfDay() time.Duration {
@@ -440,6 +417,29 @@ func (t *transformer) TranslationEnvelope() TranslationalEnvelope {
 		Sway:  translation.Sway,
 		Heave: translation.Heave,
 		Surge: translation.Surge,
+	}
+}
+
+func (t *transformer) Transmission() Transmission {
+	ratios := t.RawTelemetry.TransmissionGearRatio
+	if ratios == nil {
+		return Transmission{
+			Gears:      0,
+			GearRatios: make([]float32, 8),
+		}
+	}
+
+	// TODO: figure out how to support vehicles with more than 8 gears (Lexus LC500)
+	gearCount := 0
+	for _, ratio := range ratios.Gear {
+		if ratio > 0 {
+			gearCount++
+		}
+	}
+
+	return Transmission{
+		Gears:      gearCount,
+		GearRatios: ratios.Gear,
 	}
 }
 
@@ -557,12 +557,6 @@ func (t *transformer) VehicleAspirationExpanded() string {
 	return t.vehicle.ExpandedAspiration()
 }
 
-func (t *transformer) VehicleType() string {
-	t.updateVehicle()
-
-	return t.vehicle.CarType
-}
-
 func (t *transformer) VehicleCategory() string {
 	t.updateVehicle()
 
@@ -587,16 +581,29 @@ func (t *transformer) VehicleModel() string {
 	return t.vehicle.Model
 }
 
-func (t *transformer) VehicleHasOpenCockpit() bool {
+func (t *transformer) VehicleType() string {
 	t.updateVehicle()
 
-	return t.vehicle.OpenCockpit
+	return t.vehicle.CarType
 }
 
 func (t *transformer) VehicleYear() int {
 	t.updateVehicle()
 
 	return t.vehicle.Year
+}
+
+func (t *transformer) VelocityVector() Vector {
+	velocity := t.RawTelemetry.VelocityVector
+	if velocity == nil {
+		return Vector{}
+	}
+
+	return Vector{
+		X: velocity.VectorX,
+		Y: velocity.VectorY,
+		Z: velocity.VectorZ,
+	}
 }
 
 func (t *transformer) WheelSpeedMetersPerSecond() CornerSet {
@@ -622,19 +629,6 @@ func (t *transformer) WheelSpeedRadiansPerSecond() CornerSet {
 		FrontRight: float32(math.Abs(float64(rps.FrontRight))),
 		RearLeft:   float32(math.Abs(float64(rps.RearLeft))),
 		RearRight:  float32(math.Abs(float64(rps.RearRight))),
-	}
-}
-
-func (t *transformer) VelocityVector() Vector {
-	velocity := t.RawTelemetry.VelocityVector
-	if velocity == nil {
-		return Vector{}
-	}
-
-	return Vector{
-		X: velocity.VectorX,
-		Y: velocity.VectorY,
-		Z: velocity.VectorZ,
 	}
 }
 
