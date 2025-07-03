@@ -1,4 +1,15 @@
 {
+  "-10000": {
+    "Model": "Dummy Model",
+    "Manufacturer": "Dummy Manufacturer",
+    "Category": "",
+    "Drivetrain": "-",
+    "Aspiration": "-",
+    "Year": 0,
+    "CarID": -10000,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
   "24": {
     "Model": "180SX Type X '96",
     "Manufacturer": "Nissan",
@@ -1709,7 +1720,7 @@
     "Manufacturer": "Audi",
     "Category": "Gr.1",
     "Drivetrain": "MR",
-    "Aspiration": "TD",
+    "Aspiration": "TC",
     "Year": 2011,
     "CarID": 1965,
     "OpenCockpit": false,
