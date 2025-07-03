@@ -2,64 +2,86 @@
 
 package gttelemetry
 
-import (
-	"bytes"
-	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
-)
+import "github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 
 type GranTurismoTelemetry struct {
-	Header                    *GranTurismoTelemetry_Header
-	MapPositionCoordinates    *GranTurismoTelemetry_Coordinate
-	VelocityVector            *GranTurismoTelemetry_Vector
-	RotationAxes              *GranTurismoTelemetry_SymmetryAxes
-	Heading                   float32
-	AngularVelocityVector     *GranTurismoTelemetry_Vector
-	RideHeight                float32
-	EngineRpm                 float32
-	Oiv                       float32
-	FuelLevel                 float32
-	FuelCapacity              float32
-	GroundSpeed               float32
-	ManifoldPressure          float32
-	OilPressure               float32
-	WaterTemperature          float32
-	OilTemperature            float32
-	TyreTemperature           *GranTurismoTelemetry_CornerSet
-	SequenceId                uint32
-	CurrentLap                uint16
-	RaceLaps                  uint16
-	BestLaptime               int32
-	LastLaptime               int32
-	TimeOfDay                 uint32
-	StartingPosition          int16
-	RaceEntrants              int16
-	RevLightRpmMin            uint16
-	RevLightRpmMax            uint16
-	CalculatedMaxSpeed        uint16
-	Flags                     *GranTurismoTelemetry_Flags
-	TransmissionGear          *GranTurismoTelemetry_TransmissionGear
-	Throttle                  uint8
-	Brake                     uint8
-	Ignore1                   []byte
-	RoadPlaneVector           *GranTurismoTelemetry_Vector
-	RoadPlaneDistance         uint32
-	WheelRadiansPerSecond     *GranTurismoTelemetry_CornerSet
-	TyreRadius                *GranTurismoTelemetry_CornerSet
-	SuspensionHeight          *GranTurismoTelemetry_CornerSet
-	Reserved                  []byte
-	ClutchActuation           float32
-	ClutchEngagement          float32
-	CluchOutputRpm            float32
+	Header *GranTurismoTelemetry_Header
+	MapPositionCoordinates *GranTurismoTelemetry_Coordinate
+	VelocityVector *GranTurismoTelemetry_Vector
+	RotationalEnvelope *GranTurismoTelemetry_RotationalEnvelope
+	Heading float32
+	AngularVelocityVector *GranTurismoTelemetry_Vector
+	RideHeight float32
+	EngineRpm float32
+	Oiv float32
+	FuelLevel float32
+	FuelCapacity float32
+	GroundSpeed float32
+	ManifoldPressure float32
+	OilPressure float32
+	WaterTemperature float32
+	OilTemperature float32
+	TyreTemperature *GranTurismoTelemetry_CornerSet
+	SequenceId uint32
+	CurrentLap uint16
+	RaceLaps uint16
+	BestLaptime int32
+	LastLaptime int32
+	TimeOfDay uint32
+	StartingPosition int16
+	RaceEntrants int16
+	RevLightRpmMin uint16
+	RevLightRpmMax uint16
+	CalculatedMaxSpeed uint16
+	Flags *GranTurismoTelemetry_Flags
+	TransmissionGear *GranTurismoTelemetry_TransmissionGear
+	Throttle uint8
+	Brake uint8
+	Ignore1 []byte
+	RoadPlaneVector *GranTurismoTelemetry_Vector
+	RoadPlaneDistance uint32
+	WheelRadiansPerSecond *GranTurismoTelemetry_CornerSet
+	TyreRadius *GranTurismoTelemetry_CornerSet
+	SuspensionHeight *GranTurismoTelemetry_CornerSet
+	Reserved []byte
+	ClutchActuation float32
+	ClutchEngagement float32
+	CluchOutputRpm float32
 	TransmissionTopSpeedRatio float32
-	TransmissionGearRatio     *GranTurismoTelemetry_GearRatio
-	VehicleId                 uint32
-	_io                       *kaitai.Stream
-	_root                     *GranTurismoTelemetry
-	_parent                   interface{}
+	TransmissionGearRatio *GranTurismoTelemetry_GearRatio
+	VehicleId uint32
+	SteeringWheelAngleRadians float32
+	Unknown0x12c float32
+	TranslationalEnvelope *GranTurismoTelemetry_TranslationalEnvelope
+	ThrottleRaw uint8
+	BrakeRaw uint8
+	Unknown0x13e uint8
+	Unknown0x13f uint8
+	Unknown0x140 float32
+	Unknown0x144 float32
+	Unknown0x148 float32
+	Unknown0x14c float32
+	EnergyRecovery float32
+	Unknown0x154 float32
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
+	_parent interface{}
+	_f_hasSectionTilde bool
+	hasSectionTilde bool
+	_f_headerIsGt7 bool
+	headerIsGt7 bool
+	_f_packetSize bool
+	packetSize int
+	_f_headerIsGt6 bool
+	headerIsGt6 bool
+	_f_hasSectionA bool
+	hasSectionA bool
+	_f_hasSectionB bool
+	hasSectionB bool
 }
-
 func NewGranTurismoTelemetry() *GranTurismoTelemetry {
-	return &GranTurismoTelemetry{}
+	return &GranTurismoTelemetry{
+	}
 }
 
 func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, root *GranTurismoTelemetry) (err error) {
@@ -85,12 +107,12 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 		return err
 	}
 	this.VelocityVector = tmp3
-	tmp4 := NewGranTurismoTelemetry_SymmetryAxes()
+	tmp4 := NewGranTurismoTelemetry_RotationalEnvelope()
 	err = tmp4.Read(this._io, this, this._root)
 	if err != nil {
 		return err
 	}
-	this.RotationAxes = tmp4
+	this.RotationalEnvelope = tmp4
 	tmp5, err := this._io.ReadF4le()
 	if err != nil {
 		return err
@@ -307,36 +329,268 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 		return err
 	}
 	this.VehicleId = uint32(tmp45)
+	tmp46, err := this.HasSectionB()
+	if err != nil {
+		return err
+	}
+	if (tmp46) {
+		tmp47, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.SteeringWheelAngleRadians = float32(tmp47)
+	}
+	tmp48, err := this.HasSectionB()
+	if err != nil {
+		return err
+	}
+	if (tmp48) {
+		tmp49, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.Unknown0x12c = float32(tmp49)
+	}
+	tmp50, err := this.HasSectionB()
+	if err != nil {
+		return err
+	}
+	if (tmp50) {
+		tmp51 := NewGranTurismoTelemetry_TranslationalEnvelope()
+		err = tmp51.Read(this._io, this, this._root)
+		if err != nil {
+			return err
+		}
+		this.TranslationalEnvelope = tmp51
+	}
+	tmp52, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp52) {
+		tmp53, err := this._io.ReadU1()
+		if err != nil {
+			return err
+		}
+		this.ThrottleRaw = tmp53
+	}
+	tmp54, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp54) {
+		tmp55, err := this._io.ReadU1()
+		if err != nil {
+			return err
+		}
+		this.BrakeRaw = tmp55
+	}
+	tmp56, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp56) {
+		tmp57, err := this._io.ReadU1()
+		if err != nil {
+			return err
+		}
+		this.Unknown0x13e = tmp57
+	}
+	tmp58, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp58) {
+		tmp59, err := this._io.ReadU1()
+		if err != nil {
+			return err
+		}
+		this.Unknown0x13f = tmp59
+	}
+	tmp60, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp60) {
+		tmp61, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.Unknown0x140 = float32(tmp61)
+	}
+	tmp62, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp62) {
+		tmp63, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.Unknown0x144 = float32(tmp63)
+	}
+	tmp64, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp64) {
+		tmp65, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.Unknown0x148 = float32(tmp65)
+	}
+	tmp66, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp66) {
+		tmp67, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.Unknown0x14c = float32(tmp67)
+	}
+	tmp68, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp68) {
+		tmp69, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.EnergyRecovery = float32(tmp69)
+	}
+	tmp70, err := this.HasSectionTilde()
+	if err != nil {
+		return err
+	}
+	if (tmp70) {
+		tmp71, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.Unknown0x154 = float32(tmp71)
+	}
 	return err
 }
 
 /**
- * Various flags for the current state of play and instrument cluster lights
+ * True when the telemetry data contains data requested with format "~"
  */
-type GranTurismoTelemetry_Flags struct {
-	Live             bool
-	GamePaused       bool
-	Loading          bool
-	InGear           bool
-	HasTurbo         bool
-	RevLimiterAlert  bool
-	HandBrakeActive  bool
-	HeadlightsActive bool
-	HighBeamActive   bool
-	LowBeamActive    bool
-	AsmActive        bool
-	TcsActive        bool
-	Flag13           bool
-	Flag14           bool
-	Flag15           bool
-	Flag16           bool
-	_io              *kaitai.Stream
-	_root            *GranTurismoTelemetry
-	_parent          *GranTurismoTelemetry
+func (this *GranTurismoTelemetry) HasSectionTilde() (v bool, err error) {
+	if (this._f_hasSectionTilde) {
+		return this.hasSectionTilde, nil
+	}
+	tmp72, err := this._io.Size()
+	if err != nil {
+		return false, err
+	}
+	this.hasSectionTilde = bool(tmp72 > 316)
+	this._f_hasSectionTilde = true
+	return this.hasSectionTilde, nil
 }
 
+/**
+ * True when the telemetry data is sent from Gran Turismo 7 or Sport
+ */
+func (this *GranTurismoTelemetry) HeaderIsGt7() (v bool, err error) {
+	if (this._f_headerIsGt7) {
+		return this.headerIsGt7, nil
+	}
+	this.headerIsGt7 = bool(this.Header.Magic == 1194808112)
+	this._f_headerIsGt7 = true
+	return this.headerIsGt7, nil
+}
+
+/**
+ * The total size in bytes of the telemetry packet
+ */
+func (this *GranTurismoTelemetry) PacketSize() (v int, err error) {
+	if (this._f_packetSize) {
+		return this.packetSize, nil
+	}
+	tmp73, err := this._io.Size()
+	if err != nil {
+		return 0, err
+	}
+	this.packetSize = int(tmp73)
+	this._f_packetSize = true
+	return this.packetSize, nil
+}
+
+/**
+ * True when the telemetry data is sent from Gran Turismo 6
+ */
+func (this *GranTurismoTelemetry) HeaderIsGt6() (v bool, err error) {
+	if (this._f_headerIsGt6) {
+		return this.headerIsGt6, nil
+	}
+	this.headerIsGt6 = bool(this.Header.Magic == 810760007)
+	this._f_headerIsGt6 = true
+	return this.headerIsGt6, nil
+}
+
+/**
+ * True when the telemetry data contains data requested with format "A"
+ */
+func (this *GranTurismoTelemetry) HasSectionA() (v bool, err error) {
+	if (this._f_hasSectionA) {
+		return this.hasSectionA, nil
+	}
+	tmp74, err := this._io.Size()
+	if err != nil {
+		return false, err
+	}
+	this.hasSectionA = bool(tmp74 >= 296)
+	this._f_hasSectionA = true
+	return this.hasSectionA, nil
+}
+
+/**
+ * True when the telemetry data contains data requested with format "B"
+ */
+func (this *GranTurismoTelemetry) HasSectionB() (v bool, err error) {
+	if (this._f_hasSectionB) {
+		return this.hasSectionB, nil
+	}
+	tmp75, err := this._io.Size()
+	if err != nil {
+		return false, err
+	}
+	this.hasSectionB = bool(tmp75 > 296)
+	this._f_hasSectionB = true
+	return this.hasSectionB, nil
+}
+
+/**
+ * Various flags for the current state of play and instrument cluster indicators
+ */
+type GranTurismoTelemetry_Flags struct {
+	Live bool
+	GamePaused bool
+	Loading bool
+	InGear bool
+	HasTurbo bool
+	RevLimiterAlert bool
+	HandBrakeActive bool
+	HeadlightsActive bool
+	HighBeamActive bool
+	LowBeamActive bool
+	AsmActive bool
+	TcsActive bool
+	Flag13 bool
+	Flag14 bool
+	Flag15 bool
+	Flag16 bool
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
+	_parent *GranTurismoTelemetry
+}
 func NewGranTurismoTelemetry_Flags() *GranTurismoTelemetry_Flags {
-	return &GranTurismoTelemetry_Flags{}
+	return &GranTurismoTelemetry_Flags{
+	}
 }
 
 func (this *GranTurismoTelemetry_Flags) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
@@ -344,103 +598,103 @@ func (this *GranTurismoTelemetry_Flags) Read(io *kaitai.Stream, parent *GranTuri
 	this._parent = parent
 	this._root = root
 
-	tmp46, err := this._io.ReadBitsIntLe(1)
+	tmp76, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Live = tmp46 != 0
-	tmp47, err := this._io.ReadBitsIntLe(1)
+	this.Live = tmp76 != 0
+	tmp77, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.GamePaused = tmp47 != 0
-	tmp48, err := this._io.ReadBitsIntLe(1)
+	this.GamePaused = tmp77 != 0
+	tmp78, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Loading = tmp48 != 0
-	tmp49, err := this._io.ReadBitsIntLe(1)
+	this.Loading = tmp78 != 0
+	tmp79, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.InGear = tmp49 != 0
-	tmp50, err := this._io.ReadBitsIntLe(1)
+	this.InGear = tmp79 != 0
+	tmp80, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.HasTurbo = tmp50 != 0
-	tmp51, err := this._io.ReadBitsIntLe(1)
+	this.HasTurbo = tmp80 != 0
+	tmp81, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.RevLimiterAlert = tmp51 != 0
-	tmp52, err := this._io.ReadBitsIntLe(1)
+	this.RevLimiterAlert = tmp81 != 0
+	tmp82, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.HandBrakeActive = tmp52 != 0
-	tmp53, err := this._io.ReadBitsIntLe(1)
+	this.HandBrakeActive = tmp82 != 0
+	tmp83, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.HeadlightsActive = tmp53 != 0
-	tmp54, err := this._io.ReadBitsIntLe(1)
+	this.HeadlightsActive = tmp83 != 0
+	tmp84, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.HighBeamActive = tmp54 != 0
-	tmp55, err := this._io.ReadBitsIntLe(1)
+	this.HighBeamActive = tmp84 != 0
+	tmp85, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.LowBeamActive = tmp55 != 0
-	tmp56, err := this._io.ReadBitsIntLe(1)
+	this.LowBeamActive = tmp85 != 0
+	tmp86, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.AsmActive = tmp56 != 0
-	tmp57, err := this._io.ReadBitsIntLe(1)
+	this.AsmActive = tmp86 != 0
+	tmp87, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.TcsActive = tmp57 != 0
-	tmp58, err := this._io.ReadBitsIntLe(1)
+	this.TcsActive = tmp87 != 0
+	tmp88, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Flag13 = tmp58 != 0
-	tmp59, err := this._io.ReadBitsIntLe(1)
+	this.Flag13 = tmp88 != 0
+	tmp89, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Flag14 = tmp59 != 0
-	tmp60, err := this._io.ReadBitsIntLe(1)
+	this.Flag14 = tmp89 != 0
+	tmp90, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Flag15 = tmp60 != 0
-	tmp61, err := this._io.ReadBitsIntLe(1)
+	this.Flag15 = tmp90 != 0
+	tmp91, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Flag16 = tmp61 != 0
+	this.Flag16 = tmp91 != 0
 	return err
 }
 
 /**
- * Vector
+ * 3D direction vector
  */
 type GranTurismoTelemetry_Vector struct {
 	VectorX float32
 	VectorY float32
 	VectorZ float32
-	_io     *kaitai.Stream
-	_root   *GranTurismoTelemetry
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
 	_parent *GranTurismoTelemetry
 }
-
 func NewGranTurismoTelemetry_Vector() *GranTurismoTelemetry_Vector {
-	return &GranTurismoTelemetry_Vector{}
+	return &GranTurismoTelemetry_Vector{
+	}
 }
 
 func (this *GranTurismoTelemetry_Vector) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
@@ -448,39 +702,78 @@ func (this *GranTurismoTelemetry_Vector) Read(io *kaitai.Stream, parent *GranTur
 	this._parent = parent
 	this._root = root
 
-	tmp62, err := this._io.ReadF4le()
+	tmp92, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.VectorX = float32(tmp62)
-	tmp63, err := this._io.ReadF4le()
+	this.VectorX = float32(tmp92)
+	tmp93, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.VectorY = float32(tmp63)
-	tmp64, err := this._io.ReadF4le()
+	this.VectorY = float32(tmp93)
+	tmp94, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.VectorZ = float32(tmp64)
+	this.VectorZ = float32(tmp94)
 	return err
 }
 
 /**
- * Data set representing each wheel or suspension component at each corner of the vehicle
+ * 6DOF translational envelope
  */
-type GranTurismoTelemetry_CornerSet struct {
-	FrontLeft  float32
-	FrontRight float32
-	RearLeft   float32
-	RearRight  float32
-	_io        *kaitai.Stream
-	_root      *GranTurismoTelemetry
-	_parent    *GranTurismoTelemetry
+type GranTurismoTelemetry_TranslationalEnvelope struct {
+	Sway float32
+	Heave float32
+	Surge float32
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
+	_parent *GranTurismoTelemetry
+}
+func NewGranTurismoTelemetry_TranslationalEnvelope() *GranTurismoTelemetry_TranslationalEnvelope {
+	return &GranTurismoTelemetry_TranslationalEnvelope{
+	}
 }
 
+func (this *GranTurismoTelemetry_TranslationalEnvelope) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
+	this._io = io
+	this._parent = parent
+	this._root = root
+
+	tmp95, err := this._io.ReadF4le()
+	if err != nil {
+		return err
+	}
+	this.Sway = float32(tmp95)
+	tmp96, err := this._io.ReadF4le()
+	if err != nil {
+		return err
+	}
+	this.Heave = float32(tmp96)
+	tmp97, err := this._io.ReadF4le()
+	if err != nil {
+		return err
+	}
+	this.Surge = float32(tmp97)
+	return err
+}
+
+/**
+ * Data set representing each wheel or suspension component at the corners of the vehicle
+ */
+type GranTurismoTelemetry_CornerSet struct {
+	FrontLeft float32
+	FrontRight float32
+	RearLeft float32
+	RearRight float32
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
+	_parent *GranTurismoTelemetry
+}
 func NewGranTurismoTelemetry_CornerSet() *GranTurismoTelemetry_CornerSet {
-	return &GranTurismoTelemetry_CornerSet{}
+	return &GranTurismoTelemetry_CornerSet{
+	}
 }
 
 func (this *GranTurismoTelemetry_CornerSet) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
@@ -488,43 +781,43 @@ func (this *GranTurismoTelemetry_CornerSet) Read(io *kaitai.Stream, parent *Gran
 	this._parent = parent
 	this._root = root
 
-	tmp65, err := this._io.ReadF4le()
+	tmp98, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.FrontLeft = float32(tmp65)
-	tmp66, err := this._io.ReadF4le()
+	this.FrontLeft = float32(tmp98)
+	tmp99, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.FrontRight = float32(tmp66)
-	tmp67, err := this._io.ReadF4le()
+	this.FrontRight = float32(tmp99)
+	tmp100, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.RearLeft = float32(tmp67)
-	tmp68, err := this._io.ReadF4le()
+	this.RearLeft = float32(tmp100)
+	tmp101, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.RearRight = float32(tmp68)
+	this.RearRight = float32(tmp101)
 	return err
 }
 
 /**
- * Vector
+ * 3D position coordinates
  */
 type GranTurismoTelemetry_Coordinate struct {
 	CoordinateX float32
 	CoordinateY float32
 	CoordinateZ float32
-	_io         *kaitai.Stream
-	_root       *GranTurismoTelemetry
-	_parent     *GranTurismoTelemetry
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
+	_parent *GranTurismoTelemetry
 }
-
 func NewGranTurismoTelemetry_Coordinate() *GranTurismoTelemetry_Coordinate {
-	return &GranTurismoTelemetry_Coordinate{}
+	return &GranTurismoTelemetry_Coordinate{
+	}
 }
 
 func (this *GranTurismoTelemetry_Coordinate) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
@@ -532,37 +825,38 @@ func (this *GranTurismoTelemetry_Coordinate) Read(io *kaitai.Stream, parent *Gra
 	this._parent = parent
 	this._root = root
 
-	tmp69, err := this._io.ReadF4le()
+	tmp102, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.CoordinateX = float32(tmp69)
-	tmp70, err := this._io.ReadF4le()
+	this.CoordinateX = float32(tmp102)
+	tmp103, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.CoordinateY = float32(tmp70)
-	tmp71, err := this._io.ReadF4le()
+	this.CoordinateY = float32(tmp103)
+	tmp104, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.CoordinateZ = float32(tmp71)
+	this.CoordinateZ = float32(tmp104)
 	return err
 }
 
 /**
- * Transmission gear selection information
+ * Transmission gear selection information.
+ * 0 = reverse, 15 = neutral
  */
 type GranTurismoTelemetry_TransmissionGear struct {
-	Current   uint64
+	Current uint64
 	Suggested uint64
-	_io       *kaitai.Stream
-	_root     *GranTurismoTelemetry
-	_parent   *GranTurismoTelemetry
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
+	_parent *GranTurismoTelemetry
 }
-
 func NewGranTurismoTelemetry_TransmissionGear() *GranTurismoTelemetry_TransmissionGear {
-	return &GranTurismoTelemetry_TransmissionGear{}
+	return &GranTurismoTelemetry_TransmissionGear{
+	}
 }
 
 func (this *GranTurismoTelemetry_TransmissionGear) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
@@ -570,31 +864,33 @@ func (this *GranTurismoTelemetry_TransmissionGear) Read(io *kaitai.Stream, paren
 	this._parent = parent
 	this._root = root
 
-	tmp72, err := this._io.ReadBitsIntLe(4)
+	tmp105, err := this._io.ReadBitsIntLe(4)
 	if err != nil {
 		return err
 	}
-	this.Current = tmp72
-	tmp73, err := this._io.ReadBitsIntLe(4)
+	this.Current = tmp105
+	tmp106, err := this._io.ReadBitsIntLe(4)
 	if err != nil {
 		return err
 	}
-	this.Suggested = tmp73
+	this.Suggested = tmp106
 	return err
 }
 
 /**
  * Magic file header
+ * 0x30 0x53 0x37 0x47 = GT Sport and GT7
+ * 0x47 0x37 0x53 0x30 = GT6
  */
 type GranTurismoTelemetry_Header struct {
-	Magic   []byte
-	_io     *kaitai.Stream
-	_root   *GranTurismoTelemetry
+	Magic uint32
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
 	_parent *GranTurismoTelemetry
 }
-
 func NewGranTurismoTelemetry_Header() *GranTurismoTelemetry_Header {
-	return &GranTurismoTelemetry_Header{}
+	return &GranTurismoTelemetry_Header{
+	}
 }
 
 func (this *GranTurismoTelemetry_Header) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
@@ -602,14 +898,13 @@ func (this *GranTurismoTelemetry_Header) Read(io *kaitai.Stream, parent *GranTur
 	this._parent = parent
 	this._root = root
 
-	tmp74, err := this._io.ReadBytes(int(4))
+	tmp107, err := this._io.ReadU4le()
 	if err != nil {
 		return err
 	}
-	tmp74 = tmp74
-	this.Magic = tmp74
-	if !(bytes.Equal(this.Magic, []uint8{48, 83, 55, 71})) {
-		return kaitai.NewValidationNotEqualError([]uint8{48, 83, 55, 71}, this.Magic, this._io, "/types/header/seq/0")
+	this.Magic = uint32(tmp107)
+	if !( ((this.Magic == 810760007) || (this.Magic == 1194808112)) ) {
+		return kaitai.NewValidationNotAnyOfError(this.Magic, this._io, "/types/header/seq/0")
 	}
 	return err
 }
@@ -618,14 +913,14 @@ func (this *GranTurismoTelemetry_Header) Read(io *kaitai.Stream, parent *GranTur
  * Gear ratios for each gear in the transmission
  */
 type GranTurismoTelemetry_GearRatio struct {
-	Gear    []float32
-	_io     *kaitai.Stream
-	_root   *GranTurismoTelemetry
+	Gear []float32
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
 	_parent *GranTurismoTelemetry
 }
-
 func NewGranTurismoTelemetry_GearRatio() *GranTurismoTelemetry_GearRatio {
-	return &GranTurismoTelemetry_GearRatio{}
+	return &GranTurismoTelemetry_GearRatio{
+	}
 }
 
 func (this *GranTurismoTelemetry_GearRatio) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
@@ -635,50 +930,50 @@ func (this *GranTurismoTelemetry_GearRatio) Read(io *kaitai.Stream, parent *Gran
 
 	for i := 0; i < int(8); i++ {
 		_ = i
-		tmp75, err := this._io.ReadF4le()
+		tmp108, err := this._io.ReadF4le()
 		if err != nil {
 			return err
 		}
-		this.Gear = append(this.Gear, tmp75)
+		this.Gear = append(this.Gear, tmp108)
 	}
 	return err
 }
 
 /**
- * Symmetry axes
+ * 6DOF rotational envelope
  */
-type GranTurismoTelemetry_SymmetryAxes struct {
-	Pitch   float32
-	Yaw     float32
-	Roll    float32
-	_io     *kaitai.Stream
-	_root   *GranTurismoTelemetry
+type GranTurismoTelemetry_RotationalEnvelope struct {
+	Pitch float32
+	Yaw float32
+	Roll float32
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
 	_parent *GranTurismoTelemetry
 }
-
-func NewGranTurismoTelemetry_SymmetryAxes() *GranTurismoTelemetry_SymmetryAxes {
-	return &GranTurismoTelemetry_SymmetryAxes{}
+func NewGranTurismoTelemetry_RotationalEnvelope() *GranTurismoTelemetry_RotationalEnvelope {
+	return &GranTurismoTelemetry_RotationalEnvelope{
+	}
 }
 
-func (this *GranTurismoTelemetry_SymmetryAxes) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
+func (this *GranTurismoTelemetry_RotationalEnvelope) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
 	this._io = io
 	this._parent = parent
 	this._root = root
 
-	tmp76, err := this._io.ReadF4le()
+	tmp109, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.Pitch = float32(tmp76)
-	tmp77, err := this._io.ReadF4le()
+	this.Pitch = float32(tmp109)
+	tmp110, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.Yaw = float32(tmp77)
-	tmp78, err := this._io.ReadF4le()
+	this.Yaw = float32(tmp110)
+	tmp111, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.Roll = float32(tmp78)
+	this.Roll = float32(tmp111)
 	return err
 }

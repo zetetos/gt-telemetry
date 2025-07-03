@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/zetetos/gt-telemetry/internal/gttelemetry"
+	"github.com/zetetos/gt-telemetry/internal/telemetrysrc"
 	"github.com/zetetos/gt-telemetry/internal/utils"
 	"github.com/zetetos/gt-telemetry/internal/vehicles"
 )
@@ -46,10 +47,22 @@ type RevLight struct {
 	Active bool
 }
 
+type RotationalEnvelope struct {
+	Pitch float32
+	Yaw   float32
+	Roll  float32
+}
+
 type SymmetryAxes struct {
 	Pitch float32
 	Yaw   float32
 	Roll  float32
+}
+
+type TranslationalEnvelope struct {
+	Sway  float32
+	Heave float32
+	Surge float32
 }
 
 type Vector struct {
@@ -96,6 +109,10 @@ func (t *transformer) BestLaptime() time.Duration {
 
 func (t *transformer) BrakePercent() float32 {
 	return float32(t.RawTelemetry.Brake) / 2.55
+}
+
+func (t *transformer) BrakePedalPercent() float32 {
+	return float32(t.RawTelemetry.BrakeRaw) / 2.55
 }
 
 func (t *transformer) CalculatedVmax() Vmax {
@@ -169,6 +186,10 @@ func (t *transformer) DifferentialRatio() float32 {
 	return diffRatio
 }
 
+func (t *transformer) EnergyRecovery() float32 {
+	return t.RawTelemetry.EnergyRecovery
+}
+
 func (t *transformer) EngineRPM() float32 {
 	val := t.RawTelemetry.EngineRpm
 
@@ -228,6 +249,20 @@ func (t *transformer) FuelLevelPercent() float32 {
 	val := t.RawTelemetry.FuelLevel
 
 	return val
+}
+
+func (t *transformer) GameVersion() string {
+	isGT7, err := t.RawTelemetry.HeaderIsGt7()
+	if err != nil && isGT7 {
+		return "gt7"
+	}
+
+	isGT6, err := t.RawTelemetry.HeaderIsGt6()
+	if err != nil && isGT6 {
+		return "gt6"
+	}
+
+	return "unknown"
 }
 
 func (t *transformer) Transmission() Transmission {
@@ -298,8 +333,22 @@ func (t *transformer) RideHeightMeters() float32 {
 	return t.RawTelemetry.RideHeight
 }
 
+func (t *transformer) RotationEnvelope() RotationalEnvelope {
+	rotation := t.RawTelemetry.RotationalEnvelope
+	if rotation == nil {
+		return RotationalEnvelope{}
+	}
+
+	return RotationalEnvelope{
+		Pitch: rotation.Pitch,
+		Yaw:   rotation.Yaw,
+		Roll:  rotation.Roll,
+	}
+}
+
+// To be deprecated in favor of RotationalEnvelope()
 func (t *transformer) RotationVector() SymmetryAxes {
-	rotation := t.RawTelemetry.RotationAxes
+	rotation := t.RawTelemetry.RotationalEnvelope
 	if rotation == nil {
 		return SymmetryAxes{}
 	}
@@ -317,6 +366,14 @@ func (t *transformer) SequenceID() uint32 {
 
 func (t *transformer) StartingPosition() int16 {
 	return t.RawTelemetry.StartingPosition
+}
+
+func (t *transformer) SteeringWheelAngleDegrees() float32 {
+	return utils.RadiansToDegrees(t.RawTelemetry.SteeringWheelAngleRadians)
+}
+
+func (t *transformer) SteeringWheelAngleRadians() float32 {
+	return t.RawTelemetry.SteeringWheelAngleRadians
 }
 
 func (t *transformer) SuggestedGear() uint64 {
@@ -342,12 +399,48 @@ func (t *transformer) SuspensionHeightMeters() CornerSet {
 	}
 }
 
+func (t *transformer) TelemetryFormat() telemetrysrc.TelemetryFormat {
+	isFormatTilde, err := t.RawTelemetry.HasSectionTilde()
+	if err != nil && isFormatTilde {
+		return telemetrysrc.TelemetryFormatTilde
+	}
+
+	isFormatB, err := t.RawTelemetry.HasSectionB()
+	if err != nil && isFormatB {
+		return telemetrysrc.TelemetryFormatB
+	}
+
+	isFormatA, err := t.RawTelemetry.HasSectionA()
+	if err != nil && isFormatA {
+		return telemetrysrc.TelemetryFormatA
+	}
+
+	return "unknown"
+}
+
 func (t *transformer) ThrottlePercent() float32 {
 	return float32(t.RawTelemetry.Throttle) / 2.55
 }
 
+func (t *transformer) ThrottlePedalPercent() float32 {
+	return float32(t.RawTelemetry.ThrottleRaw) / 2.55
+}
+
 func (t *transformer) TimeOfDay() time.Duration {
 	return time.Duration(t.RawTelemetry.TimeOfDay) * time.Millisecond
+}
+
+func (t *transformer) TranslationEnvelope() TranslationalEnvelope {
+	translation := t.RawTelemetry.TranslationalEnvelope
+	if translation == nil {
+		return TranslationalEnvelope{}
+	}
+
+	return TranslationalEnvelope{
+		Sway:  translation.Sway,
+		Heave: translation.Heave,
+		Surge: translation.Surge,
+	}
 }
 
 func (t *transformer) TransmissionTopSpeedRatio() float32 {
@@ -420,10 +513,36 @@ func (t *transformer) TyreTemperatureCelsius() CornerSet {
 	}
 }
 
-func (t *transformer) VehicleID() uint32 {
-	t.updateVehicle()
+func (t *transformer) Unknown0x12C() float32 {
+	return t.RawTelemetry.Unknown0x12c
+}
 
-	return t.RawTelemetry.VehicleId
+func (t *transformer) Unknown0x13E() uint8 {
+	return t.RawTelemetry.Unknown0x13e
+}
+
+func (t *transformer) Unknown0x13F() uint8 {
+	return t.RawTelemetry.Unknown0x13f
+}
+
+func (t *transformer) Unknown0x140() float32 {
+	return t.RawTelemetry.Unknown0x140
+}
+
+func (t *transformer) Unknown0x144() float32 {
+	return t.RawTelemetry.Unknown0x144
+}
+
+func (t *transformer) Unknown0x148() float32 {
+	return t.RawTelemetry.Unknown0x148
+}
+
+func (t *transformer) Unknown0x14C() float32 {
+	return t.RawTelemetry.Unknown0x14c
+}
+
+func (t *transformer) Unknown0x154() float32 {
+	return t.RawTelemetry.Unknown0x154
 }
 
 func (t *transformer) VehicleAspiration() string {

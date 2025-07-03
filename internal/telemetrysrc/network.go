@@ -10,15 +10,25 @@ import (
 	"github.com/zetetos/gt-telemetry/internal/utils"
 )
 
+type TelemetryFormat string
+
+const (
+	TelemetryFormatA     TelemetryFormat = "A"
+	TelemetryFormatB     TelemetryFormat = "B"
+	TelemetryFormatTilde TelemetryFormat = "~"
+)
+
 type UDPReader struct {
 	conn      *net.UDPConn
 	address   string
 	sendPort  int
+	format    TelemetryFormat
+	ivSeed    uint32
 	closeFunc func() error
 	log       zerolog.Logger
 }
 
-func NewNetworkUDPReader(host string, sendPort int, log zerolog.Logger) *UDPReader {
+func NewNetworkUDPReader(host string, sendPort int, format TelemetryFormat, log zerolog.Logger) *UDPReader {
 	log.Debug().Msg("creating UDP reader")
 	receivePort := sendPort + 1
 	addr, err := net.ResolveUDPAddr("udp", fmt.Sprintf(":%d", receivePort))
@@ -35,6 +45,8 @@ func NewNetworkUDPReader(host string, sendPort int, log zerolog.Logger) *UDPRead
 		conn:      conn,
 		address:   host,
 		sendPort:  sendPort,
+		format:    format,
+		ivSeed:    getIVSeedForFormat(format),
 		closeFunc: conn.Close,
 		log:       log,
 	}
@@ -62,7 +74,7 @@ func (r *UDPReader) Read() (int, []byte, error) {
 		return 0, buffer, fmt.Errorf("no data received")
 	}
 
-	decipheredPacket, err := utils.Salsa20Decode(buffer[:bufLen])
+	decipheredPacket, err := utils.Salsa20Decode(r.ivSeed, buffer[:bufLen])
 	if err != nil {
 		return 0, buffer, fmt.Errorf("failed to decipher telemetry: %s", err.Error())
 	}
@@ -75,9 +87,9 @@ func (r *UDPReader) Close() error {
 }
 
 func (r *UDPReader) sendHeartbeat() {
-	r.log.Debug().Msgf("sending heartbeat to %s:%d", r.address, r.sendPort)
+	r.log.Debug().Msgf("sending format %q heartbeat to %s:%d", r.format, r.address, r.sendPort)
 
-	_, err := r.conn.WriteToUDP([]byte("A"), &net.UDPAddr{
+	_, err := r.conn.WriteToUDP([]byte(r.format), &net.UDPAddr{
 		IP:   net.ParseIP(r.address),
 		Port: r.sendPort,
 	})
@@ -88,4 +100,17 @@ func (r *UDPReader) sendHeartbeat() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func getIVSeedForFormat(format TelemetryFormat) uint32 {
+	switch format {
+	case TelemetryFormatA:
+		return 0xDEADBEAF
+	case TelemetryFormatB:
+		return 0xDEADBEEF
+	case TelemetryFormatTilde:
+		return 0x55FABB4F
+	}
+
+	return 0x00
 }

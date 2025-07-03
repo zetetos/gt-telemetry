@@ -6,11 +6,13 @@ import (
 	"time"
 
 	telemetry_client "github.com/zetetos/gt-telemetry"
+	"github.com/zetetos/gt-telemetry/internal/telemetrysrc"
 )
 
 func main() {
 	clientConfig := telemetry_client.GTClientOpts{
 		Source:       "file://examples/simple/replay.gtz",
+		Format:       telemetrysrc.TelemetryFormatTilde,
 		StatsEnabled: true,
 	}
 
@@ -71,42 +73,47 @@ func main() {
 		)
 
 		fmt.Println()
-		fmt.Printf("Inputs        Throttle: %3.0f%%  Brake: %3.0f%%  Gear: %s %3s\n",
+		fmt.Printf("Inputs        Throttle: %3.0f%% ➔ %3.0f%%  Brake: %3.0f%% ➔ %3.0f%%  Clutch: %3.0f%%  Steering: %+3.0f°\n",
+			client.Telemetry.ThrottlePedalPercent(),
 			client.Telemetry.ThrottlePercent(),
+			client.Telemetry.BrakePedalPercent(),
 			client.Telemetry.BrakePercent(),
-			client.Telemetry.CurrentGearString(),
-			suggestedGearStr,
+			client.Telemetry.ClutchActuationPercent(),
+			client.Telemetry.SteeringWheelAngleDegrees(),
 		)
-		fmt.Printf("Outputs       Engine Speed: %s rpm  Ground Speed: %0.0f kph\n",
+
+		fmt.Printf("Engine        Speed: %s rpm  %s  Energy recovery: %+3.03f\n",
 			renderFlag(
 				client.Telemetry.EngineRPMLight().Active,
 				fmt.Sprintf("%0.0f", client.Telemetry.EngineRPM()),
 				"yellow",
 				"default",
 			),
-			client.Telemetry.GroundSpeedKPH(),
+			boostStr,
+			client.Telemetry.EnergyRecovery(),
 		)
-		fmt.Printf("Fluids        Fuel level: %3.0f%%  Fuel capacity: %3.0f%%  Water temp: %3.0fc  Oil temp: %3.0fc  Oil pressure: %3.02f  %s\n",
+		fmt.Printf("Fluids        Fuel level: %3.0f%%  Fuel capacity: %3.0f%%  Water temp: %3.0f°c  Oil temp: %3.0f°c  Oil pressure: %3.02f kpa\n",
 			client.Telemetry.FuelLevelPercent(),
 			client.Telemetry.FuelCapacityPercent(),
 			client.Telemetry.WaterTemperatureCelsius(),
 			client.Telemetry.OilTemperatureCelsius(),
 			client.Telemetry.OilPressureKPA(),
-			boostStr,
 		)
 		fmt.Printf("Clutch        Position: %3.0f%%  Engagement: %3.0f%%  Output: %5.0f RPM\n",
 			client.Telemetry.ClutchActuationPercent(),
 			client.Telemetry.ClutchEngagementPercent(),
 			client.Telemetry.ClutchOutputRPM(),
 		)
-		fmt.Printf("Transmission  Gears: %2d                  Ratios: 1[%0.03f]  3[%0.03f]  5[%0.03f]  7[%0.03f]\n",
+		fmt.Printf("Transmission  Gear: %2s %3s (%2d)          Ratios: 1[%0.03f]  3[%0.03f]  5[%0.03f]  7[%0.03f]\n",
+			client.Telemetry.CurrentGearString(),
+			suggestedGearStr,
 			client.Telemetry.Transmission().Gears,
 			client.Telemetry.Transmission().GearRatios[0],
 			client.Telemetry.Transmission().GearRatios[2],
 			client.Telemetry.Transmission().GearRatios[4],
 			client.Telemetry.Transmission().GearRatios[6],
 		)
-		fmt.Printf("              vMax: %3d kph @ %5d rpm          2[%0.03f]  4[%0.03f]  6[%0.03f]  8[%0.03f] Diff[%0.03f]\n",
+		fmt.Printf("              vMax: %3d kph @ %5d rpm          2[%0.03f]  4[%0.03f]  6[%0.03f]  8[%0.03f] Diff[%0.03f] %f\n",
 			client.Telemetry.CalculatedVmax().Speed,
 			client.Telemetry.CalculatedVmax().RPM,
 			client.Telemetry.Transmission().GearRatios[1],
@@ -114,18 +121,19 @@ func main() {
 			client.Telemetry.Transmission().GearRatios[5],
 			client.Telemetry.Transmission().GearRatios[7],
 			client.Telemetry.DifferentialRatio(),
+			client.Telemetry.TransmissionTopSpeedRatio(),
 		)
 
 		fmt.Println()
 		fmt.Println("                    [  FL  ]  [  FR  ]  [  RL  ]  [  RR  ]")
-		fmt.Printf("Suspension height:  [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] mm  Ride height: %0.02f mm\n",
+		fmt.Printf("Suspension height:  [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] mm   Ride height: %0.02f mm\n",
 			client.Telemetry.SuspensionHeightMillimeters().FrontLeft,
 			client.Telemetry.SuspensionHeightMillimeters().FrontRight,
 			client.Telemetry.SuspensionHeightMillimeters().RearLeft,
 			client.Telemetry.SuspensionHeightMillimeters().RearRight,
 			client.Telemetry.RideHeightMillimeters(),
 		)
-		fmt.Printf("Tyre temperature:   [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] c\n",
+		fmt.Printf("Tyre temperature:   [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] °c\n",
 			client.Telemetry.TyreTemperatureCelsius().FrontLeft,
 			client.Telemetry.TyreTemperatureCelsius().FrontRight,
 			client.Telemetry.TyreTemperatureCelsius().RearLeft,
@@ -143,17 +151,24 @@ func main() {
 			client.Telemetry.WheelSpeedRPM().RearLeft,
 			client.Telemetry.WheelSpeedRPM().RearRight,
 		)
-		fmt.Printf("Wheel speed:        [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] kph\n",
+		fmt.Printf("Wheel speed:        [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] kph  Ground speed: %0.0f kph\n",
 			client.Telemetry.WheelSpeedKPH().FrontLeft,
 			client.Telemetry.WheelSpeedKPH().FrontRight,
 			client.Telemetry.WheelSpeedKPH().RearLeft,
 			client.Telemetry.WheelSpeedKPH().RearRight,
+			client.Telemetry.GroundSpeedKPH(),
 		)
 		fmt.Printf("Tyre slip ratio:    [%5s]  [%5s]  [%5s]  [%5s] %%\n",
 			fmt.Sprintf("%+f", (client.Telemetry.TyreSlipRatio().FrontLeft-1)*100)[0:6],
 			fmt.Sprintf("%+f", (client.Telemetry.TyreSlipRatio().FrontRight-1)*100)[0:6],
 			fmt.Sprintf("%+f", (client.Telemetry.TyreSlipRatio().RearLeft-1)*100)[0:6],
 			fmt.Sprintf("%+f", (client.Telemetry.TyreSlipRatio().RearRight-1)*100)[0:6],
+		)
+		fmt.Printf("Torque vector?:     [%+0.3f]  [%+0.3f]  [%+0.3f]  [%+0.3f]\n",
+			client.Telemetry.Unknown0x140(),
+			client.Telemetry.Unknown0x144(),
+			client.Telemetry.Unknown0x148(),
+			client.Telemetry.Unknown0x14C(),
 		)
 
 		fmt.Println()
@@ -179,7 +194,11 @@ func main() {
 			fmt.Sprintf("%+f", client.Telemetry.RotationVector().Yaw)[0:9],
 			fmt.Sprintf("%+f", client.Telemetry.RotationVector().Roll)[0:9],
 		)
-		fmt.Println("                    [  Pitch  ]  [   Yaw   ]  [  Roll   ]")
+		fmt.Printf("Translation:        [%9s]  [%9s]  [%9s]\n",
+			fmt.Sprintf("%+f", client.Telemetry.TranslationEnvelope().Sway)[0:9],
+			fmt.Sprintf("%+f", client.Telemetry.TranslationEnvelope().Heave)[0:9],
+			fmt.Sprintf("%+f", client.Telemetry.TranslationEnvelope().Surge)[0:9],
+		)
 
 		fmt.Println()
 		fmt.Printf("Flags         %s    %s        %s\n",
@@ -207,8 +226,18 @@ func main() {
 			renderFlag(client.Telemetry.Flags().Flag15, "15", "red", "grey"),
 			renderFlag(client.Telemetry.Flags().Flag16, "16", "red", "grey"),
 		)
+
+		fmt.Println()
+		fmt.Printf("Unknowns      0x12C: %+3.05f  0x13E: %3d  0x13F: %3d  0x154: %+3.05f\n",
+			client.Telemetry.Unknown0x12C(),
+			client.Telemetry.Unknown0x13E(),
+			client.Telemetry.Unknown0x13F(),
+			client.Telemetry.Unknown0x154(),
+		)
+
 		if clientConfig.StatsEnabled {
 			fmt.Println()
+			fmt.Printf("Packet Size:  %d\n", client.Statistics.PacketSize)
 			fmt.Printf("Packets       Total: %9d    Dropped: %9d     Invalid: %9d\n",
 				client.Statistics.PacketsTotal,
 				client.Statistics.PacketsDropped,
