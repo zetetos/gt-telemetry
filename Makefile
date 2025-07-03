@@ -69,13 +69,10 @@ test/cover:
 test/cover/show: test/cover
 	go tool cover -html=coverage.out
 
-## kaitai: compile the GT telemetry package from the Kaitai Struct
+## build/kaitai: compile the GT telemetry package from the Kaitai Struct
 .PHONY: build/kaitai
 build/kaitai:
-ifeq (, $(shell which kaitai-struct-compilerx))
-	$(error "kaitai-struct-compiler command not found, see https://kaitai.io/#download for installation instructions.")
-endif
-	@kaitai-struct-compiler --target go --go-package gttelemetry --outdir internal internal/kaitai/gran_turismo_telemetry.ksy
+	@docker build --output=internal/gttelemetry --progress=plain -f build/Dockerfile .
 
 ## build: build the application for the local platform
 .PHONY: build
