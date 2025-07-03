@@ -2,6 +2,7 @@ package telemetry
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"net"
 	"net/url"
@@ -92,8 +93,19 @@ func NewGTClient(opts GTClientOpts) (*GTClient, error) {
 	if opts.Format == "" {
 		opts.Format = telemetrysrc.TelemetryFormatTilde
 	}
+
+	var inventoryJSON []byte
+	if opts.VehicleDB != "" {
+		var err error
+		inventoryJSON, err = os.ReadFile(opts.VehicleDB)
+		if err != nil {
+			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
+		}
+	}
+
+	inventory, err := vehicles.NewInventory(inventoryJSON)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("setting up new inventory: %w", err)
 	}
 
 	return &GTClient{

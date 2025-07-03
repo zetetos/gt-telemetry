@@ -4,12 +4,11 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
-	"os"
 	"strconv"
 )
 
 type Vehicle struct {
-	ID           int
+	CarID        int
 	Model        string
 	Manufacturer string
 	Year         int
@@ -27,23 +26,16 @@ type Inventory struct {
 //go:embed inventory.json
 var baseInventoryJSON []byte
 
-func NewInventory(file string) (*Inventory, error) {
+func NewInventory(inventoryJSON []byte) (*Inventory, error) {
 	inventory := Inventory{}
 
-	jsonData := baseInventoryJSON
-	if file != "" {
-		var err error
-		jsonData, err = os.ReadFile(file)
-		if err != nil {
-			fmt.Printf("failed to read file: %s\n", err)
-			return &Inventory{}, err
-		}
+	if inventoryJSON == nil {
+		inventoryJSON = baseInventoryJSON
 	}
 
-	err := json.Unmarshal([]byte(jsonData), &inventory.db)
+	err := json.Unmarshal([]byte(inventoryJSON), &inventory.db)
 	if err != nil {
-		fmt.Printf("failed to unmarshal json: %s\n", err)
-		return &Inventory{}, err
+		return &Inventory{}, fmt.Errorf("unmarshall inventory JSON: %w", err)
 	}
 
 	return &inventory, nil
@@ -52,7 +44,7 @@ func NewInventory(file string) (*Inventory, error) {
 func (i *Inventory) GetVehicleByID(id int) (Vehicle, error) {
 	vehicle, ok := i.db[strconv.Itoa(id)]
 	if !ok {
-		return Vehicle{}, fmt.Errorf("vehicle with id %d not found", id)
+		return Vehicle{}, fmt.Errorf("no vehicle found with id %d", id)
 	}
 
 	return vehicle, nil
@@ -60,6 +52,8 @@ func (i *Inventory) GetVehicleByID(id int) (Vehicle, error) {
 
 func (v *Vehicle) ExpandedAspiration() string {
 	switch v.Aspiration {
+	case "EV":
+		return "Electric Vehicle"
 	case "NA":
 		return "Naturally Aspirated"
 	case "TC":
