@@ -62,7 +62,7 @@ test:
 .PHONY: test/cover
 test/cover:
 	go test -v -race -buildvcs -coverprofile=coverage.out ./...
-	@sed -i '/gran_turismo_telemetry.go/d' coverage.out
+	@grep -v "gran_turismo_telemetry.go:" coverage.out > trimmed.out && mv trimmed.out coverage.out
 
 ## test/cover/show: run all tests and display coverage in a browser
 .PHONY: test/cover/show
