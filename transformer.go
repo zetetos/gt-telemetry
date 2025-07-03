@@ -569,6 +569,18 @@ func (t *transformer) VehicleDrivetrain() string {
 	return t.vehicle.Drivetrain
 }
 
+func (t *transformer) VehicleHasOpenCockpit() bool {
+	t.updateVehicle()
+
+	return t.vehicle.OpenCockpit
+}
+
+func (t *transformer) VehicleID() int {
+	t.updateVehicle()
+
+	return t.vehicle.CarID
+}
+
 func (t *transformer) VehicleManufacturer() string {
 	t.updateVehicle()
 

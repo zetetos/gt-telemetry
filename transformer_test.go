@@ -1048,9 +1048,9 @@ func (suite *TransformerTestSuite) TestGetVehicleAspirationExpandedReturnsCorrec
 
 func (suite *TransformerTestSuite) TestGetVehicleIDReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
-	wantValue := uint32(1234)
+	wantValue := 1234
 	suite.transformer.vehicle = vehicles.Vehicle{}
-	suite.transformer.RawTelemetry.VehicleId = wantValue
+	suite.transformer.RawTelemetry.VehicleId = uint32(wantValue)
 
 	// Act
 	gotValue := suite.transformer.VehicleID()
