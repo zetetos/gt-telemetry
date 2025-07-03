@@ -40,6 +40,7 @@ Construct a new GT client and start reading the telemetry stream. All configurat
 ```go
 config := telemetry_client.GTClientOpts{
     Source: "udp://255.255.255.255:33739"
+    Format: telemetrysrc.TelemetryFormatA,
     LogLevel: "warn",
     StatsEnabled: false,
     VehicleDB: "./internal/vehicles/inventory.json",
