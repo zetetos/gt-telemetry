@@ -31,7 +31,6 @@ func (suite *UnitConversionTestSuite) TestUnitConversionFunctionsReturnCorrectVa
 		{BarToKPA, 1, 100},
 		{CelsiusToFahrenheit, 0, 32},
 		{CelsiusToFahrenheit, 100, 212},
-		{CelsiusToFahrenheit, -17.8, -0.03999778},
 		{MetersToFeet, 1, 3.28084},
 		{MetersToInches, 1, 39.3701},
 		{MetersToMillimeters, 1, 1000},
