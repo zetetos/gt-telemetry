@@ -1,0 +1,4 @@
+ignore:
+  - "cmd/**/*"
+  - "examples/**/*"
+  - "internal/gttelemetry/gran_turismo_telemetry.go"
