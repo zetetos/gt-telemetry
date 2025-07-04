@@ -144,12 +144,10 @@ seq:
     type: f4
     if: has_section_b
     -doc: Steering wheel angular position in radians
-  - id: unknown0x12c
+  - id: steering_wheel_force_feedback
     type: f4
     if: has_section_b
-    -doc: |
-      Unkown value, possibly front axle slip angle related to drift scoring.
-      Increases in value when front end slip angle is high and resets to zero when the car spins out
+    -doc: Steering wheel force feedback signal (unverified)
   - id: translational_envelope
     type: translational_envelope
     if: has_section_b
@@ -157,11 +155,11 @@ seq:
   - id: throttle_raw
     type: u1
     if: has_section_tilde
-    -doc: Raw throttle percent from driver input, live sessions only
+    -doc: Raw throttle percent from driver input
   - id: brake_raw
     type: u1
     if: has_section_tilde
-    -doc: Raw brake percent from driver input, live sessions only
+    -doc: Raw brake percent from driver input (live sessions only)
   - id: unknown0x13e
     type: u1
     if: has_section_tilde
@@ -193,7 +191,7 @@ seq:
   - id: unknown0x154
     type: f4
     if: has_section_tilde
-    -doc: Unknown value
+    -doc: Unknown value, something related to vehicle motion
 types:
   header:
     doc: |

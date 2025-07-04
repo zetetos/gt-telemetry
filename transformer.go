@@ -353,6 +353,10 @@ func (t *transformer) SteeringWheelAngleRadians() float32 {
 	return t.RawTelemetry.SteeringWheelAngleRadians
 }
 
+func (t *transformer) SteeringWheelForceFeedback() float32 {
+	return t.RawTelemetry.SteeringWheelForceFeedback
+}
+
 func (t *transformer) SuggestedGear() uint64 {
 	gear := t.RawTelemetry.TransmissionGear
 	if gear == nil {
@@ -511,10 +515,6 @@ func (t *transformer) TyreTemperatureCelsius() CornerSet {
 		RearLeft:   temperature.RearLeft,
 		RearRight:  temperature.RearRight,
 	}
-}
-
-func (t *transformer) Unknown0x12C() float32 {
-	return t.RawTelemetry.Unknown0x12c
 }
 
 func (t *transformer) Unknown0x13E() uint8 {

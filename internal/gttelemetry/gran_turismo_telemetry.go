@@ -51,7 +51,7 @@ type GranTurismoTelemetry struct {
 	TransmissionGearRatio *GranTurismoTelemetry_GearRatio
 	VehicleId uint32
 	SteeringWheelAngleRadians float32
-	Unknown0x12c float32
+	SteeringWheelForceFeedback float32
 	TranslationalEnvelope *GranTurismoTelemetry_TranslationalEnvelope
 	ThrottleRaw uint8
 	BrakeRaw uint8
@@ -349,7 +349,7 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 		if err != nil {
 			return err
 		}
-		this.Unknown0x12c = float32(tmp49)
+		this.SteeringWheelForceFeedback = float32(tmp49)
 	}
 	tmp50, err := this.HasSectionB()
 	if err != nil {
