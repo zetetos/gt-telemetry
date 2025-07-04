@@ -56,17 +56,30 @@ func NewFileReader(file string, log zerolog.Logger) *FileReader {
 
 	scanner := bufio.NewScanner(reader)
 
+	// Usually splits on a delimiter at the end of a token and drops the delimiter. However since
+	// the delimiter is a magic header at the beginning of a token it is re-added to the beginning
+	// of the token and the length updated accordingly.
 	splitFunc := func(data []byte, atEOF bool) (advance int, token []byte, err error) {
+		// Aligned packet starting with a packet header, usually the first bytes of the file on
+		// the first read.
+		// Advances the scanner bhy the magic header length and returns empty bytes.
 		headerLen := len(packetHeader)
 		if bytes.Equal(data[:headerLen], packetHeader) {
-			return headerLen, data[:headerLen], nil
+			return headerLen, []byte{}, nil
 		}
+
+		// Non-aligned packet with magic header prefix removed.
+		// Returns all data up to the next magic header and also prefixes the data with the
+		// magic header to create a valid telemetry packet.
 		if bytes.Contains(data, packetHeader) {
-			packetLen := bytes.Index(data, packetHeader) + 4
+			packetLen := bytes.Index(data, packetHeader)
 			packet := append(packetHeader, data[:packetLen]...)
 
-			return packetLen, packet, nil
+			return len(packet), packet, nil
 		}
+
+		// When emd of file reached, assume that the packet is complete
+		// and return the data with the magic header prefixed.
 		if atEOF {
 			if len(data) == 0 {
 				return 0, nil, fmt.Errorf("EOF")
@@ -76,6 +89,7 @@ func NewFileReader(file string, log zerolog.Logger) *FileReader {
 
 			return len(packet), packet, nil
 		}
+
 		return 0, nil, nil
 	}
 
