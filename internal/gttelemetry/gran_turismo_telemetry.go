@@ -35,8 +35,8 @@ type GranTurismoTelemetry struct {
 	CalculatedMaxSpeed uint16
 	Flags *GranTurismoTelemetry_Flags
 	TransmissionGear *GranTurismoTelemetry_TransmissionGear
-	Throttle uint8
-	Brake uint8
+	ThrottleOutput uint8
+	BrakeInput uint8
 	Ignore1 []byte
 	RoadPlaneVector *GranTurismoTelemetry_Vector
 	RoadPlaneDistance uint32
@@ -53,8 +53,8 @@ type GranTurismoTelemetry struct {
 	SteeringWheelAngleRadians float32
 	SteeringWheelForceFeedback float32
 	TranslationalEnvelope *GranTurismoTelemetry_TranslationalEnvelope
-	ThrottleRaw uint8
-	BrakeRaw uint8
+	ThrottleInput uint8
+	BrakeOutput uint8
 	Unknown0x13e uint8
 	Unknown0x13f uint8
 	Unknown0x140 float32
@@ -251,12 +251,12 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 	if err != nil {
 		return err
 	}
-	this.Throttle = tmp31
+	this.ThrottleOutput = tmp31
 	tmp32, err := this._io.ReadU1()
 	if err != nil {
 		return err
 	}
-	this.Brake = tmp32
+	this.BrakeInput = tmp32
 	tmp33, err := this._io.ReadBytes(int(1))
 	if err != nil {
 		return err
@@ -372,7 +372,7 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 		if err != nil {
 			return err
 		}
-		this.ThrottleRaw = tmp53
+		this.ThrottleInput = tmp53
 	}
 	tmp54, err := this.HasSectionTilde()
 	if err != nil {
@@ -383,7 +383,7 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 		if err != nil {
 			return err
 		}
-		this.BrakeRaw = tmp55
+		this.BrakeOutput = tmp55
 	}
 	tmp56, err := this.HasSectionTilde()
 	if err != nil {

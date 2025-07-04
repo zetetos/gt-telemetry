@@ -95,12 +95,12 @@ seq:
   - id: transmission_gear
     type: transmission_gear
     -doc: Transmission gear selection
-  - id: throttle
+  - id: throttle_output
     type: u1
-    -doc: Throttle position (0 to 255)
-  - id: brake
+    -doc: Throttle output value after TCS applied (0 to 255)
+  - id: brake_input
     type: u1
-    -doc: Brake position (0 to 255)
+    -doc: Brake input value from controller (0 to 255)
   - id: ignore_1
     size: 1
     -doc: Field 0x93 is empty and ignored
@@ -152,14 +152,14 @@ seq:
     type: translational_envelope
     if: has_section_b
     -doc: Body forces along axes (-1 to 1)
-  - id: throttle_raw
+  - id: throttle_input
     type: u1
     if: has_section_tilde
-    -doc: Raw throttle percent from driver input
-  - id: brake_raw
+    -doc: Throttle input value from controller (0-255)
+  - id: brake_output
     type: u1
     if: has_section_tilde
-    -doc: Raw brake percent from driver input (live sessions only)
+    -doc: Brake output value after ABS applied (0-255) (live sessions only)
   - id: unknown0x13e
     type: u1
     if: has_section_tilde

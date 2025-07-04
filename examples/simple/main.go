@@ -74,10 +74,10 @@ func main() {
 
 		fmt.Println()
 		fmt.Printf("Inputs        Throttle: %3.0f%% ➔ %3.0f%%  Brake: %3.0f%% ➔ %3.0f%%  Clutch: %3.0f%%  Steering: %+3.0f°  FFB: %+0.3f\n",
-			client.Telemetry.ThrottlePedalPercent(),
-			client.Telemetry.ThrottlePercent(),
-			client.Telemetry.BrakePedalPercent(),
-			client.Telemetry.BrakePercent(),
+			client.Telemetry.ThrottleInputPercent(),
+			client.Telemetry.ThrottleOutputPercent(),
+			client.Telemetry.BrakeInputPercent(),
+			client.Telemetry.BrakeOutputPercent(),
 			client.Telemetry.ClutchActuationPercent(),
 			client.Telemetry.SteeringWheelAngleDegrees(),
 			client.Telemetry.SteeringWheelForceFeedback(),

@@ -107,12 +107,17 @@ func (t *transformer) BestLaptime() time.Duration {
 	return time.Duration(t.RawTelemetry.BestLaptime) * time.Millisecond
 }
 
-func (t *transformer) BrakePedalPercent() float32 {
-	return float32(t.RawTelemetry.BrakeRaw) / 2.55
+func (t *transformer) BrakeInputPercent() float32 {
+	return float32(t.RawTelemetry.BrakeInput) / 2.55
 }
 
+func (t *transformer) BrakeOutputPercent() float32 {
+	return float32(t.RawTelemetry.BrakeOutput) / 2.55
+}
+
+// To be deprecated in 2.0 release
 func (t *transformer) BrakePercent() float32 {
-	return float32(t.RawTelemetry.Brake) / 2.55
+	return float32(t.RawTelemetry.BrakeInput) / 2.55
 }
 
 func (t *transformer) CalculatedVmax() Vmax {
@@ -323,7 +328,7 @@ func (t *transformer) RotationEnvelope() RotationalEnvelope {
 	}
 }
 
-// To be deprecated in favor of RotationalEnvelope()
+// To be deprecated in 2.0 release in favor of RotationalEnvelope()
 func (t *transformer) RotationVector() SymmetryAxes {
 	rotation := t.RawTelemetry.RotationalEnvelope
 	if rotation == nil {
@@ -399,12 +404,17 @@ func (t *transformer) TelemetryFormat() telemetrysrc.TelemetryFormat {
 	return "unknown"
 }
 
-func (t *transformer) ThrottlePedalPercent() float32 {
-	return float32(t.RawTelemetry.ThrottleRaw) / 2.55
+func (t *transformer) ThrottleInputPercent() float32 {
+	return float32(t.RawTelemetry.ThrottleInput) / 2.55
 }
 
+func (t *transformer) ThrottleOutputPercent() float32 {
+	return float32(t.RawTelemetry.ThrottleOutput) / 2.55
+}
+
+// To be deprecated in 2.0 release
 func (t *transformer) ThrottlePercent() float32 {
-	return float32(t.RawTelemetry.Throttle) / 2.55
+	return float32(t.RawTelemetry.ThrottleOutput) / 2.55
 }
 
 func (t *transformer) TimeOfDay() time.Duration {
