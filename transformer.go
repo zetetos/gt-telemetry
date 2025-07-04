@@ -575,10 +575,10 @@ func (t *transformer) VehicleHasOpenCockpit() bool {
 	return t.vehicle.OpenCockpit
 }
 
-func (t *transformer) VehicleID() int {
+func (t *transformer) VehicleID() uint32 {
 	t.updateVehicle()
 
-	return t.vehicle.CarID
+	return uint32(t.vehicle.CarID)
 }
 
 func (t *transformer) VehicleManufacturer() string {
