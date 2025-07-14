@@ -73,13 +73,14 @@ func main() {
 		)
 
 		fmt.Println()
-		fmt.Printf("Inputs        Throttle: %3.0f%% ➔ %3.0f%%  Brake: %3.0f%% ➔ %3.0f%%  Clutch: %3.0f%%  Steering: %+3.0f°\n",
-			client.Telemetry.ThrottlePedalPercent(),
-			client.Telemetry.ThrottlePercent(),
-			client.Telemetry.BrakePedalPercent(),
-			client.Telemetry.BrakePercent(),
+		fmt.Printf("Inputs        Throttle: %3.0f%% ➔ %3.0f%%  Brake: %3.0f%% ➔ %3.0f%%  Clutch: %3.0f%%  Steering: %+3.0f°  FFB: %+0.3f\n",
+			client.Telemetry.ThrottleInputPercent(),
+			client.Telemetry.ThrottleOutputPercent(),
+			client.Telemetry.BrakeInputPercent(),
+			client.Telemetry.BrakeOutputPercent(),
 			client.Telemetry.ClutchActuationPercent(),
 			client.Telemetry.SteeringWheelAngleDegrees(),
+			client.Telemetry.SteeringWheelForceFeedback(),
 		)
 
 		fmt.Printf("Engine        Speed: %s rpm  %s  Energy recovery: %+3.03f\n",
@@ -228,8 +229,7 @@ func main() {
 		)
 
 		fmt.Println()
-		fmt.Printf("Unknowns      0x12C: %+3.05f  0x13E: %3d  0x13F: %3d  0x154: %+3.05f\n",
-			client.Telemetry.Unknown0x12C(),
+		fmt.Printf("Unknowns      0x13E: %3d  0x13F: %3d  0x154: %+3.05f\n",
 			client.Telemetry.Unknown0x13E(),
 			client.Telemetry.Unknown0x13F(),
 			client.Telemetry.Unknown0x154(),

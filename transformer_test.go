@@ -83,13 +83,25 @@ func (suite *TransformerTestSuite) TestBestLaptimeReturnsCorrectDuration() {
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestBrakePedalPercentReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestBrakeInputPercentReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(84.31373)
-	suite.transformer.RawTelemetry.BrakeRaw = uint8(215)
+	suite.transformer.RawTelemetry.BrakeInput = uint8(215)
 
 	// Act
-	gotValue := suite.transformer.BrakePedalPercent()
+	gotValue := suite.transformer.BrakeInputPercent()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestBrakeOutputPercentReturnsCorrectValue() {
+	// Arrange
+	wantValue := float32(84.31373)
+	suite.transformer.RawTelemetry.BrakeOutput = uint8(215)
+
+	// Act
+	gotValue := suite.transformer.BrakeOutputPercent()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
@@ -98,7 +110,7 @@ func (suite *TransformerTestSuite) TestBrakePedalPercentReturnsCorrectValue() {
 func (suite *TransformerTestSuite) TestBrakePercentReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(56.078434)
-	suite.transformer.RawTelemetry.Brake = uint8(143)
+	suite.transformer.RawTelemetry.BrakeInput = uint8(143)
 
 	// Act
 	gotValue := suite.transformer.BrakePercent()
@@ -795,25 +807,37 @@ func (suite *TransformerTestSuite) TestTelemetryFormatIndicatorsFIXME() {
 	}
 }
 
-func (suite *TransformerTestSuite) TestThrottlePercentReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestThrottleInputPercentReturnsCorrectValue() {
 	// Arrange
-	wantValue := float32(79.60784)
-	suite.transformer.RawTelemetry.Throttle = 203
+	wantValue := float32(37.64706)
+	suite.transformer.RawTelemetry.ThrottleInput = uint8(96)
 
 	// Act
-	gotValue := suite.transformer.ThrottlePercent()
+	gotValue := suite.transformer.ThrottleInputPercent()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestThrottlePedalPercentReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestThrottleOutputPercentReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(37.64706)
-	suite.transformer.RawTelemetry.ThrottleRaw = uint8(96)
+	suite.transformer.RawTelemetry.ThrottleInput = uint8(96)
 
 	// Act
-	gotValue := suite.transformer.ThrottlePedalPercent()
+	gotValue := suite.transformer.ThrottleInputPercent()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestThrottlePercentReturnsCorrectValue() {
+	// Arrange
+	wantValue := float32(79.60784)
+	suite.transformer.RawTelemetry.ThrottleOutput = 203
+
+	// Act
+	gotValue := suite.transformer.ThrottlePercent()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
@@ -1048,9 +1072,9 @@ func (suite *TransformerTestSuite) TestGetVehicleAspirationExpandedReturnsCorrec
 
 func (suite *TransformerTestSuite) TestGetVehicleIDReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
-	wantValue := 1234
+	wantValue := uint32(1234)
 	suite.transformer.vehicle = vehicles.Vehicle{}
-	suite.transformer.RawTelemetry.VehicleId = uint32(wantValue)
+	suite.transformer.RawTelemetry.VehicleId = wantValue
 
 	// Act
 	gotValue := suite.transformer.VehicleID()
