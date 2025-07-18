@@ -40,6 +40,8 @@ jobs:
         run: make test/cover
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5.0.6
+        env:
+          CC_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: vwhitteron/gt-telemetry
