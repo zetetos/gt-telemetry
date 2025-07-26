@@ -5917,6 +5917,28 @@
     "OpenCockpit": false,
     "CarType": "street"
   },
+  "3568": {
+    "Model": "Qashqai Tekna e-Power '22",
+    "Manufacturer": "Nissan",
+    "Category": "",
+    "Drivetrain": "FF",
+    "Aspiration": "TC",
+    "Year": 2022,
+    "CarID": 3568,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
+  "3569": {
+    "Model": "R34 GT-R Z-tune '05",
+    "Manufacturer": "Nissan",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "TC",
+    "Year": 2005,
+    "CarID": 3569,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
   "3570": {
     "Model": "Corvette Z06 (C5) '01",
     "Manufacturer": "Chevrolet",
@@ -5969,6 +5991,17 @@
     "Aspiration": "TC",
     "Year": 2021,
     "CarID": 3574,
+    "OpenCockpit": false,
+    "CarType": "street"
+  },
+  "3576": {
+    "Model": "N-ONE RS '22",
+    "Manufacturer": "Honda",
+    "Category": "",
+    "Drivetrain": "FF",
+    "Aspiration": "TC",
+    "Year": 2022,
+    "CarID": 3576,
     "OpenCockpit": false,
     "CarType": "street"
   }
