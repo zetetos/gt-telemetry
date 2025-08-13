@@ -114,10 +114,15 @@ build/windows:
 run: build
 	@./examples/bin/${BINARY_NAME}
 
-## run/live: run the application with reloading on file changes
-.PHONY: run/live
-run/live:
-	@go run ${MAIN_PACKAGE_PATH}/main.go
+## run/watch: run the application locally and reload on file changes
+.PHONY: run/watch
+run/watch:
+	go run github.com/air-verse/air@latest \
+		--build.cmd "make build" --build.bin "examples/bin/${BINARY_NAME}" --build.delay "100" \
+		--build.include_ext "go" \
+		--build.send_interrupt "true" \
+		--misc.clean_on_exit "true"
+
 
 ## run/capture-replay: capture a replay and save to gt7-replay.gtz
 .PHONY: run/capture-replay

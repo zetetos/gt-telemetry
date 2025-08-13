@@ -1,5 +1,23 @@
+version: "2"
 run:
   allow-parallel-runners: true
-issues:
-  exclude-files:
-    - "internal/gttelemetry/gran_turismo_telemetry.go"
+linters:
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - internal/gttelemetry/gran_turismo_telemetry.go
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
