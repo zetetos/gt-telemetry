@@ -16,6 +16,8 @@ type Vehicle struct {
 	CarType      string
 	Drivetrain   string
 	Aspiration   string
+	EngineLayout string
+	EngineAngle  string
 	OpenCockpit  bool
 }
 
