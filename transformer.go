@@ -567,6 +567,18 @@ func (t *transformer) VehicleAspirationExpanded() string {
 	return t.vehicle.ExpandedAspiration()
 }
 
+func (t *transformer) VehicleEngineLayout() string {
+	t.updateVehicle()
+
+	return t.vehicle.EngineLayout
+}
+
+func (t *transformer) VehicleEngineAngle() string {
+	t.updateVehicle()
+
+	return t.vehicle.EngineAngle
+}
+
 func (t *transformer) VehicleCategory() string {
 	t.updateVehicle()
 
