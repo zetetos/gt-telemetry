@@ -8,17 +8,18 @@ import (
 )
 
 type Vehicle struct {
-	CarID        int
-	Model        string
-	Manufacturer string
-	Year         int
-	Category     string
-	CarType      string
-	Drivetrain   string
-	Aspiration   string
-	EngineLayout string
-	EngineAngle  string
-	OpenCockpit  bool
+	CarID                 int
+	Model                 string
+	Manufacturer          string
+	Year                  int
+	Category              string
+	CarType               string
+	Drivetrain            string
+	Aspiration            string
+	EngineLayout          string
+	EngineCylinderAngle   float32
+	EngineCrankPlaneAngle float32
+	OpenCockpit           bool
 }
 
 type Inventory struct {

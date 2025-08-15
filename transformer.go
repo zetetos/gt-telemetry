@@ -573,10 +573,16 @@ func (t *transformer) VehicleEngineLayout() string {
 	return t.vehicle.EngineLayout
 }
 
-func (t *transformer) VehicleEngineAngle() string {
+func (t *transformer) VehicleEngineCylinderAngle() float32 {
 	t.updateVehicle()
 
-	return t.vehicle.EngineAngle
+	return t.vehicle.EngineCylinderAngle
+}
+
+func (t *transformer) VehicleEngineCrankPlaneAngle() float32 {
+	t.updateVehicle()
+
+	return t.vehicle.EngineCrankPlaneAngle
 }
 
 func (t *transformer) VehicleCategory() string {
