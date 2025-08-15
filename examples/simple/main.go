@@ -11,7 +11,7 @@ import (
 
 func main() {
 	clientConfig := telemetry_client.GTClientOpts{
-		Source:       "file://examples/simple/replay.gtz",
+		// Source:       "file://examples/simple/replay.gtz",
 		Format:       telemetrysrc.TelemetryFormatTilde,
 		StatsEnabled: true,
 	}
@@ -71,6 +71,11 @@ func main() {
 			client.Telemetry.VehicleDrivetrain(),
 			client.Telemetry.VehicleAspirationExpanded(),
 		)
+		fmt.Printf("Engine        Layout: %s  Cylinder angle: %3.0f  Crank angle %3.0f\n",
+			client.Telemetry.VehicleEngineLayout(),
+			client.Telemetry.VehicleEngineCylinderAngle(),
+			client.Telemetry.VehicleEngineCrankPlaneAngle(),
+		)
 
 		fmt.Println()
 		fmt.Printf("Inputs        Throttle: %3.0f%% ➔ %3.0f%%  Brake: %3.0f%% ➔ %3.0f%%  Clutch: %3.0f%%  Steering: %+3.0f°  FFB: %+0.3f\n",
@@ -83,7 +88,8 @@ func main() {
 			client.Telemetry.SteeringWheelForceFeedback(),
 		)
 
-		fmt.Printf("Engine        Speed: %s rpm  %s  Energy recovery: %+3.03f\n",
+		fmt.Printf("              Speed: %d kph  RPM: %s rpm  %s  Energy recovery: %+3.03f\n",
+			int(client.Telemetry.GroundSpeedKPH()),
 			renderFlag(
 				client.Telemetry.EngineRPMLight().Active,
 				fmt.Sprintf("%0.0f", client.Telemetry.EngineRPM()),

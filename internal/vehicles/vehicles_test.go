@@ -17,17 +17,18 @@ func TestVehiclesTestSuite(t *testing.T) {
 func (suite *VehiclesTestSuite) TestEmptyJSONParameterFallsBackToBaseInventory() {
 	// Arrange
 	wantValue := Vehicle{
-		CarID:        -10000,
-		Model:        "Dummy Model",
-		Manufacturer: "Dummy Manufacturer",
-		Category:     "",
-		Drivetrain:   "-",
-		Aspiration:   "-",
-		EngineLayout: "-",
-		EngineAngle:  "-",
-		Year:         0,
-		OpenCockpit:  false,
-		CarType:      "street",
+		CarID:                 -10000,
+		Model:                 "Dummy Model",
+		Manufacturer:          "Dummy Manufacturer",
+		Category:              "",
+		Drivetrain:            "-",
+		Aspiration:            "-",
+		EngineLayout:          "-",
+		EngineCylinderAngle:   0,
+		EngineCrankPlaneAngle: 0,
+		Year:                  0,
+		OpenCockpit:           false,
+		CarType:               "street",
 	}
 
 	var inventoryJSON []byte
@@ -98,17 +99,18 @@ func (suite *VehiclesTestSuite) TestGetVehicleIDWithInvalidIDReturnsError() {
 func (suite *VehiclesTestSuite) TestGetVehicleWIthValidIDReturnsVehicle() {
 	// Arrange
 	wantValue := Vehicle{
-		CarID:        1234,
-		Model:        "Dummy Model",
-		Manufacturer: "Dummy Manufacturer",
-		Category:     "",
-		Drivetrain:   "-",
-		Aspiration:   "-",
-		EngineLayout: "-",
-		EngineAngle:  "-",
-		Year:         0,
-		OpenCockpit:  false,
-		CarType:      "street",
+		CarID:                 1234,
+		Model:                 "Dummy Model",
+		Manufacturer:          "Dummy Manufacturer",
+		Category:              "",
+		Drivetrain:            "-",
+		Aspiration:            "-",
+		EngineLayout:          "-",
+		EngineCylinderAngle:   0,
+		EngineCrankPlaneAngle: 0,
+		Year:                  0,
+		OpenCockpit:           false,
+		CarType:               "street",
 	}
 
 	inventoryJSON := []byte(`{
