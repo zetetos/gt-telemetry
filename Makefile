@@ -74,7 +74,7 @@ test/cover/show: test/cover
 build/kaitai:
 	@docker build --output=internal/gttelemetry --progress=plain -f build/Dockerfile .
 
-## build: build the application for the local platform
+## build: build the example application for the local platform
 .PHONY: build
 build:
 	@go build -o examples/bin/${BINARY_NAME} ${MAIN_PACKAGE_PATH}
@@ -134,5 +134,6 @@ run/capture-replay:
 .PHONY: clean
 clean:
 	@go clean
+	@rm -rf out/
 	@rm -rf examples/bin
 	@rm -f coverage.out
