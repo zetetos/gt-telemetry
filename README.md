@@ -150,7 +150,7 @@ The CSV format includes the following columns:
 - Drivetrain: Drivetrain type (FR, FF, MR, RR, 4WD)
 - Aspiration: Engine aspiration (NA, TC, SC, EV, etc.)
 - EngineLayout: Engine layout configuration
-- EngineCylinderAngle: Engine cylinder angle in degrees
+- EngineBankAngle: Engine cylinder bank angle in degrees
 - EngineCrankPlaneAngle: Engine crank plane angle in degrees
 ```
 

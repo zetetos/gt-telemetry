@@ -210,7 +210,7 @@ func jsonToCSV(inputFile string) error {
 		"Drivetrain",
 		"Aspiration",
 		"EngineLayout",
-		"EngineCylinderAngle",
+		"EngineBankAngle",
 		"EngineCrankPlaneAngle",
 	}
 	if err := writer.Write(header); err != nil {
@@ -230,7 +230,7 @@ func jsonToCSV(inputFile string) error {
 			vehicle.Drivetrain,
 			vehicle.Aspiration,
 			vehicle.EngineLayout,
-			strconv.FormatFloat(float64(vehicle.EngineCylinderAngle), 'f', -1, 32),
+			strconv.FormatFloat(float64(vehicle.EngineBankAngle), 'f', -1, 32),
 			strconv.FormatFloat(float64(vehicle.EngineCrankPlaneAngle), 'f', -1, 32),
 		}
 		if err := writer.Write(record); err != nil {
@@ -269,7 +269,7 @@ func csvToJSON(inputFile string) error {
 		"Drivetrain",
 		"Aspiration",
 		"EngineLayout",
-		"EngineCylinderAngle",
+		"EngineBankAngle",
 		"EngineCrankPlaneAngle",
 	}
 
@@ -317,14 +317,14 @@ func csvToJSON(inputFile string) error {
 			return fmt.Errorf("parsing OpenCockpit '%s': %w", record[7], err)
 		}
 
-		// Parse EngineCylinderAngle
-		var engineCylinderAngle float32
+		// Parse EngineBankAngle
+		var EngineBankAngle float32
 		if record[10] != "" && record[10] != "-" {
 			angle, err := strconv.ParseFloat(record[10], 32)
 			if err != nil {
-				return fmt.Errorf("parsing EngineCylinderAngle '%s': %w", record[10], err)
+				return fmt.Errorf("parsing EngineBankAngle '%s': %w", record[10], err)
 			}
-			engineCylinderAngle = float32(angle)
+			EngineBankAngle = float32(angle)
 		}
 
 		// Parse EngineCrankPlaneAngle
@@ -348,7 +348,7 @@ func csvToJSON(inputFile string) error {
 			Drivetrain:            record[7],
 			Aspiration:            record[8],
 			EngineLayout:          record[9],
-			EngineCylinderAngle:   engineCylinderAngle,
+			EngineBankAngle:       EngineBankAngle,
 			EngineCrankPlaneAngle: engineCrankPlaneAngle,
 		}
 
@@ -518,19 +518,19 @@ func promptVehicleData(scanner *bufio.Scanner, existingVehicle *vehicles.Vehicle
 		return vehicle, fmt.Errorf("invalid boolean, must be true or false: %w", err)
 	}
 
-	vehicle.CarType = prompt("Car Type (street/race):", vehicle.CarType, "string")
+	vehicle.CarType = prompt("Car type (street/race):", vehicle.CarType, "string")
 	vehicle.Category = prompt("Category (e.g., Gr.1, Gr.3, Gr.4, Gr.B, or empty):", vehicle.Category, "string")
 	vehicle.Drivetrain = prompt("Drivetrain (FR/FF/MR/RR/4WD):", vehicle.Drivetrain, "string")
 	vehicle.Aspiration = prompt("Aspiration (NA/TC/SC/EV/TD/TC+SC):", vehicle.Aspiration, "string")
-	vehicle.EngineLayout = prompt("Engine Layout (e.g., V8, V6, I4, H4, or empty):", vehicle.EngineLayout, "string")
+	vehicle.EngineLayout = prompt("Engine layout (e.g., V8, V6, I4, H4, or empty):", vehicle.EngineLayout, "string")
 
-	engineCylinderAngle, err := strconv.ParseFloat(prompt("Engine Cylinder Angle (decimal degrees):", strconv.FormatFloat(float64(vehicle.EngineCylinderAngle), 'f', -1, 32), "float32"), 32)
+	EngineBankAngle, err := strconv.ParseFloat(prompt("Engine cylinder bank angle (decimal degrees):", strconv.FormatFloat(float64(vehicle.EngineBankAngle), 'f', -1, 32), "float32"), 32)
 	if err != nil {
 		return vehicle, fmt.Errorf("invalid angle: %w", err)
 	}
-	vehicle.EngineCylinderAngle = float32(engineCylinderAngle)
+	vehicle.EngineBankAngle = float32(EngineBankAngle)
 
-	engineCrankPlaneAngle, err := strconv.ParseFloat(prompt("Engine Crank Plane Angle (decimal degrees):", strconv.FormatFloat(float64(vehicle.EngineCrankPlaneAngle), 'f', -1, 32), "float32"), 32)
+	engineCrankPlaneAngle, err := strconv.ParseFloat(prompt("Engine crank plane angle (decimal degrees):", strconv.FormatFloat(float64(vehicle.EngineCrankPlaneAngle), 'f', -1, 32), "float32"), 32)
 	if err != nil {
 		return vehicle, fmt.Errorf("invalid angle: %w", err)
 	}
@@ -563,7 +563,7 @@ func addVehicleInteractively(inventoryFile string) error {
 	fmt.Printf("Drivetrain: %s\n", vehicle.Drivetrain)
 	fmt.Printf("Aspiration: %s\n", vehicle.Aspiration)
 	fmt.Printf("EngineLayout: %s\n", vehicle.EngineLayout)
-	fmt.Printf("EngineCylinderAngle: %.1f\n", vehicle.EngineCylinderAngle)
+	fmt.Printf("EngineBankAngle: %.1f\n", vehicle.EngineBankAngle)
 	fmt.Printf("EngineCrankPlaneAngle: %.1f\n", vehicle.EngineCrankPlaneAngle)
 
 	fmt.Print("\nSave this vehicle to inventory? (y/N): ")
@@ -679,7 +679,7 @@ func editVehicleInteractively(inventoryFile string, carID int) error {
 	fmt.Printf("Drivetrain: %s\n", vehicle.Drivetrain)
 	fmt.Printf("Aspiration: %s\n", vehicle.Aspiration)
 	fmt.Printf("EngineLayout: %s\n", vehicle.EngineLayout)
-	fmt.Printf("EngineCylinderAngle: %.1f\n", vehicle.EngineCylinderAngle)
+	fmt.Printf("EngineBankAngle: %.1f\n", vehicle.EngineBankAngle)
 	fmt.Printf("EngineCrankPlaneAngle: %.1f\n", vehicle.EngineCrankPlaneAngle)
 
 	fmt.Print("\nSave changes to inventory? (y/N): ")
