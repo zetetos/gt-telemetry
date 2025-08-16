@@ -28,7 +28,7 @@ func (suite *TransformerTestSuite) SetupTest() {
 			"Drivetrain": "FR",
 			"Aspiration": "NA",
 			"EngineLayout": "V6",
-			"EngineCylinderAngle": 60,
+			"EngineBankAngle": 60,
 			"EngineCrankPlaneAngle": 120,
 			"Year": 2025,
 			"CarID": 1234,
@@ -1086,14 +1086,14 @@ func (suite *TransformerTestSuite) TestGetVehicleEngineLayoutReturnsCorrectValue
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestGetVehicleEngineCylinderAngleReturnsCorrectValueWhenTelemetryHasKnownID() {
+func (suite *TransformerTestSuite) TestGetVehicleEngineBankAngleReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
 	var wantValue float32 = 60
 	suite.transformer.vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
 
 	// Act
-	gotValue := suite.transformer.VehicleEngineCylinderAngle()
+	gotValue := suite.transformer.VehicleEngineBankAngle()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)

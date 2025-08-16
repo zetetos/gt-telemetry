@@ -21,6 +21,9 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
   * Racing category
   * Open cockpit exposure
 
+
+[![asciicast](https://asciinema.org/a/fSBcGOR1EPjhTCMFLY0gHP0Py.svg)](https://asciinema.org/a/fSBcGOR1EPjhTCMFLY0gHP0Py)
+
 ## Installation ##
 
 To start using gt-telemetry, install Go 1.21 or above. From your project, run the following command to retrieve the module:
@@ -89,17 +92,77 @@ Alternatively, the replay can be captured to a compressed file with a different 
 go run cmd/capture_replay/main.go -o /path/to/replay-file.gtz
 ```
 
-## Examples ##
+### Vehicle Inventory Management ###
 
-The [examples](./examples) directory contains example code for accessing most data made available by the library. The telemetry data from a sample saved replay can be viewed by running:
+The `inventory` CLI tool allows you to import and export vehicle inventory data between JSON and CSV formats, and manage vehicle entries with interactive add, edit, and delete operations. The tool uses action-based commands and outputs to stdout, making it compatible with Unix pipes and redirections.
+
+The output format is automatically determined by the input file extension:
+- `.json` files are converted to CSV format
+- `.csv` files are converted to JSON format
+
+
+#### Adding new vehicles interactively ####
 
 ```bash
-make run/live
+go run cmd/inventory/main.go add internal/vehicles/inventory.json
+```
+
+The tool will prompt for each field and display a summary before saving. It also checks for duplicate vehicle IDs and provides confirmation prompts.
+
+#### Editing existing vehicles ####
+
+```bash
+go run cmd/inventory/main.go edit internal/vehicles/inventory.json 3267
+```
+
+The edit action loads the existing vehicle data and allows you to modify any field. Current values are shown in brackets, and pressing Enter without input keeps the existing value.
+
+#### Deleting vehicles ####
+
+```bash
+go run cmd/inventory/main.go delete internal/vehicles/inventory.json 3267
+```
+
+The delete action shows the vehicle details and asks for confirmation before removal.
+
+#### Converting JSON to CSV ####
+
+```bash
+go run cmd/inventory/main.go convert internal/vehicles/inventory.json
+```
+
+#### Converting CSV to JSON ####
+
+```bash
+go run cmd/inventory/main.go convert data/inventory.csv
+```
+
+#### CSV Format ####
+
+The CSV format includes the following columns:
+- CarID: Unique vehicle identifier
+- Manufacturer: Vehicle manufacturer
+- Model: Vehicle model name
+- Year: Model year (0 for unknown)
+- OpenCockpit: Boolean indicating if the vehicle has an open cockpit
+- CarType: Vehicle type (street, race)
+- Category: Racing category (e.g., Gr.1, Gr.3, Gr.4, Gr.B)
+- Drivetrain: Drivetrain type (FR, FF, MR, RR, 4WD)
+- Aspiration: Engine aspiration (NA, TC, SC, EV, etc.)
+- EngineLayout: Engine layout configuration
+- EngineBankAngle: Engine cylinder bank angle in degrees
+- EngineCrankPlaneAngle: Engine crank plane angle in degrees
+```
+
+## Examples ##
+
+The [examples](./examples) directory contains example code for accessing most data made available by the library. The example app shown at the top of this page can be run against a replay file with the following command:
+
+```bash
+make run
 ```
 
 The example code can also read live telemetry data from a PlayStation by removing the `Source` field in the `GTClientOpts`.
-
-[![asciicast](https://asciinema.org/a/fSBcGOR1EPjhTCMFLY0gHP0Py.svg)](https://asciinema.org/a/fSBcGOR1EPjhTCMFLY0gHP0Py)
 
 ## Acknowledgements ##
 Special thanks to [Nenkai](https://github.com/Nenkai) for the excellent work documenting the Gran Turismo telemetry protocol.

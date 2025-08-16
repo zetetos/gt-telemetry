@@ -17,7 +17,7 @@ type Vehicle struct {
 	Drivetrain            string
 	Aspiration            string
 	EngineLayout          string
-	EngineCylinderAngle   float32
+	EngineBankAngle       float32
 	EngineCrankPlaneAngle float32
 	OpenCockpit           bool
 }

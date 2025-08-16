@@ -3,6 +3,7 @@
 
 # Build files
 examples/bin/
+out/
 
 # Coverage reports
 *.out
