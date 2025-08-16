@@ -134,6 +134,5 @@ run/capture-replay:
 .PHONY: clean
 clean:
 	@go clean
-	@rm -rf out/
 	@rm -rf examples/bin
 	@rm -f coverage.out
