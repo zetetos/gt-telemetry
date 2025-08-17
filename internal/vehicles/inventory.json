@@ -417,7 +417,7 @@
     "Aspiration": "NA",
     "EngineLayout": "V6",
     "EngineBankAngle": 90,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "296": {
     "CarID": 296,
@@ -557,7 +557,7 @@
     "Aspiration": "NA",
     "EngineLayout": "V6",
     "EngineBankAngle": 90,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "451": {
     "CarID": 451,
@@ -3791,7 +3791,7 @@
     "Aspiration": "TC",
     "EngineLayout": "V6",
     "EngineBankAngle": 75,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3220": {
     "CarID": 3220,
