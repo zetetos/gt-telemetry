@@ -64,16 +64,16 @@ func main() {
 		)
 
 		fmt.Println()
-		fmt.Printf("Vehicle       ID: %d  Name: %s %s  Drivetrain: %s  Aspiration: %s\n",
+		fmt.Printf("Vehicle       ID: %d  Name: %s  %s  Drivetrain: %s  Aspiration: %s\n",
 			client.Telemetry.VehicleID(),
 			client.Telemetry.VehicleManufacturer(),
 			client.Telemetry.VehicleModel(),
 			client.Telemetry.VehicleDrivetrain(),
 			client.Telemetry.VehicleAspirationExpanded(),
 		)
-		fmt.Printf("Engine        Layout: %s  Cylinder angle: %3.0f  Crank angle %3.0f\n",
+		fmt.Printf("Engine        Layout: %s  Bank angle: %3.0f°  Crank plane: %3.0f°\n",
 			client.Telemetry.VehicleEngineLayout(),
-			client.Telemetry.VehicleEngineCylinderAngle(),
+			client.Telemetry.VehicleEngineBankAngle(),
 			client.Telemetry.VehicleEngineCrankPlaneAngle(),
 		)
 
