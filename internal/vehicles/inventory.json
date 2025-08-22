@@ -23,9 +23,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "30": {
     "CarID": 30,
@@ -37,9 +37,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "31": {
     "CarID": 31,
@@ -51,9 +51,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "36": {
     "CarID": 36,
@@ -65,9 +65,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "37": {
     "CarID": 37,
@@ -79,9 +79,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "41": {
     "CarID": 41,
@@ -93,9 +93,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "48": {
     "CarID": 48,
@@ -107,9 +107,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "63": {
     "CarID": 63,
@@ -121,9 +121,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "78": {
     "CarID": 78,
@@ -135,9 +135,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "82": {
     "CarID": 82,
@@ -151,7 +151,7 @@
     "Aspiration": "TC",
     "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "102": {
     "CarID": 102,
@@ -163,9 +163,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "104": {
     "CarID": 104,
@@ -177,9 +177,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "105": {
     "CarID": 105,
@@ -219,9 +219,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "137": {
     "CarID": 137,
@@ -233,9 +233,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "140": {
     "CarID": 140,
@@ -261,9 +261,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "173": {
     "CarID": 173,
@@ -275,9 +275,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "187": {
     "CarID": 187,
@@ -289,9 +289,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "201": {
     "CarID": 201,
@@ -303,9 +303,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "203": {
     "CarID": 203,
@@ -317,9 +317,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "204": {
     "CarID": 204,
@@ -331,9 +331,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "205": {
     "CarID": 205,
@@ -359,9 +359,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "210": {
     "CarID": 210,
@@ -373,9 +373,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "211": {
     "CarID": 211,
@@ -387,9 +387,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "216": {
     "CarID": 216,
@@ -443,9 +443,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "315": {
     "CarID": 315,
@@ -457,9 +457,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "334": {
     "CarID": 334,
@@ -471,9 +471,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "345": {
     "CarID": 345,
@@ -481,13 +481,13 @@
     "Model": "Sprinter Trueno 1600GT APEX (S.Shigeno Version)",
     "Year": 2000,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "365": {
     "CarID": 365,
@@ -541,9 +541,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "396": {
     "CarID": 396,
@@ -569,9 +569,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H4",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 180
   },
   "485": {
     "CarID": 485,
@@ -597,9 +597,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "514": {
     "CarID": 514,
@@ -611,9 +611,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "533": {
     "CarID": 533,
@@ -625,9 +625,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 65,
+    "EngineCrankPlaneAngle": 120
   },
   "543": {
     "CarID": 543,
@@ -639,9 +639,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 120
   },
   "575": {
     "CarID": 575,
@@ -653,9 +653,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "604": {
     "CarID": 604,
@@ -667,9 +667,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "655": {
     "CarID": 655,
@@ -681,9 +681,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "665": {
     "CarID": 665,
@@ -695,9 +695,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "688": {
     "CarID": 688,
@@ -709,9 +709,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "709": {
     "CarID": 709,
@@ -723,9 +723,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "761": {
     "CarID": 761,
@@ -751,9 +751,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "779": {
     "CarID": 779,
@@ -765,9 +765,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "781": {
     "CarID": 781,
@@ -793,9 +793,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "808": {
     "CarID": 808,
@@ -821,9 +821,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "818": {
     "CarID": 818,
@@ -835,9 +835,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "821": {
     "CarID": 821,
@@ -849,9 +849,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "829": {
     "CarID": 829,
@@ -863,9 +863,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "836": {
     "CarID": 836,
@@ -877,9 +877,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "837": {
     "CarID": 837,
@@ -891,9 +891,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "843": {
     "CarID": 843,
@@ -907,7 +907,7 @@
     "Aspiration": "TC",
     "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "919": {
     "CarID": 919,
@@ -919,9 +919,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "931": {
     "CarID": 931,
@@ -933,9 +933,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "942": {
     "CarID": 942,
@@ -947,9 +947,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "954": {
     "CarID": 954,
@@ -975,9 +975,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 15,
+    "EngineCrankPlaneAngle": 120
   },
   "998": {
     "CarID": 998,
@@ -1003,9 +1003,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 120
   },
   "1040": {
     "CarID": 1040,
@@ -1031,9 +1031,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "H2",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1067": {
     "CarID": 1067,
@@ -1073,9 +1073,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1370": {
     "CarID": 1370,
@@ -1087,9 +1087,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "SC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1373": {
     "CarID": 1373,
@@ -1102,8 +1102,8 @@
     "Drivetrain": "FR",
     "Aspiration": "NA",
     "EngineLayout": "V10",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 72
   },
   "1378": {
     "CarID": 1378,
@@ -1115,9 +1115,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 180
   },
   "1384": {
     "CarID": 1384,
@@ -1129,9 +1129,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "1385": {
     "CarID": 1385,
@@ -1143,9 +1143,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1399": {
     "CarID": 1399,
@@ -1157,9 +1157,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1402": {
     "CarID": 1402,
@@ -1172,8 +1172,8 @@
     "Drivetrain": "FR",
     "Aspiration": "NA",
     "EngineLayout": "V10",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 72
   },
   "1409": {
     "CarID": 1409,
@@ -1185,9 +1185,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 180
   },
   "1410": {
     "CarID": 1410,
@@ -1199,9 +1199,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "1425": {
     "CarID": 1425,
@@ -1237,7 +1237,7 @@
     "Model": "RE Amemiya FD3S RX-7",
     "Year": 0,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
@@ -1251,13 +1251,13 @@
     "Model": "Amuse S2000 GT1 Turbo",
     "Year": 0,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1448": {
     "CarID": 1448,
@@ -1269,9 +1269,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1458": {
     "CarID": 1458,
@@ -1283,9 +1283,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "1461": {
     "CarID": 1461,
@@ -1297,9 +1297,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1466": {
     "CarID": 1466,
@@ -1339,9 +1339,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 65,
+    "EngineCrankPlaneAngle": 120
   },
   "1480": {
     "CarID": 1480,
@@ -1353,9 +1353,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1481": {
     "CarID": 1481,
@@ -1367,9 +1367,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "1484": {
     "CarID": 1484,
@@ -1381,9 +1381,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "1504": {
     "CarID": 1504,
@@ -1395,9 +1395,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 180
   },
   "1506": {
     "CarID": 1506,
@@ -1409,9 +1409,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V10",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 72
   },
   "1507": {
     "CarID": 1507,
@@ -1423,9 +1423,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1508": {
     "CarID": 1508,
@@ -1437,9 +1437,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1510": {
     "CarID": 1510,
@@ -1479,9 +1479,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I2",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1527": {
     "CarID": 1527,
@@ -1493,9 +1493,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1528": {
     "CarID": 1528,
@@ -1507,9 +1507,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1536": {
     "CarID": 1536,
@@ -1535,9 +1535,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1539": {
     "CarID": 1539,
@@ -1549,9 +1549,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 180
   },
   "1540": {
     "CarID": 1540,
@@ -1577,9 +1577,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1542": {
     "CarID": 1542,
@@ -1591,9 +1591,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1543": {
     "CarID": 1543,
@@ -1605,9 +1605,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1544": {
     "CarID": 1544,
@@ -1619,9 +1619,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 180
   },
   "1545": {
     "CarID": 1545,
@@ -1633,9 +1633,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "1549": {
     "CarID": 1549,
@@ -1643,13 +1643,13 @@
     "Model": "Amuse NISMO 380RS Super Leggera",
     "Year": 0,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "1551": {
     "CarID": 1551,
@@ -1689,9 +1689,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V10",
+    "EngineBankAngle": 72,
+    "EngineCrankPlaneAngle": 72
   },
   "1563": {
     "CarID": 1563,
@@ -1731,9 +1731,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 180
   },
   "1581": {
     "CarID": 1581,
@@ -1745,9 +1745,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1582": {
     "CarID": 1582,
@@ -1759,9 +1759,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "1645": {
     "CarID": 1645,
@@ -1794,16 +1794,16 @@
   "1671": {
     "CarID": 1671,
     "Manufacturer": "Volkswagen",
-    "Model": "Sambabus Typ 2 '62",
+    "Model": "Sambabus Type 2 '62",
     "Year": 1962,
     "OpenCockpit": false,
     "CarType": "street",
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "H4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1689": {
     "CarID": 1689,
@@ -1811,7 +1811,7 @@
     "Model": "Civic Type R (EK) Touring Car",
     "Year": 1997,
     "OpenCockpit": false,
-    "CarType": "race",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
@@ -1843,9 +1843,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1746": {
     "CarID": 1746,
@@ -1853,13 +1853,13 @@
     "Model": "Roadster Touring Car",
     "Year": 0,
     "OpenCockpit": true,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1770": {
     "CarID": 1770,
@@ -1871,9 +1871,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "1773": {
     "CarID": 1773,
@@ -1885,9 +1885,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1778": {
     "CarID": 1778,
@@ -1899,9 +1899,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "H4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1796": {
     "CarID": 1796,
@@ -1913,9 +1913,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1797": {
     "CarID": 1797,
@@ -1941,9 +1941,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1895": {
     "CarID": 1895,
@@ -1955,9 +1955,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 65,
+    "EngineCrankPlaneAngle": 120
   },
   "1896": {
     "CarID": 1896,
@@ -1983,9 +1983,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "1900": {
     "CarID": 1900,
@@ -1997,9 +1997,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "1902": {
     "CarID": 1902,
@@ -2053,9 +2053,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1916": {
     "CarID": 1916,
@@ -2067,9 +2067,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1925": {
     "CarID": 1925,
@@ -2081,9 +2081,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1926": {
     "CarID": 1926,
@@ -2123,9 +2123,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "1932": {
     "CarID": 1932,
@@ -2137,9 +2137,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1933": {
     "CarID": 1933,
@@ -2151,9 +2151,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1935": {
     "CarID": 1935,
@@ -2165,9 +2165,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1956": {
     "CarID": 1956,
@@ -2179,9 +2179,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V10",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 72
   },
   "1965": {
     "CarID": 1965,
@@ -2207,9 +2207,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1975": {
     "CarID": 1975,
@@ -2249,9 +2249,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "1986": {
     "CarID": 1986,
@@ -2277,9 +2277,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "1990": {
     "CarID": 1990,
@@ -2289,11 +2289,11 @@
     "OpenCockpit": false,
     "CarType": "street",
     "Category": "",
-    "Drivetrain": "MA",
+    "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "2010": {
     "CarID": 2010,
@@ -2307,7 +2307,7 @@
     "Aspiration": "NA",
     "EngineLayout": "V12",
     "EngineBankAngle": 60,
-    "EngineCrankPlaneAngle": 60
+    "EngineCrankPlaneAngle": 120
   },
   "2011": {
     "CarID": 2011,
@@ -2319,9 +2319,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2017": {
     "CarID": 2017,
@@ -2333,9 +2333,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2018": {
     "CarID": 2018,
@@ -2347,9 +2347,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "2026": {
     "CarID": 2026,
@@ -2361,9 +2361,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2049": {
     "CarID": 2049,
@@ -2375,9 +2375,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "W16",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 45
   },
   "2050": {
     "CarID": 2050,
@@ -2389,9 +2389,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "2051": {
     "CarID": 2051,
@@ -2417,9 +2417,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2059": {
     "CarID": 2059,
@@ -2459,9 +2459,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "2076": {
     "CarID": 2076,
@@ -2515,9 +2515,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "2087": {
     "CarID": 2087,
@@ -2599,9 +2599,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "2106": {
     "CarID": 2106,
@@ -2613,9 +2613,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "V10",
-    "EngineBankAngle": 72,
-    "EngineCrankPlaneAngle": 72
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "2107": {
     "CarID": 2107,
@@ -2697,9 +2697,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2113": {
     "CarID": 2113,
@@ -2725,9 +2725,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "I4",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 180
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2117": {
     "CarID": 2117,
@@ -2739,9 +2739,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2118": {
     "CarID": 2118,
@@ -2795,9 +2795,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2122": {
     "CarID": 2122,
@@ -2809,9 +2809,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2123": {
     "CarID": 2123,
@@ -2907,9 +2907,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2138": {
     "CarID": 2138,
@@ -2921,9 +2921,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2139": {
     "CarID": 2139,
@@ -2935,9 +2935,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2141": {
     "CarID": 2141,
@@ -2949,9 +2949,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2142": {
     "CarID": 2142,
@@ -2963,9 +2963,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "2143": {
     "CarID": 2143,
@@ -2991,9 +2991,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2145": {
     "CarID": 2145,
@@ -3005,9 +3005,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2146": {
     "CarID": 2146,
@@ -3019,9 +3019,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2147": {
     "CarID": 2147,
@@ -3033,9 +3033,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "2148": {
     "CarID": 2148,
@@ -3047,9 +3047,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2149": {
     "CarID": 2149,
@@ -3061,9 +3061,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2150": {
     "CarID": 2150,
@@ -3075,9 +3075,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2152": {
     "CarID": 2152,
@@ -3089,9 +3089,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2153": {
     "CarID": 2153,
@@ -3117,9 +3117,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "H4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2155": {
     "CarID": 2155,
@@ -3133,7 +3133,7 @@
     "Aspiration": "TC",
     "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2156": {
     "CarID": 2156,
@@ -3145,9 +3145,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V4",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 180
   },
   "2157": {
     "CarID": 2157,
@@ -3229,9 +3229,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 65,
+    "EngineCrankPlaneAngle": 120
   },
   "2163": {
     "CarID": 2163,
@@ -3287,7 +3287,7 @@
     "Aspiration": "TC",
     "EngineLayout": "V6",
     "EngineBankAngle": 60,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "2169": {
     "CarID": 2169,
@@ -3299,9 +3299,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2170": {
     "CarID": 2170,
@@ -3313,9 +3313,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2171": {
     "CarID": 2171,
@@ -3327,9 +3327,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V10",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 72
   },
   "2172": {
     "CarID": 2172,
@@ -3341,9 +3341,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2173": {
     "CarID": 2173,
@@ -3355,9 +3355,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2174": {
     "CarID": 2174,
@@ -3383,9 +3383,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2176": {
     "CarID": 2176,
@@ -3397,9 +3397,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "2177": {
     "CarID": 2177,
@@ -3421,7 +3421,7 @@
     "Model": "S-FR Racing Concept '16",
     "Year": 2016,
     "OpenCockpit": false,
-    "CarType": "race",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
@@ -3453,9 +3453,9 @@
     "Category": "Gr.1",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "2181": {
     "CarID": 2181,
@@ -3551,9 +3551,9 @@
     "Category": "Gr.3",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "V10",
-    "EngineBankAngle": 72,
-    "EngineCrankPlaneAngle": 72
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "2188": {
     "CarID": 2188,
@@ -3579,9 +3579,9 @@
     "Category": "Gr.3",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "2192": {
     "CarID": 2192,
@@ -3607,9 +3607,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3183": {
     "CarID": 3183,
@@ -3649,9 +3649,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3188": {
     "CarID": 3188,
@@ -3691,9 +3691,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3210": {
     "CarID": 3210,
@@ -3705,9 +3705,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3214": {
     "CarID": 3214,
@@ -3719,9 +3719,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3215": {
     "CarID": 3215,
@@ -3733,9 +3733,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3216": {
     "CarID": 3216,
@@ -3761,9 +3761,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3218": {
     "CarID": 3218,
@@ -3803,9 +3803,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3221": {
     "CarID": 3221,
@@ -3827,13 +3827,13 @@
     "Model": "86 GRMN '16",
     "Year": 2016,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "H4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3223": {
     "CarID": 3223,
@@ -3875,7 +3875,7 @@
     "Aspiration": "TC",
     "EngineLayout": "V6",
     "EngineBankAngle": 60,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3227": {
     "CarID": 3227,
@@ -3887,9 +3887,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3228": {
     "CarID": 3228,
@@ -3931,7 +3931,7 @@
     "Aspiration": "TC",
     "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3231": {
     "CarID": 3231,
@@ -4111,9 +4111,9 @@
     "Category": "Gr.4",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3249": {
     "CarID": 3249,
@@ -4349,9 +4349,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 65,
+    "EngineCrankPlaneAngle": 120
   },
   "3268": {
     "CarID": 3268,
@@ -4363,9 +4363,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3295": {
     "CarID": 3295,
@@ -4377,9 +4377,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "H4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3296": {
     "CarID": 3296,
@@ -4392,8 +4392,8 @@
     "Drivetrain": "FR",
     "Aspiration": "NA",
     "EngineLayout": "V8",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3297": {
     "CarID": 3297,
@@ -4435,7 +4435,7 @@
     "Aspiration": "TC",
     "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3300": {
     "CarID": 3300,
@@ -4448,8 +4448,8 @@
     "Drivetrain": "FR",
     "Aspiration": "NA",
     "EngineLayout": "V8",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3301": {
     "CarID": 3301,
@@ -4531,9 +4531,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "3310": {
     "CarID": 3310,
@@ -4643,9 +4643,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3333": {
     "CarID": 3333,
@@ -4699,9 +4699,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3337": {
     "CarID": 3337,
@@ -4713,9 +4713,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3338": {
     "CarID": 3338,
@@ -4723,13 +4723,13 @@
     "Model": "CHC 1967 Chevy Nova",
     "Year": 1967,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3339": {
     "CarID": 3339,
@@ -4769,9 +4769,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3342": {
     "CarID": 3342,
@@ -4797,9 +4797,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "3344": {
     "CarID": 3344,
@@ -4811,9 +4811,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3345": {
     "CarID": 3345,
@@ -4827,7 +4827,7 @@
     "Aspiration": "TC",
     "EngineLayout": "V6",
     "EngineBankAngle": 60,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3346": {
     "CarID": 3346,
@@ -4835,13 +4835,13 @@
     "Model": "Mach Forty",
     "Year": 0,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3348": {
     "CarID": 3348,
@@ -4923,9 +4923,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3354": {
     "CarID": 3354,
@@ -4937,9 +4937,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H4",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 180
   },
   "3356": {
     "CarID": 3356,
@@ -4951,9 +4951,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3357": {
     "CarID": 3357,
@@ -4965,9 +4965,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3358": {
     "CarID": 3358,
@@ -4979,9 +4979,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3359": {
     "CarID": 3359,
@@ -4993,9 +4993,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3360": {
     "CarID": 3360,
@@ -5021,9 +5021,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3362": {
     "CarID": 3362,
@@ -5035,9 +5035,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 65,
+    "EngineCrankPlaneAngle": 120
   },
   "3363": {
     "CarID": 3363,
@@ -5059,13 +5059,13 @@
     "Model": "Greddy Fugu Z",
     "Year": 0,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3365": {
     "CarID": 3365,
@@ -5077,9 +5077,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H4",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 180
   },
   "3367": {
     "CarID": 3367,
@@ -5091,9 +5091,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3368": {
     "CarID": 3368,
@@ -5105,9 +5105,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3369": {
     "CarID": 3369,
@@ -5119,9 +5119,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3370": {
     "CarID": 3370,
@@ -5133,9 +5133,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3371": {
     "CarID": 3371,
@@ -5203,9 +5203,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H4",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 180
   },
   "3376": {
     "CarID": 3376,
@@ -5217,9 +5217,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3377": {
     "CarID": 3377,
@@ -5231,9 +5231,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3383": {
     "CarID": 3383,
@@ -5245,9 +5245,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3384": {
     "CarID": 3384,
@@ -5259,9 +5259,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "3385": {
     "CarID": 3385,
@@ -5273,9 +5273,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3387": {
     "CarID": 3387,
@@ -5287,9 +5287,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3388": {
     "CarID": 3388,
@@ -5315,9 +5315,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3390": {
     "CarID": 3390,
@@ -5343,9 +5343,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3392": {
     "CarID": 3392,
@@ -5357,9 +5357,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 60
   },
   "3393": {
     "CarID": 3393,
@@ -5371,9 +5371,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V10",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 72
   },
   "3394": {
     "CarID": 3394,
@@ -5427,9 +5427,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3399": {
     "CarID": 3399,
@@ -5455,9 +5455,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3401": {
     "CarID": 3401,
@@ -5469,9 +5469,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "3402": {
     "CarID": 3402,
@@ -5483,9 +5483,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "3403": {
     "CarID": 3403,
@@ -5497,9 +5497,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3404": {
     "CarID": 3404,
@@ -5511,9 +5511,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3405": {
     "CarID": 3405,
@@ -5539,9 +5539,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3407": {
     "CarID": 3407,
@@ -5553,9 +5553,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3408": {
     "CarID": 3408,
@@ -5567,9 +5567,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "3409": {
     "CarID": 3409,
@@ -5581,9 +5581,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3410": {
     "CarID": 3410,
@@ -5609,9 +5609,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 120
   },
   "3412": {
     "CarID": 3412,
@@ -5623,9 +5623,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V10",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 72
   },
   "3413": {
     "CarID": 3413,
@@ -5637,9 +5637,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H4",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 180
   },
   "3414": {
     "CarID": 3414,
@@ -5665,9 +5665,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
+    "EngineLayout": "I8",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 90
   },
   "3416": {
     "CarID": 3416,
@@ -5679,9 +5679,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3417": {
     "CarID": 3417,
@@ -5707,9 +5707,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3419": {
     "CarID": 3419,
@@ -5735,9 +5735,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3421": {
     "CarID": 3421,
@@ -5749,9 +5749,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 120
   },
   "3422": {
     "CarID": 3422,
@@ -5763,9 +5763,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3423": {
     "CarID": 3423,
@@ -5773,13 +5773,13 @@
     "Model": "Wicked Fabrication GT 51",
     "Year": 1951,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3424": {
     "CarID": 3424,
@@ -5791,9 +5791,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3426": {
     "CarID": 3426,
@@ -5801,13 +5801,13 @@
     "Model": "Roadster Shop Rampage",
     "Year": 0,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3427": {
     "CarID": 3427,
@@ -5833,9 +5833,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3429": {
     "CarID": 3429,
@@ -5847,9 +5847,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3430": {
     "CarID": 3430,
@@ -5861,9 +5861,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3431": {
     "CarID": 3431,
@@ -5875,9 +5875,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3432": {
     "CarID": 3432,
@@ -5889,9 +5889,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H4",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 180
   },
   "3433": {
     "CarID": 3433,
@@ -5903,9 +5903,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 65,
+    "EngineCrankPlaneAngle": 120
   },
   "3434": {
     "CarID": 3434,
@@ -5917,9 +5917,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H12",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3436": {
     "CarID": 3436,
@@ -5945,9 +5945,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3438": {
     "CarID": 3438,
@@ -5959,9 +5959,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3439": {
     "CarID": 3439,
@@ -5973,9 +5973,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3441": {
     "CarID": 3441,
@@ -6001,9 +6001,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3443": {
     "CarID": 3443,
@@ -6015,9 +6015,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3444": {
     "CarID": 3444,
@@ -6029,9 +6029,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3445": {
     "CarID": 3445,
@@ -6043,9 +6043,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3446": {
     "CarID": 3446,
@@ -6071,9 +6071,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3449": {
     "CarID": 3449,
@@ -6085,9 +6085,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3450": {
     "CarID": 3450,
@@ -6113,9 +6113,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3452": {
     "CarID": 3452,
@@ -6141,9 +6141,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3454": {
     "CarID": 3454,
@@ -6155,9 +6155,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3456": {
     "CarID": 3456,
@@ -6169,9 +6169,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3457": {
     "CarID": 3457,
@@ -6197,9 +6197,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3459": {
     "CarID": 3459,
@@ -6211,9 +6211,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 180
   },
   "3462": {
     "CarID": 3462,
@@ -6225,9 +6225,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3464": {
     "CarID": 3464,
@@ -6239,9 +6239,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3466": {
     "CarID": 3466,
@@ -6253,9 +6253,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3467": {
     "CarID": 3467,
@@ -6267,9 +6267,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3468": {
     "CarID": 3468,
@@ -6281,9 +6281,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3469": {
     "CarID": 3469,
@@ -6295,9 +6295,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3470": {
     "CarID": 3470,
@@ -6309,9 +6309,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 65,
+    "EngineCrankPlaneAngle": 120
   },
   "3471": {
     "CarID": 3471,
@@ -6323,9 +6323,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3473": {
     "CarID": 3473,
@@ -6337,9 +6337,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "W16",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 45
   },
   "3474": {
     "CarID": 3474,
@@ -6379,9 +6379,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3477": {
     "CarID": 3477,
@@ -6449,9 +6449,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "H4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3482": {
     "CarID": 3482,
@@ -6463,9 +6463,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I5",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 72
   },
   "3483": {
     "CarID": 3483,
@@ -6477,9 +6477,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3485": {
     "CarID": 3485,
@@ -6491,9 +6491,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3486": {
     "CarID": 3486,
@@ -6505,9 +6505,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "SC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3487": {
     "CarID": 3487,
@@ -6519,9 +6519,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3488": {
     "CarID": 3488,
@@ -6533,9 +6533,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3489": {
     "CarID": 3489,
@@ -6589,9 +6589,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "3495": {
     "CarID": 3495,
@@ -6633,7 +6633,7 @@
     "Aspiration": "TC",
     "EngineLayout": "V6",
     "EngineBankAngle": 60,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3501": {
     "CarID": 3501,
@@ -6687,9 +6687,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "3505": {
     "CarID": 3505,
@@ -6701,9 +6701,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3506": {
     "CarID": 3506,
@@ -6715,9 +6715,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H4",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 180
   },
   "3507": {
     "CarID": 3507,
@@ -6757,9 +6757,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3510": {
     "CarID": 3510,
@@ -6771,9 +6771,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 120,
+    "EngineCrankPlaneAngle": 120
   },
   "3511": {
     "CarID": 3511,
@@ -6813,9 +6813,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3514": {
     "CarID": 3514,
@@ -6827,9 +6827,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3517": {
     "CarID": 3517,
@@ -6855,9 +6855,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3519": {
     "CarID": 3519,
@@ -6869,9 +6869,9 @@
     "Category": "",
     "Drivetrain": "2WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3520": {
     "CarID": 3520,
@@ -6879,13 +6879,13 @@
     "Model": "400R '95",
     "Year": 1995,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3521": {
     "CarID": 3521,
@@ -6897,9 +6897,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3522": {
     "CarID": 3522,
@@ -6907,13 +6907,13 @@
     "Model": "GAC Maverick",
     "Year": 0,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3523": {
     "CarID": 3523,
@@ -6939,9 +6939,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3525": {
     "CarID": 3525,
@@ -6963,13 +6963,13 @@
     "Model": "Garage RCR Civic",
     "Year": 0,
     "OpenCockpit": false,
-    "CarType": "street",
+    "CarType": "tuned",
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3528": {
     "CarID": 3528,
@@ -7009,9 +7009,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3531": {
     "CarID": 3531,
@@ -7037,9 +7037,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V12",
+    "EngineBankAngle": 65,
+    "EngineCrankPlaneAngle": 60
   },
   "3533": {
     "CarID": 3533,
@@ -7051,9 +7051,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 120
   },
   "3534": {
     "CarID": 3534,
@@ -7065,9 +7065,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3535": {
     "CarID": 3535,
@@ -7079,9 +7079,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3536": {
     "CarID": 3536,
@@ -7093,9 +7093,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3537": {
     "CarID": 3537,
@@ -7121,9 +7121,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3539": {
     "CarID": 3539,
@@ -7135,9 +7135,9 @@
     "Category": "",
     "Drivetrain": "RR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3540": {
     "CarID": 3540,
@@ -7163,9 +7163,9 @@
     "Category": "",
     "Drivetrain": "MR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "3542": {
     "CarID": 3542,
@@ -7193,7 +7193,7 @@
     "Aspiration": "TC+SC",
     "EngineLayout": "V6",
     "EngineBankAngle": 60,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3544": {
     "CarID": 3544,
@@ -7219,9 +7219,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3546": {
     "CarID": 3546,
@@ -7247,9 +7247,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3548": {
     "CarID": 3548,
@@ -7261,9 +7261,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3549": {
     "CarID": 3549,
@@ -7275,9 +7275,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3550": {
     "CarID": 3550,
@@ -7317,9 +7317,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
   },
   "3554": {
     "CarID": 3554,
@@ -7331,9 +7331,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3555": {
     "CarID": 3555,
@@ -7345,9 +7345,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3556": {
     "CarID": 3556,
@@ -7359,9 +7359,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3557": {
     "CarID": 3557,
@@ -7387,9 +7387,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "H6",
+    "EngineBankAngle": 180,
+    "EngineCrankPlaneAngle": 120
   },
   "3559": {
     "CarID": 3559,
@@ -7401,9 +7401,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3560": {
     "CarID": 3560,
@@ -7457,9 +7457,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3564": {
     "CarID": 3564,
@@ -7471,9 +7471,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3565": {
     "CarID": 3565,
@@ -7485,9 +7485,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3566": {
     "CarID": 3566,
@@ -7499,9 +7499,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3567": {
     "CarID": 3567,
@@ -7513,9 +7513,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3568": {
     "CarID": 3568,
@@ -7527,9 +7527,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3569": {
     "CarID": 3569,
@@ -7541,9 +7541,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I6",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3570": {
     "CarID": 3570,
@@ -7555,9 +7555,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
-    "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   },
   "3571": {
     "CarID": 3571,
@@ -7569,9 +7569,9 @@
     "Category": "",
     "Drivetrain": "FR",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3572": {
     "CarID": 3572,
@@ -7583,9 +7583,9 @@
     "Category": "",
     "Drivetrain": "4WD",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3573": {
     "CarID": 3573,
@@ -7597,9 +7597,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "NA",
-    "EngineLayout": "",
+    "EngineLayout": "I4",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 180
   },
   "3574": {
     "CarID": 3574,
@@ -7611,9 +7611,9 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   },
   "3576": {
     "CarID": 3576,
@@ -7625,8 +7625,8 @@
     "Category": "",
     "Drivetrain": "FF",
     "Aspiration": "TC",
-    "EngineLayout": "",
+    "EngineLayout": "I3",
     "EngineBankAngle": 0,
-    "EngineCrankPlaneAngle": 0
+    "EngineCrankPlaneAngle": 120
   }
 }
