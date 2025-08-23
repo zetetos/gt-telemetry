@@ -206,10 +206,7 @@ func (t *transformer) EngineRPMLight() RevLight {
 	lightMin := t.RawTelemetry.RevLightRpmMin
 	lightMax := t.RawTelemetry.RevLightRpmMax
 
-	active := false
-	if rpm > lightMin {
-		active = true
-	}
+	active := rpm > lightMin
 
 	return RevLight{
 		Min:    lightMin,

@@ -11,7 +11,7 @@ import (
 
 func main() {
 	clientConfig := telemetry_client.GTClientOpts{
-		// Source:       "file://examples/simple/replay.gtz",
+		Source:       "file://examples/simple/replay.gtz",
 		Format:       telemetrysrc.TelemetryFormatTilde,
 		StatsEnabled: true,
 	}
@@ -39,11 +39,7 @@ func main() {
 	fmt.Println("Waiting for data...    Press Ctrl+C to exit")
 
 	sequenceID := uint32(0)
-	for {
-		if client.Finished {
-			break
-		}
-
+	for !client.Finished {
 		if sequenceID == client.Telemetry.SequenceID() {
 			time.Sleep(8 * time.Millisecond)
 			continue
