@@ -11,7 +11,7 @@ import (
 
 func main() {
 	clientConfig := telemetry_client.GTClientOpts{
-		// Source:       "file://examples/simple/replay.gtz",
+		Source:       "file://examples/simple/replay.gtz",
 		Format:       telemetrysrc.TelemetryFormatTilde,
 		StatsEnabled: true,
 	}
@@ -21,16 +21,25 @@ func main() {
 		log.Fatalf("Failed to create GT client: %s", err.Error())
 	}
 
-	go client.Run()
+	go func() {
+		for {
+			err, recoverable := client.Run()
+			if err != nil {
+				if recoverable {
+					log.Printf("Recoverable error: %s", err.Error())
+				} else {
+					log.Fatalf("Fatal client error: %s", err.Error())
+				}
+			}
+
+			time.Sleep(1 * time.Second)
+		}
+	}()
 
 	fmt.Println("Waiting for data...    Press Ctrl+C to exit")
 
 	sequenceID := uint32(0)
-	for {
-		if client.Finished {
-			break
-		}
-
+	for !client.Finished {
 		if sequenceID == client.Telemetry.SequenceID() {
 			time.Sleep(8 * time.Millisecond)
 			continue

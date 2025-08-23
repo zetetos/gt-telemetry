@@ -49,7 +49,9 @@ config := telemetry_client.GTClientOpts{
     VehicleDB: "./internal/vehicles/inventory.json",
 }
 gt, _ := telemetry_client.NewGTClient(config)
-go gt.Run()
+go func() {
+    _, _ = gt.Run()
+}()
 ```
 
 _If the PlayStation is on the same network segment then you will probably find that the default broadcast address `255.255.255.255` will be sufficient to start reading data. If it does not work then enter the IP address of the PlayStation device instead._

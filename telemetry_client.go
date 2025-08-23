@@ -3,7 +3,6 @@ package telemetry
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"net"
 	"net/url"
 	"os"
@@ -132,10 +131,10 @@ func NewGTClient(opts GTClientOpts) (*GTClient, error) {
 	}, nil
 }
 
-func (c *GTClient) Run() {
+func (c *GTClient) Run() (err error, recoverable bool) {
 	sourceURL, err := url.Parse(c.source)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("parse source URL: %w", err), false
 	}
 
 	var telemetrySource telemetrysrc.Reader
@@ -145,34 +144,42 @@ func (c *GTClient) Run() {
 		host, portStr, _ := net.SplitHostPort(sourceURL.Host)
 		port, err := strconv.Atoi(portStr)
 		if err != nil {
-			c.log.Fatal().Err(err).Msg("failed to parse port")
+			return fmt.Errorf("parse URL port: %w", err), false
 		}
-		telemetrySource = telemetrysrc.NewNetworkUDPReader(host, port, c.format, c.log)
+		telemetrySource, err = telemetrysrc.NewNetworkUDPReader(host, port, c.format, c.log)
+		if err != nil {
+			return fmt.Errorf("setup UDP reader: %w", err), true
+		}
 	case "file":
-		telemetrySource = telemetrysrc.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
+		telemetrySource, err = telemetrysrc.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
+		if err != nil {
+			return fmt.Errorf("setup file reader: %w", err), false
+		}
 	default:
-		c.log.Fatal().Msgf("unknown URL scheme %q", sourceURL.Scheme)
+		return fmt.Errorf("invalid URL scheme %q", sourceURL.Scheme), false
 	}
 
 	rawTelemetry := gttelemetry.NewGranTurismoTelemetry()
 
+readTelemetry:
 	for {
 		bufLen, buffer, err := telemetrySource.Read()
 		if err != nil {
 			if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
 				c.Finished = true
 
-				continue
+				continue readTelemetry
 			}
 
 			c.log.Debug().Err(err).Msg("failed to receive telemetry")
 
-			continue
+			continue readTelemetry
 		}
 
 		if len(buffer[:bufLen]) == 0 {
 			c.log.Debug().Msg("no data received")
-			continue
+
+			continue readTelemetry
 		}
 
 		decodeStart := time.Now()
@@ -182,11 +189,12 @@ func (c *GTClient) Run() {
 		reader := bytes.NewReader(c.DecipheredPacket)
 		stream := kaitai.NewStream(reader)
 
+	parseTelemetry:
 		for {
 			err = rawTelemetry.Read(stream, nil, nil)
 			if err != nil {
 				if err.Error() == "EOF" {
-					break
+					break parseTelemetry
 				}
 				c.log.Error().Err(err).Msg("failed to parse telemetry")
 				c.Statistics.PacketsInvalid++

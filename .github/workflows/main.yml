@@ -14,9 +14,9 @@ jobs:
           go-version-file: "go.mod"
           check-latest: true
       - name: Lint code
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v8
         with:
-          version: "v1.64.6"
+          version: "v2.4.0"
           args: --verbose
       - name: Audit code
         run: |
