@@ -23,21 +23,21 @@ type FileReader struct {
 	closer      func() error
 }
 
-func NewFileReader(file string, log zerolog.Logger) *FileReader {
+func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 	_, err := os.Stat(file)
 	if os.IsNotExist(err) {
-		log.Fatal().Str("file", file).Msg("file does not exist")
+		return nil, fmt.Errorf("file does not exist: %w", err)
 	} else if err != nil {
-		log.Fatal().Err(err).Msg("failed to check file")
+		return nil, fmt.Errorf("stat file: %w", err)
 	}
 
 	fh, err := os.Open(file)
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed to open file")
+		return nil, fmt.Errorf("open file: %w", err)
 	}
 
 	if len(file) < 3 {
-		log.Fatal().Str("file", file).Msg("filename too short")
+		return nil, fmt.Errorf("filename too short")
 	}
 
 	var reader io.Reader
@@ -46,12 +46,12 @@ func NewFileReader(file string, log zerolog.Logger) *FileReader {
 	case "gtz":
 		reader, err = gzip.NewReader(fh)
 		if err != nil {
-			log.Fatal().Err(err).Msg("failed to create gzip reader")
+			return nil, fmt.Errorf("create gzip reader: %w", err)
 		}
 	case "gtr":
 		reader = fh
 	default:
-		log.Fatal().Str("extension", fileExt).Msg("unsupported file extension")
+		return nil, fmt.Errorf("unsupported file extension: %s", fileExt)
 	}
 
 	scanner := bufio.NewScanner(reader)
@@ -100,7 +100,7 @@ func NewFileReader(file string, log zerolog.Logger) *FileReader {
 		lastRead:    time.Unix(0, 0),
 		log:         log,
 		closer:      fh.Close,
-	}
+	}, nil
 }
 
 func (r *FileReader) Read() (int, []byte, error) {

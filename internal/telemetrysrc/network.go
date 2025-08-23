@@ -2,7 +2,6 @@ package telemetrysrc
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"time"
 
@@ -16,6 +15,8 @@ const (
 	TelemetryFormatA     TelemetryFormat = "A"
 	TelemetryFormatB     TelemetryFormat = "B"
 	TelemetryFormatTilde TelemetryFormat = "~"
+
+	HeartbeatInterval = 10 * time.Second
 )
 
 type UDPReader struct {
@@ -28,17 +29,18 @@ type UDPReader struct {
 	log       zerolog.Logger
 }
 
-func NewNetworkUDPReader(host string, sendPort int, format TelemetryFormat, log zerolog.Logger) *UDPReader {
+func NewNetworkUDPReader(host string, sendPort int, format TelemetryFormat, log zerolog.Logger) (*UDPReader, error) {
 	log.Debug().Msg("creating UDP reader")
+
 	receivePort := sendPort + 1
 	addr, err := net.ResolveUDPAddr("udp", fmt.Sprintf(":%d", receivePort))
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed to resolve UDP address")
+		return nil, fmt.Errorf("resolve UDP address: %w", err)
 	}
 
 	conn, err := net.ListenUDP("udp", addr)
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed to setup UDP listener")
+		return nil, fmt.Errorf("setup UDP listener %d: %w", receivePort, err)
 	}
 
 	r := UDPReader{
@@ -51,16 +53,24 @@ func NewNetworkUDPReader(host string, sendPort int, format TelemetryFormat, log 
 		log:       log,
 	}
 
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(HeartbeatInterval)
 	go func() {
-		r.sendHeartbeat()
+		// Initial heartbeat
+		err := r.sendHeartbeat()
+		if err != nil {
+			r.log.Error().Err(err).Msg("send initial heartbeat")
+		}
 
+		// Keep sending heartbeats periodically
 		for range ticker.C {
-			r.sendHeartbeat()
+			err := r.sendHeartbeat()
+			if err != nil {
+				r.log.Error().Err(err).Msg("send heartbeat")
+			}
 		}
 	}()
 
-	return &r
+	return &r, nil
 }
 
 func (r *UDPReader) Read() (int, []byte, error) {
@@ -86,7 +96,7 @@ func (r *UDPReader) Close() error {
 	return r.closeFunc()
 }
 
-func (r *UDPReader) sendHeartbeat() {
+func (r *UDPReader) sendHeartbeat() error {
 	r.log.Debug().Msgf("sending format %q heartbeat to %s:%d", r.format, r.address, r.sendPort)
 
 	_, err := r.conn.WriteToUDP([]byte(r.format), &net.UDPAddr{
@@ -94,12 +104,14 @@ func (r *UDPReader) sendHeartbeat() {
 		Port: r.sendPort,
 	})
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("send UDP heartbeat: %w", err)
 	}
-	err = r.conn.SetReadDeadline(time.Now().Add(10 * time.Second))
+	err = r.conn.SetReadDeadline(time.Now().Add(HeartbeatInterval))
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("set read deadline: %w", err)
 	}
+
+	return nil
 }
 
 func getIVSeedForFormat(format TelemetryFormat) uint32 {
