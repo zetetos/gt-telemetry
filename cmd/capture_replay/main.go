@@ -46,7 +46,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	go gt.Run()
+	go func() {
+		_, _ = gt.Run()
+	}()
 
 	fmt.Println("Waiting for replay to start")
 
