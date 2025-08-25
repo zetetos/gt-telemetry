@@ -7,7 +7,7 @@ retract [v1.0.0, v1.5.1] // broken versions during migration to the zetetos org
 require (
 	github.com/kaitai-io/kaitai_struct_go_runtime v0.10.0
 	github.com/rs/zerolog v1.34.0
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 	golang.org/x/crypto v0.41.0
 )
 
