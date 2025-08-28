@@ -727,6 +727,20 @@
     "EngineBankAngle": 60,
     "EngineCrankPlaneAngle": 120
   },
+  "729": {
+    "CarID": 729,
+    "Manufacturer": "Renault",
+    "Model": "Avantime 3.0 V6 24V '02",
+    "Year": 2002,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "FF",
+    "Aspiration": "NA",
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
+  },
   "761": {
     "CarID": 761,
     "Manufacturer": "Lancia",
@@ -7628,5 +7642,47 @@
     "EngineLayout": "I3",
     "EngineBankAngle": 0,
     "EngineCrankPlaneAngle": 120
+  },
+  "3579": {
+    "CarID": 3579,
+    "Manufacturer": "AFEELA",
+    "Model": "AFEELA 1 '26",
+    "Year": 2026,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "EV",
+    "EngineLayout": "",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 0
+  },
+  "3581": {
+    "CarID": 3581,
+    "Manufacturer": "Chevrolet",
+    "Model": "Corvette CX Concept '25",
+    "Year": 2025,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "EV",
+    "EngineLayout": "",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 0
+  },
+  "3582": {
+    "CarID": 3582,
+    "Manufacturer": "Chevrolet",
+    "Model": "Corvette CX.R VGT Concept",
+    "Year": 2025,
+    "OpenCockpit": false,
+    "CarType": "race",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "TC",
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 90
   }
 }
