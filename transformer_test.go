@@ -416,10 +416,23 @@ func (suite *TransformerTestSuite) TestFlagsReturnCorrectValues() {
 	}
 }
 
+func (suite *TransformerTestSuite) TestFuelCapacityReturnsCorrectValue() {
+	// Arrange
+	wantValue := float32(0.76)
+	suite.transformer.RawTelemetry.FuelCapacity = wantValue
+
+	// Act
+	gotValue := suite.transformer.FuelCapacity()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
 func (suite *TransformerTestSuite) TestFuelCapacityPercentReturnsCorrectValue() {
 	// Arrange
-	wantValue := float32(98)
-	suite.transformer.RawTelemetry.FuelCapacity = wantValue
+	fuelCapacity := float32(0.76)
+	wantValue := fuelCapacity / fuelCapacity
+	suite.transformer.RawTelemetry.FuelCapacity = fuelCapacity
 
 	// Act
 	gotValue := suite.transformer.FuelCapacityPercent()
@@ -428,10 +441,25 @@ func (suite *TransformerTestSuite) TestFuelCapacityPercentReturnsCorrectValue() 
 	suite.Equal(wantValue, gotValue)
 }
 
+func (suite *TransformerTestSuite) TestFuelLevelReturnsCorrectValue() {
+	// Arrange
+	wantValue := float32(0.41)
+	suite.transformer.RawTelemetry.FuelLevel = wantValue
+
+	// Act
+	gotValue := suite.transformer.FuelLevel()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
 func (suite *TransformerTestSuite) TestFuelLevelPercentReturnsCorrectValue() {
 	// Arrange
-	wantValue := float32(50)
-	suite.transformer.RawTelemetry.FuelLevel = wantValue
+	fuelCapacity := float32(0.98)
+	fuelLevel := float32(0.32)
+	wantValue := fuelLevel / fuelCapacity
+	suite.transformer.RawTelemetry.FuelLevel = fuelLevel
+	suite.transformer.RawTelemetry.FuelCapacity = fuelCapacity
 
 	// Act
 	gotValue := suite.transformer.FuelLevelPercent()
