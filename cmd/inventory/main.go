@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/csv"
 	"encoding/json"
 	"flag"
@@ -9,6 +10,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -53,6 +55,85 @@ Examples:
   # Delete a vehicle
   inventory delete internal/vehicles/inventory.json 1234
 `
+
+// writeOrderedJSON writes a vehicle map to JSON with numerically ordered keys
+func writeOrderedJSON(w io.Writer, vehicleMap map[string]vehicles.Vehicle) error {
+	var carIDs []int
+	for carIDStr := range vehicleMap {
+		carID, err := strconv.Atoi(carIDStr)
+		if err != nil {
+			continue
+		}
+		carIDs = append(carIDs, carID)
+	}
+	sort.Ints(carIDs)
+
+	var buf bytes.Buffer
+	buf.WriteString("{\n")
+
+	for i, carID := range carIDs {
+		carIDStr := strconv.Itoa(carID)
+		vehicle := vehicleMap[carIDStr]
+
+		if i > 0 {
+			buf.WriteString(",\n")
+		}
+
+		buf.WriteString(fmt.Sprintf("  \"%s\": {\n", carIDStr))
+
+		writeVehicleFieldsOrdered(&buf, vehicle)
+
+		buf.WriteString("\n  }")
+	}
+
+	buf.WriteString("\n}\n")
+
+	_, err := w.Write(buf.Bytes())
+	return err
+}
+
+// writeVehicleFieldsOrdered writes vehicle fields in consistent order
+func writeVehicleFieldsOrdered(buf *bytes.Buffer, vehicle vehicles.Vehicle) {
+	fields := []struct {
+		name  string
+		value interface{}
+	}{
+		{"CarID", vehicle.CarID},
+		{"Manufacturer", vehicle.Manufacturer},
+		{"Model", vehicle.Model},
+		{"Year", vehicle.Year},
+		{"OpenCockpit", vehicle.OpenCockpit},
+		{"CarType", vehicle.CarType},
+		{"Category", vehicle.Category},
+		{"Drivetrain", vehicle.Drivetrain},
+		{"Aspiration", vehicle.Aspiration},
+		{"EngineLayout", vehicle.EngineLayout},
+		{"EngineBankAngle", vehicle.EngineBankAngle},
+		{"EngineCrankPlaneAngle", vehicle.EngineCrankPlaneAngle},
+	}
+
+	for i, field := range fields {
+		if i > 0 {
+			buf.WriteString(",\n")
+		}
+
+		buf.WriteString("    ")
+		switch v := field.value.(type) {
+		case int:
+			fmt.Fprintf(buf, "\"%s\": %d", field.name, v)
+		case string:
+			escapedValue, _ := json.Marshal(v)
+			fmt.Fprintf(buf, "\"%s\": %s", field.name, escapedValue)
+		case bool:
+			fmt.Fprintf(buf, "\"%s\": %t", field.name, v)
+		case float32:
+			fmt.Fprintf(buf, "\"%s\": %g", field.name, v)
+		default:
+			escapedValue, _ := json.Marshal(fmt.Sprintf("%v", v))
+			fmt.Fprintf(buf, "\"%s\": %s", field.name, escapedValue)
+		}
+	}
+}
 
 func main() {
 	var (
@@ -357,9 +438,7 @@ func csvToJSON(inputFile string) error {
 	}
 
 	// Write JSON to stdout
-	encoder := json.NewEncoder(os.Stdout)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(vehicleMap); err != nil {
+	if err := writeOrderedJSON(os.Stdout, vehicleMap); err != nil {
 		return fmt.Errorf("encoding JSON: %w", err)
 	}
 
@@ -622,9 +701,7 @@ func addVehicleInteractively(inventoryFile string) error {
 	}
 	defer outputF.Close()
 
-	encoder := json.NewEncoder(outputF)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(vehicleMap); err != nil {
+	if err := writeOrderedJSON(outputF, vehicleMap); err != nil {
 		return fmt.Errorf("encoding inventory JSON: %w", err)
 	}
 
@@ -706,9 +783,7 @@ func editVehicleInteractively(inventoryFile string, carID int) error {
 	}
 	defer outputF.Close()
 
-	encoder := json.NewEncoder(outputF)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(vehicleMap); err != nil {
+	if err := writeOrderedJSON(outputF, vehicleMap); err != nil {
 		return fmt.Errorf("encoding inventory JSON: %w", err)
 	}
 
@@ -765,9 +840,7 @@ func deleteVehicle(inventoryFile string, carID int) error {
 	}
 	defer outputF.Close()
 
-	encoder := json.NewEncoder(outputF)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(vehicleMap); err != nil {
+	if err := writeOrderedJSON(outputF, vehicleMap); err != nil {
 		return fmt.Errorf("encoding inventory JSON: %w", err)
 	}
 
