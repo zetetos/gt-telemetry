@@ -17,6 +17,22 @@ import (
 	"github.com/zetetos/gt-telemetry/internal/vehicles"
 )
 
+// vehicleFields defines the canonical field order for vehicle data
+var vehicleFields = []string{
+	"CarID",
+	"Manufacturer",
+	"Model",
+	"Year",
+	"OpenCockpit",
+	"CarType",
+	"Category",
+	"Drivetrain",
+	"Aspiration",
+	"EngineLayout",
+	"EngineBankAngle",
+	"EngineCrankPlaneAngle",
+}
+
 const usage = `inventory - Import and export vehicle inventory data between JSON and CSV formats
 
 Usage:
@@ -55,85 +71,6 @@ Examples:
   # Delete a vehicle
   inventory delete internal/vehicles/inventory.json 1234
 `
-
-// writeOrderedJSON writes a vehicle map to JSON with numerically ordered keys
-func writeOrderedJSON(w io.Writer, vehicleMap map[string]vehicles.Vehicle) error {
-	var carIDs []int
-	for carIDStr := range vehicleMap {
-		carID, err := strconv.Atoi(carIDStr)
-		if err != nil {
-			continue
-		}
-		carIDs = append(carIDs, carID)
-	}
-	sort.Ints(carIDs)
-
-	var buf bytes.Buffer
-	buf.WriteString("{\n")
-
-	for i, carID := range carIDs {
-		carIDStr := strconv.Itoa(carID)
-		vehicle := vehicleMap[carIDStr]
-
-		if i > 0 {
-			buf.WriteString(",\n")
-		}
-
-		buf.WriteString(fmt.Sprintf("  \"%s\": {\n", carIDStr))
-
-		writeVehicleFieldsOrdered(&buf, vehicle)
-
-		buf.WriteString("\n  }")
-	}
-
-	buf.WriteString("\n}\n")
-
-	_, err := w.Write(buf.Bytes())
-	return err
-}
-
-// writeVehicleFieldsOrdered writes vehicle fields in consistent order
-func writeVehicleFieldsOrdered(buf *bytes.Buffer, vehicle vehicles.Vehicle) {
-	fields := []struct {
-		name  string
-		value interface{}
-	}{
-		{"CarID", vehicle.CarID},
-		{"Manufacturer", vehicle.Manufacturer},
-		{"Model", vehicle.Model},
-		{"Year", vehicle.Year},
-		{"OpenCockpit", vehicle.OpenCockpit},
-		{"CarType", vehicle.CarType},
-		{"Category", vehicle.Category},
-		{"Drivetrain", vehicle.Drivetrain},
-		{"Aspiration", vehicle.Aspiration},
-		{"EngineLayout", vehicle.EngineLayout},
-		{"EngineBankAngle", vehicle.EngineBankAngle},
-		{"EngineCrankPlaneAngle", vehicle.EngineCrankPlaneAngle},
-	}
-
-	for i, field := range fields {
-		if i > 0 {
-			buf.WriteString(",\n")
-		}
-
-		buf.WriteString("    ")
-		switch v := field.value.(type) {
-		case int:
-			fmt.Fprintf(buf, "\"%s\": %d", field.name, v)
-		case string:
-			escapedValue, _ := json.Marshal(v)
-			fmt.Fprintf(buf, "\"%s\": %s", field.name, escapedValue)
-		case bool:
-			fmt.Fprintf(buf, "\"%s\": %t", field.name, v)
-		case float32:
-			fmt.Fprintf(buf, "\"%s\": %g", field.name, v)
-		default:
-			escapedValue, _ := json.Marshal(fmt.Sprintf("%v", v))
-			fmt.Fprintf(buf, "\"%s\": %s", field.name, escapedValue)
-		}
-	}
-}
 
 func main() {
 	var (
@@ -199,7 +136,7 @@ func main() {
 		}
 
 		inventoryFile := args[1]
-		if err := addVehicleInteractively(inventoryFile); err != nil {
+		if err := addVehicleInteractive(inventoryFile); err != nil {
 			fmt.Fprintf(os.Stderr, "Error adding vehicle: %v\n", err)
 			os.Exit(1)
 		}
@@ -280,39 +217,15 @@ func jsonToCSV(inputFile string) error {
 	defer writer.Flush()
 
 	// Write CSV header
-	header := []string{
-		"CarID",
-		"Manufacturer",
-		"Model",
-		"Year",
-		"OpenCockpit",
-		"CarType",
-		"Category",
-		"Drivetrain",
-		"Aspiration",
-		"EngineLayout",
-		"EngineBankAngle",
-		"EngineCrankPlaneAngle",
-	}
-	if err := writer.Write(header); err != nil {
+	if err := writer.Write(vehicleFields); err != nil {
 		return fmt.Errorf("writing CSV header: %w", err)
 	}
 
 	// Write vehicle data
 	for _, vehicle := range vehicleMap {
-		record := []string{
-			strconv.Itoa(vehicle.CarID),
-			vehicle.Manufacturer,
-			vehicle.Model,
-			strconv.Itoa(vehicle.Year),
-			strconv.FormatBool(vehicle.OpenCockpit),
-			vehicle.CarType,
-			vehicle.Category,
-			vehicle.Drivetrain,
-			vehicle.Aspiration,
-			vehicle.EngineLayout,
-			strconv.FormatFloat(float64(vehicle.EngineBankAngle), 'f', -1, 32),
-			strconv.FormatFloat(float64(vehicle.EngineCrankPlaneAngle), 'f', -1, 32),
+		record := make([]string, len(vehicleFields))
+		for i, fieldName := range vehicleFields {
+			record[i] = getVehicleFieldValueAsString(vehicle, fieldName)
 		}
 		if err := writer.Write(record); err != nil {
 			return fmt.Errorf("writing CSV record: %w", err)
@@ -339,23 +252,8 @@ func csvToJSON(inputFile string) error {
 	}
 
 	// Validate header format
-	expectedHeader := []string{
-		"CarID",
-		"Manufacturer",
-		"Model",
-		"Year",
-		"OpenCockpit",
-		"CarType",
-		"Category",
-		"Drivetrain",
-		"Aspiration",
-		"EngineLayout",
-		"EngineBankAngle",
-		"EngineCrankPlaneAngle",
-	}
-
-	if len(header) != len(expectedHeader) {
-		return fmt.Errorf("invalid CSV header: expected %d columns, got %d", len(expectedHeader), len(header))
+	if len(header) != len(vehicleFields) {
+		return fmt.Errorf("invalid CSV header: expected %d columns, got %d", len(vehicleFields), len(header))
 	}
 
 	// Create map to store vehicles
@@ -443,6 +341,119 @@ func csvToJSON(inputFile string) error {
 	}
 
 	return nil
+}
+
+// writeOrderedJSON writes a vehicle map to JSON with numerically ordered keys
+func writeOrderedJSON(w io.Writer, vehicleMap map[string]vehicles.Vehicle) error {
+	var carIDs []int
+	for carIDStr := range vehicleMap {
+		carID, err := strconv.Atoi(carIDStr)
+		if err != nil {
+			continue
+		}
+		carIDs = append(carIDs, carID)
+	}
+	sort.Ints(carIDs)
+
+	var buf bytes.Buffer
+	buf.WriteString("{\n")
+
+	for i, carID := range carIDs {
+		carIDStr := strconv.Itoa(carID)
+		vehicle := vehicleMap[carIDStr]
+
+		if i > 0 {
+			buf.WriteString(",\n")
+		}
+
+		buf.WriteString(fmt.Sprintf("  \"%s\": {\n", carIDStr))
+
+		writeVehicleFieldsOrdered(&buf, vehicle)
+
+		buf.WriteString("\n  }")
+	}
+
+	buf.WriteString("\n}\n")
+
+	_, err := w.Write(buf.Bytes())
+	return err
+}
+
+// writeVehicleFieldsOrdered writes vehicle fields in consistent order
+func writeVehicleFieldsOrdered(buf *bytes.Buffer, vehicle vehicles.Vehicle) {
+	for i, fieldName := range vehicleFields {
+		if i > 0 {
+			buf.WriteString(",\n")
+		}
+
+		buf.WriteString("    ")
+		value := getVehicleFieldValue(vehicle, fieldName)
+
+		switch v := value.(type) {
+		case int:
+			fmt.Fprintf(buf, "\"%s\": %d", fieldName, v)
+		case string:
+			escapedValue, _ := json.Marshal(v)
+			fmt.Fprintf(buf, "\"%s\": %s", fieldName, escapedValue)
+		case bool:
+			fmt.Fprintf(buf, "\"%s\": %t", fieldName, v)
+		case float32:
+			fmt.Fprintf(buf, "\"%s\": %g", fieldName, v)
+		default:
+			escapedValue, _ := json.Marshal(fmt.Sprintf("%v", v))
+			fmt.Fprintf(buf, "\"%s\": %s", fieldName, escapedValue)
+		}
+	}
+}
+
+// getVehicleFieldValueAsString returns the string representation of a vehicle field for CSV output
+func getVehicleFieldValueAsString(vehicle vehicles.Vehicle, fieldName string) string {
+	value := getVehicleFieldValue(vehicle, fieldName)
+
+	switch v := value.(type) {
+	case int:
+		return strconv.Itoa(v)
+	case string:
+		return v
+	case bool:
+		return strconv.FormatBool(v)
+	case float32:
+		return strconv.FormatFloat(float64(v), 'f', -1, 32)
+	default:
+		return fmt.Sprintf("%v", v)
+	}
+}
+
+// getVehicleFieldValue returns the value of a vehicle field by name
+func getVehicleFieldValue(vehicle vehicles.Vehicle, fieldName string) any {
+	switch fieldName {
+	case "CarID":
+		return vehicle.CarID
+	case "Manufacturer":
+		return vehicle.Manufacturer
+	case "Model":
+		return vehicle.Model
+	case "Year":
+		return vehicle.Year
+	case "OpenCockpit":
+		return vehicle.OpenCockpit
+	case "CarType":
+		return vehicle.CarType
+	case "Category":
+		return vehicle.Category
+	case "Drivetrain":
+		return vehicle.Drivetrain
+	case "Aspiration":
+		return vehicle.Aspiration
+	case "EngineLayout":
+		return vehicle.EngineLayout
+	case "EngineBankAngle":
+		return vehicle.EngineBankAngle
+	case "EngineCrankPlaneAngle":
+		return vehicle.EngineCrankPlaneAngle
+	default:
+		return ""
+	}
 }
 
 // promptVehicleData prompts the user for vehicle information interactively.
@@ -618,7 +629,7 @@ func promptVehicleData(scanner *bufio.Scanner, existingVehicle *vehicles.Vehicle
 	return vehicle, nil
 }
 
-func addVehicleInteractively(inventoryFile string) error {
+func addVehicleInteractive(inventoryFile string) error {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Println("Adding a new vehicle to the inventory")
