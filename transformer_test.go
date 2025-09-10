@@ -469,6 +469,18 @@ func (suite *TransformerTestSuite) TestTransmissionReturnsCorrectValue() {
 	suite.Equal(wantValue, gotValue)
 }
 
+func (suite *TransformerTestSuite) TestGridPositionReturnsCorrectValue() {
+	// Arrange
+	wantValue := int16(4)
+	suite.transformer.RawTelemetry.GridPosition = wantValue
+
+	// Act
+	gotValue := suite.transformer.GridPosition()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
 func (suite *TransformerTestSuite) TestGroundSpeedMetersPerSecondReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(39.33952)
@@ -692,7 +704,7 @@ func (suite *TransformerTestSuite) TestSteeringWheelAngleDegreesReturnsCorrectVa
 func (suite *TransformerTestSuite) TestStartingPositionReturnsCorrectValue() {
 	// Arrange
 	wantValue := int16(5)
-	suite.transformer.RawTelemetry.StartingPosition = wantValue
+	suite.transformer.RawTelemetry.GridPosition = wantValue
 
 	// Act
 	gotValue := suite.transformer.StartingPosition()

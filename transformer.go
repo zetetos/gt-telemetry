@@ -267,6 +267,10 @@ func (t *transformer) GameVersion() string {
 	return "unknown"
 }
 
+func (t *transformer) GridPosition() int16 {
+	return t.RawTelemetry.GridPosition
+}
+
 func (t *transformer) GroundSpeedMetersPerSecond() float32 {
 	return t.RawTelemetry.GroundSpeed
 }
@@ -343,8 +347,9 @@ func (t *transformer) SequenceID() uint32 {
 	return t.RawTelemetry.SequenceId
 }
 
+// Deprecated: to be removed in next major revision, replaced by GridPosition()
 func (t *transformer) StartingPosition() int16 {
-	return t.RawTelemetry.StartingPosition
+	return t.RawTelemetry.GridPosition
 }
 
 func (t *transformer) SteeringWheelAngleDegrees() float32 {
