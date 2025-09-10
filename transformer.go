@@ -249,7 +249,7 @@ func (t *transformer) FuelCapacity() float32 {
 
 // To be deprecated in 2.0 release in favor of FuelCapacity()
 func (t *transformer) FuelCapacityPercent() float32 {
-	return 1.0
+	return 100
 }
 
 func (t *transformer) FuelLevel() float32 {
@@ -261,7 +261,7 @@ func (t *transformer) FuelLevel() float32 {
 func (t *transformer) FuelLevelPercent() float32 {
 	val := t.RawTelemetry.FuelLevel / t.RawTelemetry.FuelCapacity
 
-	return val
+	return val * 100
 }
 
 func (t *transformer) GameVersion() string {
