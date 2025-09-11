@@ -63,12 +63,12 @@ func main() {
 			client.Telemetry.SequenceID(),
 			client.Telemetry.TimeOfDay(),
 		)
-		fmt.Printf("Race          Lap: %d of %d  Last lap: %+v  Best lap: %+v  Start position: %d  Race entrants: %d\n",
+		fmt.Printf("Race          Lap: %d of %d  Last lap: %+v  Best lap: %+v  Grid position: %d  Race entrants: %d\n",
 			client.Telemetry.CurrentLap(),
 			client.Telemetry.RaceLaps(),
 			client.Telemetry.LastLaptime(),
 			client.Telemetry.BestLaptime(),
-			client.Telemetry.StartingPosition(),
+			client.Telemetry.GridPosition(),
 			client.Telemetry.RaceEntrants(),
 		)
 
@@ -108,9 +108,8 @@ func main() {
 			boostStr,
 			client.Telemetry.EnergyRecovery(),
 		)
-		fmt.Printf("Fluids        Fuel level: %3.0f%%  Fuel capacity: %3.0f%%  Water temp: %3.0f°c  Oil temp: %3.0f°c  Oil pressure: %3.02f kpa\n",
+		fmt.Printf("Fluids        Fuel level: %3.0f%%  Water temp: %3.0f°c  Oil temp: %3.0f°c  Oil pressure: %3.02f kpa\n",
 			client.Telemetry.FuelLevelPercent(),
-			client.Telemetry.FuelCapacityPercent(),
 			client.Telemetry.WaterTemperatureCelsius(),
 			client.Telemetry.OilTemperatureCelsius(),
 			client.Telemetry.OilPressureKPA(),
