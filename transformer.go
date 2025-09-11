@@ -247,7 +247,7 @@ func (t *transformer) FuelCapacity() float32 {
 	return val
 }
 
-// To be deprecated in 2.0 release in favor of FuelCapacity()
+// To be deprecated in 2.0 release as it serves no purpose as a percentage
 func (t *transformer) FuelCapacityPercent() float32 {
 	return 100
 }
