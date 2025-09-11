@@ -28,7 +28,7 @@ type GranTurismoTelemetry struct {
 	BestLaptime int32
 	LastLaptime int32
 	TimeOfDay uint32
-	StartingPosition int16
+	GridPosition int16
 	RaceEntrants int16
 	RevLightRpmMin uint16
 	RevLightRpmMax uint16
@@ -214,7 +214,7 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 	if err != nil {
 		return err
 	}
-	this.StartingPosition = int16(tmp24)
+	this.GridPosition = int16(tmp24)
 	tmp25, err := this._io.ReadS2le()
 	if err != nil {
 		return err

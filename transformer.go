@@ -241,16 +241,27 @@ func (t *transformer) Flags() Flags {
 	}
 }
 
-func (t *transformer) FuelCapacityPercent() float32 {
+func (t *transformer) FuelCapacity() float32 {
 	val := t.RawTelemetry.FuelCapacity
 
 	return val
 }
 
-func (t *transformer) FuelLevelPercent() float32 {
+// To be deprecated in 2.0 release as it serves no purpose as a percentage
+func (t *transformer) FuelCapacityPercent() float32 {
+	return 100
+}
+
+func (t *transformer) FuelLevel() float32 {
 	val := t.RawTelemetry.FuelLevel
 
 	return val
+}
+
+func (t *transformer) FuelLevelPercent() float32 {
+	val := t.RawTelemetry.FuelLevel / t.RawTelemetry.FuelCapacity
+
+	return val * 100
 }
 
 func (t *transformer) GameVersion() string {
@@ -265,6 +276,10 @@ func (t *transformer) GameVersion() string {
 	}
 
 	return "unknown"
+}
+
+func (t *transformer) GridPosition() int16 {
+	return t.RawTelemetry.GridPosition
 }
 
 func (t *transformer) GroundSpeedMetersPerSecond() float32 {
@@ -343,8 +358,9 @@ func (t *transformer) SequenceID() uint32 {
 	return t.RawTelemetry.SequenceId
 }
 
+// Deprecated: to be removed in next major revision, replaced by GridPosition()
 func (t *transformer) StartingPosition() int16 {
-	return t.RawTelemetry.StartingPosition
+	return t.RawTelemetry.GridPosition
 }
 
 func (t *transformer) SteeringWheelAngleDegrees() float32 {

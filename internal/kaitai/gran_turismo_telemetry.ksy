@@ -74,9 +74,9 @@ seq:
   - id: time_of_day
     type: u4
     -doc: Current time of day on track in milliseconds
-  - id: starting_position
+  - id: grid_position
     type: s2
-    -doc: Starting position at the beginning of the race (-1 when race starts)
+    -doc: Current grid position (-1 when race starts)
   - id: race_entrants
     type: s2
     -doc: Total number of entrants at the beginning of the race (-1 when race starts)
