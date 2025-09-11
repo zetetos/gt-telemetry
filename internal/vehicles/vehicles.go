@@ -8,18 +8,18 @@ import (
 )
 
 type Vehicle struct {
-	CarID                 int
-	Model                 string
-	Manufacturer          string
-	Year                  int
-	Category              string
-	CarType               string
-	Drivetrain            string
-	Aspiration            string
-	EngineLayout          string
-	EngineBankAngle       float32
-	EngineCrankPlaneAngle float32
-	OpenCockpit           bool
+	CarID                 int     `json:"CarID"`
+	Manufacturer          string  `json:"Manufacturer"`
+	Model                 string  `json:"Model"`
+	Year                  int     `json:"Year"`
+	OpenCockpit           bool    `json:"OpenCockpit"`
+	CarType               string  `json:"CarType"`
+	Category              string  `json:"Category"`
+	Drivetrain            string  `json:"Drivetrain"`
+	Aspiration            string  `json:"Aspiration"`
+	EngineLayout          string  `json:"EngineLayout"`
+	EngineBankAngle       float32 `json:"EngineBankAngle"`
+	EngineCrankPlaneAngle float32 `json:"EngineCrankPlaneAngle"`
 }
 
 type Inventory struct {
