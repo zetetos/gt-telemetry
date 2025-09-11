@@ -50,7 +50,14 @@ config := telemetry_client.GTClientOpts{
 }
 gt, _ := telemetry_client.NewGTClient(config)
 go func() {
-    _, _ = gt.Run()
+    err, recoverable = gt.Run()
+    if err != nil {
+        if recoverable {
+            log.Printf("Recoverable error: %s", err.Error())
+        } else {
+            log.Fatalf("Fatal client error: %s", err.Error())
+        }
+    }
 }()
 ```
 
