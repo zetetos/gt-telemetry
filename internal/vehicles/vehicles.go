@@ -7,6 +7,7 @@ import (
 	"strconv"
 )
 
+// Vehicle represents information about a specific vehicle
 type Vehicle struct {
 	CarID                 int     `json:"CarID"`
 	Manufacturer          string  `json:"Manufacturer"`
@@ -22,30 +23,38 @@ type Vehicle struct {
 	EngineCrankPlaneAngle float32 `json:"EngineCrankPlaneAngle"`
 }
 
-type Inventory struct {
-	db map[string]Vehicle
+// VehicleInventory represents the complete JSON structure from the embedded vehicle inventory data
+type VehicleInventory map[string]Vehicle
+
+// VehicleDB provides an object and methods to access vehicle information from the embedded inventory
+type VehicleDB struct {
+	inventory VehicleInventory
 }
 
-//go:embed inventory.json
+//go:embed vehicles.json
 var baseInventoryJSON []byte
 
-func NewInventory(inventoryJSON []byte) (*Inventory, error) {
-	inventory := Inventory{}
+// NewDB creates a new VehicleDB instance by loading the vehicle inventory from embedded JSON data
+func NewDB(inventoryJSON []byte) (*VehicleDB, error) {
+	inventory := VehicleInventory{}
 
 	if inventoryJSON == nil {
 		inventoryJSON = baseInventoryJSON
 	}
 
-	err := json.Unmarshal([]byte(inventoryJSON), &inventory.db)
+	err := json.Unmarshal([]byte(inventoryJSON), &inventory)
 	if err != nil {
-		return &Inventory{}, fmt.Errorf("unmarshall inventory JSON: %w", err)
+		return &VehicleDB{}, fmt.Errorf("unmarshall vehicle inventory JSON: %w", err)
 	}
 
-	return &inventory, nil
+	return &VehicleDB{
+		inventory: inventory,
+	}, nil
 }
 
-func (i *Inventory) GetVehicleByID(id int) (Vehicle, error) {
-	vehicle, ok := i.db[strconv.Itoa(id)]
+// GetVehicleByID retrieves a Vehicle from the inventory by its CarID
+func (i *VehicleDB) GetVehicleByID(id int) (Vehicle, error) {
+	vehicle, ok := i.inventory[strconv.Itoa(id)]
 	if !ok {
 		return Vehicle{}, fmt.Errorf("no vehicle found with id %d", id)
 	}
@@ -53,6 +62,7 @@ func (i *Inventory) GetVehicleByID(id int) (Vehicle, error) {
 	return vehicle, nil
 }
 
+// ExpandedAspiration provides a human-readable description of the vehicle's aspiration type
 func (v *Vehicle) ExpandedAspiration() string {
 	switch v.Aspiration {
 	case "EV":
