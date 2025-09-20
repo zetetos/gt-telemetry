@@ -60,10 +60,10 @@ seq:
     type: u4
     -doc: Packet sequence ID
   - id: current_lap
-    type: u2
+    type: s2
     -doc: Current lap number
   - id: race_laps
-    type: u2
+    type: s2
     -doc: Total laps in race
   - id: best_laptime
     type: s4

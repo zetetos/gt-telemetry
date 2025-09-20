@@ -163,7 +163,7 @@ func (t *transformer) CurrentGearRatio() float32 {
 }
 
 func (t *transformer) CurrentLap() int16 {
-	return int16(t.RawTelemetry.CurrentLap)
+	return t.RawTelemetry.CurrentLap
 }
 
 func (t *transformer) DifferentialRatio() float32 {
@@ -290,6 +290,30 @@ func (t *transformer) Heading() float32 {
 	return t.RawTelemetry.Heading
 }
 
+func (t *transformer) IsInMainMenu() bool {
+	if t.RawTelemetry.RaceLaps < 0 && t.RawTelemetry.RaceEntrants < 0 {
+		return true
+	}
+
+	return false
+}
+
+func (t *transformer) IsInRaceMenu() bool {
+	if t.RawTelemetry.RaceLaps >= 0 && t.RawTelemetry.RaceEntrants < 0 {
+		return true
+	}
+
+	return false
+}
+
+func (t *transformer) IsOnCircuit() bool {
+	if t.RawTelemetry.RaceLaps >= 0 && t.RawTelemetry.RaceEntrants >= 0 {
+		return true
+	}
+
+	return false
+}
+
 func (t *transformer) LastLaptime() time.Duration {
 	return time.Duration(t.RawTelemetry.LastLaptime) * time.Millisecond
 }
@@ -320,6 +344,11 @@ func (t *transformer) RaceEntrants() int16 {
 }
 
 func (t *transformer) RaceLaps() uint16 {
+	return uint16(t.RawTelemetry.RaceLaps)
+}
+
+// Temporary fix, will replace RaceLaps() in 2.0 release
+func (t *transformer) RaceLapsSigned() int16 {
 	return t.RawTelemetry.RaceLaps
 }
 

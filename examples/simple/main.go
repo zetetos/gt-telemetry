@@ -216,30 +216,33 @@ func main() {
 		)
 
 		fmt.Println()
-		fmt.Printf("Flags         %s    %s        %s\n",
+		fmt.Printf("Flags         %s    %s        %s         %s\n",
 			renderFlag(client.Telemetry.Flags().RevLimiterAlert, "RevLimit", "red", "grey"),
 			renderFlag(client.Telemetry.Flags().TCSActive, "TCS", "red", "grey"),
 			renderFlag(client.Telemetry.Flags().ASMActive, "ASM", "red", "grey"),
+			renderFlag(client.Telemetry.Flags().Flag13, "13", "red", "grey"),
 		)
-		fmt.Printf("              %s      %s   %s\n",
+		fmt.Printf("              %s      %s   %s   %s\n",
 			renderFlag(client.Telemetry.Flags().HeadlightsActive, "Lights", "green", "grey"),
 			renderFlag(client.Telemetry.Flags().LowBeamActive, "Low beam", "yellow", "grey"),
 			renderFlag(client.Telemetry.Flags().HighBeamActive, "High beam", "blue", "grey"),
+			renderFlag(client.Telemetry.Flags().Flag14, "14", "red", "grey"),
 		)
-		fmt.Printf("              %s     %s\n",
+		fmt.Printf("              %s     %s              %s\n",
 			renderFlag(client.Telemetry.Flags().InGear, "In gear", "green", "red"),
 			renderFlag(client.Telemetry.Flags().HandbrakeActive, "Handbrake", "red", "grey"),
+			renderFlag(client.Telemetry.Flags().Flag15, "15", "red", "grey"),
 		)
-		fmt.Printf("              %s        %s    %s\n",
+		fmt.Printf("              %s        %s    %s      %s\n",
 			renderFlag(client.Telemetry.Flags().Live, "Live", "green", "grey"),
 			renderFlag(client.Telemetry.Flags().Loading, "Loading", "yellow", "grey"),
 			renderFlag(client.Telemetry.Flags().GamePaused, "Paused", "red", "grey"),
-		)
-		fmt.Printf("Other flags   %s  %s  %s  %s\n",
-			renderFlag(client.Telemetry.Flags().Flag13, "13", "red", "grey"),
-			renderFlag(client.Telemetry.Flags().Flag14, "14", "red", "grey"),
-			renderFlag(client.Telemetry.Flags().Flag15, "15", "red", "grey"),
 			renderFlag(client.Telemetry.Flags().Flag16, "16", "red", "grey"),
+		)
+		fmt.Printf("Game flags    %s    %s   %s\n",
+			renderFlag(client.Telemetry.IsInMainMenu(), "MainMenu", "green", "grey"),
+			renderFlag(client.Telemetry.IsInRaceMenu(), "RaceMenu", "green", "grey"),
+			renderFlag(client.Telemetry.IsOnCircuit(), "OnCircuit", "green", "grey"),
 		)
 
 		fmt.Println()
