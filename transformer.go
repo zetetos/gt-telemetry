@@ -290,6 +290,30 @@ func (t *transformer) Heading() float32 {
 	return t.RawTelemetry.Heading
 }
 
+func (t *transformer) IsInMainMenu() bool {
+	if t.RawTelemetry.RaceLaps < 0 && t.RawTelemetry.RaceEntrants < 0 {
+		return true
+	}
+
+	return false
+}
+
+func (t *transformer) IsInRaceMenu() bool {
+	if t.RawTelemetry.RaceLaps >= 0 && t.RawTelemetry.RaceEntrants < 0 {
+		return true
+	}
+
+	return false
+}
+
+func (t *transformer) IsOnCircuit() bool {
+	if t.RawTelemetry.RaceLaps >= 0 && t.RawTelemetry.RaceEntrants >= 0 {
+		return true
+	}
+
+	return false
+}
+
 func (t *transformer) LastLaptime() time.Duration {
 	return time.Duration(t.RawTelemetry.LastLaptime) * time.Millisecond
 }

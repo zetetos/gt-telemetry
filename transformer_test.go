@@ -479,6 +479,123 @@ func (suite *TransformerTestSuite) TestGameVersionFIXME() {
 	// suite.Equal(wantValue, gotValue)
 }
 
+func (suite *TransformerTestSuite) TestIsInMainMenuReturnsTrueWhenInMainMenu() {
+	// Arrange
+	wantValue := true
+	suite.transformer.RawTelemetry.RaceLaps = -1
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	gotValue := suite.transformer.IsInMainMenu()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestIsInMainMenuReturnsFalseWhenInPreRaceMenu() {
+	// Arrange
+	wantValue := false
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	gotValue := suite.transformer.IsInMainMenu()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestIsInMainMenuReturnsFalseWhenOnCircuit() {
+	// Arrange
+	wantValue := false
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.RaceEntrants = 0
+
+	// Act
+	gotValue := suite.transformer.IsInMainMenu()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestIsInRaceMenuRetunsTrueWhenInRaceMenu() {
+	// Arrange
+	wantValue := true
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	gotValue := suite.transformer.IsInRaceMenu()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestIsInRaceMenuRetunsFalseWhenInMainMenu() {
+	// Arrange
+	wantValue := false
+	suite.transformer.RawTelemetry.RaceLaps = -1
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	gotValue := suite.transformer.IsInRaceMenu()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestIsInRaceMenuRetunsFalseWhenOnCircuit() {
+	// Arrange
+	wantValue := false
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.RaceEntrants = 0
+
+	// Act
+	gotValue := suite.transformer.IsInRaceMenu()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestIsOnCircuitReturnsTrueWhenOnCircuit() {
+	// Arrange
+	wantValue := true
+	suite.transformer.RawTelemetry.CurrentLap = 0
+	suite.transformer.RawTelemetry.RaceEntrants = 0
+
+	// Act
+	gotValue := suite.transformer.IsOnCircuit()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestIsOnCircuitReturnsFalseWhenInMainMenu() {
+	// Arrange
+	wantValue := false
+	suite.transformer.RawTelemetry.RaceLaps = -1
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	gotValue := suite.transformer.IsOnCircuit()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestIsOnCircuitReturnsFalseWhenInRaceMenu() {
+	// Arrange
+	wantValue := false
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	gotValue := suite.transformer.IsOnCircuit()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
 func (suite *TransformerTestSuite) TestTransmissionReturnsCorrectValue() {
 	// Arrange
 	ratios := []float32{2.0, 1.0, 0.5}
