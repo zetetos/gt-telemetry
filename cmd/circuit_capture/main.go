@@ -209,7 +209,7 @@ func saveTrackMap(filename string, circuitData *CircuitData, minX, maxX, minY, m
 		circuitData.Coordinates.StartingLine.Y,
 		circuitData.Coordinates.StartingLine.Z,
 	)
-	fmt.Printf("Track length: %.2f meters\n", circuitData.LengthMeters)
+	fmt.Printf("Track length: %d meters\n", circuitData.LengthMeters)
 
 	// Print map extents and size in xyz if available
 	if extentsInit {
