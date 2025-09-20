@@ -163,7 +163,7 @@ func (t *transformer) CurrentGearRatio() float32 {
 }
 
 func (t *transformer) CurrentLap() int16 {
-	return int16(t.RawTelemetry.CurrentLap)
+	return t.RawTelemetry.CurrentLap
 }
 
 func (t *transformer) DifferentialRatio() float32 {
@@ -320,6 +320,11 @@ func (t *transformer) RaceEntrants() int16 {
 }
 
 func (t *transformer) RaceLaps() uint16 {
+	return uint16(t.RawTelemetry.RaceLaps)
+}
+
+// Temporary fix, will replace RaceLaps() in 2.0 release
+func (t *transformer) RaceLapsSigned() int16 {
 	return t.RawTelemetry.RaceLaps
 }
 

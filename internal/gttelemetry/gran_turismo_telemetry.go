@@ -23,8 +23,8 @@ type GranTurismoTelemetry struct {
 	OilTemperature float32
 	TyreTemperature *GranTurismoTelemetry_CornerSet
 	SequenceId uint32
-	CurrentLap uint16
-	RaceLaps uint16
+	CurrentLap int16
+	RaceLaps int16
 	BestLaptime int32
 	LastLaptime int32
 	TimeOfDay uint32
@@ -185,16 +185,16 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 		return err
 	}
 	this.SequenceId = uint32(tmp18)
-	tmp19, err := this._io.ReadU2le()
+	tmp19, err := this._io.ReadS2le()
 	if err != nil {
 		return err
 	}
-	this.CurrentLap = uint16(tmp19)
-	tmp20, err := this._io.ReadU2le()
+	this.CurrentLap = int16(tmp19)
+	tmp20, err := this._io.ReadS2le()
 	if err != nil {
 		return err
 	}
-	this.RaceLaps = uint16(tmp20)
+	this.RaceLaps = int16(tmp20)
 	tmp21, err := this._io.ReadS4le()
 	if err != nil {
 		return err

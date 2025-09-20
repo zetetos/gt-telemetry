@@ -250,7 +250,7 @@ func (suite *TransformerTestSuite) TestCurrentGearRatioReturnsDefaultValueWhenTe
 func (suite *TransformerTestSuite) TestCurrentLapReturnsCorrectValue() {
 	// Arrange
 	wantValue := int16(3)
-	suite.transformer.RawTelemetry.CurrentLap = uint16(wantValue)
+	suite.transformer.RawTelemetry.CurrentLap = wantValue
 
 	// Act
 	gotValue := suite.transformer.CurrentLap()
@@ -614,10 +614,22 @@ func (suite *TransformerTestSuite) TestRaceEntrantsReturnsCorrectValue() {
 func (suite *TransformerTestSuite) TestRaceLapsReturnsCorrectValue() {
 	// Arrange
 	wantValue := uint16(30)
-	suite.transformer.RawTelemetry.RaceLaps = wantValue
+	suite.transformer.RawTelemetry.RaceLaps = int16(wantValue)
 
 	// Act
 	gotValue := suite.transformer.RaceLaps()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceLapsSignedReturnsCorrectValue() {
+	// Arrange
+	wantValue := int16(30)
+	suite.transformer.RawTelemetry.RaceLaps = wantValue
+
+	// Act
+	gotValue := suite.transformer.RaceLapsSigned()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
