@@ -6,12 +6,13 @@ import (
 	"time"
 
 	telemetry_client "github.com/zetetos/gt-telemetry"
+	"github.com/zetetos/gt-telemetry/internal/circuits"
 	"github.com/zetetos/gt-telemetry/internal/telemetrysrc"
 )
 
 func main() {
 	clientConfig := telemetry_client.GTClientOpts{
-		Source:       "file://examples/simple/replay.gtz",
+		// Source:       "file://examples/simple/replay.gtz",
 		Format:       telemetrysrc.TelemetryFormatTilde,
 		StatsEnabled: true,
 	}
@@ -38,6 +39,10 @@ func main() {
 
 	fmt.Println("Waiting for data...    Press Ctrl+C to exit")
 
+	circuit := circuits.CircuitInfo{
+		Length: 0,
+	}
+
 	sequenceID := uint32(0)
 	for !client.Finished {
 		if sequenceID == client.Telemetry.SequenceID() {
@@ -45,6 +50,18 @@ func main() {
 			continue
 		}
 		sequenceID = client.Telemetry.SequenceID()
+
+		if client.Telemetry.IsInMainMenu() {
+			circuit = circuits.CircuitInfo{
+				Name:   "",
+				Length: 0,
+			}
+		} else if circuit.Length == 0 {
+			circuit = circuits.CircuitInfo{
+				Name:   "Locating...",
+				Length: 0,
+			}
+		}
 
 		suggestedGear := client.Telemetry.SuggestedGear()
 		suggestedGearStr := fmt.Sprintf("[%d]", suggestedGear)
@@ -56,6 +73,21 @@ func main() {
 		boostStr := ""
 		if hasTurbo {
 			boostStr = fmt.Sprintf("Boost: %+1.02f Bar", client.Telemetry.TurboBoostBar())
+		}
+
+		if circuit.Length == 0 {
+			vector := client.Telemetry.PositionalMapCoordinates()
+			coordinate := circuits.Coordinate{X: int16(vector.X), Y: int16(vector.Y), Z: int16(vector.Z)}
+			circuits, found := client.Circuits.GetCircuitsAtCoordinate(coordinate)
+			if found {
+				if len(circuits) == 1 {
+					circuitId := circuits[0]
+					circuitInfo, found := client.Circuits.GetCircuitByID(circuitId)
+					if found {
+						circuit = circuitInfo
+					}
+				}
+			}
 		}
 
 		fmt.Print("\033[H\033[2J")
@@ -70,6 +102,11 @@ func main() {
 			client.Telemetry.BestLaptime(),
 			client.Telemetry.GridPosition(),
 			client.Telemetry.RaceEntrants(),
+		)
+
+		fmt.Printf("Circuit	      Length: %d m   Name: %s\n",
+			circuit.Length,
+			circuit.Name,
 		)
 
 		fmt.Println()

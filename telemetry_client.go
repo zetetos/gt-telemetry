@@ -12,6 +12,7 @@ import (
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"github.com/rs/zerolog"
 
+	"github.com/zetetos/gt-telemetry/internal/circuits"
 	"github.com/zetetos/gt-telemetry/internal/gttelemetry"
 	"github.com/zetetos/gt-telemetry/internal/telemetrysrc"
 	"github.com/zetetos/gt-telemetry/internal/vehicles"
@@ -39,6 +40,7 @@ type GTClientOpts struct {
 	LogLevel     string
 	Logger       *zerolog.Logger
 	StatsEnabled bool
+	CircuitDB    string
 	VehicleDB    string
 }
 
@@ -50,6 +52,7 @@ type GTClient struct {
 	Finished         bool
 	Statistics       *statistics
 	Telemetry        *transformer
+	Circuits         *circuits.CircuitDB
 }
 
 func NewGTClient(opts GTClientOpts) (*GTClient, error) {
@@ -93,18 +96,32 @@ func NewGTClient(opts GTClientOpts) (*GTClient, error) {
 		opts.Format = telemetrysrc.TelemetryFormatTilde
 	}
 
-	var inventoryJSON []byte
+	var circuitsJSON []byte
+	if opts.CircuitDB != "" {
+		var err error
+		circuitsJSON, err = os.ReadFile(opts.CircuitDB)
+		if err != nil {
+			return nil, fmt.Errorf("reading circuit DB from file: %w", err)
+		}
+	}
+
+	circuitDB, err := circuits.NewDB(circuitsJSON)
+	if err != nil {
+		return nil, fmt.Errorf("setting up new circuit database: %w", err)
+	}
+
+	var vehiclesJSON []byte
 	if opts.VehicleDB != "" {
 		var err error
-		inventoryJSON, err = os.ReadFile(opts.VehicleDB)
+		vehiclesJSON, err = os.ReadFile(opts.VehicleDB)
 		if err != nil {
 			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
 		}
 	}
 
-	inventory, err := vehicles.NewInventory(inventoryJSON)
+	vehicleDB, err := vehicles.NewDB(vehiclesJSON)
 	if err != nil {
-		return nil, fmt.Errorf("setting up new inventory: %w", err)
+		return nil, fmt.Errorf("setting up new vehicle database: %w", err)
 	}
 
 	return &GTClient{
@@ -127,7 +144,8 @@ func NewGTClient(opts GTClientOpts) (*GTClient, error) {
 			PacketsInvalid:    0,
 			packetIDLast:      0,
 		},
-		Telemetry: NewTransformer(inventory),
+		Telemetry: NewTransformer(vehicleDB),
+		Circuits:  circuitDB,
 	}, nil
 }
 
