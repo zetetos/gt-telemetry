@@ -78,11 +78,11 @@ type Vmax struct {
 
 type transformer struct {
 	RawTelemetry gttelemetry.GranTurismoTelemetry
-	inventory    *vehicles.Inventory
+	inventory    *vehicles.VehicleDB
 	vehicle      vehicles.Vehicle
 }
 
-func NewTransformer(inventory *vehicles.Inventory) *transformer {
+func NewTransformer(inventory *vehicles.VehicleDB) *transformer {
 	return &transformer{
 		RawTelemetry: gttelemetry.GranTurismoTelemetry{},
 		inventory:    inventory,

@@ -36,7 +36,7 @@ func (suite *TransformerTestSuite) SetupTest() {
 			"CarType": "race"
 		}
 	}`)
-	inventory, _ := vehicles.NewInventory(inventoryJSON)
+	inventory, _ := vehicles.NewDB(inventoryJSON)
 	transformer := NewTransformer(inventory)
 	transformer.RawTelemetry = gttelemetry.GranTurismoTelemetry{}
 

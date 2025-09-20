@@ -34,7 +34,7 @@ func (suite *VehiclesTestSuite) TestEmptyJSONParameterFallsBackToBaseInventory()
 	var inventoryJSON []byte
 
 	// Act
-	inventory, err := NewInventory(inventoryJSON)
+	inventory, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	gotValue, err := inventory.GetVehicleByID(wantValue.CarID)
@@ -63,7 +63,7 @@ func (suite *VehiclesTestSuite) TestValidJSONParameterCanConstructInventory() {
 	}`)
 
 	// Act
-	_, err := NewInventory(inventoryJSON)
+	_, err := NewDB(inventoryJSON)
 
 	// Assert
 	suite.Require().NoError(err)
@@ -76,10 +76,10 @@ func (suite *VehiclesTestSuite) TestInvalidJSONParameterReturnsError() {
 	}`)
 
 	// Act
-	_, err := NewInventory(inventoryJSON)
+	_, err := NewDB(inventoryJSON)
 
 	// Assert
-	suite.Assert().ErrorContains(err, "unmarshall inventory JSON")
+	suite.Assert().ErrorContains(err, "unmarshall vehicle inventory JSON")
 }
 
 func (suite *VehiclesTestSuite) TestGetVehicleIDWithInvalidIDReturnsError() {
@@ -87,7 +87,7 @@ func (suite *VehiclesTestSuite) TestGetVehicleIDWithInvalidIDReturnsError() {
 	inventoryJSON := []byte(`{}`)
 
 	// Act
-	inventory, err := NewInventory(inventoryJSON)
+	inventory, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	_, err = inventory.GetVehicleByID(1)
@@ -130,7 +130,7 @@ func (suite *VehiclesTestSuite) TestGetVehicleWIthValidIDReturnsVehicle() {
 	}`)
 
 	// Act
-	inventory, err := NewInventory(inventoryJSON)
+	inventory, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	gotValue, err := inventory.GetVehicleByID(wantValue.CarID)

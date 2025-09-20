@@ -19,7 +19,7 @@ func TestUnitAlternatesTestSuite(t *testing.T) {
 }
 
 func (suite *UnitAlternatesTestSuite) SetupTest() {
-	transformer := NewTransformer(&vehicles.Inventory{})
+	transformer := NewTransformer(&vehicles.VehicleDB{})
 	transformer.RawTelemetry = gttelemetry.GranTurismoTelemetry{}
 
 	suite.transformer = transformer
