@@ -84,7 +84,7 @@ func main() {
 		lastLap           = gt.Telemetry.CurrentLap()
 		lapStarted        bool
 		seenCoords        = make(map[Coordinate]struct{})
-		lastPos           *gttelemetry.Vector
+		lastPos           *gttelemetry.Coordinate
 		distanceTravelled float64
 		minX, maxX        float32
 		minY, maxY        float32

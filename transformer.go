@@ -71,6 +71,12 @@ type Vector struct {
 	Z float32
 }
 
+type Coordinate struct {
+	X float32
+	Y float32
+	Z float32
+}
+
 type Vmax struct {
 	Speed uint16
 	RPM   uint16
@@ -316,13 +322,13 @@ func (t *transformer) OilTemperatureCelsius() float32 {
 	return t.RawTelemetry.OilTemperature
 }
 
-func (t *transformer) PositionalMapCoordinates() Vector {
+func (t *transformer) PositionalMapCoordinates() Coordinate {
 	position := t.RawTelemetry.MapPositionCoordinates
 	if position == nil {
-		return Vector{}
+		return Coordinate{}
 	}
 
-	return Vector{
+	return Coordinate{
 		X: position.CoordinateX,
 		Y: position.CoordinateY,
 		Z: position.CoordinateZ,

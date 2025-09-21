@@ -666,7 +666,7 @@ func (suite *TransformerTestSuite) TestOilTemperatureCelsiusReturnsCorrectValue(
 
 func (suite *TransformerTestSuite) TestPositionalMapCoordinatesReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Assert
-	wantValue := Vector{}
+	wantValue := Coordinate{}
 	suite.transformer.RawTelemetry.MapPositionCoordinates = nil
 
 	// Act
