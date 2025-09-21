@@ -142,55 +142,55 @@ seq:
     -doc: ID of the vehicle
   - id: steering_wheel_angle_radians
     type: f4
-    if: has_section_b
+    if: addendum_1_format
     -doc: Steering wheel angular position in radians
   - id: steering_wheel_force_feedback
     type: f4
-    if: has_section_b
+    if: addendum_1_format
     -doc: Steering wheel force feedback signal (unverified)
   - id: translational_envelope
     type: translational_envelope
-    if: has_section_b
+    if: addendum_1_format
     -doc: Body forces along axes (-1 to 1)
   - id: throttle_input
     type: u1
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Throttle input value from controller (0-255)
   - id: brake_output
     type: u1
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Brake output value after ABS applied (0-255) (live sessions only)
   - id: unknown0x13e
     type: u1
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly bitfield related to EV
   - id: unknown0x13f
     type: u1
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly bitfield
   - id: unknown0x140
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly FL torque vectoring
   - id: unknown0x144
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly FR torque vectoring
   - id: unknown0x148
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly RL torque vectoring
   - id: unknown0x14c
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly RR torque vectoring
   - id: energy_recovery
     type: f4
-    if: has_section_tilde
-    -doc: Energy recovery value in FIXME
+    if: addendum_2_format
+    -doc: Energy recovery value in [unknown units]
   - id: unknown0x154
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, something related to vehicle motion
 types:
   header:
@@ -314,12 +314,12 @@ instances:
   header_is_gt7:
     doc: True when the telemetry data is sent from Gran Turismo 7 or Sport
     value: header.magic == 1194808112
-  has_section_a:
+  standard_format:
     doc: True when the telemetry data contains data requested with format "A"
     value: _io.size >= 296
-  has_section_b:
+  addendum_1_format:
     doc: True when the telemetry data contains data requested with format "B"
     value: _io.size > 296
-  has_section_tilde:
+  addendum_2_format:
     doc: True when the telemetry data contains data requested with format "~"
     value: _io.size > 316
