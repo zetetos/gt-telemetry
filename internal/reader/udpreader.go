@@ -1,4 +1,4 @@
-package telemetrysrc
+package reader
 
 import (
 	"fmt"
@@ -7,15 +7,10 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/zetetos/gt-telemetry/internal/utils"
+	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
 )
 
-type TelemetryFormat string
-
 const (
-	TelemetryFormatA     TelemetryFormat = "A"
-	TelemetryFormatB     TelemetryFormat = "B"
-	TelemetryFormatTilde TelemetryFormat = "~"
-
 	HeartbeatInterval = 10 * time.Second
 )
 
@@ -23,13 +18,13 @@ type UDPReader struct {
 	conn      *net.UDPConn
 	address   string
 	sendPort  int
-	format    TelemetryFormat
+	format    telemetryformat.Name
 	ivSeed    uint32
 	closeFunc func() error
 	log       zerolog.Logger
 }
 
-func NewNetworkUDPReader(host string, sendPort int, format TelemetryFormat, log zerolog.Logger) (*UDPReader, error) {
+func NewUDPReader(host string, sendPort int, format telemetryformat.Name, log zerolog.Logger) (*UDPReader, error) {
 	log.Debug().Msg("creating UDP reader")
 
 	receivePort := sendPort + 1
@@ -114,13 +109,13 @@ func (r *UDPReader) sendHeartbeat() error {
 	return nil
 }
 
-func getIVSeedForFormat(format TelemetryFormat) uint32 {
+func getIVSeedForFormat(format telemetryformat.Name) uint32 {
 	switch format {
-	case TelemetryFormatA:
+	case telemetryformat.Standard:
 		return 0xDEADBEAF
-	case TelemetryFormatB:
+	case telemetryformat.Addendum1:
 		return 0xDEADBEEF
-	case TelemetryFormatTilde:
+	case telemetryformat.Addendum2:
 		return 0x55FABB4F
 	}
 
