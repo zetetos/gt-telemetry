@@ -12,6 +12,7 @@ import (
 	"time"
 
 	gttelemetry "github.com/zetetos/gt-telemetry"
+	"github.com/zetetos/gt-telemetry/pkg/models"
 )
 
 const (
@@ -84,7 +85,7 @@ func main() {
 		lastLap           = gt.Telemetry.CurrentLap()
 		lapStarted        bool
 		seenCoords        = make(map[Coordinate]struct{})
-		lastPos           *gttelemetry.Coordinate
+		lastPos           *models.Coordinate
 		distanceTravelled float64
 		minX, maxX        float32
 		minY, maxY        float32

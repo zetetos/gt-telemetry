@@ -15,7 +15,7 @@ import (
 	"github.com/zetetos/gt-telemetry/internal/reader"
 	"github.com/zetetos/gt-telemetry/internal/telemetry"
 	"github.com/zetetos/gt-telemetry/pkg/circuits"
-	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
+	"github.com/zetetos/gt-telemetry/pkg/models"
 	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
 
@@ -37,7 +37,7 @@ type statistics struct {
 
 type Options struct {
 	Source       string
-	Format       telemetryformat.Name
+	Format       models.Name
 	LogLevel     string
 	Logger       *zerolog.Logger
 	StatsEnabled bool
@@ -48,7 +48,7 @@ type Options struct {
 type Client struct {
 	log              zerolog.Logger
 	source           string
-	format           telemetryformat.Name
+	format           models.Name
 	DecipheredPacket []byte
 	Finished         bool
 	Statistics       *statistics
@@ -94,7 +94,7 @@ func New(opts Options) (*Client, error) {
 	}
 
 	if opts.Format == "" {
-		opts.Format = telemetryformat.Addendum2
+		opts.Format = models.Addendum2
 	}
 
 	var circuitsJSON []byte

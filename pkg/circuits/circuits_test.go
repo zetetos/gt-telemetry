@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+	"github.com/zetetos/gt-telemetry/pkg/models"
 )
 
 type CircuitsTestSuite struct {
@@ -86,7 +87,7 @@ func (suite *CircuitsTestSuite) TestGetCircuitByIDWithValidIDReturnsCircuit() {
 		Name:      "Test Circuit",
 		Region:    "test",
 		Length:    1500,
-		StartLine: Coordinate{X: 100, Y: 20, Z: 300},
+		StartLine: models.CoordinateNorm{X: 100, Y: 20, Z: 300},
 	}
 
 	inventoryJSON := []byte(`{
@@ -128,7 +129,7 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtCoordinateWithValidCoordinateRe
 	suite.Require().NoError(err)
 
 	// Test coordinate that should normalize to x:64,y:8,z:64
-	got, found := db.GetCircuitsAtCoordinate(Coordinate{X: 80, Y: 10, Z: 90})
+	got, found := db.GetCircuitsAtCoordinate(models.Coordinate{X: 80, Y: 10, Z: 90})
 
 	// Assert
 	suite.Assert().True(found, "Should find circuits at coordinate")
@@ -146,7 +147,7 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtCoordinateWithInvalidCoordinate
 	db, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
-	got, found := db.GetCircuitsAtCoordinate(Coordinate{X: 100, Y: 100, Z: 100})
+	got, found := db.GetCircuitsAtCoordinate(models.Coordinate{X: 100, Y: 100, Z: 100})
 
 	// Assert
 	suite.Assert().False(found, "Should not find circuits at non-existent coordinate")
@@ -156,7 +157,7 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtCoordinateWithInvalidCoordinate
 func (suite *CircuitsTestSuite) TestGetCircuitsAtStartLineWithValidCoordinateReturnsCircuits() {
 	// Arrange
 	want := "test_circuit"
-	normalisedCoordinate := Coordinate{X: 40, Y: 6, Z: 50}
+	coordinate := models.Coordinate{X: 40, Y: 6, Z: 50}
 	inventoryJSON := []byte(`{
 		"circuits": {
 			"test_circuit": {
@@ -173,7 +174,7 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtStartLineWithValidCoordinateRet
 	// Act
 	db, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
-	got, found := db.GetCircuitsAtStartLine(normalisedCoordinate)
+	got, found := db.GetCircuitsAtStartLine(coordinate)
 
 	// Assert
 	suite.Assert().True(found, "Should find circuit at start line")
@@ -260,33 +261,33 @@ func (suite *CircuitsTestSuite) TestNormaliseStartLineCoordinate() {
 	// Arrange
 	tests := []struct {
 		name  string
-		input Coordinate
-		want  struct{ X, Y, Z int16 }
+		input models.Coordinate
+		want  models.CoordinateNorm
 	}{
 		{
 			name:  "coordinates divisible by normalisation factors",
-			input: Coordinate{X: 64, Y: 8, Z: 96},
-			want:  struct{ X, Y, Z int16 }{X: 64, Y: 8, Z: 96},
+			input: models.Coordinate{X: 64, Y: 8, Z: 96},
+			want:  models.CoordinateNorm{X: 64, Y: 8, Z: 96},
 		},
 		{
 			name:  "coordinates not divisible by normalisation factors",
-			input: Coordinate{X: 50, Y: 6, Z: 70},
-			want:  struct{ X, Y, Z int16 }{X: 32, Y: 4, Z: 64},
+			input: models.Coordinate{X: 50, Y: 6, Z: 70},
+			want:  models.CoordinateNorm{X: 32, Y: 4, Z: 64},
 		},
 		{
 			name:  "negative coordinates",
-			input: Coordinate{X: -50, Y: -6, Z: -70},
-			want:  struct{ X, Y, Z int16 }{X: -32, Y: -4, Z: -64},
+			input: models.Coordinate{X: -50, Y: -6, Z: -70},
+			want:  models.CoordinateNorm{X: -32, Y: -4, Z: -64},
 		},
 	}
 
-	for _, tt := range tests {
-		suite.Run(tt.name, func() {
+	for _, test := range tests {
+		suite.Run(test.name, func() {
 			// Act
-			got := NormaliseStartLineCoordinate(tt.input)
+			got := NormaliseStartLineCoordinate(test.input)
 
 			// Assert
-			suite.Equal(tt.want, got)
+			suite.Equal(test.want, got)
 		})
 	}
 }
@@ -295,33 +296,33 @@ func (suite *CircuitsTestSuite) TestNormaliseCircuitCoordinate() {
 	// Arrange
 	tests := []struct {
 		name  string
-		input Coordinate
-		want  struct{ X, Y, Z int16 }
+		input models.Coordinate
+		want  models.CoordinateNorm
 	}{
 		{
 			name:  "coordinates divisible by normalisation factors",
-			input: Coordinate{X: 128, Y: 16, Z: 192},
-			want:  struct{ X, Y, Z int16 }{X: 128, Y: 16, Z: 192},
+			input: models.Coordinate{X: 128, Y: 16, Z: 192},
+			want:  models.CoordinateNorm{X: 128, Y: 16, Z: 192},
 		},
 		{
 			name:  "coordinates not divisible by normalisation factors",
-			input: Coordinate{X: 100, Y: 12, Z: 150},
-			want:  struct{ X, Y, Z int16 }{X: 64, Y: 8, Z: 128},
+			input: models.Coordinate{X: 100, Y: 12, Z: 150},
+			want:  models.CoordinateNorm{X: 64, Y: 8, Z: 128},
 		},
 		{
 			name:  "negative coordinates",
-			input: Coordinate{X: -100, Y: -12, Z: -150},
-			want:  struct{ X, Y, Z int16 }{X: -64, Y: -8, Z: -128},
+			input: models.Coordinate{X: -100, Y: -12, Z: -150},
+			want:  models.CoordinateNorm{X: -64, Y: -8, Z: -128},
 		},
 	}
 
-	for _, tt := range tests {
-		suite.Run(tt.name, func() {
+	for _, test := range tests {
+		suite.Run(test.name, func() {
 			// Act
-			got := NormaliseCircuitCoordinate(tt.input)
+			got := NormaliseCircuitCoordinate(test.input)
 
 			// Assert
-			suite.Equal(tt.want, got)
+			suite.Equal(test.want, got)
 		})
 	}
 }
@@ -329,10 +330,10 @@ func (suite *CircuitsTestSuite) TestNormaliseCircuitCoordinate() {
 func (suite *CircuitsTestSuite) TestCoordinateToKey() {
 	// Arrange
 	want := "x:100,y:200,z:300"
-	coordinate := struct{ X, Y, Z int16 }{X: 100, Y: 200, Z: 300}
+	coordinate := models.CoordinateNorm{X: 100, Y: 200, Z: 300}
 
 	// Act
-	got := CoordinateToKey(coordinate)
+	got := CoordinateNormToKey(coordinate)
 
 	// Assert
 	suite.Equal(want, got)

@@ -7,7 +7,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/zetetos/gt-telemetry/internal/utils"
-	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
+	"github.com/zetetos/gt-telemetry/pkg/models"
 )
 
 const (
@@ -18,13 +18,13 @@ type UDPReader struct {
 	conn      *net.UDPConn
 	address   string
 	sendPort  int
-	format    telemetryformat.Name
+	format    models.Name
 	ivSeed    uint32
 	closeFunc func() error
 	log       zerolog.Logger
 }
 
-func NewUDPReader(host string, sendPort int, format telemetryformat.Name, log zerolog.Logger) (*UDPReader, error) {
+func NewUDPReader(host string, sendPort int, format models.Name, log zerolog.Logger) (*UDPReader, error) {
 	log.Debug().Msg("creating UDP reader")
 
 	receivePort := sendPort + 1
@@ -109,13 +109,13 @@ func (r *UDPReader) sendHeartbeat() error {
 	return nil
 }
 
-func getIVSeedForFormat(format telemetryformat.Name) uint32 {
+func getIVSeedForFormat(format models.Name) uint32 {
 	switch format {
-	case telemetryformat.Standard:
+	case models.Standard:
 		return 0xDEADBEAF
-	case telemetryformat.Addendum1:
+	case models.Addendum1:
 		return 0xDEADBEEF
-	case telemetryformat.Addendum2:
+	case models.Addendum2:
 		return 0x55FABB4F
 	}
 

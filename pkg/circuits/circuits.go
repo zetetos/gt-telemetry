@@ -4,13 +4,9 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
-)
 
-type Coordinate struct {
-	X int16 `json:"x"`
-	Y int16 `json:"y"`
-	Z int16 `json:"z"`
-}
+	"github.com/zetetos/gt-telemetry/pkg/models"
+)
 
 // CircuitInfo represents information about a specific race circuit
 type CircuitInfo struct {
@@ -18,7 +14,7 @@ type CircuitInfo struct {
 	Name      string
 	Region    string
 	Length    int
-	StartLine Coordinate
+	StartLine models.CoordinateNorm
 }
 
 // CircuitInventory represents the complete JSON structure from the embedded circuit inventory data
@@ -52,9 +48,7 @@ func NewDB(inventoryJSON []byte) (*CircuitDB, error) {
 	// Populate start line lookup tables
 	inventory.StartLines = make(map[string][]string)
 	for _, circuit := range inventory.Circuits {
-		normalisedCoordinate := NormaliseStartLineCoordinate(circuit.StartLine)
-		key := CoordinateToKey(normalisedCoordinate)
-
+		key := CoordinateNormToKey(circuit.StartLine)
 		inventory.StartLines[key] = append(inventory.StartLines[key], circuit.ID)
 	}
 
@@ -64,13 +58,13 @@ func NewDB(inventoryJSON []byte) (*CircuitDB, error) {
 }
 
 // GetCircuitsAtCoordinate returns the list of circuits at a given coordinate
-func (c *CircuitDB) GetCircuitsAtCoordinate(coordinate Coordinate) (circuitIDs []string, found bool) {
+func (c *CircuitDB) GetCircuitsAtCoordinate(coordinate models.Coordinate) (circuitIDs []string, found bool) {
 	if c.inventory == nil {
 		return nil, false
 	}
 
 	normalisedPos := NormaliseCircuitCoordinate(coordinate)
-	key := CoordinateToKey(normalisedPos)
+	key := CoordinateNormToKey(normalisedPos)
 
 	circuitIDs, found = c.inventory.Coordinates[key]
 
@@ -78,13 +72,13 @@ func (c *CircuitDB) GetCircuitsAtCoordinate(coordinate Coordinate) (circuitIDs [
 }
 
 // GetCircuitsAtStartLine returns the list of circuits at a given start line coordinate
-func (c *CircuitDB) GetCircuitsAtStartLine(coordinate Coordinate) (circuitIDs []string, found bool) {
+func (c *CircuitDB) GetCircuitsAtStartLine(coordinate models.Coordinate) (circuitIDs []string, found bool) {
 	if c.inventory == nil {
 		return nil, false
 	}
 
 	normalisedPos := NormaliseStartLineCoordinate(coordinate)
-	key := CoordinateToKey(normalisedPos)
+	key := CoordinateNormToKey(normalisedPos)
 
 	circuitIDs, found = c.inventory.StartLines[key]
 
@@ -134,27 +128,23 @@ func (c *CircuitDB) GetCircuitsInRegion(region string) (circuits map[string]Circ
 }
 
 // NormaliseStartLineCoordinate normalises a start line coordinate to reduce precision for location matching
-func NormaliseStartLineCoordinate(coordinate Coordinate) (normalised struct{ X, Y, Z int16 }) {
-	normalised = struct{ X, Y, Z int16 }{
+func NormaliseStartLineCoordinate(coordinate models.Coordinate) (normalised models.CoordinateNorm) {
+	return models.CoordinateNorm{
 		X: int16(coordinate.X/32) * 32,
 		Y: int16(coordinate.Y/4) * 4,
 		Z: int16(coordinate.Z/32) * 32,
 	}
-
-	return normalised
 }
 
 // NormaliseCircuitCoordinate normalises a circuit coordinate to reduce precision for location matching
-func NormaliseCircuitCoordinate(coordinate Coordinate) (normalised struct{ X, Y, Z int16 }) {
-	normalised = struct{ X, Y, Z int16 }{
+func NormaliseCircuitCoordinate(coordinate models.Coordinate) (normalised models.CoordinateNorm) {
+	return models.CoordinateNorm{
 		X: int16(coordinate.X/64) * 64,
 		Y: int16(coordinate.Y/8) * 8,
 		Z: int16(coordinate.Z/64) * 64,
 	}
-
-	return normalised
 }
 
-func CoordinateToKey(normalised struct{ X, Y, Z int16 }) string {
+func CoordinateNormToKey(normalised models.CoordinateNorm) string {
 	return fmt.Sprintf("x:%d,y:%d,z:%d", normalised.X, normalised.Y, normalised.Z)
 }

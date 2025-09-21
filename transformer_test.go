@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	"github.com/zetetos/gt-telemetry/internal/telemetry"
+	"github.com/zetetos/gt-telemetry/pkg/models"
 	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
 
@@ -45,7 +46,7 @@ func (suite *TransformerTestSuite) SetupTest() {
 
 func (suite *TransformerTestSuite) TestAngularVelocityVectorReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Arrange
-	wantValue := Vector{}
+	wantValue := models.Vector{}
 	suite.transformer.RawTelemetry.AngularVelocityVector = nil
 
 	// Act
@@ -57,7 +58,7 @@ func (suite *TransformerTestSuite) TestAngularVelocityVectorReturnsEmptyObjectWh
 
 func (suite *TransformerTestSuite) TestAngularVelocityVectorReturnsCorrectVectorWhenTelemetryPopulated() {
 	// Arrange
-	wantValue := Vector{X: 0.1, Y: 0.2, Z: 0.3}
+	wantValue := models.Vector{X: 0.1, Y: 0.2, Z: 0.3}
 	suite.transformer.RawTelemetry.AngularVelocityVector = &telemetry.GranTurismoTelemetry_Vector{
 		VectorX: wantValue.X,
 		VectorY: wantValue.Y,
@@ -666,7 +667,7 @@ func (suite *TransformerTestSuite) TestOilTemperatureCelsiusReturnsCorrectValue(
 
 func (suite *TransformerTestSuite) TestPositionalMapCoordinatesReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Assert
-	wantValue := Coordinate{}
+	wantValue := models.Coordinate{}
 	suite.transformer.RawTelemetry.MapPositionCoordinates = nil
 
 	// Act
@@ -731,7 +732,7 @@ func (suite *TransformerTestSuite) TestRideHeightMetersReturnsCorrectValue() {
 
 func (suite *TransformerTestSuite) TestRotationEnvelopeReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Arrange
-	wantValue := RotationalEnvelope{}
+	wantValue := models.RotationalEnvelope{}
 	suite.transformer.RawTelemetry.RotationalEnvelope = nil
 
 	// Act
@@ -834,7 +835,7 @@ func (suite *TransformerTestSuite) TestSuspensionHeightMetersReturnsEmptyCornerS
 	gotValue := suite.transformer.SuspensionHeightMeters()
 
 	// Assert
-	suite.Equal(CornerSet{}, gotValue)
+	suite.Equal(models.CornerSet{}, gotValue)
 }
 
 func (suite *TransformerTestSuite) TestSuspensionHeightMetersRetursCorrectValue() {
@@ -942,7 +943,7 @@ func (suite *TransformerTestSuite) TestTimeOfDayReturnsCorrectDuration() {
 
 func (suite *TransformerTestSuite) TestTranslationEnvelopeReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Arrange
-	wantValue := TranslationalEnvelope{}
+	wantValue := models.TranslationalEnvelope{}
 	suite.transformer.RawTelemetry.TranslationalEnvelope = nil
 
 	// Act
@@ -995,7 +996,7 @@ func (suite *TransformerTestSuite) TestTurboBoostBarReturnsCorrectValue() {
 
 func (suite *TransformerTestSuite) TestTyreDiameterMetersReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Arrange
-	wantValue := CornerSet{}
+	wantValue := models.CornerSet{}
 	suite.transformer.RawTelemetry.TyreRadius = nil
 
 	// Act
@@ -1008,7 +1009,7 @@ func (suite *TransformerTestSuite) TestTyreDiameterMetersReturnsEmptyObjectWhenT
 func (suite *TransformerTestSuite) TestTyreDiameterMetersReturnsCorrectValue() {
 	// Arrange
 	tyreRadius := float32(0.323)
-	wantValue := CornerSet{
+	wantValue := models.CornerSet{
 		FrontLeft:  tyreRadius * 2,
 		FrontRight: tyreRadius * 2,
 		RearLeft:   tyreRadius * 2,
@@ -1030,7 +1031,7 @@ func (suite *TransformerTestSuite) TestTyreDiameterMetersReturnsCorrectValue() {
 
 func (suite *TransformerTestSuite) TestTyreRadiusMetersReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Arrange
-	wantValue := CornerSet{}
+	wantValue := models.CornerSet{}
 	suite.transformer.RawTelemetry.TyreRadius = nil
 
 	// Act
@@ -1068,7 +1069,7 @@ func (suite *TransformerTestSuite) TestTyreSlipRatioReturnsCorrectValueWhenGroun
 	gotValue := suite.transformer.TyreSlipRatio()
 
 	// Assert
-	suite.Equal(CornerSet{FrontLeft: 1, FrontRight: 1, RearLeft: 1, RearRight: 1}, gotValue)
+	suite.Equal(models.CornerSet{FrontLeft: 1, FrontRight: 1, RearLeft: 1, RearRight: 1}, gotValue)
 }
 
 func (suite *TransformerTestSuite) TestTyreSlipRatioReturnsCorrectValueWhenGroundSpeedIsNotZero() {
@@ -1099,7 +1100,7 @@ func (suite *TransformerTestSuite) TestTyreSlipRatioReturnsCorrectValueWhenGroun
 
 func (suite *TransformerTestSuite) TestTyreTemperatureCelsiusReturnsEmptyOjectWhenTelemetryIsNil() {
 	// Arrange
-	wantValue := CornerSet{}
+	wantValue := models.CornerSet{}
 	suite.transformer.RawTelemetry.TyreTemperature = nil
 
 	// Act
@@ -1319,7 +1320,7 @@ func (suite *TransformerTestSuite) TestVehicleObjectIsEmptyWhenTelemetryHasUnkno
 
 func (suite *TransformerTestSuite) TestVelocityVectorReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Arrange
-	wantValue := Vector{}
+	wantValue := models.Vector{}
 	suite.transformer.RawTelemetry.VelocityVector = nil
 
 	// Act
@@ -1360,7 +1361,7 @@ func (suite *TransformerTestSuite) TestWaterTemperatureCelsiusReturnsCorrectValu
 
 func (suite *TransformerTestSuite) TestWheelSpeedRadiansPerSecondReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Arrange
-	wantValue := CornerSet{}
+	wantValue := models.CornerSet{}
 	suite.transformer.RawTelemetry.WheelRadiansPerSecond = nil
 
 	// Act

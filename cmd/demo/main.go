@@ -7,13 +7,13 @@ import (
 
 	gttelemetry "github.com/zetetos/gt-telemetry"
 	"github.com/zetetos/gt-telemetry/pkg/circuits"
-	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
+	"github.com/zetetos/gt-telemetry/pkg/models"
 )
 
 func main() {
 	clientConfig := gttelemetry.Options{
 		Source:       "file://data/replays/demo.gtz",
-		Format:       telemetryformat.Addendum2,
+		Format:       models.Addendum2,
 		StatsEnabled: true,
 	}
 
@@ -76,8 +76,7 @@ func main() {
 		}
 
 		if circuit.Length == 0 {
-			vector := client.Telemetry.PositionalMapCoordinates()
-			coordinate := circuits.Coordinate{X: int16(vector.X), Y: int16(vector.Y), Z: int16(vector.Z)}
+			coordinate := client.Telemetry.PositionalMapCoordinates()
 			circuits, found := client.CircuitDB.GetCircuitsAtCoordinate(coordinate)
 			if found {
 				if len(circuits) == 1 {

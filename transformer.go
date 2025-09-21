@@ -6,16 +6,9 @@ import (
 
 	"github.com/zetetos/gt-telemetry/internal/telemetry"
 	"github.com/zetetos/gt-telemetry/internal/utils"
-	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
+	"github.com/zetetos/gt-telemetry/pkg/models"
 	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
-
-type CornerSet struct {
-	FrontLeft  float32
-	FrontRight float32
-	RearLeft   float32
-	RearRight  float32
-}
 
 type Flags struct {
 	ASMActive        bool
@@ -47,36 +40,6 @@ type RevLight struct {
 	Active bool
 }
 
-type RotationalEnvelope struct {
-	Pitch float32
-	Yaw   float32
-	Roll  float32
-}
-
-type SymmetryAxes struct {
-	Pitch float32
-	Yaw   float32
-	Roll  float32
-}
-
-type TranslationalEnvelope struct {
-	Sway  float32
-	Heave float32
-	Surge float32
-}
-
-type Vector struct {
-	X float32
-	Y float32
-	Z float32
-}
-
-type Coordinate struct {
-	X float32
-	Y float32
-	Z float32
-}
-
 type Vmax struct {
 	Speed uint16
 	RPM   uint16
@@ -96,13 +59,13 @@ func NewTransformer(inventory *vehicles.VehicleDB) *transformer {
 	}
 }
 
-func (t *transformer) AngularVelocityVector() Vector {
+func (t *transformer) AngularVelocityVector() models.Vector {
 	velocity := t.RawTelemetry.AngularVelocityVector
 	if velocity == nil {
-		return Vector{}
+		return models.Vector{}
 	}
 
-	return Vector{
+	return models.Vector{
 		X: velocity.VectorX,
 		Y: velocity.VectorY,
 		Z: velocity.VectorZ,
@@ -322,13 +285,13 @@ func (t *transformer) OilTemperatureCelsius() float32 {
 	return t.RawTelemetry.OilTemperature
 }
 
-func (t *transformer) PositionalMapCoordinates() Coordinate {
+func (t *transformer) PositionalMapCoordinates() models.Coordinate {
 	position := t.RawTelemetry.MapPositionCoordinates
 	if position == nil {
-		return Coordinate{}
+		return models.Coordinate{}
 	}
 
-	return Coordinate{
+	return models.Coordinate{
 		X: position.CoordinateX,
 		Y: position.CoordinateY,
 		Z: position.CoordinateZ,
@@ -347,13 +310,13 @@ func (t *transformer) RideHeightMeters() float32 {
 	return t.RawTelemetry.RideHeight
 }
 
-func (t *transformer) RotationEnvelope() RotationalEnvelope {
+func (t *transformer) RotationEnvelope() models.RotationalEnvelope {
 	rotation := t.RawTelemetry.RotationalEnvelope
 	if rotation == nil {
-		return RotationalEnvelope{}
+		return models.RotationalEnvelope{}
 	}
 
-	return RotationalEnvelope{
+	return models.RotationalEnvelope{
 		Pitch: rotation.Pitch,
 		Yaw:   rotation.Yaw,
 		Roll:  rotation.Roll,
@@ -385,13 +348,13 @@ func (t *transformer) SuggestedGear() uint64 {
 	return gear.Suggested
 }
 
-func (t *transformer) SuspensionHeightMeters() CornerSet {
+func (t *transformer) SuspensionHeightMeters() models.CornerSet {
 	height := t.RawTelemetry.SuspensionHeight
 	if height == nil {
-		return CornerSet{}
+		return models.CornerSet{}
 	}
 
-	return CornerSet{
+	return models.CornerSet{
 		FrontLeft:  height.FrontLeft,
 		FrontRight: height.FrontRight,
 		RearLeft:   height.RearLeft,
@@ -399,20 +362,20 @@ func (t *transformer) SuspensionHeightMeters() CornerSet {
 	}
 }
 
-func (t *transformer) TelemetryFormat() telemetryformat.Name {
+func (t *transformer) TelemetryFormat() models.Name {
 	isAddendum2Format, err := t.RawTelemetry.Addendum2Format()
 	if err != nil && isAddendum2Format {
-		return telemetryformat.Addendum2
+		return models.Addendum2
 	}
 
 	isAddendum1Format, err := t.RawTelemetry.Addendum1Format()
 	if err != nil && isAddendum1Format {
-		return telemetryformat.Addendum1
+		return models.Addendum1
 	}
 
 	isStandardFormat, err := t.RawTelemetry.StandardFormat()
 	if err != nil && isStandardFormat {
-		return telemetryformat.Standard
+		return models.Standard
 	}
 
 	return "unknown"
@@ -430,13 +393,13 @@ func (t *transformer) TimeOfDay() time.Duration {
 	return time.Duration(t.RawTelemetry.TimeOfDay) * time.Millisecond
 }
 
-func (t *transformer) TranslationEnvelope() TranslationalEnvelope {
+func (t *transformer) TranslationEnvelope() models.TranslationalEnvelope {
 	translation := t.RawTelemetry.TranslationalEnvelope
 	if translation == nil {
-		return TranslationalEnvelope{}
+		return models.TranslationalEnvelope{}
 	}
 
-	return TranslationalEnvelope{
+	return models.TranslationalEnvelope{
 		Sway:  translation.Sway,
 		Heave: translation.Heave,
 		Surge: translation.Surge,
@@ -474,13 +437,13 @@ func (t *transformer) TurboBoostBar() float32 {
 	return (t.RawTelemetry.ManifoldPressure - 1)
 }
 
-func (t *transformer) TyreDiameterMeters() CornerSet {
+func (t *transformer) TyreDiameterMeters() models.CornerSet {
 	radius := t.RawTelemetry.TyreRadius
 	if radius == nil {
-		return CornerSet{}
+		return models.CornerSet{}
 	}
 
-	return CornerSet{
+	return models.CornerSet{
 		FrontLeft:  radius.FrontLeft * 2,
 		FrontRight: radius.FrontRight * 2,
 		RearLeft:   radius.RearLeft * 2,
@@ -488,13 +451,13 @@ func (t *transformer) TyreDiameterMeters() CornerSet {
 	}
 }
 
-func (t *transformer) TyreRadiusMeters() CornerSet {
+func (t *transformer) TyreRadiusMeters() models.CornerSet {
 	radius := t.RawTelemetry.TyreRadius
 	if radius == nil {
-		return CornerSet{}
+		return models.CornerSet{}
 	}
 
-	return CornerSet{
+	return models.CornerSet{
 		FrontLeft:  radius.FrontLeft,
 		FrontRight: radius.FrontRight,
 		RearLeft:   radius.RearLeft,
@@ -502,11 +465,11 @@ func (t *transformer) TyreRadiusMeters() CornerSet {
 	}
 }
 
-func (t *transformer) TyreSlipRatio() CornerSet {
+func (t *transformer) TyreSlipRatio() models.CornerSet {
 	groundSpeed := utils.MetersPerSecondToKilometersPerHour(t.GroundSpeedMetersPerSecond())
 	wheelSpeed := t.WheelSpeedMetersPerSecond()
 	if groundSpeed == 0 {
-		return CornerSet{
+		return models.CornerSet{
 			FrontLeft:  1,
 			FrontRight: 1,
 			RearLeft:   1,
@@ -514,7 +477,7 @@ func (t *transformer) TyreSlipRatio() CornerSet {
 		}
 	}
 
-	return CornerSet{
+	return models.CornerSet{
 		FrontLeft:  utils.MetersPerSecondToKilometersPerHour(wheelSpeed.FrontLeft) / groundSpeed,
 		FrontRight: utils.MetersPerSecondToKilometersPerHour(wheelSpeed.FrontRight) / groundSpeed,
 		RearLeft:   utils.MetersPerSecondToKilometersPerHour(wheelSpeed.RearLeft) / groundSpeed,
@@ -522,13 +485,13 @@ func (t *transformer) TyreSlipRatio() CornerSet {
 	}
 }
 
-func (t *transformer) TyreTemperatureCelsius() CornerSet {
+func (t *transformer) TyreTemperatureCelsius() models.CornerSet {
 	temperature := t.RawTelemetry.TyreTemperature
 	if temperature == nil {
-		return CornerSet{}
+		return models.CornerSet{}
 	}
 
-	return CornerSet{
+	return models.CornerSet{
 		FrontLeft:  temperature.FrontLeft,
 		FrontRight: temperature.FrontRight,
 		RearLeft:   temperature.RearLeft,
@@ -642,24 +605,24 @@ func (t *transformer) VehicleYear() int {
 	return t.vehicle.Year
 }
 
-func (t *transformer) VelocityVector() Vector {
+func (t *transformer) VelocityVector() models.Vector {
 	velocity := t.RawTelemetry.VelocityVector
 	if velocity == nil {
-		return Vector{}
+		return models.Vector{}
 	}
 
-	return Vector{
+	return models.Vector{
 		X: velocity.VectorX,
 		Y: velocity.VectorY,
 		Z: velocity.VectorZ,
 	}
 }
 
-func (t *transformer) WheelSpeedMetersPerSecond() CornerSet {
+func (t *transformer) WheelSpeedMetersPerSecond() models.CornerSet {
 	radius := t.TyreRadiusMeters()
 	rps := t.WheelSpeedRadiansPerSecond()
 
-	return CornerSet{
+	return models.CornerSet{
 		FrontLeft:  rps.FrontLeft * radius.FrontLeft,
 		FrontRight: rps.FrontRight * radius.FrontRight,
 		RearLeft:   rps.RearLeft * radius.RearLeft,
@@ -667,13 +630,13 @@ func (t *transformer) WheelSpeedMetersPerSecond() CornerSet {
 	}
 }
 
-func (t *transformer) WheelSpeedRadiansPerSecond() CornerSet {
+func (t *transformer) WheelSpeedRadiansPerSecond() models.CornerSet {
 	rps := t.RawTelemetry.WheelRadiansPerSecond
 	if rps == nil {
-		return CornerSet{}
+		return models.CornerSet{}
 	}
 
-	return CornerSet{
+	return models.CornerSet{
 		FrontLeft:  float32(math.Abs(float64(rps.FrontLeft))),
 		FrontRight: float32(math.Abs(float64(rps.FrontRight))),
 		RearLeft:   float32(math.Abs(float64(rps.RearLeft))),
