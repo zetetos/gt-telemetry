@@ -115,11 +115,6 @@ func (t *transformer) BrakeOutputPercent() float32 {
 	return float32(t.RawTelemetry.BrakeOutput) / 2.55
 }
 
-// To be deprecated in 2.0 release
-func (t *transformer) BrakePercent() float32 {
-	return float32(t.RawTelemetry.BrakeInput) / 2.55
-}
-
 func (t *transformer) CalculatedVmax() Vmax {
 	vMaxSpeed := t.RawTelemetry.CalculatedMaxSpeed
 	vMaxMetersPerMinute := float32(vMaxSpeed) * 1000 / 60
@@ -247,11 +242,6 @@ func (t *transformer) FuelCapacity() float32 {
 	return val
 }
 
-// To be deprecated in 2.0 release as it serves no purpose as a percentage
-func (t *transformer) FuelCapacityPercent() float32 {
-	return 100
-}
-
 func (t *transformer) FuelLevel() float32 {
 	val := t.RawTelemetry.FuelLevel
 
@@ -343,12 +333,7 @@ func (t *transformer) RaceEntrants() int16 {
 	return t.RawTelemetry.RaceEntrants
 }
 
-func (t *transformer) RaceLaps() uint16 {
-	return uint16(t.RawTelemetry.RaceLaps)
-}
-
-// Temporary fix, will replace RaceLaps() in 2.0 release
-func (t *transformer) RaceLapsSigned() int16 {
+func (t *transformer) RaceLaps() int16 {
 	return t.RawTelemetry.RaceLaps
 }
 
@@ -369,27 +354,8 @@ func (t *transformer) RotationEnvelope() RotationalEnvelope {
 	}
 }
 
-// To be deprecated in 2.0 release in favor of RotationalEnvelope()
-func (t *transformer) RotationVector() SymmetryAxes {
-	rotation := t.RawTelemetry.RotationalEnvelope
-	if rotation == nil {
-		return SymmetryAxes{}
-	}
-
-	return SymmetryAxes{
-		Pitch: rotation.Pitch,
-		Yaw:   rotation.Yaw,
-		Roll:  rotation.Roll,
-	}
-}
-
 func (t *transformer) SequenceID() uint32 {
 	return t.RawTelemetry.SequenceId
-}
-
-// Deprecated: to be removed in next major revision, replaced by GridPosition()
-func (t *transformer) StartingPosition() int16 {
-	return t.RawTelemetry.GridPosition
 }
 
 func (t *transformer) SteeringWheelAngleDegrees() float32 {
@@ -451,11 +417,6 @@ func (t *transformer) ThrottleInputPercent() float32 {
 }
 
 func (t *transformer) ThrottleOutputPercent() float32 {
-	return float32(t.RawTelemetry.ThrottleOutput) / 2.55
-}
-
-// To be deprecated in 2.0 release
-func (t *transformer) ThrottlePercent() float32 {
 	return float32(t.RawTelemetry.ThrottleOutput) / 2.55
 }
 

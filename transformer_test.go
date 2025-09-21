@@ -110,18 +110,6 @@ func (suite *TransformerTestSuite) TestBrakeOutputPercentReturnsCorrectValue() {
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestBrakePercentReturnsCorrectValue() {
-	// Arrange
-	wantValue := float32(56.078434)
-	suite.transformer.RawTelemetry.BrakeInput = uint8(143)
-
-	// Act
-	gotValue := suite.transformer.BrakePercent()
-
-	// Assert
-	suite.Equal(wantValue, gotValue)
-}
-
 func (suite *TransformerTestSuite) TestCalculatedVmaxReturnsCorrectValue() {
 	// Arrange
 	wantSpeed := uint16(322)
@@ -430,19 +418,6 @@ func (suite *TransformerTestSuite) TestFuelCapacityReturnsCorrectValue() {
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestFuelCapacityPercentReturnsCorrectValue() {
-	// Arrange
-	fuelCapacity := float32(0.76)
-	wantValue := (fuelCapacity / fuelCapacity) * 100
-	suite.transformer.RawTelemetry.FuelCapacity = fuelCapacity
-
-	// Act
-	gotValue := suite.transformer.FuelCapacityPercent()
-
-	// Assert
-	suite.Equal(wantValue, gotValue)
-}
-
 func (suite *TransformerTestSuite) TestFuelLevelReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(0.41)
@@ -732,23 +707,11 @@ func (suite *TransformerTestSuite) TestRaceEntrantsReturnsCorrectValue() {
 
 func (suite *TransformerTestSuite) TestRaceLapsReturnsCorrectValue() {
 	// Arrange
-	wantValue := uint16(30)
-	suite.transformer.RawTelemetry.RaceLaps = int16(wantValue)
-
-	// Act
-	gotValue := suite.transformer.RaceLaps()
-
-	// Assert
-	suite.Equal(wantValue, gotValue)
-}
-
-func (suite *TransformerTestSuite) TestRaceLapsSignedReturnsCorrectValue() {
-	// Arrange
 	wantValue := int16(30)
 	suite.transformer.RawTelemetry.RaceLaps = wantValue
 
 	// Act
-	gotValue := suite.transformer.RaceLapsSigned()
+	gotValue := suite.transformer.RaceLaps()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
@@ -795,35 +758,6 @@ func (suite *TransformerTestSuite) TestRotationEnvelopeReturnsCorrectValue() {
 	suite.Equal(float32(0.3), gotValue.Roll)
 }
 
-func (suite *TransformerTestSuite) TestRotationVectorReturnssEmptyObjectWhenTelemetryIsNil() {
-	// Arrange
-	wantValue := SymmetryAxes{}
-	suite.transformer.RawTelemetry.RotationalEnvelope = nil
-
-	// Act
-	gotValue := suite.transformer.RotationVector()
-
-	// Assert
-	suite.Equal(wantValue, gotValue)
-}
-
-func (suite *TransformerTestSuite) TestRotationVectorReturnsCorrectValue() {
-	// Arrange
-	suite.transformer.RawTelemetry.RotationalEnvelope = &telemetry.GranTurismoTelemetry_RotationalEnvelope{
-		Yaw:   0.1,
-		Pitch: 0.2,
-		Roll:  0.3,
-	}
-
-	// Act
-	gotValue := suite.transformer.RotationVector()
-
-	// Assert
-	suite.Equal(float32(0.1), gotValue.Yaw)
-	suite.Equal(float32(0.2), gotValue.Pitch)
-	suite.Equal(float32(0.3), gotValue.Roll)
-}
-
 func (suite *TransformerTestSuite) TestSequenceIDReturnsCorrectValue() {
 	// Arrange
 	wantValue := uint32(123456789)
@@ -855,18 +789,6 @@ func (suite *TransformerTestSuite) TestSteeringWheelAngleDegreesReturnsCorrectVa
 
 	// Act
 	gotValue := suite.transformer.SteeringWheelAngleDegrees()
-
-	// Assert
-	suite.Equal(wantValue, gotValue)
-}
-
-func (suite *TransformerTestSuite) TestStartingPositionReturnsCorrectValue() {
-	// Arrange
-	wantValue := int16(5)
-	suite.transformer.RawTelemetry.GridPosition = wantValue
-
-	// Act
-	gotValue := suite.transformer.StartingPosition()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
@@ -1000,18 +922,6 @@ func (suite *TransformerTestSuite) TestThrottleOutputPercentReturnsCorrectValue(
 
 	// Act
 	gotValue := suite.transformer.ThrottleInputPercent()
-
-	// Assert
-	suite.Equal(wantValue, gotValue)
-}
-
-func (suite *TransformerTestSuite) TestThrottlePercentReturnsCorrectValue() {
-	// Arrange
-	wantValue := float32(79.60784)
-	suite.transformer.RawTelemetry.ThrottleOutput = 203
-
-	// Act
-	gotValue := suite.transformer.ThrottlePercent()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)

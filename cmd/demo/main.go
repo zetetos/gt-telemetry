@@ -242,9 +242,9 @@ func main() {
 			fmt.Sprintf("%+f", client.Telemetry.AngularVelocityVector().Z)[0:9],
 		)
 		fmt.Printf("Rotation:           [%9s]  [%9s]  [%9s]\n",
-			fmt.Sprintf("%+f", client.Telemetry.RotationVector().Pitch)[0:9],
-			fmt.Sprintf("%+f", client.Telemetry.RotationVector().Yaw)[0:9],
-			fmt.Sprintf("%+f", client.Telemetry.RotationVector().Roll)[0:9],
+			fmt.Sprintf("%+f", client.Telemetry.RotationEnvelope().Pitch)[0:9],
+			fmt.Sprintf("%+f", client.Telemetry.RotationEnvelope().Yaw)[0:9],
+			fmt.Sprintf("%+f", client.Telemetry.RotationEnvelope().Roll)[0:9],
 		)
 		fmt.Printf("Translation:        [%9s]  [%9s]  [%9s]\n",
 			fmt.Sprintf("%+f", client.Telemetry.TranslationEnvelope().Sway)[0:9],

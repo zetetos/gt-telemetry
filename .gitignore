@@ -2,7 +2,7 @@
 .DS_Store
 
 # Build files
-examples/bin/
+bin/
 out/
 
 # Coverage reports
