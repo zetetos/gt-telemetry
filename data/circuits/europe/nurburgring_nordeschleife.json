@@ -1,5 +1,6 @@
 {
     "name": "Nürburgring Nordschleife",
+    "region": "europe",
     "length_meters": 20700,
     "coordinates": {
         "circuit": [

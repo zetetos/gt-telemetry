@@ -1,5 +1,6 @@
 {
     "name": "Lake Louise",
+    "region": "americas",
     "length_meters": 3663,
     "coordinates": {
         "circuit": [

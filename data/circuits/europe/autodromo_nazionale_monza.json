@@ -1,5 +1,6 @@
 {
     "name": "Autodromo Nazionale Monza",
+    "region": "europe",
     "length_meters": 5755,
     "coordinates": {
         "circuit": [

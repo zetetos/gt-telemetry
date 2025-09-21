@@ -1,5 +1,6 @@
 {
     "name": "Watkins Glen Long Course",
+    "region": "americas",
     "length_meters": 5410,
     "coordinates": {
         "circuit": [

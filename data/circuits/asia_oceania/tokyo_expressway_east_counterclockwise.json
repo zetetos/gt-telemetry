@@ -1,5 +1,6 @@
 {
     "name": "Tokyo Expressway - East Counterclockwise",
+    "region": "asia_oceania",
     "length_meters": 7168,
     "coordinates": {
         "circuit": [

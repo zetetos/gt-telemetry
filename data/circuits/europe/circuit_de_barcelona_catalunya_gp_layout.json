@@ -1,5 +1,6 @@
 {
     "name": "Circuit de Barcelona-Catalunya GP Layout",
+    "region": "europe",
     "length_meters": 4579,
     "coordinates": {
         "circuit": [

@@ -1,5 +1,6 @@
 {
     "name": "Fishermans Ranch",
+    "region": "americas",
     "length_meters": 6699,
     "coordinates": {
         "circuit": [

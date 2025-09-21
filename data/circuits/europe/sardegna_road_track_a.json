@@ -1,5 +1,6 @@
 {
-    "name": "Sardegna - Raod Track - A",
+    "name": "Sardegna - Road Track - A",
+    "region": "europe",
     "length_meters": 5085,
     "coordinates": {
         "circuit": [

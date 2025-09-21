@@ -1,5 +1,6 @@
 {
     "name": "Goodwood Motor Circuit",
+    "region": "europe",
     "length_meters": 3809,
     "coordinates": {
         "circuit": [

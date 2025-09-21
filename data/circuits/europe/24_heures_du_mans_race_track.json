@@ -1,5 +1,6 @@
 {
     "name": "24 Heures du Mans race track",
+    "region": "europe",
     "length_meters": 13549,
     "coordinates": {
         "circuit": [

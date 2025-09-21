@@ -1,5 +1,6 @@
 {
     "name": "Michelin Raceway Road Atlanta",
+    "region": "americas",
     "length_meters": 4048,
     "coordinates": {
         "circuit": [

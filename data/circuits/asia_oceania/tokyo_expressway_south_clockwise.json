@@ -1,5 +1,6 @@
 {
     "name": "Tokyo Expressway - South Clockwise",
+    "region": "asia_oceania",
     "length_meters": 5174,
     "coordinates": {
         "circuit": [

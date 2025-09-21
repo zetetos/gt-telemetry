@@ -1,5 +1,6 @@
 {
     "name": "Nürburgring GP",
+    "region": "europe",
     "length_meters": 5068,
     "coordinates": {
         "circuit": [

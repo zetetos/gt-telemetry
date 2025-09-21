@@ -1,5 +1,6 @@
 {
     "name": "Autódromo de Interlagos",
+    "region": "americas",
     "length_meters": 4218,
     "coordinates": {
         "circuit": [
