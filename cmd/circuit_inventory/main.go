@@ -6,27 +6,20 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	gtcircuits "github.com/zetetos/gt-telemetry/pkg/circuits"
+	gtmodels "github.com/zetetos/gt-telemetry/pkg/models"
 )
 
-type Coordinate struct {
-	X int `json:"x"`
-	Y int `json:"y"`
-	Z int `json:"z"`
-}
-
 type CircuitCoordinates struct {
-	Circuit      []Coordinate `json:"circuit"`
-	StartingLine Coordinate   `json:"starting_line"`
+	Circuit      []gtmodels.CoordinateNorm `json:"circuit"`
+	StartingLine gtmodels.CoordinateNorm   `json:"starting_line"`
 }
 
 type CircuitData struct {
 	Name         string             `json:"name"`
 	LengthMeters int                `json:"length_meters"`
 	Coordinates  CircuitCoordinates `json:"coordinates"`
-}
-
-func coordKey(c Coordinate) string {
-	return fmt.Sprintf("x:%d,y:%d,z:%d", c.X, c.Y, c.Z)
 }
 
 func main() {
@@ -40,7 +33,7 @@ func main() {
 
 	coordinateMap := make(map[string][]string)
 	circuitsMap := make(map[string]map[string]interface{})
-	circuitStartLines := make(map[string]Coordinate) // Store starting lines for analysis
+	circuitStartLines := make(map[string]gtmodels.CoordinateNorm) // Store starting lines for analysis
 
 	err := filepath.Walk(circuitsDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -75,9 +68,9 @@ func main() {
 		}
 
 		// 1. Coordinate map
-		for _, c := range circuitData.Coordinates.Circuit {
-			k := coordKey(c)
-			coordinateMap[k] = append(coordinateMap[k], circuitID)
+		for _, coordinate := range circuitData.Coordinates.Circuit {
+			key := gtcircuits.CoordinateNormToKey(coordinate)
+			coordinateMap[key] = append(coordinateMap[key], circuitID)
 		}
 
 		// Store starting line for analysis
