@@ -649,6 +649,12 @@ func (t *transformer) WaterTemperatureCelsius() float32 {
 }
 
 func (t *transformer) updateVehicle() {
+	if t.IsInMainMenu() {
+		t.vehicle = vehicles.Vehicle{}
+
+		return
+	}
+
 	vehicleID := int(t.RawTelemetry.VehicleId)
 
 	if t.vehicle.CarID != vehicleID {

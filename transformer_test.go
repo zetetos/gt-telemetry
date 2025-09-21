@@ -1194,6 +1194,50 @@ func (suite *TransformerTestSuite) TestVehicleEngineCrankPlaneAngleReturnsCorrec
 	suite.Equal(wantValue, gotValue)
 }
 
+func (suite *TransformerTestSuite) TestVehicleIDReturnsEmptyObjectWhenInMainMenu() {
+	// Arrange
+	wantValue := uint32(0)
+	suite.transformer.RawTelemetry.RaceLaps = -1
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	suite.transformer.updateVehicle()
+	gotValue := suite.transformer.VehicleID()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestVehicleIDReturnsVehicleIDWhenInRaceMenu() {
+	// Arrange
+	wantValue := uint32(1234)
+	suite.transformer.RawTelemetry.VehicleId = wantValue
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	suite.transformer.updateVehicle()
+	gotValue := suite.transformer.VehicleID()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestVehicleIDReturnsVehicleIDWhenInCircuit() {
+	// Arrange
+	wantValue := uint32(1234)
+	suite.transformer.RawTelemetry.VehicleId = wantValue
+	suite.transformer.RawTelemetry.RaceLaps = 2
+	suite.transformer.RawTelemetry.RaceEntrants = 1
+
+	// Act
+	suite.transformer.updateVehicle()
+	gotValue := suite.transformer.VehicleID()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
 func (suite *TransformerTestSuite) TestVehicleIDReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
 	wantValue := uint32(1234)
