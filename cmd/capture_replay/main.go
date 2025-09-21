@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	telemetry_client "github.com/zetetos/gt-telemetry"
+	gttelemetry "github.com/zetetos/gt-telemetry"
 )
 
 func main() {
@@ -40,7 +40,7 @@ func main() {
 		log.Fatalf("Unsupported file extension %q, use either .gtr or .gtz", fileExt)
 	}
 
-	gt, err := telemetry_client.NewGTClient(telemetry_client.GTClientOpts{})
+	gt, err := gttelemetry.New(gttelemetry.Options{})
 	if err != nil {
 		fmt.Println("Error creating GT client: ", err)
 		os.Exit(1)

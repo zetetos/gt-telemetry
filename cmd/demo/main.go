@@ -5,19 +5,19 @@ import (
 	"log"
 	"time"
 
-	telemetry_client "github.com/zetetos/gt-telemetry"
-	"github.com/zetetos/gt-telemetry/internal/circuits"
-	"github.com/zetetos/gt-telemetry/internal/telemetrysrc"
+	gttelemetry "github.com/zetetos/gt-telemetry"
+	"github.com/zetetos/gt-telemetry/pkg/circuits"
+	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
 )
 
 func main() {
-	clientConfig := telemetry_client.GTClientOpts{
-		// Source:       "file://examples/simple/replay.gtz",
-		Format:       telemetrysrc.TelemetryFormatTilde,
+	clientConfig := gttelemetry.Options{
+		Source:       "file://data/replays/demo.gtz",
+		Format:       telemetryformat.Addendum2,
 		StatsEnabled: true,
 	}
 
-	client, err := telemetry_client.NewGTClient(clientConfig)
+	client, err := gttelemetry.New(clientConfig)
 	if err != nil {
 		log.Fatalf("Failed to create GT client: %s", err.Error())
 	}

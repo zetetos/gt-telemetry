@@ -1,8 +1,8 @@
 
 # Change these variables as necessary.
-MAIN_PACKAGE_PATH := ./examples/simple
-BINARY_PATH := ./examples/bin
-BINARY_NAME := gt-telemetry
+MAIN_PACKAGE_PATH := ./cmd/demo
+BINARY_PATH := ./bin
+BINARY_NAME := demo
 
 
 # ==================================================================================== #
@@ -74,10 +74,10 @@ test/cover/show: test/cover
 build/kaitai:
 	@docker build --output=internal/telemetry --progress=plain -f build/Dockerfile .
 
-## build: build the example application for the local platform
+## build: build the demo application for the local platform
 .PHONY: build
 build:
-	@go build -o examples/bin/${BINARY_NAME} ${MAIN_PACKAGE_PATH}
+	@go build -o bin/${BINARY_NAME} ${MAIN_PACKAGE_PATH}
 
 ## build/darwin/silicon: build the application for Apple Silicon
 .PHONY: build/darwin/silicon
@@ -107,18 +107,18 @@ build/rpi/armv8:
 ## build/windows: build the application for Windows amd64
 .PHONY: build/windows
 build/windows:
-	@GOOS=windows GOARCH=amd64 go build -o examples/bin/${BINARY_NAME}-amd64.exe ${MAIN_PACKAGE_PATH}
+	@GOOS=windows GOARCH=amd64 go build -o ${BINARY_PATH}/${BINARY_NAME}-amd64.exe ${MAIN_PACKAGE_PATH}
 
 ## run: run the  application
 .PHONY: run
 run: build
-	@./examples/bin/${BINARY_NAME}
+	@./bin/${BINARY_NAME}
 
 ## run/watch: run the application locally and reload on file changes
 .PHONY: run/watch
 run/watch:
 	go run github.com/air-verse/air@latest \
-		--build.cmd "make build" --build.bin "examples/bin/${BINARY_NAME}" --build.delay "100" \
+		--build.cmd "make build" --build.bin "${BINARY_PATH}/${BINARY_NAME}" --build.delay "100" \
 		--build.include_ext "go" \
 		--build.send_interrupt "true" \
 		--misc.clean_on_exit "true"
@@ -134,5 +134,5 @@ run/capture-replay:
 .PHONY: clean
 clean:
 	@go clean
-	@rm -rf examples/bin
+	@rm -rf ./bin
 	@rm -f coverage.out

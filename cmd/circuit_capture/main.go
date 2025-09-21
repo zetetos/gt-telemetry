@@ -61,7 +61,7 @@ func main() {
 	flag.StringVar(&trackName, "track", "", "Track name (optional)")
 	flag.Parse()
 
-	gt, err := gttelemetry.NewGTClient(gttelemetry.GTClientOpts{})
+	gt, err := gttelemetry.New(gttelemetry.Options{})
 	if err != nil {
 		log.Fatalf("Error creating GT client: %v", err)
 	}
