@@ -53,7 +53,7 @@ type Client struct {
 	Finished         bool
 	Statistics       *statistics
 	Telemetry        *transformer
-	Circuits         *circuits.CircuitDB
+	CircuitDB        *circuits.CircuitDB
 }
 
 func New(opts Options) (*Client, error) {
@@ -146,7 +146,7 @@ func New(opts Options) (*Client, error) {
 			packetIDLast:      0,
 		},
 		Telemetry: NewTransformer(vehicleDB),
-		Circuits:  circuitDB,
+		CircuitDB: circuitDB,
 	}, nil
 }
 

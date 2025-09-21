@@ -78,11 +78,11 @@ func main() {
 		if circuit.Length == 0 {
 			vector := client.Telemetry.PositionalMapCoordinates()
 			coordinate := circuits.Coordinate{X: int16(vector.X), Y: int16(vector.Y), Z: int16(vector.Z)}
-			circuits, found := client.Circuits.GetCircuitsAtCoordinate(coordinate)
+			circuits, found := client.CircuitDB.GetCircuitsAtCoordinate(coordinate)
 			if found {
 				if len(circuits) == 1 {
 					circuitId := circuits[0]
-					circuitInfo, found := client.Circuits.GetCircuitByID(circuitId)
+					circuitInfo, found := client.CircuitDB.GetCircuitByID(circuitId)
 					if found {
 						circuit = circuitInfo
 					}
