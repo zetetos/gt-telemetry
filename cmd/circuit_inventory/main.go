@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"unicode"
 
 	gtcircuits "github.com/zetetos/gt-telemetry/pkg/circuits"
 	gtmodels "github.com/zetetos/gt-telemetry/pkg/models"
@@ -18,8 +19,27 @@ type CircuitCoordinates struct {
 
 type CircuitData struct {
 	Name         string             `json:"name"`
+	Region       string             `json:"region"`
 	LengthMeters int                `json:"length_meters"`
 	Coordinates  CircuitCoordinates `json:"coordinates"`
+}
+
+// ProcessedCircuits holds the results of processing circuit files
+type ProcessedCircuits struct {
+	CoordinateMap     map[string][]string
+	CircuitsMap       map[string]map[string]interface{}
+	CircuitStartLines map[string]gtmodels.CoordinateNorm
+}
+
+// CircuitStats holds statistical information about a circuit
+type CircuitStats struct {
+	ID              string
+	Name            string
+	Region          string
+	TotalPoints     int
+	UniquePoints    int
+	UniquePercent   float64
+	StartLineUnique bool
 }
 
 func main() {
@@ -31,99 +51,108 @@ func main() {
 	circuitsDir := os.Args[1]
 	outputFile := os.Args[2]
 
-	coordinateMap := make(map[string][]string)
-	circuitsMap := make(map[string]map[string]interface{})
-	circuitStartLines := make(map[string]gtmodels.CoordinateNorm) // Store starting lines for analysis
+	// Process all circuit files
+	processed, err := processCircuitFiles(circuitsDir, outputFile)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error processing circuits: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Analyze circuit coordinates
+	stats := analyzeCircuitCoordinates(processed)
+
+	// Display analysis results
+	displayAnalysisResults(stats)
+
+	// Write output file
+	if err := writeInventoryFile(processed, outputFile); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to write output: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Wrote inventory to %s\n", outputFile)
+}
+
+// processCircuitFiles reads and processes all circuit JSON files in the given directory
+func processCircuitFiles(circuitsDir, outputFile string) (*ProcessedCircuits, error) {
+	processed := &ProcessedCircuits{
+		CoordinateMap:     make(map[string][]string),
+		CircuitsMap:       make(map[string]map[string]interface{}),
+		CircuitStartLines: make(map[string]gtmodels.CoordinateNorm),
+	}
 
 	err := filepath.Walk(circuitsDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
+
 		if info.IsDir() || !strings.HasSuffix(info.Name(), ".json") {
 			return nil
 		}
+
 		// Ignore the output file if it exists in the same dir
 		if strings.HasSuffix(info.Name(), "circuit_inventory.json") || strings.HasSuffix(info.Name(), filepath.Base(outputFile)) {
 			return nil
 		}
-
-		// region is the parent directory name under circuits
-		rel, _ := filepath.Rel(circuitsDir, path)
-		parts := strings.Split(rel, string(os.PathSeparator))
-		if len(parts) < 2 {
-			return nil
-		}
-		region := parts[0]
-		circuitID := strings.TrimSuffix(parts[1], ".json")
 
 		data, err := os.ReadFile(path)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to read %s: %v\n", path, err)
 			return nil
 		}
+
 		var circuitData CircuitData
 		if err := json.Unmarshal(data, &circuitData); err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to parse %s: %v\n", path, err)
 			return nil
 		}
 
-		// 1. Coordinate map
+		circuitID := nameToID(circuitData.Name)
+
+		// Build coordinate map
 		for _, coordinate := range circuitData.Coordinates.Circuit {
 			key := gtcircuits.CoordinateNormToKey(coordinate)
-			coordinateMap[key] = append(coordinateMap[key], circuitID)
+			processed.CoordinateMap[key] = append(processed.CoordinateMap[key], circuitID)
 		}
 
 		// Store starting line for analysis
-		circuitStartLines[circuitID] = circuitData.Coordinates.StartingLine
+		processed.CircuitStartLines[circuitID] = circuitData.Coordinates.StartingLine
 
-		// 3. Circuit info map
-		circuitsMap[circuitID] = map[string]interface{}{
+		// Store circuit info
+		processed.CircuitsMap[circuitID] = map[string]interface{}{
 			"id":        circuitID,
 			"name":      circuitData.Name,
-			"region":    region,
+			"region":    circuitData.Region,
 			"length":    uint16(circuitData.LengthMeters),
 			"startline": circuitData.Coordinates.StartingLine,
 		}
 
 		return nil
 	})
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error walking circuits dir: %v\n", err)
-		os.Exit(1)
-	}
 
-	// Analysis: Find circuits without unique coordinates
-	fmt.Println("\n=== ANALYSIS: Circuit Coordinate Uniqueness ===")
+	return processed, err
+}
 
-	type CircuitStats struct {
-		ID              string
-		Name            string
-		Region          string
-		TotalCoords     int
-		UniqueCoords    int
-		UniquePercent   float64
-		StartLineUnique bool
-	}
-
-	var circuitStats []CircuitStats
-	circuitsWithoutUniqueCoords := make([]string, 0)
-
+// analyzeCircuitCoordinates performs statistical analysis on circuit coordinates
+func analyzeCircuitCoordinates(processed *ProcessedCircuits) []CircuitStats {
 	// Build a map of circuit -> coordinates for easier counting
 	circuitCoordinates := make(map[string][]string)
-	for coord, circuitList := range coordinateMap {
+	for coord, circuitList := range processed.CoordinateMap {
 		for _, circuitID := range circuitList {
 			circuitCoordinates[circuitID] = append(circuitCoordinates[circuitID], coord)
 		}
 	}
 
+	var stats []CircuitStats
+
 	// For each circuit, calculate uniqueness stats
-	for circuitID := range circuitsMap {
+	for circuitID := range processed.CircuitsMap {
 		totalCoords := len(circuitCoordinates[circuitID])
 		uniqueCoords := 0
 
 		// Count unique coordinates for this circuit
 		for _, coord := range circuitCoordinates[circuitID] {
-			if len(coordinateMap[coord]) == 1 {
+			if len(processed.CoordinateMap[coord]) == 1 {
 				uniqueCoords++
 			}
 		}
@@ -133,94 +162,134 @@ func main() {
 			uniquePercent = float64(uniqueCoords) / float64(totalCoords) * 100
 		}
 
-		circuitName := circuitsMap[circuitID]["name"].(string)
-		region := circuitsMap[circuitID]["region"].(string)
+		circuitName := processed.CircuitsMap[circuitID]["name"].(string)
+		region := processed.CircuitsMap[circuitID]["region"].(string)
 
 		// Check if starting line coordinate is unique
-		startLineCoord := circuitStartLines[circuitID]
-		startLineUnique := true
-		for otherCircuitID, otherStartLine := range circuitStartLines {
-			if otherCircuitID != circuitID && otherStartLine == startLineCoord {
-				startLineUnique = false
-				break
-			}
-		}
+		startLineCoord := processed.CircuitStartLines[circuitID]
+		startLineUnique := isStartLineUnique(circuitID, startLineCoord, processed.CircuitStartLines)
 
-		circuitStats = append(circuitStats, CircuitStats{
+		stats = append(stats, CircuitStats{
 			ID:              circuitID,
 			Name:            circuitName,
 			Region:          region,
-			TotalCoords:     totalCoords,
-			UniqueCoords:    uniqueCoords,
+			TotalPoints:     totalCoords,
+			UniquePoints:    uniqueCoords,
 			UniquePercent:   uniquePercent,
 			StartLineUnique: startLineUnique,
 		})
-
-		if uniqueCoords == 0 {
-			circuitsWithoutUniqueCoords = append(circuitsWithoutUniqueCoords, circuitID)
-		}
 	}
 
-	// Sort by circuit name (alphabetically)
-	for i := 0; i < len(circuitStats)-1; i++ {
-		for j := i + 1; j < len(circuitStats); j++ {
-			if circuitStats[i].Name > circuitStats[j].Name {
-				circuitStats[i], circuitStats[j] = circuitStats[j], circuitStats[i]
+	sortStatsByName(stats)
+
+	return stats
+}
+
+// isStartLineUnique checks if a circuit's starting line coordinate is unique
+func isStartLineUnique(circuitID string, startLineCoord gtmodels.CoordinateNorm, allStartLines map[string]gtmodels.CoordinateNorm) bool {
+	for otherCircuitID, otherStartLine := range allStartLines {
+		if otherCircuitID != circuitID && otherStartLine == startLineCoord {
+			return false
+		}
+	}
+	return true
+}
+
+// sortStatsByName sorts circuit stats alphabetically by name
+func sortStatsByName(stats []CircuitStats) {
+	for i := 0; i < len(stats)-1; i++ {
+		for j := i + 1; j < len(stats); j++ {
+			if stats[i].Name > stats[j].Name {
+				stats[i], stats[j] = stats[j], stats[i]
 			}
 		}
 	}
+}
 
-	// Calculate the maximum circuit name length for proper column alignment
+// displayAnalysisResults prints the analysis results in a formatted table
+func displayAnalysisResults(stats []CircuitStats) {
+	fmt.Println("\n=== ANALYSIS: Circuit Coordinate Uniqueness ===")
+
+	// Align columns based on longest circuit name
 	maxCircuitNameLen := 0
-	for _, stats := range circuitStats {
-		if len(stats.Name) > maxCircuitNameLen {
-			maxCircuitNameLen = len(stats.Name)
+	for _, stat := range stats {
+		if len(stat.Name) > maxCircuitNameLen {
+			maxCircuitNameLen = len(stat.Name)
 		}
 	}
-	// Add some padding for the column
+
+	// Column padding
 	circuitNameColWidth := maxCircuitNameLen + 2
 
-	// Display results
-	headerFormat := fmt.Sprintf("%%-%ds %%-%ds %%8s %%8s %%8s %%10s\n", circuitNameColWidth, 12)
-	separatorFormat := fmt.Sprintf("%%-%ds %%-%ds %%8s %%8s %%8s %%10s\n", circuitNameColWidth, 12)
-	dataFormat := fmt.Sprintf("%%s%%-%ds %%-%ds %%8d %%8d %%7.1f%%%% %%8s\n", circuitNameColWidth-2, 12) // -2 for marker space
+	// Display table
+	printTableHeader(circuitNameColWidth)
+	printTableSeparator(circuitNameColWidth)
 
-	fmt.Printf(headerFormat, "Circuit Name", "Region", "Total", "Unique", "% Unique", "Start Uniq")
-	fmt.Printf(separatorFormat, strings.Repeat("-", circuitNameColWidth), strings.Repeat("-", 12), "--------", "--------", "--------", "----------")
-
-	for _, stats := range circuitStats {
-		marker := "  "
-		if stats.UniqueCoords == 0 {
-			marker = "⚠️ "
-		}
-
-		startLineMarker := "✅"
-		if !stats.StartLineUnique {
-			startLineMarker = "❌"
-		}
-
-		fmt.Printf(dataFormat,
-			marker,
-			stats.Name,
-			stats.Region,
-			stats.TotalCoords,
-			stats.UniqueCoords,
-			stats.UniquePercent,
-			startLineMarker)
-	}
-
-	if len(circuitsWithoutUniqueCoords) > 0 {
-		fmt.Printf("\n⚠️  %d circuits have ZERO unique coordinates and are completely composed of shared coordinates.\n", len(circuitsWithoutUniqueCoords))
-	} else {
-		fmt.Println("\n✅ All circuits have at least one unique coordinate.")
-	}
-
-	// Count circuits with non-unique starting lines
+	circuitsWithoutUniqueCoords := 0
 	nonUniqueStartLines := 0
-	for _, stats := range circuitStats {
-		if !stats.StartLineUnique {
+
+	for _, stat := range stats {
+		printStatRow(stat, circuitNameColWidth)
+
+		if stat.UniquePoints == 0 {
+			circuitsWithoutUniqueCoords++
+		}
+		if !stat.StartLineUnique {
 			nonUniqueStartLines++
 		}
+	}
+
+	printSummary(circuitsWithoutUniqueCoords, nonUniqueStartLines)
+}
+
+// printTableHeader prints the table header
+func printTableHeader(circuitNameColWidth int) {
+	headerFormat := fmt.Sprintf("%%-%ds %%-%ds %%8s %%8s %%8s %%10s\n", circuitNameColWidth, 12)
+	fmt.Printf(headerFormat, "Circuit Name", "Region", "Total", "Unique", "% Unique", "Start Uniq")
+}
+
+// printTableSeparator prints the table separator line
+func printTableSeparator(circuitNameColWidth int) {
+	separatorFormat := fmt.Sprintf("%%-%ds %%-%ds %%8s %%8s %%8s %%10s\n", circuitNameColWidth, 12)
+	fmt.Printf(separatorFormat,
+		strings.Repeat("-", circuitNameColWidth),
+		strings.Repeat("-", 12),
+		"--------",
+		"--------",
+		"--------",
+		"----------")
+}
+
+// printStatRow prints a single statistics row
+func printStatRow(stat CircuitStats, circuitNameColWidth int) {
+	dataFormat := fmt.Sprintf("%%s%%-%ds %%-%ds %%8d %%8d %%7.1f%%%% %%8s\n", circuitNameColWidth-2, 12) // -2 for marker space
+
+	marker := "  "
+	if stat.UniquePoints == 0 {
+		marker = "⚠️ "
+	}
+
+	startLineMarker := "✅"
+	if !stat.StartLineUnique {
+		startLineMarker = "❌"
+	}
+
+	fmt.Printf(dataFormat,
+		marker,
+		stat.Name,
+		stat.Region,
+		stat.TotalPoints,
+		stat.UniquePoints,
+		stat.UniquePercent,
+		startLineMarker)
+}
+
+// printSummary prints the analysis summary
+func printSummary(circuitsWithoutUniqueCoords, nonUniqueStartLines int) {
+	if circuitsWithoutUniqueCoords > 0 {
+		fmt.Printf("\n⚠️  %d circuits have ZERO unique coordinates and are completely composed of shared coordinates.\n", circuitsWithoutUniqueCoords)
+	} else {
+		fmt.Println("\n✅ All circuits have at least one unique coordinate.")
 	}
 
 	if nonUniqueStartLines > 0 {
@@ -228,20 +297,46 @@ func main() {
 	} else {
 		fmt.Println("✅ All circuits have unique starting line positions.")
 	}
+}
 
+// writeInventoryFile writes the processed circuit data to the output file
+func writeInventoryFile(processed *ProcessedCircuits, outputFile string) error {
 	out := map[string]interface{}{
-		"coordinates": coordinateMap,
-		"circuits":    circuitsMap,
+		"coordinates": processed.CoordinateMap,
+		"circuits":    processed.CircuitsMap,
 	}
 
 	outData, err := json.MarshalIndent(out, "", "  ")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to marshal output: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("failed to marshal output: %v", err)
 	}
+
 	if err := os.WriteFile(outputFile, outData, 0644); err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to write output: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("failed to write output: %v", err)
 	}
-	fmt.Printf("Wrote inventory to %s\n", outputFile)
+
+	return nil
+}
+
+// nameToID converts a circuit name to an ID
+func nameToID(name string) string {
+	circuitID := strings.ToLower(name)
+	circuitID = strings.ReplaceAll(circuitID, " ", "_")
+	circuitID = strings.ReplaceAll(circuitID, "-", "_")
+	circuitID = strings.Map(func(r rune) rune {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_' {
+			return r
+		}
+		return -1
+	}, circuitID)
+
+	// Remove multiple consecutive underscores
+	for strings.Contains(circuitID, "__") {
+		circuitID = strings.ReplaceAll(circuitID, "__", "_")
+	}
+
+	// Remove leading and trailing underscores
+	circuitID = strings.Trim(circuitID, "_")
+
+	return circuitID
 }
