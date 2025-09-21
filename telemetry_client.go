@@ -35,7 +35,7 @@ type statistics struct {
 	PacketSize        int
 }
 
-type GTClientOpts struct {
+type Options struct {
 	Source       string
 	Format       telemetryformat.Name
 	LogLevel     string
@@ -45,7 +45,7 @@ type GTClientOpts struct {
 	VehicleDB    string
 }
 
-type GTClient struct {
+type Client struct {
 	log              zerolog.Logger
 	source           string
 	format           telemetryformat.Name
@@ -56,7 +56,7 @@ type GTClient struct {
 	Circuits         *circuits.CircuitDB
 }
 
-func NewGTClient(opts GTClientOpts) (*GTClient, error) {
+func New(opts Options) (*Client, error) {
 	var log zerolog.Logger
 	if opts.Logger != nil {
 		log = *opts.Logger
@@ -125,7 +125,7 @@ func NewGTClient(opts GTClientOpts) (*GTClient, error) {
 		return nil, fmt.Errorf("setting up new vehicle database: %w", err)
 	}
 
-	return &GTClient{
+	return &Client{
 		log:              log,
 		source:           opts.Source,
 		format:           opts.Format,
@@ -150,7 +150,7 @@ func NewGTClient(opts GTClientOpts) (*GTClient, error) {
 	}, nil
 }
 
-func (c *GTClient) Run() (err error, recoverable bool) {
+func (c *Client) Run() (err error, recoverable bool) {
 	sourceURL, err := url.Parse(c.source)
 	if err != nil {
 		return fmt.Errorf("parse source URL: %w", err), false
@@ -230,7 +230,7 @@ readTelemetry:
 	}
 }
 
-func (c *GTClient) collectStats() {
+func (c *Client) collectStats() {
 	if !c.Statistics.enabled {
 		return
 	}
