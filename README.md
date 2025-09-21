@@ -8,10 +8,11 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 
 ## Features
 
-* Support for all fields contained within the telemetry data packet.
+* Support for all known fields contained within the telemetry data packet.
+* Support for all current telemetry formats (A, B and ~)
 * Access data in both metric and imperial units.
 * An additional field for the differential gear ratio is computed based on the rolling wheel diameter of the driven wheels.
-* A vehicle inventory database for providing the follwing information on a given vehicle ID:
+* A vehicle inventory database with methods for providing the following information on a given vehicle ID:
   * Manufacturer
   * Model
   * Year
@@ -20,13 +21,16 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
   * Type (racing or street)
   * Racing category
   * Open cockpit exposure
-
+* A circuit inventory database with methods for matching a circuit based on a given coordinate and providing the following infromation:
+  * Name
+  * Length
+  * Region
 
 [![asciicast](https://asciinema.org/a/fSBcGOR1EPjhTCMFLY0gHP0Py.svg)](https://asciinema.org/a/fSBcGOR1EPjhTCMFLY0gHP0Py)
 
 ## Installation ##
 
-To start using gt-telemetry, install Go 1.21 or above. From your project, run the following command to retrieve the module:
+To start using gt-telemetry, install Go 1.24.6 or above. From your project, run the following command to retrieve the module:
 
 ```bash
 go get github.com/zetetos/gt-telemetry
@@ -34,31 +38,32 @@ go get github.com/zetetos/gt-telemetry
 
 ## Usage ##
 
-```go
-import telemetry_client "github.com/zetetos/gt-telemetry"
-```
-
-Construct a new GT client and start reading the telemetry stream. All configuration fields are optional with the default values show in the example.
+Construct a new GT client and start reading the telemetry stream. All configuration fields in the example are optional and use the default values that would be used when not provided.
 
 ```go
-config := telemetry_client.GTClientOpts{
-    Source: "udp://255.255.255.255:33739"
-    Format: telemetrysrc.TelemetryFormatA,
-    LogLevel: "warn",
-    StatsEnabled: false,
-    VehicleDB: "./internal/vehicles/inventory.json",
-}
-gt, _ := telemetry_client.NewGTClient(config)
-go func() {
-    err, recoverable = gt.Run()
-    if err != nil {
-        if recoverable {
-            log.Printf("Recoverable error: %s", err.Error())
-        } else {
-            log.Fatalf("Fatal client error: %s", err.Error())
-        }
+import "github.com/zetetos/gt-telemetry"
+
+main() {
+    options := gttelemetry.Options{
+        Source: "udp://255.255.255.255:33739"
+        Format: telemetryformat.Addendum2,
+        LogLevel: "warn",
+        StatsEnabled: false,
+        VehicleDB: "./pkg/vehicles/vehicles.json",
+        CircuitDB: "./pkg/circuits/cicuits.json",
     }
-}()
+    gtclient, _ := gttelemetry.New(options)
+    go func() {
+        err, recoverable = gtclient.Run()
+        if err != nil {
+            if recoverable {
+                log.Printf("Recoverable error: %s", err.Error())
+            } else {
+                log.Fatalf("Fatal client error: %s", err.Error())
+            }
+        }
+    }()
+}
 ```
 
 _If the PlayStation is on the same network segment then you will probably find that the default broadcast address `255.255.255.255` will be sufficient to start reading data. If it does not work then enter the IP address of the PlayStation device instead._
@@ -77,11 +82,11 @@ Read some data from the stream:
 
 Offline saves of replay files can also be used to read in telemetry data. Files can be in either plain (`*.gtr`) or compressed (`*.gtz`) format.
 
-Read telemetry from a replay file by setting the `Source` value in the `GTClientOpts` to a file URL, like so:
+Read telemetry from a replay file by setting the `Source` value in the `gttelemetry.Options` to a file URL, like so:
 
 ```go
-config := telemetry_client.GTClientOpts{
-    Source: "file://examples/simple/replay.gtz"
+config := gttelemetry.Options{
+    Source: "file://data/replays/demo.gtz"
 }
 ```
 
