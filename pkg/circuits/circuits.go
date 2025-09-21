@@ -129,6 +129,8 @@ func (c *CircuitDB) GetCircuitsInRegion(region string) (circuits map[string]Circ
 
 // NormaliseStartLineCoordinate normalises a start line coordinate to reduce precision for location matching
 func NormaliseStartLineCoordinate(coordinate models.Coordinate) (normalised models.CoordinateNorm) {
+	// The FIA rules state that the starting grid has a min width of 15 meters.
+	// 32m resolution should provide sufficient accuracy for most tracks.
 	return models.CoordinateNorm{
 		X: int16(coordinate.X/32) * 32,
 		Y: int16(coordinate.Y/4) * 4,
@@ -138,6 +140,9 @@ func NormaliseStartLineCoordinate(coordinate models.Coordinate) (normalised mode
 
 // NormaliseCircuitCoordinate normalises a circuit coordinate to reduce precision for location matching
 func NormaliseCircuitCoordinate(coordinate models.Coordinate) (normalised models.CoordinateNorm) {
+	// Track map resultion is lower to reduce file size.
+	// 64m resolution should be sufficient for most tracks.
+	// Y (vertical) resolution is higher since elevation changes are much smaller than X/Z.
 	return models.CoordinateNorm{
 		X: int16(coordinate.X/64) * 64,
 		Y: int16(coordinate.Y/8) * 8,
