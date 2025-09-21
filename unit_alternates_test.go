@@ -1,11 +1,11 @@
-package telemetry
+package gttelemetry
 
 import (
 	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zetetos/gt-telemetry/internal/gttelemetry"
+	"github.com/zetetos/gt-telemetry/internal/telemetry"
 	"github.com/zetetos/gt-telemetry/internal/vehicles"
 )
 
@@ -20,7 +20,7 @@ func TestUnitAlternatesTestSuite(t *testing.T) {
 
 func (suite *UnitAlternatesTestSuite) SetupTest() {
 	transformer := NewTransformer(&vehicles.VehicleDB{})
-	transformer.RawTelemetry = gttelemetry.GranTurismoTelemetry{}
+	transformer.RawTelemetry = telemetry.GranTurismoTelemetry{}
 
 	suite.transformer = transformer
 }
@@ -48,7 +48,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesCurrentGearStringReturnsCor
 	for testValue, wantValue := range wantValues {
 		suite.Run("Gear"+strconv.Itoa(testValue), func() {
 			// Arrange
-			suite.transformer.RawTelemetry.TransmissionGear = &gttelemetry.GranTurismoTelemetry_TransmissionGear{
+			suite.transformer.RawTelemetry.TransmissionGear = &telemetry.GranTurismoTelemetry_TransmissionGear{
 				Current: uint64(testValue),
 			}
 
@@ -96,7 +96,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesRideHeightMillimetersReturn
 
 func (suite *TransformerTestSuite) TestUnitAlternatesSuspensionHeightFeetReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.SuspensionHeight = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.SuspensionHeight = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.0267,
 		FrontRight: 0.0213,
 		RearLeft:   0.0312,
@@ -115,7 +115,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesSuspensionHeightFeetReturns
 
 func (suite *TransformerTestSuite) TestUnitAlternatesSuspensionHeightInchesReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.SuspensionHeight = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.SuspensionHeight = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.0267,
 		FrontRight: 0.0213,
 		RearLeft:   0.0312,
@@ -134,7 +134,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesSuspensionHeightInchesRetur
 
 func (suite *TransformerTestSuite) TestUnitAlternatesSuspensionHeightMillimetersReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.SuspensionHeight = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.SuspensionHeight = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.0267,
 		FrontRight: 0.0213,
 		RearLeft:   0.0312,
@@ -186,7 +186,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesTurboBoostKPAReturnsCorrect
 
 func (suite *TransformerTestSuite) TestUnitAlternatesTyreDiameterFeetReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
 		FrontRight: 0.314,
 		RearLeft:   0.343,
@@ -205,7 +205,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesTyreDiameterFeetReturnsCorr
 
 func (suite *TransformerTestSuite) TestUnitAlternatesTyreDiameterInchesReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
 		FrontRight: 0.314,
 		RearLeft:   0.343,
@@ -223,7 +223,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesTyreDiameterInchesReturnsCo
 
 func (suite *TransformerTestSuite) TestUnitAlternatesTyreDiameterMillimetersReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
 		FrontRight: 0.314,
 		RearLeft:   0.343,
@@ -242,7 +242,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesTyreDiameterMillimetersRetu
 
 func (suite *TransformerTestSuite) TestUnitAlternatesTyreRadiusFeetReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
 		FrontRight: 0.314,
 		RearLeft:   0.343,
@@ -261,7 +261,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesTyreRadiusFeetReturnsCorrec
 
 func (suite *TransformerTestSuite) TestUnitAlternatesTyreRadiusInchesReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
 		FrontRight: 0.314,
 		RearLeft:   0.343,
@@ -280,7 +280,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesTyreRadiusInchesReturnsCorr
 
 func (suite *TransformerTestSuite) TestUnitAlternatesTyreRadiusMillimetersReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
 		FrontRight: 0.314,
 		RearLeft:   0.343,
@@ -299,7 +299,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesTyreRadiusMillimetersReturn
 
 func (suite *TransformerTestSuite) TestUnitAlternatesTyreTemperatureFahrenheitReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreTemperature = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreTemperature = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  64.3,
 		FrontRight: 64.1,
 		RearLeft:   68.2,
@@ -318,13 +318,13 @@ func (suite *TransformerTestSuite) TestUnitAlternatesTyreTemperatureFahrenheitRe
 
 func (suite *TransformerTestSuite) TestUnitAlternatesWheelSpeedKPHReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.317,
 		FrontRight: 0.317,
 		RearLeft:   0.317,
 		RearRight:  0.317,
 	}
-	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  132.50,
 		FrontRight: 132.51,
 		RearLeft:   132.45,
@@ -343,13 +343,13 @@ func (suite *TransformerTestSuite) TestUnitAlternatesWheelSpeedKPHReturnsCorrect
 
 func (suite *TransformerTestSuite) TestUnitAlternatesWheelSpeedMPHReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.317,
 		FrontRight: 0.317,
 		RearLeft:   0.317,
 		RearRight:  0.317,
 	}
-	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  132.50,
 		FrontRight: 132.51,
 		RearLeft:   132.45,
@@ -368,7 +368,7 @@ func (suite *TransformerTestSuite) TestUnitAlternatesWheelSpeedMPHReturnsCorrect
 
 func (suite *TransformerTestSuite) TestUnitAlternatesWheelSpeedRPMReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  132.50,
 		FrontRight: 132.51,
 		RearLeft:   132.45,

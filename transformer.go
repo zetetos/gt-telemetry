@@ -1,13 +1,12 @@
-package telemetry
+package gttelemetry
 
 import (
 	"math"
 	"time"
 
-	"github.com/zetetos/gt-telemetry/internal/gttelemetry"
-	"github.com/zetetos/gt-telemetry/internal/telemetrysrc"
+	"github.com/zetetos/gt-telemetry/internal/telemetry"
 	"github.com/zetetos/gt-telemetry/internal/utils"
-	"github.com/zetetos/gt-telemetry/internal/vehicles"
+	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
 )
 
 type CornerSet struct {
@@ -77,14 +76,14 @@ type Vmax struct {
 }
 
 type transformer struct {
-	RawTelemetry gttelemetry.GranTurismoTelemetry
+	RawTelemetry telemetry.GranTurismoTelemetry
 	inventory    *vehicles.VehicleDB
 	vehicle      vehicles.Vehicle
 }
 
 func NewTransformer(inventory *vehicles.VehicleDB) *transformer {
 	return &transformer{
-		RawTelemetry: gttelemetry.GranTurismoTelemetry{},
+		RawTelemetry: telemetry.GranTurismoTelemetry{},
 		inventory:    inventory,
 		vehicle:      vehicles.Vehicle{},
 	}
@@ -427,20 +426,20 @@ func (t *transformer) SuspensionHeightMeters() CornerSet {
 	}
 }
 
-func (t *transformer) TelemetryFormat() telemetrysrc.TelemetryFormat {
-	isFormatTilde, err := t.RawTelemetry.HasSectionTilde()
-	if err != nil && isFormatTilde {
-		return telemetrysrc.TelemetryFormatTilde
+func (t *transformer) TelemetryFormat() telemetryformat.Name {
+	isAddendum2Format, err := t.RawTelemetry.Addendum2Format()
+	if err != nil && isAddendum2Format {
+		return telemetryformat.Addendum2
 	}
 
-	isFormatB, err := t.RawTelemetry.HasSectionB()
-	if err != nil && isFormatB {
-		return telemetrysrc.TelemetryFormatB
+	isAddendum1Format, err := t.RawTelemetry.Addendum1Format()
+	if err != nil && isAddendum1Format {
+		return telemetryformat.Addendum1
 	}
 
-	isFormatA, err := t.RawTelemetry.HasSectionA()
-	if err != nil && isFormatA {
-		return telemetrysrc.TelemetryFormatA
+	isStandardFormat, err := t.RawTelemetry.StandardFormat()
+	if err != nil && isStandardFormat {
+		return telemetryformat.Standard
 	}
 
 	return "unknown"

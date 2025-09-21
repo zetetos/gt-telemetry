@@ -1,4 +1,4 @@
-package telemetry
+package gttelemetry
 
 import (
 	"strconv"
@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zetetos/gt-telemetry/internal/gttelemetry"
+	"github.com/zetetos/gt-telemetry/internal/telemetry"
 	"github.com/zetetos/gt-telemetry/internal/vehicles"
 )
 
@@ -38,7 +38,7 @@ func (suite *TransformerTestSuite) SetupTest() {
 	}`)
 	inventory, _ := vehicles.NewDB(inventoryJSON)
 	transformer := NewTransformer(inventory)
-	transformer.RawTelemetry = gttelemetry.GranTurismoTelemetry{}
+	transformer.RawTelemetry = telemetry.GranTurismoTelemetry{}
 
 	suite.transformer = transformer
 }
@@ -58,7 +58,7 @@ func (suite *TransformerTestSuite) TestAngularVelocityVectorReturnsEmptyObjectWh
 func (suite *TransformerTestSuite) TestAngularVelocityVectorReturnsCorrectVectorWhenTelemetryPopulated() {
 	// Arrange
 	wantValue := Vector{X: 0.1, Y: 0.2, Z: 0.3}
-	suite.transformer.RawTelemetry.AngularVelocityVector = &gttelemetry.GranTurismoTelemetry_Vector{
+	suite.transformer.RawTelemetry.AngularVelocityVector = &telemetry.GranTurismoTelemetry_Vector{
 		VectorX: wantValue.X,
 		VectorY: wantValue.Y,
 		VectorZ: wantValue.Z,
@@ -127,7 +127,7 @@ func (suite *TransformerTestSuite) TestCalculatedVmaxReturnsCorrectValue() {
 	wantSpeed := uint16(322)
 	wantRPM := uint16(6709)
 	suite.transformer.RawTelemetry.CalculatedMaxSpeed = wantSpeed
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.317,
 		FrontRight: 0.317,
 		RearLeft:   0.317,
@@ -198,7 +198,7 @@ func (suite *TransformerTestSuite) TestCurrentGearReturnsCorrectValue() {
 	for tc := minGear; tc <= maxGear; tc++ {
 		suite.Run("Gear"+strconv.Itoa(tc), func() {
 			// Arrange
-			suite.transformer.RawTelemetry.TransmissionGear = &gttelemetry.GranTurismoTelemetry_TransmissionGear{
+			suite.transformer.RawTelemetry.TransmissionGear = &telemetry.GranTurismoTelemetry_TransmissionGear{
 				Current: uint64(tc),
 			}
 
@@ -214,14 +214,14 @@ func (suite *TransformerTestSuite) TestCurrentGearReturnsCorrectValue() {
 func (suite *TransformerTestSuite) TestCurrentGearRatioReturnsCorrectValue() {
 	// Arrange
 	wantValues := []float32{4.32, 3.21, 2.10, 1.09, 0.87}
-	suite.transformer.RawTelemetry.TransmissionGearRatio = &gttelemetry.GranTurismoTelemetry_GearRatio{
+	suite.transformer.RawTelemetry.TransmissionGearRatio = &telemetry.GranTurismoTelemetry_GearRatio{
 		Gear: wantValues,
 	}
 
 	for tc := 0; tc < len(wantValues); tc++ {
 		suite.Run("Gear"+strconv.Itoa(tc), func() {
 			// Arrange
-			suite.transformer.RawTelemetry.TransmissionGear = &gttelemetry.GranTurismoTelemetry_TransmissionGear{
+			suite.transformer.RawTelemetry.TransmissionGear = &telemetry.GranTurismoTelemetry_TransmissionGear{
 				Current: uint64(tc + 1),
 			}
 
@@ -236,7 +236,7 @@ func (suite *TransformerTestSuite) TestCurrentGearRatioReturnsCorrectValue() {
 
 func (suite *TransformerTestSuite) TestCurrentGearRatioReturnsDefaultValueWhenTelemetryIsNil() {
 	// Arrange
-	suite.transformer.RawTelemetry.TransmissionGearRatio = &gttelemetry.GranTurismoTelemetry_GearRatio{
+	suite.transformer.RawTelemetry.TransmissionGearRatio = &telemetry.GranTurismoTelemetry_GearRatio{
 		Gear: []float32{},
 	}
 
@@ -288,11 +288,11 @@ func (suite *TransformerTestSuite) TestDifferentialRatioReturnsCorrectValueForDr
 			wantValue := test.result
 			suite.transformer.vehicle.Drivetrain = test.drivetrain
 			suite.transformer.RawTelemetry.TransmissionTopSpeedRatio = 2.7
-			suite.transformer.RawTelemetry.TransmissionGearRatio = &gttelemetry.GranTurismoTelemetry_GearRatio{
+			suite.transformer.RawTelemetry.TransmissionGearRatio = &telemetry.GranTurismoTelemetry_GearRatio{
 				Gear: test.gears,
 			}
 			suite.transformer.RawTelemetry.CalculatedMaxSpeed = 330
-			suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+			suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 				FrontLeft:  0.348,
 				FrontRight: 0.348,
 				RearLeft:   0.348,
@@ -375,7 +375,7 @@ func (suite *TransformerTestSuite) TestFlagsReturnCorrectValues() {
 	for _, state := range states {
 		suite.Run(strconv.FormatBool(state), func() {
 			// Arrange
-			suite.transformer.RawTelemetry.Flags = &gttelemetry.GranTurismoTelemetry_Flags{
+			suite.transformer.RawTelemetry.Flags = &telemetry.GranTurismoTelemetry_Flags{
 				Live:             true,
 				GamePaused:       true,
 				Loading:          true,
@@ -605,7 +605,7 @@ func (suite *TransformerTestSuite) TestTransmissionReturnsCorrectValue() {
 		Gears:      3,
 		GearRatios: ratios,
 	}
-	suite.transformer.RawTelemetry.TransmissionGearRatio = &gttelemetry.GranTurismoTelemetry_GearRatio{
+	suite.transformer.RawTelemetry.TransmissionGearRatio = &telemetry.GranTurismoTelemetry_GearRatio{
 		Gear: ratios,
 	}
 
@@ -703,7 +703,7 @@ func (suite *TransformerTestSuite) TestPositionalMapCoordinatesReturnsEmptyObjec
 
 func (suite *TransformerTestSuite) TestPositionalMapCoordinatesReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.MapPositionCoordinates = &gttelemetry.GranTurismoTelemetry_Coordinate{
+	suite.transformer.RawTelemetry.MapPositionCoordinates = &telemetry.GranTurismoTelemetry_Coordinate{
 		CoordinateX: 10.1,
 		CoordinateY: 20.2,
 		CoordinateZ: 30.3,
@@ -780,7 +780,7 @@ func (suite *TransformerTestSuite) TestRotationEnvelopeReturnsEmptyObjectWhenTel
 
 func (suite *TransformerTestSuite) TestRotationEnvelopeReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.RotationalEnvelope = &gttelemetry.GranTurismoTelemetry_RotationalEnvelope{
+	suite.transformer.RawTelemetry.RotationalEnvelope = &telemetry.GranTurismoTelemetry_RotationalEnvelope{
 		Yaw:   0.1,
 		Pitch: 0.2,
 		Roll:  0.3,
@@ -809,7 +809,7 @@ func (suite *TransformerTestSuite) TestRotationVectorReturnssEmptyObjectWhenTele
 
 func (suite *TransformerTestSuite) TestRotationVectorReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.RotationalEnvelope = &gttelemetry.GranTurismoTelemetry_RotationalEnvelope{
+	suite.transformer.RawTelemetry.RotationalEnvelope = &telemetry.GranTurismoTelemetry_RotationalEnvelope{
 		Yaw:   0.1,
 		Pitch: 0.2,
 		Roll:  0.3,
@@ -891,7 +891,7 @@ func (suite *TransformerTestSuite) TestSuggestedGearReturnsCorrectValue() {
 	for tc := minGear; tc <= maxGear; tc++ {
 		suite.Run("Gear"+strconv.Itoa(tc), func() {
 			// Arrange
-			suite.transformer.RawTelemetry.TransmissionGear = &gttelemetry.GranTurismoTelemetry_TransmissionGear{
+			suite.transformer.RawTelemetry.TransmissionGear = &telemetry.GranTurismoTelemetry_TransmissionGear{
 				Suggested: uint64(tc),
 			}
 
@@ -917,7 +917,7 @@ func (suite *TransformerTestSuite) TestSuspensionHeightMetersReturnsEmptyCornerS
 
 func (suite *TransformerTestSuite) TestSuspensionHeightMetersRetursCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.SuspensionHeight = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.SuspensionHeight = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.101,
 		FrontRight: 0.102,
 		RearLeft:   0.103,
@@ -1044,7 +1044,7 @@ func (suite *TransformerTestSuite) TestTranslationEnvelopeReturnsEmptyObjectWhen
 
 func (suite *TransformerTestSuite) TestTranslationEnvelopeReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TranslationalEnvelope = &gttelemetry.GranTurismoTelemetry_TranslationalEnvelope{
+	suite.transformer.RawTelemetry.TranslationalEnvelope = &telemetry.GranTurismoTelemetry_TranslationalEnvelope{
 		Sway:  0.1,
 		Heave: 0.2,
 		Surge: 0.3,
@@ -1104,7 +1104,7 @@ func (suite *TransformerTestSuite) TestTyreDiameterMetersReturnsCorrectValue() {
 		RearLeft:   tyreRadius * 2,
 		RearRight:  tyreRadius * 2,
 	}
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  tyreRadius,
 		FrontRight: tyreRadius,
 		RearLeft:   tyreRadius,
@@ -1133,7 +1133,7 @@ func (suite *TransformerTestSuite) TestTyreRadiusMetersReturnsEmptyObjectWhenTel
 func (suite *TransformerTestSuite) TestTyreRadiusMetersReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(0.317)
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  wantValue,
 		FrontRight: wantValue,
 		RearLeft:   wantValue,
@@ -1164,13 +1164,13 @@ func (suite *TransformerTestSuite) TestTyreSlipRatioReturnsCorrectValueWhenGroun
 func (suite *TransformerTestSuite) TestTyreSlipRatioReturnsCorrectValueWhenGroundSpeedIsNotZero() {
 	// Arrange
 	suite.transformer.RawTelemetry.GroundSpeed = 42
-	suite.transformer.RawTelemetry.TyreRadius = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.317,
 		FrontRight: 0.317,
 		RearLeft:   0.317,
 		RearRight:  0.317,
 	}
-	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  132.50,
 		FrontRight: 132.51,
 		RearLeft:   132.45,
@@ -1201,7 +1201,7 @@ func (suite *TransformerTestSuite) TestTyreTemperatureCelsiusReturnsEmptyOjectWh
 
 func (suite *TransformerTestSuite) TestTyreTemperatureCelsiusReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.TyreTemperature = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.TyreTemperature = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  64.3,
 		FrontRight: 64.1,
 		RearLeft:   68.2,
@@ -1421,7 +1421,7 @@ func (suite *TransformerTestSuite) TestVelocityVectorReturnsEmptyObjectWhenTelem
 
 func (suite *TransformerTestSuite) TestVelocityVectorReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.VelocityVector = &gttelemetry.GranTurismoTelemetry_Vector{
+	suite.transformer.RawTelemetry.VelocityVector = &telemetry.GranTurismoTelemetry_Vector{
 		VectorX: 42.1,
 		VectorY: 1.2,
 		VectorZ: 0.3,
@@ -1462,7 +1462,7 @@ func (suite *TransformerTestSuite) TestWheelSpeedRadiansPerSecondReturnsEmptyObj
 
 func (suite *TransformerTestSuite) TestWheelSpeedRadiansPerSecondReturnsCorrectValue() {
 	// Arrange
-	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &gttelemetry.GranTurismoTelemetry_CornerSet{
+	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  132.50,
 		FrontRight: 132.51,
 		RearLeft:   132.45,
