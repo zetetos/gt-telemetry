@@ -12,6 +12,7 @@ import (
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"github.com/rs/zerolog"
 
+	"github.com/zetetos/gt-telemetry/internal/reader"
 	"github.com/zetetos/gt-telemetry/internal/telemetry"
 	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
 )
@@ -153,7 +154,7 @@ func (c *GTClient) Run() (err error, recoverable bool) {
 		return fmt.Errorf("parse source URL: %w", err), false
 	}
 
-	var telemetrySource telemetrysrc.Reader
+	var telemetryReader reader.Reader
 
 	switch sourceURL.Scheme {
 	case "udp":
@@ -162,12 +163,12 @@ func (c *GTClient) Run() (err error, recoverable bool) {
 		if err != nil {
 			return fmt.Errorf("parse URL port: %w", err), false
 		}
-		telemetrySource, err = telemetrysrc.NewNetworkUDPReader(host, port, c.format, c.log)
+		telemetryReader, err = reader.NewUDPReader(host, port, c.format, c.log)
 		if err != nil {
 			return fmt.Errorf("setup UDP reader: %w", err), true
 		}
 	case "file":
-		telemetrySource, err = telemetrysrc.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
+		telemetryReader, err = reader.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
 		if err != nil {
 			return fmt.Errorf("setup file reader: %w", err), false
 		}
@@ -179,7 +180,7 @@ func (c *GTClient) Run() (err error, recoverable bool) {
 
 readTelemetry:
 	for {
-		bufLen, buffer, err := telemetrySource.Read()
+		bufLen, buffer, err := telemetryReader.Read()
 		if err != nil {
 			if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
 				c.Finished = true

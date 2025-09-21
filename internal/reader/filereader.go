@@ -1,4 +1,4 @@
-package telemetrysrc
+package reader
 
 import (
 	"bufio"
