@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/zetetos/gt-telemetry/internal/vehicles"
+	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
 
 // vehicleFields defines the canonical field order for vehicle data
@@ -243,10 +243,10 @@ func csvToJSON(inputFile string) error {
 	}
 	defer inputF.Close()
 
-	reader := csv.NewReader(inputF)
+	csvReader := csv.NewReader(inputF)
 
 	// Read header
-	header, err := reader.Read()
+	header, err := csvReader.Read()
 	if err != nil {
 		return fmt.Errorf("reading CSV header: %w", err)
 	}
@@ -261,7 +261,7 @@ func csvToJSON(inputFile string) error {
 
 	// Read CSV records
 	for {
-		record, err := reader.Read()
+		record, err := csvReader.Read()
 		if err == io.EOF {
 			break
 		}
