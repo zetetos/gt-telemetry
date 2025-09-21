@@ -7,6 +7,7 @@ import (
 	"github.com/zetetos/gt-telemetry/internal/telemetry"
 	"github.com/zetetos/gt-telemetry/internal/utils"
 	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
+	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
 
 type CornerSet struct {

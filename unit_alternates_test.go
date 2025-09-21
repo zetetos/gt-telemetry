@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	"github.com/zetetos/gt-telemetry/internal/telemetry"
-	"github.com/zetetos/gt-telemetry/internal/vehicles"
+	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
 
 type UnitAlternatesTestSuite struct {

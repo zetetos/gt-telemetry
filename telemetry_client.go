@@ -14,7 +14,9 @@ import (
 
 	"github.com/zetetos/gt-telemetry/internal/reader"
 	"github.com/zetetos/gt-telemetry/internal/telemetry"
+	"github.com/zetetos/gt-telemetry/pkg/circuits"
 	"github.com/zetetos/gt-telemetry/pkg/telemetryformat"
+	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
 
 type statistics struct {
