@@ -26,7 +26,7 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 
 ## Installation ##
 
-To start using gt-telemetry, install Go 1.21 or above. From your project, run the following command to retrieve the module:
+To start using gt-telemetry, install Go 1.24.7 or above. From your project, run the following command to retrieve the module:
 
 ```bash
 go get github.com/zetetos/gt-telemetry
@@ -35,20 +35,20 @@ go get github.com/zetetos/gt-telemetry
 ## Usage ##
 
 ```go
-import telemetry_client "github.com/zetetos/gt-telemetry"
+import "github.com/zetetos/gt-telemetry"
 ```
 
 Construct a new GT client and start reading the telemetry stream. All configuration fields are optional with the default values show in the example.
 
 ```go
-config := telemetry_client.GTClientOpts{
+options := gttelemetry.Options{
     Source: "udp://255.255.255.255:33739"
-    Format: telemetrysrc.TelemetryFormatA,
+    Format: telemetryformat.Addendum2,
     LogLevel: "warn",
     StatsEnabled: false,
-    VehicleDB: "./internal/vehicles/inventory.json",
+    VehicleDB: "./pkg/vehicles/vehicles.json",
 }
-gt, _ := telemetry_client.NewGTClient(config)
+gt, _ := gttelemetry.New(options)
 go func() {
     err, recoverable = gt.Run()
     if err != nil {
@@ -77,11 +77,11 @@ Read some data from the stream:
 
 Offline saves of replay files can also be used to read in telemetry data. Files can be in either plain (`*.gtr`) or compressed (`*.gtz`) format.
 
-Read telemetry from a replay file by setting the `Source` value in the `GTClientOpts` to a file URL, like so:
+Read telemetry from a replay file by setting the `Source` value in the `gttelemetry.Options` to a file URL, like so:
 
 ```go
-config := telemetry_client.GTClientOpts{
-    Source: "file://examples/simple/replay.gtz"
+config := gttelemetry.Options{
+    Source: "file://data/replays/demo.gtz"
 }
 ```
 
