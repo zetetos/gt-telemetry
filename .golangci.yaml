@@ -2,6 +2,7 @@ version: "2"
 run:
   allow-parallel-runners: true
 linters:
+  enable-all: true
   exclusions:
     generated: lax
     presets:
