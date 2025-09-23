@@ -1,0 +1,70 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "$id": "https://github.com/zetetos/gt-telemetry/data/circuit-schema.json",
+    "title": "Gran Turismo Circuit Schema",
+    "description": "JSON schema for Gran Turismo circuit configuration files",
+    "type": "object",
+    "properties": {
+        "$schema": { "type": "string", "description": "JSON Schema reference for validation" },
+        "name": {
+            "type": "string",
+            "description": "The primary name of the circuit",
+            "examples": [ "Cirque de La Sarthe", "Circuit de Barcelona-Catalunya" ]
+        },
+        "variation_name": {
+            "type": "string",
+            "description": "The full name including circuit variation or layout",
+            "examples": [
+                "24 Heures du Mans race track no chicane",
+                "Circuit de Barcelona-Catalunya Rallycross Layout"
+            ]
+        },
+        "default": {
+            "type": "boolean",
+            "description": "Whether to use this variation when the circuit is known but not the specific variation"
+        },
+        "country": {
+            "type": "string",
+            "pattern": "^[a-z]{2}$",
+            "description": "Two-letter ISO 3166-1 alpha-2 country code",
+            "examples": [ "us", "br", "jp", "gb", "de", "it", "fr" ]
+        },
+        "length_meters": { "type": "integer", "minimum": 1, "description": "Total length of the circuit in meters" },
+        "coordinates": {
+            "type": "object",
+            "description": "3D coordinate data for the circuit",
+            "properties": {
+                "circuit": {
+                    "type": "array",
+                    "description": "Array of 3D coordinate points defining the circuit path",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "x": { "type": "number", "description": "X coordinate in 3D space" },
+                            "y": { "type": "number", "description": "Y coordinate in 3D space" },
+                            "z": { "type": "number", "description": "Z coordinate in 3D space" }
+                        },
+                        "required": [ "x", "y", "z" ],
+                        "additionalProperties": false
+                    },
+                    "minItems": 1
+                },
+                "starting_line": {
+                    "type": "object",
+                    "description": "3D coordinate point marking the starting line position",
+                    "properties": {
+                        "x": { "type": "number", "description": "X coordinate in 3D space" },
+                        "y": { "type": "number", "description": "Y coordinate in 3D space" },
+                        "z": { "type": "number", "description": "Z coordinate in 3D space" }
+                    },
+                    "required": [ "x", "y", "z" ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [ "circuit", "starting_line" ],
+            "additionalProperties": false
+        }
+    },
+    "required": [ "name", "variation_name", "default", "country", "length_meters", "coordinates" ],
+    "additionalProperties": false
+}
