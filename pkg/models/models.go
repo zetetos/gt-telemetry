@@ -10,9 +10,9 @@ const (
 
 // Coordinate represents a coordinate in 3D space
 type Coordinate struct {
-	X float32
-	Y float32
-	Z float32
+	X float32 `json:"x"`
+	Y float32 `json:"y"`
+	Z float32 `json:"z"`
 }
 
 // CoordinateNorm is a normalised, reduced precision coordinate in 3D space
@@ -25,29 +25,29 @@ type CoordinateNorm struct {
 
 // CornerSet represents individual values at each corner or wheel of a vehicle
 type CornerSet struct {
-	FrontLeft  float32
-	FrontRight float32
-	RearLeft   float32
-	RearRight  float32
+	FrontLeft  float32 `json:"front_left"`
+	FrontRight float32 `json:"front_right"`
+	RearLeft   float32 `json:"rear_left"`
+	RearRight  float32 `json:"rear_right"`
 }
 
 // RotationalEnvelope represents the rotational orientation of a body
 type RotationalEnvelope struct {
-	Pitch float32
-	Yaw   float32
-	Roll  float32
+	Pitch float32 `json:"pitch"`
+	Yaw   float32 `json:"yaw"`
+	Roll  float32 `json:"roll"`
 }
 
 // TranslationalEnvelope represents the acceleration of a body along 3 axes
 type TranslationalEnvelope struct {
-	Sway  float32
-	Heave float32
-	Surge float32
+	Sway  float32 `json:"sway"`
+	Heave float32 `json:"heave"`
+	Surge float32 `json:"surge"`
 }
 
 // Vector represents the velocity of a body along 3 axes
 type Vector struct {
-	X float32
-	Y float32
-	Z float32
+	X float32 `json:"x"`
+	Y float32 `json:"y"`
+	Z float32 `json:"z"`
 }
