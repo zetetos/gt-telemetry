@@ -7643,6 +7643,34 @@
     "EngineBankAngle": 0,
     "EngineCrankPlaneAngle": 120
   },
+  "3577": {
+    "CarID": 3577,
+    "Manufacturer": "Opel",
+    "Model": "Opel Corsa GSE VGT",
+    "Year": 2025,
+    "OpenCockpit": false,
+    "CarType": "race",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "EV",
+    "EngineLayout": "",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 0
+  },
+  "3578": {
+    "CarID": 3578,
+    "Manufacturer": "Mazda",
+    "Model": "MAZDA SPIRIT RACING ROADSTER 12R '25",
+    "Year": 2025,
+    "OpenCockpit": true,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "FR",
+    "Aspiration": "NA",
+    "EngineLayout": "I4",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 180
+  },
   "3579": {
     "CarID": 3579,
     "Manufacturer": "AFEELA",
@@ -7684,5 +7712,33 @@
     "EngineLayout": "V8",
     "EngineBankAngle": 90,
     "EngineCrankPlaneAngle": 90
+  },
+  "3583": {
+    "CarID": 3583,
+    "Manufacturer": "Toyota",
+    "Model": "RAV4 Adventure '20",
+    "Year": 2020,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "NA",
+    "EngineLayout": "I4",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 180
+  },
+  "3585": {
+    "CarID": 3585,
+    "Manufacturer": "Hyundai",
+    "Model": "ELANTRA N '23",
+    "Year": 2023,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "FF",
+    "Aspiration": "TC",
+    "EngineLayout": "I4",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 180
   }
 }
