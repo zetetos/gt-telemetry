@@ -1,6 +1,6 @@
 {
     "$schema": "schema/circuit-schema.json",
-    "name": "Brands Hatch Grand Prix Circuit",
+    "name": "Brands Hatch",
     "variation_name": "Brands Hatch Grand Prix Circuit",
     "default": true,
     "country": "uk",
