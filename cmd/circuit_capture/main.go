@@ -182,6 +182,7 @@ func NewCircuitCapture(config *Config) (*CircuitCapture, error) {
 	}
 
 	c.lastCoordinate = c.initCoordinate
+	c.circuitData.Schema = "schema/circuit-schema.json"
 	c.circuitData.Name = config.Name
 	c.circuitData.VariationName = config.VariationName
 	c.circuitData.Default = config.Default
@@ -266,7 +267,7 @@ func (c *CircuitCapture) processCapture() error {
 	currentLap := c.gt.Telemetry.CurrentLap()
 
 	// Lap start detection
-	if c.gt.Telemetry.IsOnCircuit() && currentLap != c.lastLap {
+	if !c.gt.Telemetry.IsInMainMenu() && currentLap != c.lastLap {
 		if c.captureActive {
 			fmt.Println("Lap complete. Saving circuit data...")
 			c.circuitData.LengthMeters = int(math.Round(c.distanceTravelled))
@@ -281,8 +282,8 @@ func (c *CircuitCapture) processCapture() error {
 			c.lastLap = currentLap
 			c.startDropped = c.gt.Statistics.PacketsDropped
 		}
-	} else if !c.gt.Telemetry.IsOnCircuit() && c.captureActive {
-		return fmt.Errorf("Session exited before lap complete. Capture aborted.")
+	} else if c.gt.Telemetry.IsInMainMenu() && c.captureActive {
+		return fmt.Errorf("session exited before lap complete, capture aborted")
 	}
 
 	coordinate := c.gt.Telemetry.PositionalMapCoordinates()
