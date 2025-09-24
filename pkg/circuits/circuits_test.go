@@ -85,7 +85,6 @@ func (suite *CircuitsTestSuite) TestGetCircuitByIDWithValidIDReturnsCircuit() {
 	want := CircuitInfo{
 		ID:        "test_circuit",
 		Name:      "Test Circuit",
-		Region:    "test",
 		Length:    1500,
 		StartLine: models.CoordinateNorm{X: 100, Y: 20, Z: 300},
 	}
@@ -129,7 +128,7 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtCoordinateWithValidCoordinateRe
 	suite.Require().NoError(err)
 
 	// Test coordinate that should normalize to x:64,y:8,z:64
-	got, found := db.GetCircuitsAtCoordinate(models.Coordinate{X: 80, Y: 10, Z: 90})
+	got, found := db.GetCircuitsAtCoordinate(models.Coordinate{X: 80, Y: 10, Z: 90}, models.CoordinateTypeCircuit)
 
 	// Assert
 	suite.Assert().True(found, "Should find circuits at coordinate")
@@ -147,7 +146,7 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtCoordinateWithInvalidCoordinate
 	db, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
-	got, found := db.GetCircuitsAtCoordinate(models.Coordinate{X: 100, Y: 100, Z: 100})
+	got, found := db.GetCircuitsAtCoordinate(models.Coordinate{X: 100, Y: 100, Z: 100}, models.CoordinateTypeCircuit)
 
 	// Assert
 	suite.Assert().False(found, "Should not find circuits at non-existent coordinate")
@@ -174,7 +173,7 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtStartLineWithValidCoordinateRet
 	// Act
 	db, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
-	got, found := db.GetCircuitsAtStartLine(coordinate)
+	got, found := db.GetCircuitsAtCoordinate(coordinate, models.CoordinateTypeStartLine)
 
 	// Assert
 	suite.Assert().True(found, "Should find circuit at start line")
@@ -213,48 +212,6 @@ func (suite *CircuitsTestSuite) TestGetAllCircuitIDsReturnsAllIDs() {
 	// Assert
 	suite.Len(got, len(want))
 	suite.ElementsMatch(want, got)
-}
-
-func (suite *CircuitsTestSuite) TestGetCircuitsInRegionReturnsCorrectCircuits() {
-	// Arrange
-	inventoryJSON := []byte(`{
-		"circuits": {
-			"europe_circuit1": {
-				"id": "europe_circuit1",
-				"name": "European Circuit 1",
-				"region": "europe", 
-				"length": 1000,
-				"startline": { "x": 0, "y": 0, "z": 0 }
-			},
-			"americas_circuit": {
-				"id": "americas_circuit1",
-				"name": "Americas Circuit 1", 
-				"region": "americas",
-				"length": 2000,
-				"startline": { "x": 100, "y": 10, "z": 200 }
-			},
-			"europe_circuit2": {
-				"id": "europe_circuit2",
-				"name": "European Circuit 2",
-				"region": "europe",
-				"length": 3000,
-				"startline": { "x": 200, "y": 20, "z": 400 }
-			}
-		},
-		"coordinates": {}
-	}`)
-
-	// Act
-	db, err := NewDB(inventoryJSON)
-	suite.Require().NoError(err)
-
-	got := db.GetCircuitsInRegion("europe")
-
-	// Assert
-	suite.Len(got, 2)
-	suite.Contains(got, "europe_circuit1")
-	suite.Contains(got, "europe_circuit2")
-	suite.NotContains(got, "america_circuit1")
 }
 
 func (suite *CircuitsTestSuite) TestNormaliseStartLineCoordinate() {

@@ -8,11 +8,23 @@ import (
 	"github.com/zetetos/gt-telemetry/pkg/models"
 )
 
+const (
+	circuitCoorindateResolutionX = 16
+	circuitCoorindateResolutionY = 2
+	circuitCoorindateResolutionZ = 16
+
+	startLineCoorindateResolutionX = 16
+	startLineCoorindateResolutionY = 2
+	startLineCoorindateResolutionZ = 16
+)
+
 // CircuitInfo represents information about a specific race circuit
 type CircuitInfo struct {
 	ID        string
 	Name      string
-	Region    string
+	Variation string
+	Country   string
+	Default   bool
 	Length    int
 	StartLine models.CoordinateNorm
 }
@@ -58,7 +70,7 @@ func NewDB(inventoryJSON []byte) (*CircuitDB, error) {
 }
 
 // GetCircuitsAtCoordinate returns the list of circuits at a given coordinate
-func (c *CircuitDB) GetCircuitsAtCoordinate(coordinate models.Coordinate) (circuitIDs []string, found bool) {
+func (c *CircuitDB) GetCircuitsAtCoordinate(coordinate models.Coordinate, coordType models.CoordinateType) (circuitIDs []string, found bool) {
 	if c.inventory == nil {
 		return nil, false
 	}
@@ -66,21 +78,11 @@ func (c *CircuitDB) GetCircuitsAtCoordinate(coordinate models.Coordinate) (circu
 	normalisedPos := NormaliseCircuitCoordinate(coordinate)
 	key := CoordinateNormToKey(normalisedPos)
 
-	circuitIDs, found = c.inventory.Coordinates[key]
-
-	return circuitIDs, found
-}
-
-// GetCircuitsAtStartLine returns the list of circuits at a given start line coordinate
-func (c *CircuitDB) GetCircuitsAtStartLine(coordinate models.Coordinate) (circuitIDs []string, found bool) {
-	if c.inventory == nil {
-		return nil, false
+	if coordType == models.CoordinateTypeStartLine {
+		circuitIDs, found = c.inventory.StartLines[key]
+	} else {
+		circuitIDs, found = c.inventory.Coordinates[key]
 	}
-
-	normalisedPos := NormaliseStartLineCoordinate(coordinate)
-	key := CoordinateNormToKey(normalisedPos)
-
-	circuitIDs, found = c.inventory.StartLines[key]
 
 	return circuitIDs, found
 }
@@ -112,29 +114,29 @@ func (c *CircuitDB) GetAllCircuitIDs() (circuitIDs []string) {
 }
 
 // GetCircuitsInRegion returns all circuits in a given region
-func (c *CircuitDB) GetCircuitsInRegion(region string) (circuits map[string]CircuitInfo) {
-	if c.inventory == nil {
-		return nil
-	}
+// func (c *CircuitDB) GetCircuitsInRegion(region string) (circuits map[string]CircuitInfo) {
+// 	if c.inventory == nil {
+// 		return nil
+// 	}
 
-	circuits = make(map[string]CircuitInfo)
-	for circuitID, circuitInfo := range c.inventory.Circuits {
-		if circuitInfo.Region == region {
-			circuits[circuitID] = circuitInfo
-		}
-	}
+// 	circuits = make(map[string]CircuitInfo)
+// 	for circuitID, circuitInfo := range c.inventory.Circuits {
+// 		if circuitInfo.Region == region {
+// 			circuits[circuitID] = circuitInfo
+// 		}
+// 	}
 
-	return circuits
-}
+// 	return circuits
+// }
 
 // NormaliseStartLineCoordinate normalises a start line coordinate to reduce precision for location matching
 func NormaliseStartLineCoordinate(coordinate models.Coordinate) (normalised models.CoordinateNorm) {
 	// The FIA rules state that the starting grid has a min width of 15 meters.
 	// 32m resolution should provide sufficient accuracy for most tracks.
 	return models.CoordinateNorm{
-		X: int16(coordinate.X/32) * 32,
-		Y: int16(coordinate.Y/4) * 4,
-		Z: int16(coordinate.Z/32) * 32,
+		X: int16(coordinate.X/startLineCoorindateResolutionX) * startLineCoorindateResolutionX,
+		Y: int16(coordinate.Y/startLineCoorindateResolutionY) * startLineCoorindateResolutionY,
+		Z: int16(coordinate.Z/startLineCoorindateResolutionZ) * startLineCoorindateResolutionZ,
 	}
 }
 
@@ -144,9 +146,9 @@ func NormaliseCircuitCoordinate(coordinate models.Coordinate) (normalised models
 	// 64m resolution should be sufficient for most tracks.
 	// Y (vertical) resolution is higher since elevation changes are much smaller than X/Z.
 	return models.CoordinateNorm{
-		X: int16(coordinate.X/64) * 64,
-		Y: int16(coordinate.Y/8) * 8,
-		Z: int16(coordinate.Z/64) * 64,
+		X: int16(coordinate.X/circuitCoorindateResolutionX) * circuitCoorindateResolutionX,
+		Y: int16(coordinate.Y/circuitCoorindateResolutionY) * circuitCoorindateResolutionY,
+		Z: int16(coordinate.Z/circuitCoorindateResolutionZ) * circuitCoorindateResolutionZ,
 	}
 }
 

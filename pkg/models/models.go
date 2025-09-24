@@ -8,6 +8,13 @@ const (
 	Addendum2 Name = "~" // Adds throttle input and brake output data and more (unknown)
 )
 
+type CoordinateType int
+
+const (
+	CoordinateTypeStartLine CoordinateType = iota
+	CoordinateTypeCircuit
+)
+
 // Coordinate represents a coordinate in 3D space
 type Coordinate struct {
 	X float32 `json:"x"`
