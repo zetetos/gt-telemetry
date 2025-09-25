@@ -113,13 +113,13 @@ func (suite *CircuitsTestSuite) TestGetCircuitByIDWithValidIDReturnsCircuit() {
 	suite.Equal(want, got)
 }
 
-func (suite *CircuitsTestSuite) TestGetCircuitsAtCoordinateWithValidCoordinateReturnsCircuits() {
+func (suite *CircuitsTestSuite) TestGetCircuitAtCoordinateWithValidCoordinateReturnsCircuit() {
 	// Arrange
-	want := []string{"circuit1", "circuit2"}
+	want := "circuit1"
 	inventoryJSON := []byte(`{
 		"circuits": {},
 		"coordinates": {
-			"x:64,y:8,z:64": ["circuit1", "circuit2"]
+			"x:80,y:8,z:64": "circuit1"
 		}
 	}`)
 
@@ -127,15 +127,15 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtCoordinateWithValidCoordinateRe
 	db, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
-	// Test coordinate that should normalize to x:64,y:8,z:64
-	got, found := db.GetCircuitsAtCoordinate(models.Coordinate{X: 80, Y: 10, Z: 90}, models.CoordinateTypeCircuit)
+	// Test coordinate that should normalize to x:80,y:8,z:64
+	got, found := db.GetCircuitAtCoordinate(models.Coordinate{X: 80, Y: 8, Z: 70}, models.CoordinateTypeCircuit)
 
 	// Assert
-	suite.Assert().True(found, "Should find circuits at coordinate")
-	suite.ElementsMatch(want, got)
+	suite.Assert().True(found, "Should find circuit at coordinate")
+	suite.Equal(want, got)
 }
 
-func (suite *CircuitsTestSuite) TestGetCircuitsAtCoordinateWithInvalidCoordinateReturnsNotFound() {
+func (suite *CircuitsTestSuite) TestGetCircuitAtCoordinateWithInvalidCoordinateReturnsNotFound() {
 	// Arrange
 	inventoryJSON := []byte(`{
 		"circuits": {},
@@ -146,17 +146,17 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtCoordinateWithInvalidCoordinate
 	db, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
-	got, found := db.GetCircuitsAtCoordinate(models.Coordinate{X: 100, Y: 100, Z: 100}, models.CoordinateTypeCircuit)
+	got, found := db.GetCircuitAtCoordinate(models.Coordinate{X: 100, Y: 100, Z: 100}, models.CoordinateTypeCircuit)
 
 	// Assert
-	suite.Assert().False(found, "Should not find circuits at non-existent coordinate")
+	suite.Assert().False(found, "Should not find circuit at non-existent coordinate")
 	suite.Empty(got)
 }
 
-func (suite *CircuitsTestSuite) TestGetCircuitsAtStartLineWithValidCoordinateReturnsCircuits() {
+func (suite *CircuitsTestSuite) TestGetCircuitAtStartLineWithValidCoordinateReturnsCircuit() {
 	// Arrange
 	want := "test_circuit"
-	coordinate := models.Coordinate{X: 40, Y: 6, Z: 50}
+	coordinate := models.Coordinate{X: 40, Y: 4, Z: 40}
 	inventoryJSON := []byte(`{
 		"circuits": {
 			"test_circuit": {
@@ -173,11 +173,11 @@ func (suite *CircuitsTestSuite) TestGetCircuitsAtStartLineWithValidCoordinateRet
 	// Act
 	db, err := NewDB(inventoryJSON)
 	suite.Require().NoError(err)
-	got, found := db.GetCircuitsAtCoordinate(coordinate, models.CoordinateTypeStartLine)
+	got, found := db.GetCircuitAtCoordinate(coordinate, models.CoordinateTypeStartLine)
 
 	// Assert
 	suite.Assert().True(found, "Should find circuit at start line")
-	suite.Contains(got, want)
+	suite.Equal(want, got)
 }
 
 func (suite *CircuitsTestSuite) TestGetAllCircuitIDsReturnsAllIDs() {
@@ -229,12 +229,12 @@ func (suite *CircuitsTestSuite) TestNormaliseStartLineCoordinate() {
 		{
 			name:  "coordinates not divisible by normalisation factors",
 			input: models.Coordinate{X: 50, Y: 6, Z: 70},
-			want:  models.CoordinateNorm{X: 32, Y: 4, Z: 64},
+			want:  models.CoordinateNorm{X: 48, Y: 6, Z: 64},
 		},
 		{
 			name:  "negative coordinates",
 			input: models.Coordinate{X: -50, Y: -6, Z: -70},
-			want:  models.CoordinateNorm{X: -32, Y: -4, Z: -64},
+			want:  models.CoordinateNorm{X: -48, Y: -6, Z: -64},
 		},
 	}
 
@@ -264,12 +264,12 @@ func (suite *CircuitsTestSuite) TestNormaliseCircuitCoordinate() {
 		{
 			name:  "coordinates not divisible by normalisation factors",
 			input: models.Coordinate{X: 100, Y: 12, Z: 150},
-			want:  models.CoordinateNorm{X: 64, Y: 8, Z: 128},
+			want:  models.CoordinateNorm{X: 96, Y: 12, Z: 144},
 		},
 		{
 			name:  "negative coordinates",
 			input: models.Coordinate{X: -100, Y: -12, Z: -150},
-			want:  models.CoordinateNorm{X: -64, Y: -8, Z: -128},
+			want:  models.CoordinateNorm{X: -96, Y: -12, Z: -144},
 		},
 	}
 

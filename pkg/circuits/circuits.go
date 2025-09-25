@@ -31,7 +31,7 @@ type CircuitInfo struct {
 
 // CircuitInventory represents the complete JSON structure from the embedded circuit inventory data
 type CircuitInventory struct {
-	Coordinates map[string][]string
+	Coordinates map[string]string
 	StartLines  map[string][]string
 	Circuits    map[string]CircuitInfo
 }
@@ -69,22 +69,30 @@ func NewDB(inventoryJSON []byte) (*CircuitDB, error) {
 	}, nil
 }
 
-// GetCircuitsAtCoordinate returns the list of circuits at a given coordinate
-func (c *CircuitDB) GetCircuitsAtCoordinate(coordinate models.Coordinate, coordType models.CoordinateType) (circuitIDs []string, found bool) {
+// GetCircuitAtCoordinate returns the circuit at a given coordinate (single value)
+func (c *CircuitDB) GetCircuitAtCoordinate(coordinate models.Coordinate, coordType models.CoordinateType) (circuitID string, found bool) {
 	if c.inventory == nil {
-		return nil, false
+		return "", false
 	}
 
-	normalisedPos := NormaliseCircuitCoordinate(coordinate)
+	var normalisedPos models.CoordinateNorm
+	if coordType == models.CoordinateTypeStartLine {
+		normalisedPos = NormaliseStartLineCoordinate(coordinate)
+	} else {
+		normalisedPos = NormaliseCircuitCoordinate(coordinate)
+	}
 	key := CoordinateNormToKey(normalisedPos)
 
 	if coordType == models.CoordinateTypeStartLine {
-		circuitIDs, found = c.inventory.StartLines[key]
+		circuitIDs, found := c.inventory.StartLines[key]
+		if found && len(circuitIDs) == 1 {
+			return circuitIDs[0], true
+		}
+		return "", false
 	} else {
-		circuitIDs, found = c.inventory.Coordinates[key]
+		circuitID, found := c.inventory.Coordinates[key]
+		return circuitID, found
 	}
-
-	return circuitIDs, found
 }
 
 // GetCircuitByID retrieves a CircuitInfo by its ID
@@ -112,22 +120,6 @@ func (c *CircuitDB) GetAllCircuitIDs() (circuitIDs []string) {
 
 	return circuitIDs
 }
-
-// GetCircuitsInRegion returns all circuits in a given region
-// func (c *CircuitDB) GetCircuitsInRegion(region string) (circuits map[string]CircuitInfo) {
-// 	if c.inventory == nil {
-// 		return nil
-// 	}
-
-// 	circuits = make(map[string]CircuitInfo)
-// 	for circuitID, circuitInfo := range c.inventory.Circuits {
-// 		if circuitInfo.Region == region {
-// 			circuits[circuitID] = circuitInfo
-// 		}
-// 	}
-
-// 	return circuits
-// }
 
 // NormaliseStartLineCoordinate normalises a start line coordinate to reduce precision for location matching
 func NormaliseStartLineCoordinate(coordinate models.Coordinate) (normalised models.CoordinateNorm) {

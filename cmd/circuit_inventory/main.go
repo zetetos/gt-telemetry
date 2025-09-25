@@ -29,8 +29,8 @@ type CircuitData struct {
 	Coordinates   CircuitCoordinates `json:"coordinates"`
 }
 
-// CircuitInventory holds the results of processing circuit files
-type CircuitInventory struct {
+// CircuitProcessingResult holds the results of processing circuit files during analysis
+type CircuitProcessingResult struct {
 	CoordinateMap       map[string][]string
 	CircuitsMap         map[string]map[string]interface{}
 	CircuitStartLines   map[string]gtmodels.CoordinateNorm
@@ -119,8 +119,8 @@ func loadCircuitSchema(circuitsDir string) (*jsonschema.Schema, error) {
 }
 
 // processCircuitFiles reads and processes all circuit JSON files in the given directory
-func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Schema) (*CircuitInventory, error) {
-	processed := &CircuitInventory{
+func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Schema) (*CircuitProcessingResult, error) {
+	processed := &CircuitProcessingResult{
 		CoordinateMap:       make(map[string][]string),
 		CircuitsMap:         make(map[string]map[string]interface{}),
 		CircuitStartLines:   make(map[string]gtmodels.CoordinateNorm),
@@ -206,7 +206,7 @@ func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Sche
 }
 
 // analyzeCircuitCoordinates performs statistical analysis on circuit coordinates
-func analyzeCircuitCoordinates(processed *CircuitInventory) []CircuitStats {
+func analyzeCircuitCoordinates(processed *CircuitProcessingResult) []CircuitStats {
 	// Build a map of circuit -> coordinates for easier counting
 	circuitCoordinates := make(map[string][]string)
 	for coord, circuitList := range processed.CoordinateMap {
@@ -377,13 +377,37 @@ func printSummary(circuitsWithoutUniqueCoords, nonUniqueStartLines int) {
 }
 
 // writeInventoryFile writes the processed circuit data to the output file
-func writeInventoryFile(processed *CircuitInventory, outputFile string) error {
-	out := map[string]interface{}{
-		"coordinates": processed.CoordinateMap,
-		"circuits":    processed.CircuitsMap,
+func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) error {
+	// Filter coordinates to only include those with a single entry (unique to one circuit)
+	// Store as single string values instead of arrays
+	filteredCoordinateMap := make(map[string]string)
+	for coord, circuits := range processed.CoordinateMap {
+		if len(circuits) == 1 {
+			filteredCoordinateMap[coord] = circuits[0]
+		}
 	}
 
-	outData, err := json.MarshalIndent(out, "", "  ")
+	// Convert processed circuit maps to CircuitInfo structs
+	circuits := make(map[string]gtcircuits.CircuitInfo)
+	for id, circuitData := range processed.CircuitsMap {
+		circuits[id] = gtcircuits.CircuitInfo{
+			ID:        circuitData["id"].(string),
+			Name:      circuitData["name"].(string),
+			Variation: circuitData["variation"].(string),
+			Default:   circuitData["default"].(bool),
+			Country:   circuitData["country"].(string),
+			Length:    int(circuitData["length"].(uint16)),
+			StartLine: circuitData["startline"].(gtmodels.CoordinateNorm),
+		}
+	}
+
+	// Create the proper CircuitInventory struct
+	inventory := gtcircuits.CircuitInventory{
+		Coordinates: filteredCoordinateMap,
+		Circuits:    circuits,
+	}
+
+	outData, err := json.MarshalIndent(inventory, "", "  ")
 	if err != nil {
 		return fmt.Errorf("failed to marshal output: %v", err)
 	}
