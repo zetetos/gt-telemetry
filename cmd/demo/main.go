@@ -12,7 +12,7 @@ import (
 
 func main() {
 	clientConfig := gttelemetry.Options{
-		// Source:       "file://data/replays/demo.gtz",
+		Source:       "file://data/replays/demo.gtz",
 		Format:       gtmodels.Addendum2,
 		StatsEnabled: true,
 	}
@@ -40,7 +40,6 @@ func main() {
 	fmt.Println("Waiting for data...    Press Ctrl+C to exit")
 
 	var lapNumber int16 = -1
-	circuitConfidence := float64(0)
 	circuit := gtcircuits.CircuitInfo{
 		Length: 0,
 	}
@@ -55,7 +54,6 @@ func main() {
 
 		if client.Telemetry.IsInMainMenu() {
 			lapNumber = -1
-			circuitConfidence = 0
 			circuit = gtcircuits.CircuitInfo{
 				Variation: "",
 				Length:    0,
@@ -87,21 +85,11 @@ func main() {
 			lapNumber = client.Telemetry.CurrentLap()
 		}
 
-		if circuitConfidence < 1 {
-			circuits, found := client.CircuitDB.GetCircuitsAtCoordinate(coordinate, coordType)
+		circuitId, found := client.CircuitDB.GetCircuitAtCoordinate(coordinate, coordType)
+		if found {
+			circuitInfo, found := client.CircuitDB.GetCircuitByID(circuitId)
 			if found {
-				if len(circuits) == 1 {
-					circuitId := circuits[0]
-					circuitInfo, found := client.CircuitDB.GetCircuitByID(circuitId)
-					if found {
-						if coordType == gtmodels.CoordinateTypeStartLine {
-							circuit = circuitInfo
-							circuitConfidence = 1
-						} else if circuitInfo.Length < circuit.Length || circuit.Length == 0 {
-							circuit = circuitInfo
-						}
-					}
-				}
+				circuit = circuitInfo
 			}
 		}
 
@@ -119,8 +107,7 @@ func main() {
 			client.Telemetry.RaceEntrants(),
 		)
 
-		fmt.Printf("Circuit	      Confidence: %3d%%  Length: %d m   Name: %s\n",
-			int(circuitConfidence*100),
+		fmt.Printf("Circuit	      Length: %d m   Name: %s\n",
 			circuit.Length,
 			circuit.Variation,
 		)
