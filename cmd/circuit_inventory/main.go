@@ -391,13 +391,14 @@ func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) e
 	circuits := make(map[string]gtcircuits.CircuitInfo)
 	for id, circuitData := range processed.CircuitsMap {
 		circuits[id] = gtcircuits.CircuitInfo{
-			ID:        circuitData["id"].(string),
-			Name:      circuitData["name"].(string),
-			Variation: circuitData["variation"].(string),
-			Default:   circuitData["default"].(bool),
-			Country:   circuitData["country"].(string),
-			Length:    int(circuitData["length"].(uint16)),
-			StartLine: circuitData["startline"].(gtmodels.CoordinateNorm),
+			ID:                    circuitData["id"].(string),
+			Name:                  circuitData["name"].(string),
+			Variation:             circuitData["variation"].(string),
+			Default:               circuitData["default"].(bool),
+			Country:               circuitData["country"].(string),
+			Length:                int(circuitData["length"].(uint16)),
+			StartLine:             circuitData["startline"].(gtmodels.CoordinateNorm),
+			UniqueCoordinateCount: getUniqCoordCount(processed, id),
 		}
 	}
 
@@ -417,6 +418,16 @@ func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) e
 	}
 
 	return nil
+}
+
+func getUniqCoordCount(processed *CircuitProcessingResult, id string) int {
+	uniqueCoordCount := 0
+	for _, circuitList := range processed.CoordinateMap {
+		if len(circuitList) == 1 && circuitList[0] == id {
+			uniqueCoordCount++
+		}
+	}
+	return uniqueCoordCount
 }
 
 // nameToID converts a circuit name to an ID

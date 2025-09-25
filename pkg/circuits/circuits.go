@@ -20,20 +20,21 @@ const (
 
 // CircuitInfo represents information about a specific race circuit
 type CircuitInfo struct {
-	ID        string
-	Name      string
-	Variation string
-	Country   string
-	Default   bool
-	Length    int
-	StartLine models.CoordinateNorm
+	ID                    string                `json:"id"`
+	Name                  string                `json:"name"`
+	Variation             string                `json:"variation"`
+	Country               string                `json:"country"`
+	Default               bool                  `json:"default"`
+	Length                int                   `json:"length"`
+	StartLine             models.CoordinateNorm `json:"startline"`
+	UniqueCoordinateCount int                   `json:"unique_coordinate_count"`
 }
 
 // CircuitInventory represents the complete JSON structure from the embedded circuit inventory data
 type CircuitInventory struct {
-	Coordinates map[string]string
-	StartLines  map[string][]string
-	Circuits    map[string]CircuitInfo
+	Coordinates map[string]string      `json:"coordinates"`
+	StartLines  map[string][]string    `json:"-"`
+	Circuits    map[string]CircuitInfo `json:"circuits"`
 }
 
 // CircuitDB provides an object and methods to access circuit information from the embedded inventory
