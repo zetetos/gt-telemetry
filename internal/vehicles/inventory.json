@@ -7727,6 +7727,20 @@
     "EngineBankAngle": 0,
     "EngineCrankPlaneAngle": 180
   },
+    "3584": {
+    "CarID": 3584,
+    "Manufacturer": "Toyota",
+    "Model": "Land Cruiser FJ40V '74",
+    "Year": 1974,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "NA",
+    "EngineLayout": "I4",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 180
+  },
   "3585": {
     "CarID": 3585,
     "Manufacturer": "Hyundai",
