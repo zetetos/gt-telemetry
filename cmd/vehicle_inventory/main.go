@@ -393,17 +393,22 @@ func writeVehicleFieldsOrdered(buf *bytes.Buffer, vehicle vehicles.Vehicle) {
 		case int:
 			fmt.Fprintf(buf, "\"%s\": %d", fieldName, v)
 		case string:
-			escapedValue, _ := json.Marshal(v)
-			fmt.Fprintf(buf, "\"%s\": %s", fieldName, escapedValue)
+			escapedValue := escapeQuotes(v)
+			fmt.Fprintf(buf, "\"%s\": \"%s\"", fieldName, escapedValue)
 		case bool:
 			fmt.Fprintf(buf, "\"%s\": %t", fieldName, v)
 		case float32:
 			fmt.Fprintf(buf, "\"%s\": %g", fieldName, v)
 		default:
-			escapedValue, _ := json.Marshal(fmt.Sprintf("%v", v))
-			fmt.Fprintf(buf, "\"%s\": %s", fieldName, escapedValue)
+			escapedValue := escapeQuotes(fmt.Sprintf("%v", v))
+			fmt.Fprintf(buf, "\"%s\": \"%s\"", fieldName, escapedValue)
 		}
 	}
+}
+
+// escapeQuotes escapes only double quotes in a string, leaving all other characters as-is
+func escapeQuotes(s string) string {
+	return strings.ReplaceAll(s, "\"", "\\\"")
 }
 
 // getVehicleFieldValueAsString returns the string representation of a vehicle field for CSV output
