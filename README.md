@@ -11,6 +11,7 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 * Support for all known fields contained within the telemetry data packet.
 * Support for all current telemetry formats (A, B and ~)
 * Access data in both metric and imperial units.
+* Recording capability to capture telemetry data to files.
 * An additional field for the differential gear ratio is computed based on the rolling wheel diameter of the driven wheels.
 * A vehicle inventory database with methods for providing the following information on a given vehicle ID:
   * Manufacturer
@@ -105,6 +106,46 @@ Alternatively, the replay can be captured to a compressed file with a different 
 ```bash
 go run cmd/capture_replay/main.go -o /path/to/replay-file.gtz
 ```
+
+#### Recording telemetry data programmatically ####
+
+The GT Telemetry client provides built-in methods for recording telemetry data to files during runtime. This allows you to start and stop recording at any point in your application.
+
+**Basic usage:**
+
+```go
+// Create a telemetry client.
+client, err := gttelemetry.New(gttelemetry.Options{
+    Source: "udp://255.255.255.255:33739", // Live telemetry
+})
+if err != nil {
+    log.Fatal(err)
+}
+
+// Start recording to a compressed file.
+err = client.StartRecording("my_recording.gtz")
+if err != nil {
+    log.Fatal(err)
+}
+
+// Your application logic here...
+// Telemetry data will be automatically recorded at the same time.
+
+// Stop recording
+err = client.StopRecording()
+if err != nil {
+    log.Fatal(err)
+}
+
+// Check if currently recording.
+if client.IsRecording() {
+    fmt.Println("Recording is active")
+}
+```
+
+**Supported file formats:**
+- `.gtr` - Plain binary telemetry data
+- `.gtz` - Compressed telemetry data (recommended for storage efficiency)
 
 ### Vehicle Inventory Management ###
 

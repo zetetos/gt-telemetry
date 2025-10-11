@@ -2,11 +2,14 @@ package gttelemetry
 
 import (
 	"bytes"
+	"compress/gzip"
 	"fmt"
+	"io"
 	"net"
 	"net/url"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
@@ -54,6 +57,12 @@ type Client struct {
 	Statistics       *statistics
 	Telemetry        *transformer
 	CircuitDB        *circuits.CircuitDB
+
+	// Recording state
+	recordingMutex  sync.RWMutex
+	recordingFile   io.WriteCloser
+	recordingBuffer io.Writer
+	isRecording     bool
 }
 
 func New(opts Options) (*Client, error) {
@@ -224,6 +233,8 @@ readTelemetry:
 			c.Statistics.decodeTimeLast = time.Since(decodeStart)
 			c.collectStats()
 
+			c.recordPacket()
+
 			timer := time.NewTimer(4 * time.Millisecond)
 			<-timer.C
 		}
@@ -271,4 +282,117 @@ func (c *Client) collectStats() {
 		}
 	}
 
+}
+
+// StartRecording starts recording telemetry data to the specified file path.
+// Supports both plain (.gtr) and compressed (.gtz) formats based on file extension.
+func (c *Client) StartRecording(filePath string) error {
+	c.recordingMutex.Lock()
+	defer c.recordingMutex.Unlock()
+
+	if c.isRecording {
+		return fmt.Errorf("recording already in progress")
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create recording file: %w", err)
+	}
+
+	// Determine format based on file extension
+	var buffer io.Writer
+	fileExt := filePath[len(filePath)-3:]
+	switch fileExt {
+	case "gtz":
+		gzipWriter, err := gzip.NewWriterLevel(file, gzip.BestCompression)
+		if err != nil {
+			file.Close()
+			return fmt.Errorf("failed to create gzip writer: %w", err)
+		}
+		gzipWriter.Comment = "Gran Turismo Telemetry Recording"
+		buffer = gzipWriter
+		c.recordingFile = &gzipFileWrapper{file: file, gzipWriter: gzipWriter}
+	case "gtr":
+		buffer = file
+		c.recordingFile = file
+	default:
+		file.Close()
+		return fmt.Errorf("unsupported file extension %q, use either .gtr or .gtz", fileExt)
+	}
+
+	c.recordingBuffer = buffer
+	c.isRecording = true
+
+	c.log.Info().Str("file", filePath).Msg("started recording telemetry data")
+	return nil
+}
+
+// StopRecording stops the current recording and closes the file.
+func (c *Client) StopRecording() error {
+	c.recordingMutex.Lock()
+	defer c.recordingMutex.Unlock()
+
+	if !c.isRecording {
+		return fmt.Errorf("no recording in progress")
+	}
+
+	// Flush and close the file
+	if err := c.recordingFile.Close(); err != nil {
+		c.log.Error().Err(err).Msg("error closing recording file")
+		return fmt.Errorf("failed to close recording file: %w", err)
+	}
+
+	c.recordingFile = nil
+	c.recordingBuffer = nil
+	c.isRecording = false
+
+	c.log.Info().Msg("stopped recording telemetry data")
+	return nil
+}
+
+// IsRecording returns true if telemetry data is currently being recorded.
+func (c *Client) IsRecording() bool {
+	c.recordingMutex.RLock()
+	defer c.recordingMutex.RUnlock()
+	return c.isRecording
+}
+
+// recordPacket writes the current packet to the recording file if recording is active.
+func (c *Client) recordPacket() {
+	c.recordingMutex.RLock()
+	defer c.recordingMutex.RUnlock()
+
+	if !c.isRecording || c.recordingBuffer == nil {
+		return
+	}
+
+	if len(c.DecipheredPacket) == 0 {
+		return
+	}
+
+	_, err := c.recordingBuffer.Write(c.DecipheredPacket)
+	if err != nil {
+		c.log.Error().Err(err).Msg("failed to write packet to recording file")
+	}
+}
+
+// gzipFileWrapper wraps a gzip writer and file to handle proper closing
+type gzipFileWrapper struct {
+	file       *os.File
+	gzipWriter *gzip.Writer
+}
+
+func (g *gzipFileWrapper) Write(p []byte) (n int, err error) {
+	return g.gzipWriter.Write(p)
+}
+
+func (g *gzipFileWrapper) Close() error {
+	// First close the gzip writer to flush any remaining data
+	if err := g.gzipWriter.Close(); err != nil {
+		g.file.Close() // Still try to close the file
+		return err
+	}
+	// Then close the underlying file
+	return g.file.Close()
 }
