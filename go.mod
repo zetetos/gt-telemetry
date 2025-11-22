@@ -1,6 +1,6 @@
 module github.com/zetetos/gt-telemetry
 
-go 1.25.4
+go 1.24.6
 
 retract [v1.0.0, v1.5.1] // broken versions during migration to the zetetos org
 
