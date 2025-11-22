@@ -34,7 +34,13 @@ func (suite *TransformerTestSuite) SetupTest() {
 			"Year": 2025,
 			"CarID": 1234,
 			"OpenCockpit": false,
-			"CarType": "race"
+			"CarType": "race",
+			"Length": 4500,
+			"Width": 1800,
+			"Height": 1300,
+			"Wheelbase": 2700,
+			"TrackFront": 1550,
+			"TrackRear": 1600
 		}
 	}`)
 	inventory, _ := vehicles.NewDB(inventoryJSON)
@@ -1337,6 +1343,84 @@ func (suite *TransformerTestSuite) TestVehicleYearReturnsCorrectValueWhenTelemet
 
 	// Act
 	gotValue := suite.transformer.VehicleYear()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestVehicleLengthMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+	// Arrange
+	wantValue := 4500
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleLengthMillimeters()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestVehicleWidthMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+	// Arrange
+	wantValue := 1800
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleWidthMillimeters()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestVehicleHeightMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+	// Arrange
+	wantValue := 1300
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleHeightMillimeters()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestVehicleWheelbaseMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+	// Arrange
+	wantValue := 2700
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleWheelbaseMillimeters()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestVehicleTrackFrontMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+	// Arrange
+	wantValue := 1550
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleTrackFrontMillimeters()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestVehicleTrackRearMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+	// Arrange
+	wantValue := 1600
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleTrackRearMillimeters()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)

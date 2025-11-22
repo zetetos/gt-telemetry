@@ -28,6 +28,12 @@ var vehicleFields = []string{
 	"Category",
 	"Drivetrain",
 	"Aspiration",
+	"Length",
+	"Width",
+	"Height",
+	"Wheelbase",
+	"TrackFront",
+	"TrackRear",
 	"EngineLayout",
 	"EngineBankAngle",
 	"EngineCrankPlaneAngle",
@@ -43,10 +49,13 @@ Actions:
   add     <file.json>            Add a new vehicle entry interactively
   edit    <file.json> <car-id>   Edit an existing vehicle entry
   delete  <file.json> <car-id>   Delete a vehicle entry
+  merge   <gt.json> <pd.json>    Merge PD inventory dimensions into GT inventory
 
 Arguments:
   file                     Path to input file.
   car-id                   CarID of the vehicle to edit or delete
+  gt.json                  Path to GT inventory JSON file
+  pd.json                  Path to PD inventory JSON file
 
 Flags:
   -help                    Show this help message
@@ -70,6 +79,9 @@ Examples:
 
   # Delete a vehicle
   inventory delete internal/vehicles/inventory.json 1234
+
+  # Merge PD inventory dimensions into GT inventory
+  inventory merge pkg/vehicles/vehicles.json pd_inventory.json > merged.json
 `
 
 func main() {
@@ -181,8 +193,23 @@ func main() {
 			os.Exit(1)
 		}
 
+	case "merge":
+		if len(args) < 3 {
+			fmt.Fprintf(os.Stderr, "Error: Both GT inventory and PD inventory file arguments are required for merge action\n\n")
+			fmt.Print(usage)
+			os.Exit(1)
+		}
+
+		gtInventoryFile := args[1]
+		pdInventoryFile := args[2]
+
+		if err := mergeInventories(gtInventoryFile, pdInventoryFile); err != nil {
+			fmt.Fprintf(os.Stderr, "Error merging inventories: %v\n", err)
+			os.Exit(1)
+		}
+
 	default:
-		fmt.Fprintf(os.Stderr, "Error: Unknown action '%s'. Supported actions: convert, add, edit, delete\n\n", action)
+		fmt.Fprintf(os.Stderr, "Error: Unknown action '%s'. Supported actions: convert, add, edit, delete, merge\n\n", action)
 		fmt.Print(usage)
 		os.Exit(1)
 	}
@@ -296,22 +323,76 @@ func csvToJSON(inputFile string) error {
 			return fmt.Errorf("parsing OpenCockpit '%s': %w", record[7], err)
 		}
 
+		// Parse Length
+		var length int
+		if record[9] != "" && record[9] != "-" {
+			length, err = strconv.Atoi(record[9])
+			if err != nil {
+				return fmt.Errorf("parsing Length '%s': %w", record[9], err)
+			}
+		}
+
+		// Parse Width
+		var width int
+		if record[10] != "" && record[10] != "-" {
+			width, err = strconv.Atoi(record[10])
+			if err != nil {
+				return fmt.Errorf("parsing Width '%s': %w", record[10], err)
+			}
+		}
+
+		// Parse Height
+		var height int
+		if record[11] != "" && record[11] != "-" {
+			height, err = strconv.Atoi(record[11])
+			if err != nil {
+				return fmt.Errorf("parsing Height '%s': %w", record[11], err)
+			}
+		}
+
+		// Parse Wheelbase
+		var wheelbase int
+		if record[12] != "" && record[12] != "-" {
+			wheelbase, err = strconv.Atoi(record[12])
+			if err != nil {
+				return fmt.Errorf("parsing Wheelbase '%s': %w", record[12], err)
+			}
+		}
+
+		// Parse TrackFront
+		var trackFront int
+		if record[13] != "" && record[13] != "-" {
+			trackFront, err = strconv.Atoi(record[13])
+			if err != nil {
+				return fmt.Errorf("parsing TrackFront '%s': %w", record[13], err)
+			}
+		}
+
+		// Parse TrackRear
+		var trackRear int
+		if record[14] != "" && record[14] != "-" {
+			trackRear, err = strconv.Atoi(record[14])
+			if err != nil {
+				return fmt.Errorf("parsing TrackRear '%s': %w", record[14], err)
+			}
+		}
+
 		// Parse EngineBankAngle
 		var EngineBankAngle float32
-		if record[10] != "" && record[10] != "-" {
-			angle, err := strconv.ParseFloat(record[10], 32)
+		if record[16] != "" && record[16] != "-" {
+			angle, err := strconv.ParseFloat(record[16], 32)
 			if err != nil {
-				return fmt.Errorf("parsing EngineBankAngle '%s': %w", record[10], err)
+				return fmt.Errorf("parsing EngineBankAngle '%s': %w", record[16], err)
 			}
 			EngineBankAngle = float32(angle)
 		}
 
 		// Parse EngineCrankPlaneAngle
 		var engineCrankPlaneAngle float32
-		if record[11] != "" && record[11] != "-" {
-			angle, err := strconv.ParseFloat(record[11], 32)
+		if record[17] != "" && record[17] != "-" {
+			angle, err := strconv.ParseFloat(record[17], 32)
 			if err != nil {
-				return fmt.Errorf("parsing EngineCrankPlaneAngle '%s': %w", record[11], err)
+				return fmt.Errorf("parsing EngineCrankPlaneAngle '%s': %w", record[17], err)
 			}
 			engineCrankPlaneAngle = float32(angle)
 		}
@@ -326,7 +407,13 @@ func csvToJSON(inputFile string) error {
 			Category:              record[6],
 			Drivetrain:            record[7],
 			Aspiration:            record[8],
-			EngineLayout:          record[9],
+			Length:                length,
+			Width:                 width,
+			Height:                height,
+			Wheelbase:             wheelbase,
+			TrackFront:            trackFront,
+			TrackRear:             trackRear,
+			EngineLayout:          record[15],
 			EngineBankAngle:       EngineBankAngle,
 			EngineCrankPlaneAngle: engineCrankPlaneAngle,
 		}
@@ -450,6 +537,18 @@ func getVehicleFieldValue(vehicle vehicles.Vehicle, fieldName string) any {
 		return vehicle.Drivetrain
 	case "Aspiration":
 		return vehicle.Aspiration
+	case "Length":
+		return vehicle.Length
+	case "Width":
+		return vehicle.Width
+	case "Height":
+		return vehicle.Height
+	case "Wheelbase":
+		return vehicle.Wheelbase
+	case "TrackFront":
+		return vehicle.TrackFront
+	case "TrackRear":
+		return vehicle.TrackRear
 	case "EngineLayout":
 		return vehicle.EngineLayout
 	case "EngineBankAngle":
@@ -617,6 +716,37 @@ func promptVehicleData(scanner *bufio.Scanner, existingVehicle *vehicles.Vehicle
 	vehicle.Category = prompt("Category (e.g., Gr.1, Gr.3, Gr.4, Gr.B, or empty):", vehicle.Category, "string")
 	vehicle.Drivetrain = prompt("Drivetrain (FR/FF/MR/RR/4WD):", vehicle.Drivetrain, "string")
 	vehicle.Aspiration = prompt("Aspiration (NA/TC/SC/EV/TD/TC+SC):", vehicle.Aspiration, "string")
+
+	vehicle.Length, err = strconv.Atoi(prompt("Length (mm):", strconv.Itoa(vehicle.Length), "int"))
+	if err != nil {
+		return vehicle, fmt.Errorf("invalid length: %w", err)
+	}
+
+	vehicle.Width, err = strconv.Atoi(prompt("Width (mm):", strconv.Itoa(vehicle.Width), "int"))
+	if err != nil {
+		return vehicle, fmt.Errorf("invalid width: %w", err)
+	}
+
+	vehicle.Height, err = strconv.Atoi(prompt("Height (mm):", strconv.Itoa(vehicle.Height), "int"))
+	if err != nil {
+		return vehicle, fmt.Errorf("invalid height: %w", err)
+	}
+
+	vehicle.Wheelbase, err = strconv.Atoi(prompt("Wheelbase (mm):", strconv.Itoa(vehicle.Wheelbase), "int"))
+	if err != nil {
+		return vehicle, fmt.Errorf("invalid wheelbase: %w", err)
+	}
+
+	vehicle.TrackFront, err = strconv.Atoi(prompt("Track Front (mm):", strconv.Itoa(vehicle.TrackFront), "int"))
+	if err != nil {
+		return vehicle, fmt.Errorf("invalid track front: %w", err)
+	}
+
+	vehicle.TrackRear, err = strconv.Atoi(prompt("Track Rear (mm):", strconv.Itoa(vehicle.TrackRear), "int"))
+	if err != nil {
+		return vehicle, fmt.Errorf("invalid track rear: %w", err)
+	}
+
 	vehicle.EngineLayout = prompt("Engine layout (e.g., V8, V6, I4, H4, or empty):", vehicle.EngineLayout, "string")
 
 	EngineBankAngle, err := strconv.ParseFloat(prompt("Engine cylinder bank angle (decimal degrees):", strconv.FormatFloat(float64(vehicle.EngineBankAngle), 'f', -1, 32), "float32"), 32)
@@ -771,6 +901,12 @@ func editVehicleInteractively(inventoryFile string, carID int) error {
 	fmt.Printf("Category: %s\n", vehicle.Category)
 	fmt.Printf("Drivetrain: %s\n", vehicle.Drivetrain)
 	fmt.Printf("Aspiration: %s\n", vehicle.Aspiration)
+	fmt.Printf("Length: %d mm\n", vehicle.Length)
+	fmt.Printf("Width: %d mm\n", vehicle.Width)
+	fmt.Printf("Height: %d mm\n", vehicle.Height)
+	fmt.Printf("Wheelbase: %d mm\n", vehicle.Wheelbase)
+	fmt.Printf("TrackFront: %d mm\n", vehicle.TrackFront)
+	fmt.Printf("TrackRear: %d mm\n", vehicle.TrackRear)
 	fmt.Printf("EngineLayout: %s\n", vehicle.EngineLayout)
 	fmt.Printf("EngineBankAngle: %.1f\n", vehicle.EngineBankAngle)
 	fmt.Printf("EngineCrankPlaneAngle: %.1f\n", vehicle.EngineCrankPlaneAngle)
@@ -861,5 +997,118 @@ func deleteVehicle(inventoryFile string, carID int) error {
 	}
 
 	fmt.Printf("Vehicle with CarID %d successfully deleted from %s\n", carID, inventoryFile)
+	return nil
+}
+
+// PDVehicle represents the structure of a vehicle entry in the PD inventory JSON
+type PDVehicle struct {
+	ID              string `json:"id"`
+	NameShort       string `json:"nameShort"`
+	DriveTrain      string `json:"driveTrain"`
+	AspirationShort string `json:"aspirationShort"`
+	CarClass        string `json:"carClass"`
+	LengthV         int    `json:"length_v"`
+	WidthV          int    `json:"width_v"`
+	HeightV         int    `json:"height_v"`
+}
+
+func mergeInventories(gtInventoryFile, pdInventoryFile string) error {
+	// Load GT inventory
+	gtData, err := os.ReadFile(gtInventoryFile)
+	if err != nil {
+		return fmt.Errorf("reading GT inventory file: %w", err)
+	}
+
+	var gtVehicleMap map[string]vehicles.Vehicle
+	if err := json.Unmarshal(gtData, &gtVehicleMap); err != nil {
+		return fmt.Errorf("parsing GT inventory JSON: %w", err)
+	}
+
+	// Load PD inventory
+	pdData, err := os.ReadFile(pdInventoryFile)
+	if err != nil {
+		return fmt.Errorf("reading PD inventory file: %w", err)
+	}
+
+	var pdVehicleMap map[string]PDVehicle
+	if err := json.Unmarshal(pdData, &pdVehicleMap); err != nil {
+		return fmt.Errorf("parsing PD inventory JSON: %w", err)
+	}
+
+	// Merge data from PD inventory into GT inventory
+	mergedCount := 0
+	for carIDStr, gtVehicle := range gtVehicleMap {
+		if pdVehicle, exists := pdVehicleMap[carIDStr]; exists {
+			updated := false
+			var changes []string
+
+			// Overwrite Model from nameShort
+			if pdVehicle.NameShort != "" && pdVehicle.NameShort != "---" && gtVehicle.Model != pdVehicle.NameShort {
+				if gtVehicle.Model != "" {
+					changes = append(changes, fmt.Sprintf("Model: '%s' -> '%s'", gtVehicle.Model, pdVehicle.NameShort))
+				}
+				gtVehicle.Model = pdVehicle.NameShort
+				updated = true
+			}
+
+			// Overwrite Drivetrain from driveTrain
+			if pdVehicle.DriveTrain != "" && pdVehicle.DriveTrain != "---" && gtVehicle.Drivetrain != pdVehicle.DriveTrain {
+				if gtVehicle.Drivetrain != "" && gtVehicle.Drivetrain != "-" {
+					changes = append(changes, fmt.Sprintf("Drivetrain: '%s' -> '%s'", gtVehicle.Drivetrain, pdVehicle.DriveTrain))
+				}
+				gtVehicle.Drivetrain = pdVehicle.DriveTrain
+				updated = true
+			}
+
+			// Overwrite Aspiration from aspirationShort
+			if pdVehicle.AspirationShort != "" && pdVehicle.AspirationShort != "---" && gtVehicle.Aspiration != pdVehicle.AspirationShort {
+				if gtVehicle.Aspiration != "" && gtVehicle.Aspiration != "-" {
+					changes = append(changes, fmt.Sprintf("Aspiration: '%s' -> '%s'", gtVehicle.Aspiration, pdVehicle.AspirationShort))
+				}
+				gtVehicle.Aspiration = pdVehicle.AspirationShort
+				updated = true
+			}
+
+			// Overwrite Category from carClass
+			if pdVehicle.CarClass != "" && pdVehicle.CarClass != "---" && gtVehicle.Category != pdVehicle.CarClass {
+				if gtVehicle.Category != "" {
+					changes = append(changes, fmt.Sprintf("Category: '%s' -> '%s'", gtVehicle.Category, pdVehicle.CarClass))
+				}
+				gtVehicle.Category = pdVehicle.CarClass
+				updated = true
+			}
+
+			// Only update dimensions if GT inventory has 0 values
+			if gtVehicle.Length == 0 && pdVehicle.LengthV > 0 {
+				gtVehicle.Length = pdVehicle.LengthV
+				updated = true
+			}
+
+			if gtVehicle.Width == 0 && pdVehicle.WidthV > 0 {
+				gtVehicle.Width = pdVehicle.WidthV
+				updated = true
+			}
+
+			if gtVehicle.Height == 0 && pdVehicle.HeightV > 0 {
+				gtVehicle.Height = pdVehicle.HeightV
+				updated = true
+			}
+
+			if updated {
+				gtVehicleMap[carIDStr] = gtVehicle
+				mergedCount++
+				if len(changes) > 0 {
+					fmt.Fprintf(os.Stderr, "CarID %s: %s\n", carIDStr, strings.Join(changes, ", "))
+				}
+			}
+		}
+	}
+
+	// Write merged inventory to stdout
+	if err := writeOrderedJSON(os.Stdout, gtVehicleMap); err != nil {
+		return fmt.Errorf("encoding merged JSON: %w", err)
+	}
+
+	fmt.Fprintf(os.Stderr, "Successfully merged dimension data for %d vehicles\n", mergedCount)
 	return nil
 }

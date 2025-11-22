@@ -30,6 +30,10 @@ func MetersToMillimeters(m float32) float32 {
 	return m * 1000
 }
 
+func MillimetersToInches(mm int) float32 {
+	return float32(mm) / 25.4
+}
+
 func MetersPerSecondToKilometersPerHour(mps float32) float32 {
 	return mps * 3.6
 }

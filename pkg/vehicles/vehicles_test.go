@@ -29,6 +29,12 @@ func (suite *VehiclesTestSuite) TestEmptyJSONParameterFallsBackToBaseInventory()
 		Year:                  0,
 		OpenCockpit:           false,
 		CarType:               "street",
+		Length:                0,
+		Width:                 0,
+		Height:                0,
+		Wheelbase:             0,
+		TrackFront:            0,
+		TrackRear:             0,
 	}
 
 	var inventoryJSON []byte
@@ -58,7 +64,13 @@ func (suite *VehiclesTestSuite) TestValidJSONParameterCanConstructInventory() {
 			"Year": 0,
 			"CarID": 0,
 			"OpenCockpit": false,
-			"CarType": ""
+			"CarType": "",
+			"Length": 0,
+			"Width": 0,
+			"Height": 0,
+			"Wheelbase": 0,
+			"TrackFront": 0,
+			"TrackRear": 0
 		}
 	}`)
 
@@ -111,6 +123,12 @@ func (suite *VehiclesTestSuite) TestGetVehicleWIthValidIDReturnsVehicle() {
 		Year:                  0,
 		OpenCockpit:           false,
 		CarType:               "street",
+		Length:                4500,
+		Width:                 1800,
+		Height:                1300,
+		Wheelbase:             2700,
+		TrackFront:            1550,
+		TrackRear:             1600,
 	}
 
 	inventoryJSON := []byte(`{
@@ -125,7 +143,13 @@ func (suite *VehiclesTestSuite) TestGetVehicleWIthValidIDReturnsVehicle() {
 			"Year": 0,
 			"CarID": 1234,
 			"OpenCockpit": false,
-			"CarType": "street"
+			"CarType": "street",
+			"Length": 4500,
+			"Width": 1800,
+			"Height": 1300,
+			"Wheelbase": 2700,
+			"TrackFront": 1550,
+			"TrackRear": 1600
 		}
 	}`)
 

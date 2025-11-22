@@ -605,6 +605,42 @@ func (t *transformer) VehicleYear() int {
 	return t.vehicle.Year
 }
 
+func (t *transformer) VehicleLengthMillimeters() int {
+	t.updateVehicle()
+
+	return t.vehicle.Length
+}
+
+func (t *transformer) VehicleWidthMillimeters() int {
+	t.updateVehicle()
+
+	return t.vehicle.Width
+}
+
+func (t *transformer) VehicleHeightMillimeters() int {
+	t.updateVehicle()
+
+	return t.vehicle.Height
+}
+
+func (t *transformer) VehicleWheelbaseMillimeters() int {
+	t.updateVehicle()
+
+	return t.vehicle.Wheelbase
+}
+
+func (t *transformer) VehicleTrackFrontMillimeters() int {
+	t.updateVehicle()
+
+	return t.vehicle.TrackFront
+}
+
+func (t *transformer) VehicleTrackRearMillimeters() int {
+	t.updateVehicle()
+
+	return t.vehicle.TrackRear
+}
+
 func (t *transformer) VelocityVector() models.Vector {
 	velocity := t.RawTelemetry.VelocityVector
 	if velocity == nil {

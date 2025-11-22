@@ -54,3 +54,28 @@ func (suite *UnitConversionTestSuite) TestUnitConversionFunctionsReturnCorrectVa
 		})
 	}
 }
+
+func (suite *UnitConversionTestSuite) TestMillimetersToInchesReturnsCorrectValue() {
+	// Arrange
+	testCases := []struct {
+		withValue int
+		wantValue float32
+	}{
+		{1, 0.03937008},
+		{25, 0.9842520},
+		{100, 3.937008},
+		{1000, 39.37008},
+		{4500, 177.16535},
+		{1800, 70.866142},
+		{1300, 51.181103},
+		{2700, 106.29921},
+	}
+
+	for _, tc := range testCases {
+		// Act
+		gotValue := MillimetersToInches(tc.withValue)
+
+		// Assert
+		suite.InDelta(tc.wantValue, gotValue, 0.001)
+	}
+}

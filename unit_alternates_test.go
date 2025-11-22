@@ -19,7 +19,30 @@ func TestUnitAlternatesTestSuite(t *testing.T) {
 }
 
 func (suite *UnitAlternatesTestSuite) SetupTest() {
-	transformer := NewTransformer(&vehicles.VehicleDB{})
+	inventoryJSON := []byte(`{
+		"1234": {
+			"Model": "Dummy Model",
+			"Manufacturer": "Dummy Manufacturer",
+			"Category": "Gr.1",
+			"Drivetrain": "FR",
+			"Aspiration": "NA",
+			"EngineLayout": "V6",
+			"EngineBankAngle": 60,
+			"EngineCrankPlaneAngle": 120,
+			"Year": 2025,
+			"CarID": 1234,
+			"OpenCockpit": false,
+			"CarType": "race",
+			"Length": 4500,
+			"Width": 1800,
+			"Height": 1300,
+			"Wheelbase": 2700,
+			"TrackFront": 1550,
+			"TrackRear": 1600
+		}
+	}`)
+	inventory, _ := vehicles.NewDB(inventoryJSON)
+	transformer := NewTransformer(inventory)
 	transformer.RawTelemetry = telemetry.GranTurismoTelemetry{}
 
 	suite.transformer = transformer
@@ -394,4 +417,76 @@ func (suite *TransformerTestSuite) TestUnitAlternatesWaterTemperatureFahrenheitR
 
 	// Assert
 	suite.Equal(float32(202.208), gotValue)
+}
+
+func (suite *TransformerTestSuite) TestUnitAlternatesVehicleLengthInchesReturnsCorrectValue() {
+	// Arrange
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleLengthInches()
+
+	// Assert
+	suite.InDelta(float32(177.165), gotValue, 0.001)
+}
+
+func (suite *TransformerTestSuite) TestUnitAlternatesVehicleWidthInchesReturnsCorrectValue() {
+	// Arrange
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleWidthInches()
+
+	// Assert
+	suite.InDelta(float32(70.866), gotValue, 0.001)
+}
+
+func (suite *TransformerTestSuite) TestUnitAlternatesVehicleHeightInchesReturnsCorrectValue() {
+	// Arrange
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleHeightInches()
+
+	// Assert
+	suite.InDelta(float32(51.181), gotValue, 0.001)
+}
+
+func (suite *TransformerTestSuite) TestUnitAlternatesVehicleWheelbaseInchesReturnsCorrectValue() {
+	// Arrange
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleWheelbaseInches()
+
+	// Assert
+	suite.InDelta(float32(106.299), gotValue, 0.001)
+}
+
+func (suite *TransformerTestSuite) TestUnitAlternatesVehicleTrackFrontInchesReturnsCorrectValue() {
+	// Arrange
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleTrackFrontInches()
+
+	// Assert
+	suite.InDelta(float32(61.024), gotValue, 0.001)
+}
+
+func (suite *TransformerTestSuite) TestUnitAlternatesVehicleTrackRearInchesReturnsCorrectValue() {
+	// Arrange
+	suite.transformer.vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+
+	// Act
+	gotValue := suite.transformer.VehicleTrackRearInches()
+
+	// Assert
+	suite.InDelta(float32(62.992), gotValue, 0.001)
 }

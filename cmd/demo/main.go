@@ -120,6 +120,14 @@ func main() {
 			client.Telemetry.VehicleDrivetrain(),
 			client.Telemetry.VehicleAspirationExpanded(),
 		)
+		fmt.Printf("Dimensions    Length: %d mm  Width: %d mm  Height: %d mm  Wheelbase: %d mm  Track Front: %d mm  Track Rear: %d mm\n",
+			client.Telemetry.VehicleLengthMillimeters(),
+			client.Telemetry.VehicleWidthMillimeters(),
+			client.Telemetry.VehicleHeightMillimeters(),
+			client.Telemetry.VehicleWheelbaseMillimeters(),
+			client.Telemetry.VehicleTrackFrontMillimeters(),
+			client.Telemetry.VehicleTrackRearMillimeters(),
+		)
 		fmt.Printf("Engine        Layout: %s  Bank angle: %3.0f°  Crank plane: %3.0f°\n",
 			client.Telemetry.VehicleEngineLayout(),
 			client.Telemetry.VehicleEngineBankAngle(),
@@ -188,7 +196,7 @@ func main() {
 			client.Telemetry.SuspensionHeightMillimeters().RearRight,
 			client.Telemetry.RideHeightMillimeters(),
 		)
-		fmt.Printf("Tyre temperature:   [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] °c\n",
+		fmt.Printf("Tyre temperature:   [%3.2f ]  [%3.2f ]  [%3.2f ]  [%3.2f ] °c\n",
 			client.Telemetry.TyreTemperatureCelsius().FrontLeft,
 			client.Telemetry.TyreTemperatureCelsius().FrontRight,
 			client.Telemetry.TyreTemperatureCelsius().RearLeft,

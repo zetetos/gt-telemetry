@@ -18,6 +18,12 @@ type Vehicle struct {
 	Category              string  `json:"Category"`
 	Drivetrain            string  `json:"Drivetrain"`
 	Aspiration            string  `json:"Aspiration"`
+	Length                int     `json:"Length"`
+	Width                 int     `json:"Width"`
+	Height                int     `json:"Height"`
+	Wheelbase             int     `json:"Wheelbase"`
+	TrackFront            int     `json:"TrackFront"`
+	TrackRear             int     `json:"TrackRear"`
 	EngineLayout          string  `json:"EngineLayout"`
 	EngineBankAngle       float32 `json:"EngineBankAngle"`
 	EngineCrankPlaneAngle float32 `json:"EngineCrankPlaneAngle"`

@@ -188,3 +188,27 @@ func (t *transformer) WheelSpeedRPM() models.CornerSet {
 func (t *transformer) WaterTemperatureFahrenheit() float32 {
 	return utils.CelsiusToFahrenheit(t.RawTelemetry.WaterTemperature)
 }
+
+func (t *transformer) VehicleLengthInches() float32 {
+	return utils.MillimetersToInches(t.VehicleLengthMillimeters())
+}
+
+func (t *transformer) VehicleWidthInches() float32 {
+	return utils.MillimetersToInches(t.VehicleWidthMillimeters())
+}
+
+func (t *transformer) VehicleHeightInches() float32 {
+	return utils.MillimetersToInches(t.VehicleHeightMillimeters())
+}
+
+func (t *transformer) VehicleWheelbaseInches() float32 {
+	return utils.MillimetersToInches(t.VehicleWheelbaseMillimeters())
+}
+
+func (t *transformer) VehicleTrackFrontInches() float32 {
+	return utils.MillimetersToInches(t.VehicleTrackFrontMillimeters())
+}
+
+func (t *transformer) VehicleTrackRearInches() float32 {
+	return utils.MillimetersToInches(t.VehicleTrackRearMillimeters())
+}
