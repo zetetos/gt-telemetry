@@ -325,6 +325,7 @@ func (c *Client) StartRecording(filePath string) error {
 	c.isRecording = true
 
 	c.log.Info().Str("file", filePath).Msg("started recording telemetry data")
+
 	return nil
 }
 
@@ -348,6 +349,7 @@ func (c *Client) StopRecording() error {
 	c.isRecording = false
 
 	c.log.Info().Msg("stopped recording telemetry data")
+
 	return nil
 }
 
@@ -355,6 +357,7 @@ func (c *Client) StopRecording() error {
 func (c *Client) IsRecording() bool {
 	c.recordingMutex.RLock()
 	defer c.recordingMutex.RUnlock()
+
 	return c.isRecording
 }
 
@@ -388,11 +391,11 @@ func (g *gzipFileWrapper) Write(p []byte) (n int, err error) {
 }
 
 func (g *gzipFileWrapper) Close() error {
-	// First close the gzip writer to flush any remaining data
 	if err := g.gzipWriter.Close(); err != nil {
-		g.file.Close() // Still try to close the file
+		g.file.Close()
+
 		return err
 	}
-	// Then close the underlying file
+
 	return g.file.Close()
 }
