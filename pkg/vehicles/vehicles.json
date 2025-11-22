@@ -27,20 +27,6 @@
     "EngineBankAngle": 0,
     "EngineCrankPlaneAngle": 180
   },
-  "30": {
-    "CarID": 30,
-    "Manufacturer": "Chevrolet",
-    "Model": "Chevelle SS 454 '70",
-    "Year": 1970,
-    "OpenCockpit": false,
-    "CarType": "street",
-    "Category": "",
-    "Drivetrain": "FR",
-    "Aspiration": "NA",
-    "EngineLayout": "V8",
-    "EngineBankAngle": 90,
-    "EngineCrankPlaneAngle": 90
-  },
   "31": {
     "CarID": 31,
     "Manufacturer": "Chevrolet",
@@ -3609,20 +3595,6 @@
     "Aspiration": "TC",
     "EngineLayout": "V6",
     "EngineBankAngle": 15,
-    "EngineCrankPlaneAngle": 120
-  },
-  "2383": {
-    "CarID": 2383,
-    "Manufacturer": "BMW",
-    "Model": "M2 Competition '18",
-    "Year": 2018,
-    "OpenCockpit": false,
-    "CarType": "street",
-    "Category": "",
-    "Drivetrain": "FR",
-    "Aspiration": "TC",
-    "EngineLayout": "I6",
-    "EngineBankAngle": 0,
     "EngineCrankPlaneAngle": 120
   },
   "3183": {
