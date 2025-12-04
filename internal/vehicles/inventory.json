@@ -111,6 +111,20 @@
     "EngineBankAngle": 0,
     "EngineCrankPlaneAngle": 120
   },
+  "51": {
+    "CarID": 51,
+    "Manufacturer": "Mitsubishi",
+    "Model": "FTO GP Version R '97",
+    "Year": 1997,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "FF",
+    "Aspiration": "NA",
+    "EngineLayout": "V6",
+    "EngineBankAngle": 60,
+    "EngineCrankPlaneAngle": 120
+  },
   "63": {
     "CarID": 63,
     "Manufacturer": "Toyota",
@@ -1244,6 +1258,20 @@
     "EngineLayout": "V8",
     "EngineBankAngle": 90,
     "EngineCrankPlaneAngle": 90
+  },
+  "1427": {
+    "CarID": 1427,
+    "Manufacturer": "Mine's",
+    "Model": "BNR34 GT-R N1 base",
+    "Year": 1999,
+    "OpenCockpit": false,
+    "CarType": "tuned",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "TC",
+    "EngineLayout": "I6",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 120
   },
   "1431": {
     "CarID": 1431,
@@ -7450,7 +7478,7 @@
   "3562": {
     "CarID": 3562,
     "Manufacturer": "Gran Turismo",
-    "Model": "F2500-A",
+    "Model": "F3500-A",
     "Year": 0,
     "OpenCockpit": true,
     "CarType": "race",
@@ -7629,6 +7657,20 @@
     "EngineBankAngle": 0,
     "EngineCrankPlaneAngle": 120
   },
+  "3575": {
+    "CarID": 3575,
+    "Manufacturer": "Fiat",
+    "Model": "Panda 30 CL '85",
+    "Year": 1985,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "FF",
+    "Aspiration": "NA",
+    "EngineLayout": "I4",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 180
+  },
   "3576": {
     "CarID": 3576,
     "Manufacturer": "Honda",
@@ -7727,7 +7769,7 @@
     "EngineBankAngle": 0,
     "EngineCrankPlaneAngle": 180
   },
-    "3584": {
+  "3584": {
     "CarID": 3584,
     "Manufacturer": "Toyota",
     "Model": "Land Cruiser FJ40V '74",
@@ -7754,5 +7796,75 @@
     "EngineLayout": "I4",
     "EngineBankAngle": 0,
     "EngineCrankPlaneAngle": 180
+  },
+  "3586": {
+    "CarID": 3586,
+    "Manufacturer": "Polestar",
+    "Model": "Polestar 5 Performance '26",
+    "Year": 2026,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "4WD",
+    "Aspiration": "EV",
+    "EngineLayout": "",
+    "EngineBankAngle": 0,
+    "EngineCrankPlaneAngle": 0
+  },
+  "3587": {
+    "CarID": 3587,
+    "Manufacturer": "Ferrari",
+    "Model": "296 GTB '22",
+    "Year": 2022,
+    "OpenCockpit": false,
+    "CarType": "street",
+    "Category": "",
+    "Drivetrain": "MR",
+    "Aspiration": "TC",
+    "EngineLayout": "V6",
+    "EngineBankAngle": 120,
+    "EngineCrankPlaneAngle": 120
+  },
+  "3588": {
+    "CarID": 3588,
+    "Manufacturer": "Ferrari",
+    "Model": "296 GT3 '22",
+    "Year": 2023,
+    "OpenCockpit": false,
+    "CarType": "race",
+    "Category": "Gr.3",
+    "Drivetrain": "MR",
+    "Aspiration": "TC",
+    "EngineLayout": "V6",
+    "EngineBankAngle": 120,
+    "EngineCrankPlaneAngle": 120
+  },
+  "3589": {
+    "CarID": 3589,
+    "Manufacturer": "Gran Turismo",
+    "Model": "F3500-B",
+    "Year": 0,
+    "OpenCockpit": true,
+    "CarType": "race",
+    "Category": "",
+    "Drivetrain": "MR",
+    "Aspiration": "NA",
+    "EngineLayout": "V8",
+    "EngineBankAngle": 90,
+    "EngineCrankPlaneAngle": 180
+  },
+  "3591": {
+    "CarID": 3591,
+    "Manufacturer": "Renault",
+    "Model": "Espace F1 '95",
+    "Year": 1995,
+    "OpenCockpit": false,
+    "CarType": "race",
+    "Category": "",
+    "Drivetrain": "MR",
+    "Aspiration": "NA",
+    "EngineLayout": "V10",
+    "EngineBankAngle": 67,
+    "EngineCrankPlaneAngle": 72
   }
 }
