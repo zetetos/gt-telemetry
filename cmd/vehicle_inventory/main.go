@@ -8,12 +8,16 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/dop251/goja"
 	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
 
@@ -49,16 +53,17 @@ Actions:
   add     <file.json>            Add a new vehicle entry interactively
   edit    <file.json> <car-id>   Edit an existing vehicle entry
   delete  <file.json> <car-id>   Delete a vehicle entry
-  merge   <gt.json> <pd.json>    Merge PD inventory dimensions into GT inventory
+  fetch   <file.json> [locale]   Fetch and merge car data from Gran Turismo website
 
 Arguments:
   file                     Path to input file.
   car-id                   CarID of the vehicle to edit or delete
-  gt.json                  Path to GT inventory JSON file
-  pd.json                  Path to PD inventory JSON file
+  locale                   Locale code for fetch (default: gb). Examples: gb, us, jp, au
 
 Flags:
   -help                    Show this help message
+  -no-color                Disable colored output
+  -dry-run                 Show changes without modifying files
 
 Output format is determined by input file extension:
   .json files are converted to CSV format
@@ -80,13 +85,18 @@ Examples:
   # Delete a vehicle
   inventory delete internal/vehicles/inventory.json 1234
 
-  # Merge PD inventory dimensions into GT inventory
-  inventory merge pkg/vehicles/vehicles.json pd_inventory.json > merged.json
+  # Fetch and merge data from Gran Turismo website (default GB locale)
+  inventory fetch pkg/vehicles/vehicles.json
+
+  # Fetch and merge data for a specific locale
+  inventory fetch pkg/vehicles/vehicles.json us
 `
 
 func main() {
 	var (
-		help = flag.Bool("help", false, "Show help message")
+		help    = flag.Bool("help", false, "Show help message")
+		noColor = flag.Bool("no-color", false, "Disable colored output")
+		dryRun  = flag.Bool("dry-run", false, "Show changes without modifying files")
 	)
 
 	flag.Parse()
@@ -193,23 +203,26 @@ func main() {
 			os.Exit(1)
 		}
 
-	case "merge":
-		if len(args) < 3 {
-			fmt.Fprintf(os.Stderr, "Error: Both GT inventory and PD inventory file arguments are required for merge action\n\n")
+	case "fetch":
+		if len(args) < 2 {
+			fmt.Fprintf(os.Stderr, "Error: Inventory file argument is required for fetch action\n\n")
 			fmt.Print(usage)
 			os.Exit(1)
 		}
 
-		gtInventoryFile := args[1]
-		pdInventoryFile := args[2]
+		inventoryFile := args[1]
+		locale := "gb" // default locale
+		if len(args) > 2 {
+			locale = args[2]
+		}
 
-		if err := mergeInventories(gtInventoryFile, pdInventoryFile); err != nil {
-			fmt.Fprintf(os.Stderr, "Error merging inventories: %v\n", err)
+		if err := fetchAndMergeGTData(inventoryFile, locale, *noColor, *dryRun); err != nil {
+			fmt.Fprintf(os.Stderr, "Error fetching GT data: %v\n", err)
 			os.Exit(1)
 		}
 
 	default:
-		fmt.Fprintf(os.Stderr, "Error: Unknown action '%s'. Supported actions: convert, add, edit, delete, merge\n\n", action)
+		fmt.Fprintf(os.Stderr, "Error: Unknown action '%s'. Supported actions: convert, add, edit, delete, fetch\n\n", action)
 		fmt.Print(usage)
 		os.Exit(1)
 	}
@@ -1004,6 +1017,8 @@ func deleteVehicle(inventoryFile string, carID int) error {
 type PDVehicle struct {
 	ID              string `json:"id"`
 	NameShort       string `json:"nameShort"`
+	Manufacturer    string `json:"manufacturer"`
+	Year            int    `json:"year"`
 	DriveTrain      string `json:"driveTrain"`
 	AspirationShort string `json:"aspirationShort"`
 	CarClass        string `json:"carClass"`
@@ -1012,7 +1027,16 @@ type PDVehicle struct {
 	HeightV         int    `json:"height_v"`
 }
 
-func mergeInventories(gtInventoryFile, pdInventoryFile string) error {
+// ANSI color codes
+const (
+	colorReset  = "\033[0m"
+	colorRed    = "\033[31m"
+	colorGreen  = "\033[32m"
+	colorYellow = "\033[33m"
+	colorCyan   = "\033[36m"
+)
+
+func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun bool) error {
 	// Load GT inventory
 	gtData, err := os.ReadFile(gtInventoryFile)
 	if err != nil {
@@ -1035,26 +1059,93 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string) error {
 		return fmt.Errorf("parsing PD inventory JSON: %w", err)
 	}
 
+	// Color helpers
+	red := func(s string) string {
+		if noColor {
+			return s
+		}
+		return colorRed + s + colorReset
+	}
+	green := func(s string) string {
+		if noColor {
+			return s
+		}
+		return colorGreen + s + colorReset
+	}
+	yellow := func(s string) string {
+		if noColor {
+			return s
+		}
+		return colorYellow + s + colorReset
+	}
+	cyan := func(s string) string {
+		if noColor {
+			return s
+		}
+		return colorCyan + s + colorReset
+	}
+
 	// Merge data from PD inventory into GT inventory
 	mergedCount := 0
+	addedCount := 0
+
+	// Store changes for sorted output
+	type changeRecord struct {
+		carID   int
+		changes []string
+		isNew   bool
+	}
+	var allChanges []changeRecord
+
+	// First, update existing vehicles
 	for carIDStr, gtVehicle := range gtVehicleMap {
 		if pdVehicle, exists := pdVehicleMap[carIDStr]; exists {
 			updated := false
 			var changes []string
 
+			// Overwrite Manufacturer from manufacturer
+			if pdVehicle.Manufacturer != "" && pdVehicle.Manufacturer != "---" && gtVehicle.Manufacturer != pdVehicle.Manufacturer {
+				if gtVehicle.Manufacturer != "" {
+					changes = append(changes, fmt.Sprintf("  %s Manufacturer: %s", red("-"), red("'"+gtVehicle.Manufacturer+"'")))
+					changes = append(changes, fmt.Sprintf("  %s Manufacturer: %s", green("+"), green("'"+pdVehicle.Manufacturer+"'")))
+				} else {
+					changes = append(changes, fmt.Sprintf("  %s Manufacturer: %s", green("+"), green("'"+pdVehicle.Manufacturer+"'")))
+				}
+				gtVehicle.Manufacturer = pdVehicle.Manufacturer
+				updated = true
+			}
+
 			// Overwrite Model from nameShort
 			if pdVehicle.NameShort != "" && pdVehicle.NameShort != "---" && gtVehicle.Model != pdVehicle.NameShort {
 				if gtVehicle.Model != "" {
-					changes = append(changes, fmt.Sprintf("Model: '%s' -> '%s'", gtVehicle.Model, pdVehicle.NameShort))
+					changes = append(changes, fmt.Sprintf("  %s Model: %s", yellow("|"), cyan("'"+gtVehicle.Model+"'")))
+					changes = append(changes, fmt.Sprintf("  %s Model: %s", green("+"), green("'"+pdVehicle.NameShort+"'")))
+				} else {
+					changes = append(changes, fmt.Sprintf("  %s Model: %s", green("+"), green("'"+pdVehicle.NameShort+"'")))
 				}
 				gtVehicle.Model = pdVehicle.NameShort
+				updated = true
+			}
+
+			// Overwrite Year if it's 0 or different
+			if pdVehicle.Year > 0 && gtVehicle.Year != pdVehicle.Year {
+				if gtVehicle.Year > 0 {
+					changes = append(changes, fmt.Sprintf("  %s Year: %s", red("-"), red(fmt.Sprintf("%d", gtVehicle.Year))))
+					changes = append(changes, fmt.Sprintf("  %s Year: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.Year))))
+				} else {
+					changes = append(changes, fmt.Sprintf("  %s Year: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.Year))))
+				}
+				gtVehicle.Year = pdVehicle.Year
 				updated = true
 			}
 
 			// Overwrite Drivetrain from driveTrain
 			if pdVehicle.DriveTrain != "" && pdVehicle.DriveTrain != "---" && gtVehicle.Drivetrain != pdVehicle.DriveTrain {
 				if gtVehicle.Drivetrain != "" && gtVehicle.Drivetrain != "-" {
-					changes = append(changes, fmt.Sprintf("Drivetrain: '%s' -> '%s'", gtVehicle.Drivetrain, pdVehicle.DriveTrain))
+					changes = append(changes, fmt.Sprintf("  %s Drivetrain: %s", red("-"), red("'"+gtVehicle.Drivetrain+"'")))
+					changes = append(changes, fmt.Sprintf("  %s Drivetrain: %s", green("+"), green("'"+pdVehicle.DriveTrain+"'")))
+				} else {
+					changes = append(changes, fmt.Sprintf("  %s Drivetrain: %s", green("+"), green("'"+pdVehicle.DriveTrain+"'")))
 				}
 				gtVehicle.Drivetrain = pdVehicle.DriveTrain
 				updated = true
@@ -1063,7 +1154,10 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string) error {
 			// Overwrite Aspiration from aspirationShort
 			if pdVehicle.AspirationShort != "" && pdVehicle.AspirationShort != "---" && gtVehicle.Aspiration != pdVehicle.AspirationShort {
 				if gtVehicle.Aspiration != "" && gtVehicle.Aspiration != "-" {
-					changes = append(changes, fmt.Sprintf("Aspiration: '%s' -> '%s'", gtVehicle.Aspiration, pdVehicle.AspirationShort))
+					changes = append(changes, fmt.Sprintf("  %s Aspiration: %s", red("-"), red("'"+gtVehicle.Aspiration+"'")))
+					changes = append(changes, fmt.Sprintf("  %s Aspiration: %s", green("+"), green("'"+pdVehicle.AspirationShort+"'")))
+				} else {
+					changes = append(changes, fmt.Sprintf("  %s Aspiration: %s", green("+"), green("'"+pdVehicle.AspirationShort+"'")))
 				}
 				gtVehicle.Aspiration = pdVehicle.AspirationShort
 				updated = true
@@ -1072,7 +1166,10 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string) error {
 			// Overwrite Category from carClass
 			if pdVehicle.CarClass != "" && pdVehicle.CarClass != "---" && gtVehicle.Category != pdVehicle.CarClass {
 				if gtVehicle.Category != "" {
-					changes = append(changes, fmt.Sprintf("Category: '%s' -> '%s'", gtVehicle.Category, pdVehicle.CarClass))
+					changes = append(changes, fmt.Sprintf("  %s Category: %s", red("-"), red("'"+gtVehicle.Category+"'")))
+					changes = append(changes, fmt.Sprintf("  %s Category: %s", green("+"), green("'"+pdVehicle.CarClass+"'")))
+				} else {
+					changes = append(changes, fmt.Sprintf("  %s Category: %s", green("+"), green("'"+pdVehicle.CarClass+"'")))
 				}
 				gtVehicle.Category = pdVehicle.CarClass
 				updated = true
@@ -1080,16 +1177,19 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string) error {
 
 			// Only update dimensions if GT inventory has 0 values
 			if gtVehicle.Length == 0 && pdVehicle.LengthV > 0 {
+				changes = append(changes, fmt.Sprintf("  %s Length: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.LengthV))))
 				gtVehicle.Length = pdVehicle.LengthV
 				updated = true
 			}
 
 			if gtVehicle.Width == 0 && pdVehicle.WidthV > 0 {
+				changes = append(changes, fmt.Sprintf("  %s Width: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.WidthV))))
 				gtVehicle.Width = pdVehicle.WidthV
 				updated = true
 			}
 
 			if gtVehicle.Height == 0 && pdVehicle.HeightV > 0 {
+				changes = append(changes, fmt.Sprintf("  %s Height: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.HeightV))))
 				gtVehicle.Height = pdVehicle.HeightV
 				updated = true
 			}
@@ -1098,17 +1198,395 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string) error {
 				gtVehicleMap[carIDStr] = gtVehicle
 				mergedCount++
 				if len(changes) > 0 {
-					fmt.Fprintf(os.Stderr, "CarID %s: %s\n", carIDStr, strings.Join(changes, ", "))
+					carID, _ := strconv.Atoi(carIDStr)
+					allChanges = append(allChanges, changeRecord{
+						carID:   carID,
+						changes: changes,
+						isNew:   false,
+					})
 				}
 			}
 		}
 	}
 
-	// Write merged inventory to stdout
-	if err := writeOrderedJSON(os.Stdout, gtVehicleMap); err != nil {
-		return fmt.Errorf("encoding merged JSON: %w", err)
+	// Second, add new vehicles that don't exist in GT inventory
+	for carIDStr, pdVehicle := range pdVehicleMap {
+		if _, exists := gtVehicleMap[carIDStr]; !exists {
+			// Parse CarID
+			carID, err := strconv.Atoi(carIDStr)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: skipping invalid CarID '%s': %v\n", carIDStr, err)
+				continue
+			}
+
+			// Create new vehicle from PD data
+			newVehicle := vehicles.Vehicle{
+				CarID:        carID,
+				Manufacturer: pdVehicle.Manufacturer,
+				Model:        pdVehicle.NameShort,
+				Year:         pdVehicle.Year,
+				Category:     pdVehicle.CarClass,
+				Drivetrain:   pdVehicle.DriveTrain,
+				Aspiration:   pdVehicle.AspirationShort,
+				Length:       pdVehicle.LengthV,
+				Width:        pdVehicle.WidthV,
+				Height:       pdVehicle.HeightV,
+			}
+
+			gtVehicleMap[carIDStr] = newVehicle
+			addedCount++
+
+			var changes []string
+			if pdVehicle.Manufacturer != "" && pdVehicle.Manufacturer != "---" {
+				changes = append(changes, fmt.Sprintf("  %s Manufacturer: %s", green("+"), green("'"+pdVehicle.Manufacturer+"'")))
+			}
+			if pdVehicle.NameShort != "" && pdVehicle.NameShort != "---" {
+				changes = append(changes, fmt.Sprintf("  %s Model: %s", green("+"), green("'"+pdVehicle.NameShort+"'")))
+			}
+			if pdVehicle.Year > 0 {
+				changes = append(changes, fmt.Sprintf("  %s Year: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.Year))))
+			}
+			if pdVehicle.CarClass != "" && pdVehicle.CarClass != "---" {
+				changes = append(changes, fmt.Sprintf("  %s Category: %s", green("+"), green("'"+pdVehicle.CarClass+"'")))
+			}
+			if pdVehicle.DriveTrain != "" && pdVehicle.DriveTrain != "---" {
+				changes = append(changes, fmt.Sprintf("  %s Drivetrain: %s", green("+"), green("'"+pdVehicle.DriveTrain+"'")))
+			}
+			if pdVehicle.AspirationShort != "" && pdVehicle.AspirationShort != "---" {
+				changes = append(changes, fmt.Sprintf("  %s Aspiration: %s", green("+"), green("'"+pdVehicle.AspirationShort+"'")))
+			}
+			if pdVehicle.LengthV > 0 {
+				changes = append(changes, fmt.Sprintf("  %s Length: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.LengthV))))
+			}
+			if pdVehicle.WidthV > 0 {
+				changes = append(changes, fmt.Sprintf("  %s Width: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.WidthV))))
+			}
+			if pdVehicle.HeightV > 0 {
+				changes = append(changes, fmt.Sprintf("  %s Height: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.HeightV))))
+			}
+
+			allChanges = append(allChanges, changeRecord{
+				carID:   carID,
+				changes: changes,
+				isNew:   true,
+			})
+		}
 	}
 
-	fmt.Fprintf(os.Stderr, "Successfully merged dimension data for %d vehicles\n", mergedCount)
+	// Sort changes by CarID
+	sort.Slice(allChanges, func(i, j int) bool {
+		return allChanges[i].carID < allChanges[j].carID
+	})
+
+	// Output changes in sorted order
+	for _, record := range allChanges {
+		if record.isNew {
+			fmt.Fprintf(os.Stderr, "%s\n", green(fmt.Sprintf("+ New CarID %d:", record.carID)))
+		} else {
+			fmt.Fprintf(os.Stderr, "%s\n", cyan(fmt.Sprintf("CarID %d:", record.carID)))
+		}
+		for _, change := range record.changes {
+			fmt.Fprintf(os.Stderr, "%s\n", change)
+		}
+	}
+
+	// Write merged inventory to file (unless dry-run)
+	if dryRun {
+		fmt.Fprintf(os.Stderr, "\n[DRY RUN] Would write changes to %s\n", gtInventoryFile)
+		if addedCount > 0 {
+			fmt.Fprintf(os.Stderr, "[DRY RUN] Would add %d new vehicles and update %d existing vehicles\n", addedCount, mergedCount)
+		} else {
+			fmt.Fprintf(os.Stderr, "[DRY RUN] Would update %d vehicles\n", mergedCount)
+		}
+	} else {
+		outputF, err := os.Create(gtInventoryFile)
+		if err != nil {
+			return fmt.Errorf("creating inventory file: %w", err)
+		}
+		defer outputF.Close()
+
+		if err := writeOrderedJSON(outputF, gtVehicleMap); err != nil {
+			return fmt.Errorf("encoding merged JSON: %w", err)
+		}
+
+		if addedCount > 0 {
+			fmt.Fprintf(os.Stderr, "Successfully added %d new vehicles and updated %d existing vehicles to %s\n", addedCount, mergedCount, gtInventoryFile)
+		} else {
+			fmt.Fprintf(os.Stderr, "Successfully updated %d vehicles in %s\n", mergedCount, gtInventoryFile)
+		}
+	}
 	return nil
+}
+
+// GTCar represents a car entry from the Gran Turismo website cars.js file
+type GTCar struct {
+	ID              string `json:"id"`
+	NameShort       string `json:"nameShort"`
+	NameLong        string `json:"nameLong"`
+	ManufacturerID  string `json:"manufacturerId"`
+	CarClass        string `json:"carClass"`
+	DriveTrain      string `json:"driveTrain"`
+	AspirationShort string `json:"aspirationShort"`
+	LengthV         int    `json:"length_v"`
+	WidthV          int    `json:"width_v"`
+	HeightV         int    `json:"height_v"`
+}
+
+// GTTuner represents a manufacturer/tuner entry from the Gran Turismo website tuners.js file
+type GTTuner struct {
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	NameShort string `json:"nameShort"`
+}
+
+// fetchAndMergeGTData fetches car data from Gran Turismo website and merges it with local inventory
+func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) error {
+	fmt.Fprintf(os.Stderr, "Fetching Gran Turismo car data for locale: %s\n", locale)
+
+	// Step 1: Fetch the main carlist page to get the JS bundle name
+	baseURL := fmt.Sprintf("https://www.gran-turismo.com/%s/gt7/carlist/", locale)
+	fmt.Fprintf(os.Stderr, "Fetching carlist page: %s\n", baseURL)
+
+	resp, err := http.Get(baseURL)
+	if err != nil {
+		return fmt.Errorf("fetching carlist page: %w", err)
+	}
+	defer resp.Body.Close()
+
+	htmlBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("reading carlist HTML: %w", err)
+	}
+
+	// Step 2: Extract the main JS bundle filename
+	indexJsPattern := regexp.MustCompile(`src="([^"]*index-[^"]*\.js)"`)
+	matches := indexJsPattern.FindSubmatch(htmlBody)
+	if len(matches) < 2 {
+		return fmt.Errorf("could not find main JS bundle in HTML")
+	}
+
+	indexJsPath := string(matches[1])
+	// Handle relative paths
+	if !strings.HasPrefix(indexJsPath, "http") {
+		if strings.HasPrefix(indexJsPath, "/") {
+			indexJsPath = "https://www.gran-turismo.com" + indexJsPath
+		} else {
+			indexJsPath = "https://www.gran-turismo.com/" + indexJsPath
+		}
+	}
+
+	fmt.Fprintf(os.Stderr, "Found main JS bundle: %s\n", indexJsPath)
+
+	// Step 3: Fetch the main JS bundle
+	resp, err = http.Get(indexJsPath)
+	if err != nil {
+		return fmt.Errorf("fetching main JS bundle: %w", err)
+	}
+	defer resp.Body.Close()
+
+	bundleBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("reading main JS bundle: %w", err)
+	}
+
+	// Step 4: Extract the cars data filename
+	carsJsPattern := regexp.MustCompile(fmt.Sprintf(`cars\.%s-([A-Za-z0-9_-]+)\.js`, locale))
+	matches = carsJsPattern.FindSubmatch(bundleBody)
+	if len(matches) < 1 {
+		return fmt.Errorf("could not find cars.%s-*.js in main bundle", locale)
+	}
+
+	carsJsFilename := string(matches[0])
+	carsJsURL := strings.Replace(indexJsPath, filepath.Base(indexJsPath), carsJsFilename, 1)
+
+	fmt.Fprintf(os.Stderr, "Found cars data file: %s\n", carsJsURL)
+
+	// Step 4b: Extract the tuners data filename
+	tunersJsPattern := regexp.MustCompile(fmt.Sprintf(`tuners\.%s-([A-Za-z0-9_-]+)\.js`, locale))
+	matches = tunersJsPattern.FindSubmatch(bundleBody)
+	if len(matches) < 1 {
+		return fmt.Errorf("could not find tuners.%s-*.js in main bundle", locale)
+	}
+
+	tunersJsFilename := string(matches[0])
+	tunersJsURL := strings.Replace(indexJsPath, filepath.Base(indexJsPath), tunersJsFilename, 1)
+
+	fmt.Fprintf(os.Stderr, "Found tuners data file: %s\n", tunersJsURL)
+
+	// Step 5: Fetch the cars data file
+	resp, err = http.Get(carsJsURL)
+	if err != nil {
+		return fmt.Errorf("fetching cars data file: %w", err)
+	}
+	defer resp.Body.Close()
+
+	carsBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("reading cars data file: %w", err)
+	}
+
+	// Step 5b: Fetch the tuners data file
+	resp, err = http.Get(tunersJsURL)
+	if err != nil {
+		return fmt.Errorf("fetching tuners data file: %w", err)
+	}
+	defer resp.Body.Close()
+
+	tunersBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("reading tuners data file: %w", err)
+	}
+
+	// Step 6: Parse JavaScript and convert to JSON using goja JavaScript engine
+	fmt.Fprintf(os.Stderr, "Parsing car data...\n")
+
+	// The file uses ES6 export syntax: const r={...};export{r as Cars};
+	// Strip the export statement since goja doesn't support ES6 modules
+	jsCode := string(carsBody)
+	jsCode = regexp.MustCompile(`;\s*export\s*{[^}]*}\s*;?\s*$`).ReplaceAllString(jsCode, "")
+
+	// Use goja to execute the JavaScript
+	vm := goja.New()
+
+	// Execute the JavaScript code (just the const declaration)
+	_, err = vm.RunString(jsCode)
+	if err != nil {
+		return fmt.Errorf("executing JavaScript: %w", err)
+	}
+
+	// Get the variable (it's typically 'r' or similar single-letter var)
+	// Extract the variable name from the const declaration
+	varNamePattern := regexp.MustCompile(`^const\s+(\w+)\s*=`)
+	varNameMatches := varNamePattern.FindStringSubmatch(jsCode)
+	if len(varNameMatches) < 2 {
+		return fmt.Errorf("could not find variable name in JavaScript")
+	}
+	varName := varNameMatches[1]
+
+	// Get the Cars object
+	carsValue := vm.Get(varName)
+	if carsValue == nil {
+		return fmt.Errorf("cars object '%s' not found in JavaScript", varName)
+	}
+
+	// Convert to JSON
+	carDataJSON, err := json.Marshal(carsValue.Export())
+	if err != nil {
+		return fmt.Errorf("converting Cars to JSON: %w", err)
+	}
+
+	// Parse the car data
+	var gtCarsMap map[string]GTCar
+	if err := json.Unmarshal(carDataJSON, &gtCarsMap); err != nil {
+		return fmt.Errorf("parsing car data JSON: %w", err)
+	}
+
+	fmt.Fprintf(os.Stderr, "Found %d cars in GT data\n", len(gtCarsMap))
+
+	// Step 6b: Parse tuners JavaScript data
+	fmt.Fprintf(os.Stderr, "Parsing tuner data...\n")
+
+	tunersJsCode := string(tunersBody)
+	tunersJsCode = regexp.MustCompile(`;\s*export\s*{[^}]*}\s*;?\s*$`).ReplaceAllString(tunersJsCode, "")
+
+	vm = goja.New()
+	_, err = vm.RunString(tunersJsCode)
+	if err != nil {
+		return fmt.Errorf("executing tuners JavaScript: %w", err)
+	}
+
+	varNameMatches = varNamePattern.FindStringSubmatch(tunersJsCode)
+	if len(varNameMatches) < 2 {
+		return fmt.Errorf("could not find variable name in tuners JavaScript")
+	}
+	varName = varNameMatches[1]
+
+	tunersValue := vm.Get(varName)
+	if tunersValue == nil {
+		return fmt.Errorf("tuners object '%s' not found in JavaScript", varName)
+	}
+
+	tunerDataJSON, err := json.Marshal(tunersValue.Export())
+	if err != nil {
+		return fmt.Errorf("converting Tuners to JSON: %w", err)
+	}
+
+	var gtTunersMap map[string]GTTuner
+	if err := json.Unmarshal(tunerDataJSON, &gtTunersMap); err != nil {
+		return fmt.Errorf("parsing tuner data JSON: %w", err)
+	}
+
+	fmt.Fprintf(os.Stderr, "Found %d manufacturers in GT data\n", len(gtTunersMap))
+
+	// Step 7: Convert to temporary file in PD format for merging
+	tempFile, err := os.CreateTemp("", "gt-cars-*.json")
+	if err != nil {
+		return fmt.Errorf("creating temp file: %w", err)
+	}
+	defer os.Remove(tempFile.Name())
+	defer tempFile.Close()
+
+	// Convert GTCar to PDVehicle format
+	pdVehicleMap := make(map[string]PDVehicle)
+	for carKey, gtCar := range gtCarsMap {
+		// Extract numeric car ID from the car key (e.g., "car123" -> "123")
+		carIDPattern := regexp.MustCompile(`car(\d+)`)
+		carIDMatches := carIDPattern.FindStringSubmatch(carKey)
+		if len(carIDMatches) < 2 {
+			continue
+		}
+		carID := carIDMatches[1]
+
+		// Resolve manufacturer name from manufacturer ID
+		manufacturerName := ""
+		if gtCar.ManufacturerID != "" {
+			if tuner, exists := gtTunersMap[gtCar.ManufacturerID]; exists {
+				manufacturerName = strings.TrimSpace(tuner.Name)
+			}
+		}
+
+		// Extract year from model name if it ends with '## (e.g., "Camaro Z28 '69")
+		year := 0
+		yearPattern := regexp.MustCompile(`'(\d{2})$`)
+		if matches := yearPattern.FindStringSubmatch(gtCar.NameShort); len(matches) > 1 {
+			if shortYear, err := strconv.Atoi(matches[1]); err == nil {
+				// Convert 2-digit year to 4-digit year
+				// Use current year + 1 as cutoff (last 2 digits)
+				currentYear := time.Now().Year()
+				cutoff := (currentYear + 1) % 100
+				if shortYear <= cutoff {
+					year = 2000 + shortYear
+				} else {
+					year = 1900 + shortYear
+				}
+			}
+		}
+
+		pdVehicleMap[carID] = PDVehicle{
+			ID:              gtCar.ID,
+			NameShort:       gtCar.NameShort,
+			Manufacturer:    manufacturerName,
+			Year:            year,
+			DriveTrain:      gtCar.DriveTrain,
+			AspirationShort: gtCar.AspirationShort,
+			CarClass:        gtCar.CarClass,
+			LengthV:         gtCar.LengthV,
+			WidthV:          gtCar.WidthV,
+			HeightV:         gtCar.HeightV,
+		}
+	}
+
+	// Write to temp file
+	encoder := json.NewEncoder(tempFile)
+	encoder.SetIndent("", "  ")
+	if err := encoder.Encode(pdVehicleMap); err != nil {
+		return fmt.Errorf("writing temp file: %w", err)
+	}
+
+	tempFile.Close()
+
+	fmt.Fprintf(os.Stderr, "Merging with local inventory...\n")
+
+	// Step 8: Use existing merge function
+	return mergeInventories(inventoryFile, tempFile.Name(), noColor, dryRun)
 }
