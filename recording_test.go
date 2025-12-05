@@ -1,181 +1,170 @@
-package gttelemetry
+package gttelemetry_test
 
 import (
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/suite"
+	gttelemetry "github.com/zetetos/gt-telemetry"
 )
 
-func TestRecordingFunctionality(t *testing.T) {
+type RecordingTestSuite struct {
+	suite.Suite
+
+	client *gttelemetry.Client
+	tmpDir string
+}
+
+func TestRecordingTestSuite(t *testing.T) {
+	t.Parallel()
+	suite.Run(t, new(RecordingTestSuite))
+}
+
+func (suite *RecordingTestSuite) SetupTest() {
 	// Create a temporary directory for test files
-	tmpDir := t.TempDir()
+	suite.tmpDir = suite.T().TempDir()
 
 	// Create a client
-	client, err := New(Options{
+	client, err := gttelemetry.New(gttelemetry.Options{
 		Source:   "file://data/demo/demo.cast", // Use demo file if available
 		LogLevel: "error",                      // Reduce noise during tests
 	})
-	if err != nil {
-		t.Fatalf("Failed to create client: %v", err)
+	suite.Require().NoError(err, "Failed to create client")
+	suite.client = client
+}
+
+func (suite *RecordingTestSuite) TearDownTest() {
+	// Make sure we stop recording if still active
+	if suite.client != nil && suite.client.IsRecording() {
+		_ = suite.client.StopRecording()
+	}
+}
+
+func (suite *RecordingTestSuite) TestStartRecording() {
+	// Test starting recording with .gtz file
+	gtzPath := filepath.Join(suite.tmpDir, "test_recording.gtz")
+
+	err := suite.client.StartRecording(gtzPath)
+	suite.Require().NoError(err, "Failed to start recording")
+
+	// Check that recording is active
+	suite.True(suite.client.IsRecording(), "IsRecording should return true after starting recording")
+
+	// Stop recording for cleanup
+	err = suite.client.StopRecording()
+	suite.NoError(err, "Failed to stop recording")
+}
+
+func (suite *RecordingTestSuite) TestStartRecordingPlainFile() {
+	// Test starting recording with .gtr file
+	gtrPath := filepath.Join(suite.tmpDir, "test_recording.gtr")
+
+	err := suite.client.StartRecording(gtrPath)
+	suite.Require().NoError(err, "Failed to start recording")
+
+	// Check that recording is active
+	suite.True(suite.client.IsRecording(), "IsRecording should return true after starting recording")
+
+	// Stop recording for cleanup
+	err = suite.client.StopRecording()
+	suite.NoError(err, "Failed to stop recording")
+}
+
+func (suite *RecordingTestSuite) TestInvalidFileExtension() {
+	// Test with invalid file extension
+	invalidPath := filepath.Join(suite.tmpDir, "test_recording.txt")
+
+	err := suite.client.StartRecording(invalidPath)
+	suite.Require().Error(err, "Expected error for invalid file extension, got nil")
+
+	// Cleanup just in case
+	if suite.client.IsRecording() {
+		_ = suite.client.StopRecording()
+	}
+}
+
+func (suite *RecordingTestSuite) TestAlreadyRecording() {
+	// Start recording
+	gtzPath := filepath.Join(suite.tmpDir, "test_recording2.gtz")
+
+	err := suite.client.StartRecording(gtzPath)
+	suite.Require().NoError(err, "Failed to start first recording")
+
+	// Try to start another recording
+	gtzPath2 := filepath.Join(suite.tmpDir, "test_recording3.gtz")
+
+	err = suite.client.StartRecording(gtzPath2)
+	suite.Require().Error(err, "Expected error when trying to start recording while already recording")
+
+	// Stop the first recording
+	err = suite.client.StopRecording()
+	suite.NoError(err, "Failed to stop recording")
+}
+
+func (suite *RecordingTestSuite) TestStopWhenNotRecording() {
+	// Make sure we're not recording
+	if suite.client.IsRecording() {
+		_ = suite.client.StopRecording()
 	}
 
-	t.Run("StartRecording", func(t *testing.T) {
-		// Test starting recording with .gtz file
-		gtzPath := filepath.Join(tmpDir, "test_recording.gtz")
-		err := client.StartRecording(gtzPath)
-		if err != nil {
-			t.Fatalf("Failed to start recording: %v", err)
-		}
+	// Try to stop recording when not recording
+	err := suite.client.StopRecording()
+	suite.Error(err, "Expected error when trying to stop recording while not recording")
+}
 
-		// Check that recording is active
-		if !client.IsRecording() {
-			t.Error("IsRecording should return true after starting recording")
-		}
+func (suite *RecordingTestSuite) TestIsRecording() {
+	// Should not be recording initially
+	suite.False(suite.client.IsRecording(), "IsRecording should return false initially")
 
-		// Stop recording for cleanup
-		err = client.StopRecording()
-		if err != nil {
-			t.Errorf("Failed to stop recording: %v", err)
-		}
-	})
+	// Start recording
+	gtzPath := filepath.Join(suite.tmpDir, "test_recording4.gtz")
 
-	t.Run("StartRecordingPlainFile", func(t *testing.T) {
-		// Test starting recording with .gtr file
-		gtrPath := filepath.Join(tmpDir, "test_recording.gtr")
-		err := client.StartRecording(gtrPath)
-		if err != nil {
-			t.Fatalf("Failed to start recording: %v", err)
-		}
+	err := suite.client.StartRecording(gtzPath)
+	suite.Require().NoError(err, "Failed to start recording")
 
-		// Check that recording is active
-		if !client.IsRecording() {
-			t.Error("IsRecording should return true after starting recording")
-		}
+	// Should be recording now
+	suite.True(suite.client.IsRecording(), "IsRecording should return true after starting recording")
 
-		// Stop recording for cleanup
-		err = client.StopRecording()
-		if err != nil {
-			t.Errorf("Failed to stop recording: %v", err)
-		}
-	})
+	// Stop recording
+	err = suite.client.StopRecording()
+	suite.Require().NoError(err, "Failed to stop recording")
 
-	t.Run("InvalidFileExtension", func(t *testing.T) {
-		// Test with invalid file extension
-		invalidPath := filepath.Join(tmpDir, "test_recording.txt")
-		err := client.StartRecording(invalidPath)
-		if err == nil {
-			t.Error("Expected error for invalid file extension, got nil")
-			_ = client.StopRecording() // Cleanup just in case
-		}
-	})
+	// Should not be recording after stopping
+	suite.False(suite.client.IsRecording(), "IsRecording should return false after stopping recording")
+}
 
-	t.Run("AlreadyRecording", func(t *testing.T) {
-		// Start recording
-		gtzPath := filepath.Join(tmpDir, "test_recording2.gtz")
-		err := client.StartRecording(gtzPath)
-		if err != nil {
-			t.Fatalf("Failed to start first recording: %v", err)
-		}
+func (suite *RecordingTestSuite) TestFileCreation() {
+	// Test that files are actually created
+	gtzPath := filepath.Join(suite.tmpDir, "test_file_creation.gtz")
+	gtrPath := filepath.Join(suite.tmpDir, "test_file_creation.gtr")
 
-		// Try to start another recording
-		gtzPath2 := filepath.Join(tmpDir, "test_recording3.gtz")
-		err = client.StartRecording(gtzPath2)
-		if err == nil {
-			t.Error("Expected error when trying to start recording while already recording")
-		}
+	// Test .gtz file creation
+	err := suite.client.StartRecording(gtzPath)
+	suite.Require().NoError(err, "Failed to start gtz recording")
 
-		// Stop the first recording
-		err = client.StopRecording()
-		if err != nil {
-			t.Errorf("Failed to stop recording: %v", err)
-		}
-	})
+	// Give it a moment to create the file
+	time.Sleep(10 * time.Millisecond)
 
-	t.Run("StopWhenNotRecording", func(t *testing.T) {
-		// Make sure we're not recording
-		if client.IsRecording() {
-			_ = client.StopRecording()
-		}
+	err = suite.client.StopRecording()
+	suite.Require().NoError(err, "Failed to stop gtz recording")
 
-		// Try to stop recording when not recording
-		err := client.StopRecording()
-		if err == nil {
-			t.Error("Expected error when trying to stop recording while not recording")
-		}
-	})
+	// Check if file exists
+	_, err = os.Stat(gtzPath)
+	suite.False(os.IsNotExist(err), "GZT file was not created")
 
-	t.Run("IsRecording", func(t *testing.T) {
-		// Should not be recording initially
-		if client.IsRecording() {
-			t.Error("IsRecording should return false initially")
-		}
+	// Test .gtr file creation
+	err = suite.client.StartRecording(gtrPath)
+	suite.Require().NoError(err, "Failed to start gtr recording")
 
-		// Start recording
-		gtzPath := filepath.Join(tmpDir, "test_recording4.gtz")
-		err := client.StartRecording(gtzPath)
-		if err != nil {
-			t.Fatalf("Failed to start recording: %v", err)
-		}
+	// Give it a moment to create the file
+	time.Sleep(10 * time.Millisecond)
 
-		// Should be recording now
-		if !client.IsRecording() {
-			t.Error("IsRecording should return true after starting recording")
-		}
+	err = suite.client.StopRecording()
+	suite.Require().NoError(err, "Failed to stop gtr recording")
 
-		// Stop recording
-		err = client.StopRecording()
-		if err != nil {
-			t.Errorf("Failed to stop recording: %v", err)
-		}
-
-		// Should not be recording after stopping
-		if client.IsRecording() {
-			t.Error("IsRecording should return false after stopping recording")
-		}
-	})
-
-	t.Run("FileCreation", func(t *testing.T) {
-		// Test that files are actually created
-		gtzPath := filepath.Join(tmpDir, "test_file_creation.gtz")
-		gtrPath := filepath.Join(tmpDir, "test_file_creation.gtr")
-
-		// Test .gtz file creation
-		err := client.StartRecording(gtzPath)
-		if err != nil {
-			t.Fatalf("Failed to start gtz recording: %v", err)
-		}
-
-		// Give it a moment to create the file
-		time.Sleep(10 * time.Millisecond)
-
-		err = client.StopRecording()
-		if err != nil {
-			t.Errorf("Failed to stop gtz recording: %v", err)
-		}
-
-		// Check if file exists
-		if _, err := os.Stat(gtzPath); os.IsNotExist(err) {
-			t.Error("GZT file was not created")
-		}
-
-		// Test .gtr file creation
-		err = client.StartRecording(gtrPath)
-		if err != nil {
-			t.Fatalf("Failed to start gtr recording: %v", err)
-		}
-
-		// Give it a moment to create the file
-		time.Sleep(10 * time.Millisecond)
-
-		err = client.StopRecording()
-		if err != nil {
-			t.Errorf("Failed to stop gtr recording: %v", err)
-		}
-
-		// Check if file exists
-		if _, err := os.Stat(gtrPath); os.IsNotExist(err) {
-			t.Error("GTR file was not created")
-		}
-	})
+	// Check if file exists
+	_, err = os.Stat(gtrPath)
+	suite.False(os.IsNotExist(err), "GTR file was not created")
 }

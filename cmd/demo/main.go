@@ -12,7 +12,10 @@ import (
 
 func main() {
 	clientConfig := gttelemetry.Options{
-		Source:       "file://data/replays/demo.gtz",
+		// Source: "file://data/replays/demo.gtz",
+		Source: "file://data/replays/20251016.215307-circuit-de-spa-francorchamps-toyota-gr010-hybrid-21.gtz",
+		// Source:       "file://data/replays/20251016.215739-red-bull-ring-porsche-911-rsr-991-17.gtz",
+		// Source:       "file://data/replays/20251016.220121-road-atlanta-toyota-supra-rz-97.gtz",
 		Format:       gtmodels.Addendum2,
 		StatsEnabled: true,
 	}
@@ -40,6 +43,7 @@ func main() {
 	fmt.Println("Waiting for data...    Press Ctrl+C to exit")
 
 	var lapNumber int16 = -1
+
 	circuit := gtcircuits.CircuitInfo{
 		Length: 0,
 	}
@@ -48,8 +52,10 @@ func main() {
 	for !client.Finished {
 		if sequenceID == client.Telemetry.SequenceID() {
 			time.Sleep(8 * time.Millisecond)
+
 			continue
 		}
+
 		sequenceID = client.Telemetry.SequenceID()
 
 		if client.Telemetry.IsInMainMenu() {
@@ -66,12 +72,14 @@ func main() {
 		}
 
 		suggestedGear := client.Telemetry.SuggestedGear()
+
 		suggestedGearStr := fmt.Sprintf("[%d]", suggestedGear)
 		if suggestedGear == 15 {
 			suggestedGearStr = ""
 		}
 
 		hasTurbo := client.Telemetry.Flags().HasTurbo
+
 		boostStr := ""
 		if hasTurbo {
 			boostStr = fmt.Sprintf("Boost: %+1.02f Bar", client.Telemetry.TurboBoostBar())
@@ -85,9 +93,9 @@ func main() {
 			lapNumber = client.Telemetry.CurrentLap()
 		}
 
-		circuitId, found := client.CircuitDB.GetCircuitAtCoordinate(coordinate, coordType)
+		circuitID, found := client.CircuitDB.GetCircuitAtCoordinate(coordinate, coordType)
 		if found {
-			circuitInfo, found := client.CircuitDB.GetCircuitByID(circuitId)
+			circuitInfo, found := client.CircuitDB.GetCircuitByID(circuitID)
 			if found {
 				circuit = circuitInfo
 			}

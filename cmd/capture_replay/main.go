@@ -42,6 +42,7 @@ func main() {
 					time.Sleep(1 * time.Second)
 				} else {
 					log.Printf("Telemetry client finished: %s", err.Error())
+
 					return
 				}
 			}
@@ -65,16 +66,20 @@ func main() {
 		select {
 		case <-sigChan:
 			fmt.Println("\nInterrupt received, stopping recording...")
+
 			if client.IsRecording() {
-				if err := client.StopRecording(); err != nil {
+				err := client.StopRecording()
+				if err != nil {
 					log.Printf("Error stopping recording: %v", err)
 				}
 			}
+
 			return
 		default:
 			// Check if we have new telemetry data
 			if sequenceID == client.Telemetry.SequenceID() {
 				time.Sleep(4 * time.Millisecond)
+
 				continue
 			}
 
@@ -83,6 +88,7 @@ func main() {
 			// Set the initial time when first frame is received
 			if lastTimeOfDay == time.Duration(0) {
 				lastTimeOfDay = client.Telemetry.TimeOfDay()
+
 				continue
 			}
 
@@ -94,11 +100,14 @@ func main() {
 				}
 
 				fmt.Println("Replay restart detected, stopping recording...")
-				if err := client.StopRecording(); err != nil {
+
+				err := client.StopRecording()
+				if err != nil {
 					log.Printf("Error stopping recording: %v", err)
 				} else {
 					fmt.Printf("Capture complete, total frames: %d\n", framesCaptured)
 				}
+
 				return
 			}
 
@@ -114,7 +123,8 @@ func main() {
 					client.Telemetry.VehicleModel())
 
 				// Start recording using the client's built-in functionality
-				if err := client.StartRecording(outFile); err != nil {
+				err := client.StartRecording(outFile)
+				if err != nil {
 					log.Fatalf("Failed to start recording: %v", err)
 				}
 

@@ -1,9 +1,10 @@
-package circuits
+package circuits_test
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+	"github.com/zetetos/gt-telemetry/pkg/circuits"
 	"github.com/zetetos/gt-telemetry/pkg/models"
 )
 
@@ -12,6 +13,7 @@ type CircuitsTestSuite struct {
 }
 
 func TestCircuitsTestSuite(t *testing.T) {
+	t.Parallel()
 	suite.Run(t, new(CircuitsTestSuite))
 }
 
@@ -20,12 +22,12 @@ func (suite *CircuitsTestSuite) TestEmptyJSONParameterFallsBackToBaseInventory()
 	var inventoryJSON []byte
 
 	// Act
-	db, err := NewDB(inventoryJSON)
+	db, err := circuits.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	// Assert - should be able to get a circuit from the base inventory
 	got := db.GetAllCircuitIDs()
-	suite.Assert().NotEmpty(got, "Should have circuits from base inventory")
+	suite.NotEmpty(got, "Should have circuits from base inventory")
 }
 
 func (suite *CircuitsTestSuite) TestValidJSONParameterCanConstructInventory() {
@@ -44,7 +46,7 @@ func (suite *CircuitsTestSuite) TestValidJSONParameterCanConstructInventory() {
 	}`)
 
 	// Act
-	_, err := NewDB(inventoryJSON)
+	_, err := circuits.NewDB(inventoryJSON)
 
 	// Assert
 	suite.Require().NoError(err)
@@ -57,10 +59,10 @@ func (suite *CircuitsTestSuite) TestInvalidJSONParameterReturnsError() {
 	}`)
 
 	// Act
-	_, err := NewDB(inventoryJSON)
+	_, err := circuits.NewDB(inventoryJSON)
 
 	// Assert
-	suite.Assert().ErrorContains(err, "unmarshall circuit inventory JSON")
+	suite.ErrorContains(err, "unmarshall circuit inventory JSON")
 }
 
 func (suite *CircuitsTestSuite) TestGetCircuitByIDWithInvalidIDReturnsNotFound() {
@@ -71,18 +73,18 @@ func (suite *CircuitsTestSuite) TestGetCircuitByIDWithInvalidIDReturnsNotFound()
 	}`)
 
 	// Act
-	db, err := NewDB(inventoryJSON)
+	db, err := circuits.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	_, found := db.GetCircuitByID("nonexistent_circuit")
 
 	// Assert
-	suite.Assert().False(found, "Should not find non-existent circuit")
+	suite.False(found, "Should not find non-existent circuit")
 }
 
 func (suite *CircuitsTestSuite) TestGetCircuitByIDWithValidIDReturnsCircuit() {
 	// Arrange
-	want := CircuitInfo{
+	want := circuits.CircuitInfo{
 		ID:        "test_circuit",
 		Name:      "Test Circuit",
 		Length:    1500,
@@ -103,13 +105,13 @@ func (suite *CircuitsTestSuite) TestGetCircuitByIDWithValidIDReturnsCircuit() {
 	}`)
 
 	// Act
-	db, err := NewDB(inventoryJSON)
+	db, err := circuits.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	got, found := db.GetCircuitByID("test_circuit")
 
 	// Assert
-	suite.Assert().True(found, "Should find the test circuit")
+	suite.True(found, "Should find the test circuit")
 	suite.Equal(want, got)
 }
 
@@ -124,14 +126,14 @@ func (suite *CircuitsTestSuite) TestGetCircuitAtCoordinateWithValidCoordinateRet
 	}`)
 
 	// Act
-	db, err := NewDB(inventoryJSON)
+	db, err := circuits.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	// Test coordinate that should normalize to x:80,y:8,z:64
 	got, found := db.GetCircuitAtCoordinate(models.Coordinate{X: 80, Y: 8, Z: 70}, models.CoordinateTypeCircuit)
 
 	// Assert
-	suite.Assert().True(found, "Should find circuit at coordinate")
+	suite.True(found, "Should find circuit at coordinate")
 	suite.Equal(want, got)
 }
 
@@ -143,13 +145,13 @@ func (suite *CircuitsTestSuite) TestGetCircuitAtCoordinateWithInvalidCoordinateR
 	}`)
 
 	// Act
-	db, err := NewDB(inventoryJSON)
+	db, err := circuits.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	got, found := db.GetCircuitAtCoordinate(models.Coordinate{X: 100, Y: 100, Z: 100}, models.CoordinateTypeCircuit)
 
 	// Assert
-	suite.Assert().False(found, "Should not find circuit at non-existent coordinate")
+	suite.False(found, "Should not find circuit at non-existent coordinate")
 	suite.Empty(got)
 }
 
@@ -171,12 +173,13 @@ func (suite *CircuitsTestSuite) TestGetCircuitAtStartLineWithValidCoordinateRetu
 	}`)
 
 	// Act
-	db, err := NewDB(inventoryJSON)
+	db, err := circuits.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
+
 	got, found := db.GetCircuitAtCoordinate(coordinate, models.CoordinateTypeStartLine)
 
 	// Assert
-	suite.Assert().True(found, "Should find circuit at start line")
+	suite.True(found, "Should find circuit at start line")
 	suite.Equal(want, got)
 }
 
@@ -204,7 +207,7 @@ func (suite *CircuitsTestSuite) TestGetAllCircuitIDsReturnsAllIDs() {
 	}`)
 
 	// Act
-	db, err := NewDB(inventoryJSON)
+	db, err := circuits.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	got := db.GetAllCircuitIDs()
@@ -214,7 +217,7 @@ func (suite *CircuitsTestSuite) TestGetAllCircuitIDsReturnsAllIDs() {
 	suite.ElementsMatch(want, got)
 }
 
-func (suite *CircuitsTestSuite) TestNormaliseStartLineCoordinate() {
+func (suite *CircuitsTestSuite) TestNormaliseStartLineCoordinate() { //nolint:dupl // Intentional similarity
 	// Arrange
 	tests := []struct {
 		name  string
@@ -241,7 +244,7 @@ func (suite *CircuitsTestSuite) TestNormaliseStartLineCoordinate() {
 	for _, test := range tests {
 		suite.Run(test.name, func() {
 			// Act
-			got := NormaliseStartLineCoordinate(test.input)
+			got := circuits.NormaliseStartLineCoordinate(test.input)
 
 			// Assert
 			suite.Equal(test.want, got)
@@ -249,7 +252,7 @@ func (suite *CircuitsTestSuite) TestNormaliseStartLineCoordinate() {
 	}
 }
 
-func (suite *CircuitsTestSuite) TestNormaliseCircuitCoordinate() {
+func (suite *CircuitsTestSuite) TestNormaliseCircuitCoordinate() { //nolint:dupl // Intentional similarity
 	// Arrange
 	tests := []struct {
 		name  string
@@ -276,7 +279,7 @@ func (suite *CircuitsTestSuite) TestNormaliseCircuitCoordinate() {
 	for _, test := range tests {
 		suite.Run(test.name, func() {
 			// Act
-			got := NormaliseCircuitCoordinate(test.input)
+			got := circuits.NormaliseCircuitCoordinate(test.input)
 
 			// Assert
 			suite.Equal(test.want, got)

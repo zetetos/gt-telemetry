@@ -3,8 +3,10 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"encoding/csv"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -21,28 +23,23 @@ import (
 	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
 
-// vehicleFields defines the canonical field order for vehicle data
-var vehicleFields = []string{
-	"CarID",
-	"Manufacturer",
-	"Model",
-	"Year",
-	"OpenCockpit",
-	"CarType",
-	"Category",
-	"Drivetrain",
-	"Aspiration",
-	"Length",
-	"Width",
-	"Height",
-	"Wheelbase",
-	"TrackFront",
-	"TrackRear",
-	"EngineLayout",
-	"EngineBankAngle",
-	"EngineCrankPlaneAngle",
-}
+var (
+	ErrUnsupportedFormat          = errors.New("unsupported format")
+	ErrInvalidCSVHeader           = errors.New("invalid CSV header: column count mismatch")
+	ErrInvalidCSVRecord           = errors.New("invalid CSV record: column count mismatch")
+	ErrCarIDRequired              = errors.New("CarID is required")
+	ErrCarIDAlreadyExists         = errors.New("a vehicle with this CarID already exists")
+	ErrVehicleNotFound            = errors.New("vehicle not found in inventory")
+	ErrMainJSBundleNotFound       = errors.New("could not find main JS bundle in HTML")
+	ErrCarsJSNotFound             = errors.New("could not find cars JS file in main bundle")
+	ErrTunersJSNotFound           = errors.New("could not find tuners JS file in main bundle")
+	ErrVariableNameNotFound       = errors.New("could not find variable name in JavaScript")
+	ErrTunersVariableNameNotFound = errors.New("could not find variable name in tuners JavaScript")
+	ErrCarsObjectNotFound         = errors.New("cars object not found in JavaScript")
+	ErrTunersObjectNotFound       = errors.New("tuners object not found in JavaScript")
+)
 
+//nolint:dupword
 const usage = `inventory - Import and export vehicle inventory data between JSON and CSV formats
 
 Usage:
@@ -92,6 +89,8 @@ Examples:
   inventory fetch pkg/vehicles/vehicles.json us
 `
 
+const pdNullValue = "---"
+
 func main() {
 	var (
 		help    = flag.Bool("help", false, "Show help message")
@@ -129,6 +128,7 @@ func main() {
 
 		// Determine format from file extension or special cases
 		var outputFormat string
+
 		if inputFile == "/dev/stdin" || inputFile == "-" {
 			fmt.Fprintf(os.Stderr, "Error: Cannot determine format from stdin. Please use a file with .json or .csv extension\n")
 			os.Exit(1)
@@ -145,7 +145,8 @@ func main() {
 			os.Exit(1)
 		}
 
-		if err := convertFile(inputFile, outputFormat); err != nil {
+		err := convertFile(inputFile, outputFormat)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
@@ -158,7 +159,9 @@ func main() {
 		}
 
 		inventoryFile := args[1]
-		if err := addVehicleInteractive(inventoryFile); err != nil {
+
+		err := addVehicleInteractive(inventoryFile)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error adding vehicle: %v\n", err)
 			os.Exit(1)
 		}
@@ -172,13 +175,15 @@ func main() {
 
 		inventoryFile := args[1]
 		carIDStr := args[2]
+
 		carID, err := strconv.Atoi(carIDStr)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: Invalid car ID '%s': %v\n", carIDStr, err)
 			os.Exit(1)
 		}
 
-		if err := editVehicleInteractively(inventoryFile, carID); err != nil {
+		err = editVehicleInteractively(inventoryFile, carID)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error editing vehicle: %v\n", err)
 			os.Exit(1)
 		}
@@ -192,13 +197,15 @@ func main() {
 
 		inventoryFile := args[1]
 		carIDStr := args[2]
+
 		carID, err := strconv.Atoi(carIDStr)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: Invalid car ID '%s': %v\n", carIDStr, err)
 			os.Exit(1)
 		}
 
-		if err := deleteVehicle(inventoryFile, carID); err != nil {
+		err = deleteVehicle(inventoryFile, carID)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error deleting vehicle: %v\n", err)
 			os.Exit(1)
 		}
@@ -211,12 +218,14 @@ func main() {
 		}
 
 		inventoryFile := args[1]
+
 		locale := "gb" // default locale
 		if len(args) > 2 {
 			locale = args[2]
 		}
 
-		if err := fetchAndMergeGTData(inventoryFile, locale, *noColor, *dryRun); err != nil {
+		err := fetchAndMergeGTData(inventoryFile, locale, *noColor, *dryRun)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error fetching GT data: %v\n", err)
 			os.Exit(1)
 		}
@@ -235,7 +244,7 @@ func convertFile(inputFile, format string) error {
 	case "json":
 		return csvToJSON(inputFile)
 	default:
-		return fmt.Errorf("unsupported format: %s", format)
+		return fmt.Errorf("%w: %s", ErrUnsupportedFormat, format)
 	}
 }
 
@@ -248,7 +257,9 @@ func jsonToCSV(inputFile string) error {
 
 	// Parse JSON into vehicle map
 	var vehicleMap map[string]vehicles.Vehicle
-	if err := json.Unmarshal(jsonData, &vehicleMap); err != nil {
+
+	err = json.Unmarshal(jsonData, &vehicleMap)
+	if err != nil {
 		return fmt.Errorf("parsing JSON: %w", err)
 	}
 
@@ -257,17 +268,20 @@ func jsonToCSV(inputFile string) error {
 	defer writer.Flush()
 
 	// Write CSV header
-	if err := writer.Write(vehicleFields); err != nil {
+	err = writer.Write(orderedVehicleFields())
+	if err != nil {
 		return fmt.Errorf("writing CSV header: %w", err)
 	}
 
 	// Write vehicle data
 	for _, vehicle := range vehicleMap {
-		record := make([]string, len(vehicleFields))
-		for i, fieldName := range vehicleFields {
+		record := make([]string, len(orderedVehicleFields()))
+		for i, fieldName := range orderedVehicleFields() {
 			record[i] = getVehicleFieldValueAsString(vehicle, fieldName)
 		}
-		if err := writer.Write(record); err != nil {
+
+		err = writer.Write(record)
+		if err != nil {
 			return fmt.Errorf("writing CSV record: %w", err)
 		}
 	}
@@ -292,8 +306,8 @@ func csvToJSON(inputFile string) error {
 	}
 
 	// Validate header format
-	if len(header) != len(vehicleFields) {
-		return fmt.Errorf("invalid CSV header: expected %d columns, got %d", len(vehicleFields), len(header))
+	if len(header) != len(orderedVehicleFields()) {
+		return fmt.Errorf("%w: expected %d columns, got %d", ErrInvalidCSVHeader, len(orderedVehicleFields()), len(header))
 	}
 
 	// Create map to store vehicles
@@ -302,15 +316,17 @@ func csvToJSON(inputFile string) error {
 	// Read CSV records
 	for {
 		record, err := csvReader.Read()
-		if err == io.EOF {
+
+		if errors.Is(err, io.EOF) {
 			break
 		}
+
 		if err != nil {
 			return fmt.Errorf("reading CSV record: %w", err)
 		}
 
 		if len(record) != len(header) {
-			return fmt.Errorf("invalid CSV record: expected %d columns, got %d", len(header), len(record))
+			return fmt.Errorf("%w: expected %d columns, got %d", ErrInvalidCSVRecord, len(header), len(record))
 		}
 
 		// Parse CarID
@@ -392,21 +408,25 @@ func csvToJSON(inputFile string) error {
 
 		// Parse EngineBankAngle
 		var EngineBankAngle float32
+
 		if record[16] != "" && record[16] != "-" {
 			angle, err := strconv.ParseFloat(record[16], 32)
 			if err != nil {
 				return fmt.Errorf("parsing EngineBankAngle '%s': %w", record[16], err)
 			}
+
 			EngineBankAngle = float32(angle)
 		}
 
 		// Parse EngineCrankPlaneAngle
 		var engineCrankPlaneAngle float32
+
 		if record[17] != "" && record[17] != "-" {
 			angle, err := strconv.ParseFloat(record[17], 32)
 			if err != nil {
 				return fmt.Errorf("parsing EngineCrankPlaneAngle '%s': %w", record[17], err)
 			}
+
 			engineCrankPlaneAngle = float32(angle)
 		}
 
@@ -436,23 +456,27 @@ func csvToJSON(inputFile string) error {
 	}
 
 	// Write JSON to stdout
-	if err := writeOrderedJSON(os.Stdout, vehicleMap); err != nil {
+	err = writeOrderedJSON(os.Stdout, vehicleMap)
+	if err != nil {
 		return fmt.Errorf("encoding JSON: %w", err)
 	}
 
 	return nil
 }
 
-// writeOrderedJSON writes a vehicle map to JSON with numerically ordered keys
-func writeOrderedJSON(w io.Writer, vehicleMap map[string]vehicles.Vehicle) error {
-	var carIDs []int
+// writeOrderedJSON writes a vehicle map to JSON with numerically ordered keys.
+func writeOrderedJSON(writer io.Writer, vehicleMap map[string]vehicles.Vehicle) error {
+	carIDs := make([]int, 0, len(vehicleMap))
+
 	for carIDStr := range vehicleMap {
 		carID, err := strconv.Atoi(carIDStr)
 		if err != nil {
 			continue
 		}
+
 		carIDs = append(carIDs, carID)
 	}
+
 	sort.Ints(carIDs)
 
 	var buf bytes.Buffer
@@ -475,61 +499,63 @@ func writeOrderedJSON(w io.Writer, vehicleMap map[string]vehicles.Vehicle) error
 
 	buf.WriteString("\n}\n")
 
-	_, err := w.Write(buf.Bytes())
+	_, err := writer.Write(buf.Bytes())
+
 	return err
 }
 
-// writeVehicleFieldsOrdered writes vehicle fields in consistent order
+// writeVehicleFieldsOrdered writes vehicle fields in consistent order.
 func writeVehicleFieldsOrdered(buf *bytes.Buffer, vehicle vehicles.Vehicle) {
-	for i, fieldName := range vehicleFields {
+	for i, fieldName := range orderedVehicleFields() {
 		if i > 0 {
 			buf.WriteString(",\n")
 		}
 
 		buf.WriteString("    ")
+
 		value := getVehicleFieldValue(vehicle, fieldName)
 
-		switch v := value.(type) {
+		switch valueType := value.(type) {
 		case int:
-			fmt.Fprintf(buf, "\"%s\": %d", fieldName, v)
+			fmt.Fprintf(buf, "\"%s\": %d", fieldName, valueType)
 		case string:
-			escapedValue := escapeQuotes(v)
+			escapedValue := escapeQuotes(valueType)
 			fmt.Fprintf(buf, "\"%s\": \"%s\"", fieldName, escapedValue)
 		case bool:
-			fmt.Fprintf(buf, "\"%s\": %t", fieldName, v)
+			fmt.Fprintf(buf, "\"%s\": %t", fieldName, valueType)
 		case float32:
-			fmt.Fprintf(buf, "\"%s\": %g", fieldName, v)
+			fmt.Fprintf(buf, "\"%s\": %g", fieldName, valueType)
 		default:
-			escapedValue := escapeQuotes(fmt.Sprintf("%v", v))
+			escapedValue := escapeQuotes(fmt.Sprintf("%v", valueType))
 			fmt.Fprintf(buf, "\"%s\": \"%s\"", fieldName, escapedValue)
 		}
 	}
 }
 
-// escapeQuotes escapes only double quotes in a string, leaving all other characters as-is
+// escapeQuotes escapes only double quotes in a string, leaving all other characters as-is.
 func escapeQuotes(s string) string {
 	return strings.ReplaceAll(s, "\"", "\\\"")
 }
 
-// getVehicleFieldValueAsString returns the string representation of a vehicle field for CSV output
+// getVehicleFieldValueAsString returns the string representation of a vehicle field for CSV output.
 func getVehicleFieldValueAsString(vehicle vehicles.Vehicle, fieldName string) string {
 	value := getVehicleFieldValue(vehicle, fieldName)
 
-	switch v := value.(type) {
+	switch valueType := value.(type) {
 	case int:
-		return strconv.Itoa(v)
+		return strconv.Itoa(valueType)
 	case string:
-		return v
+		return valueType
 	case bool:
-		return strconv.FormatBool(v)
+		return strconv.FormatBool(valueType)
 	case float32:
-		return strconv.FormatFloat(float64(v), 'f', -1, 32)
+		return strconv.FormatFloat(float64(valueType), 'f', -1, 32)
 	default:
-		return fmt.Sprintf("%v", v)
+		return fmt.Sprintf("%v", valueType)
 	}
 }
 
-// getVehicleFieldValue returns the value of a vehicle field by name
+// getVehicleFieldValue returns the value of a vehicle field by name.
 func getVehicleFieldValue(vehicle vehicles.Vehicle, fieldName string) any {
 	switch fieldName {
 	case "CarID":
@@ -590,19 +616,23 @@ func promptVehicleData(scanner *bufio.Scanner, existingVehicle *vehicles.Vehicle
 		// Add mode - CarID is required
 		fmt.Print("CarID (unique integer): ")
 		scanner.Scan()
+
 		carIDStr := strings.TrimSpace(scanner.Text())
 		if carIDStr == "" {
-			return vehicle, fmt.Errorf("CarID is required")
+			return vehicle, ErrCarIDRequired
 		}
+
 		carID, err := strconv.Atoi(carIDStr)
 		if err != nil {
 			return vehicle, fmt.Errorf("invalid CarID '%s': %w", carIDStr, err)
 		}
+
 		vehicle.CarID = carID
 	} else {
 		// Edit mode - show current CarID with option to change
 		fmt.Printf("CarID [%d]: ", existingVehicle.CarID)
 		scanner.Scan()
+
 		if input := strings.TrimSpace(scanner.Text()); input != "" {
 			newCarID, err := strconv.Atoi(input)
 			if err != nil {
@@ -613,9 +643,10 @@ func promptVehicleData(scanner *bufio.Scanner, existingVehicle *vehicles.Vehicle
 			if newCarID != originalCarID {
 				newCarIDKey := strconv.Itoa(newCarID)
 				if _, exists := vehicleMap[newCarIDKey]; exists {
-					return vehicle, fmt.Errorf("a vehicle with CarID %d already exists", newCarID)
+					return vehicle, fmt.Errorf("%w: %d", ErrCarIDAlreadyExists, newCarID)
 				}
 			}
+
 			vehicle.CarID = newCarID
 		}
 	}
@@ -666,7 +697,8 @@ func promptVehicleData(scanner *bufio.Scanner, existingVehicle *vehicles.Vehicle
 					value = input
 				}
 
-				if _, err := strconv.Atoi(value); err == nil {
+				_, err := strconv.Atoi(value)
+				if err == nil {
 					return value
 				}
 
@@ -682,7 +714,8 @@ func promptVehicleData(scanner *bufio.Scanner, existingVehicle *vehicles.Vehicle
 					value = input
 				}
 
-				if _, err := strconv.ParseUint(value, 10, 32); err == nil {
+				_, err := strconv.ParseUint(value, 10, 32)
+				if err == nil {
 					return value
 				}
 
@@ -698,7 +731,8 @@ func promptVehicleData(scanner *bufio.Scanner, existingVehicle *vehicles.Vehicle
 					value = input
 				}
 
-				if _, err := strconv.ParseFloat(value, 32); err == nil {
+				_, err := strconv.ParseFloat(value, 32)
+				if err == nil {
 					return value
 				}
 
@@ -762,16 +796,22 @@ func promptVehicleData(scanner *bufio.Scanner, existingVehicle *vehicles.Vehicle
 
 	vehicle.EngineLayout = prompt("Engine layout (e.g., V8, V6, I4, H4, or empty):", vehicle.EngineLayout, "string")
 
-	EngineBankAngle, err := strconv.ParseFloat(prompt("Engine cylinder bank angle (decimal degrees):", strconv.FormatFloat(float64(vehicle.EngineBankAngle), 'f', -1, 32), "float32"), 32)
-	if err != nil {
-		return vehicle, fmt.Errorf("invalid angle: %w", err)
-	}
-	vehicle.EngineBankAngle = float32(EngineBankAngle)
+	engineBankAngleString := prompt("Engine cylinder bank angle (decimal degrees):", strconv.FormatFloat(float64(vehicle.EngineBankAngle), 'f', -1, 32), "float32")
 
-	engineCrankPlaneAngle, err := strconv.ParseFloat(prompt("Engine crank plane angle (decimal degrees):", strconv.FormatFloat(float64(vehicle.EngineCrankPlaneAngle), 'f', -1, 32), "float32"), 32)
+	engineBankAngle, err := strconv.ParseFloat(engineBankAngleString, 32)
 	if err != nil {
-		return vehicle, fmt.Errorf("invalid angle: %w", err)
+		return vehicle, fmt.Errorf("invalid engine banke angle: %w", err)
 	}
+
+	vehicle.EngineBankAngle = float32(engineBankAngle)
+
+	engineCrankPlaneAngleString := prompt("Engine crank plane angle (decimal degrees):", strconv.FormatFloat(float64(vehicle.EngineCrankPlaneAngle), 'f', -1, 32), "float32")
+
+	engineCrankPlaneAngle, err := strconv.ParseFloat(engineCrankPlaneAngleString, 32)
+	if err != nil {
+		return vehicle, fmt.Errorf("invalid crank angle angle: %w", err)
+	}
+
 	vehicle.EngineCrankPlaneAngle = float32(engineCrankPlaneAngle)
 
 	return vehicle, nil
@@ -806,23 +846,27 @@ func addVehicleInteractive(inventoryFile string) error {
 
 	fmt.Print("\nSave this vehicle to inventory? (y/N): ")
 	scanner.Scan()
+
 	confirm := strings.ToLower(strings.TrimSpace(scanner.Text()))
-	if confirm != "y" && confirm != "yes" {
+	if confirmNegative(confirm) {
 		fmt.Println("Vehicle not saved.")
+
 		return nil
 	}
 
 	// Load existing inventory
 	var vehicleMap map[string]vehicles.Vehicle
 
-	if _, err := os.Stat(inventoryFile); err == nil {
+	_, err = os.Stat(inventoryFile)
+	if err == nil {
 		// Load an existing file when it exists
 		jsonData, err := os.ReadFile(inventoryFile)
 		if err != nil {
 			return fmt.Errorf("reading inventory file: %w", err)
 		}
 
-		if err := json.Unmarshal(jsonData, &vehicleMap); err != nil {
+		err = json.Unmarshal(jsonData, &vehicleMap)
+		if err != nil {
 			return fmt.Errorf("parsing inventory JSON: %w", err)
 		}
 	} else {
@@ -835,9 +879,11 @@ func addVehicleInteractive(inventoryFile string) error {
 	if _, exists := vehicleMap[carIDKey]; exists {
 		fmt.Print("Warning: A vehicle with this CarID already exists. Overwrite? (y/N): ")
 		scanner.Scan()
+
 		confirm := strings.ToLower(strings.TrimSpace(scanner.Text()))
-		if confirm != "y" && confirm != "yes" {
+		if confirmNegative(confirm) {
 			fmt.Println("Vehicle not saved.")
+
 			return nil
 		}
 	}
@@ -848,7 +894,8 @@ func addVehicleInteractive(inventoryFile string) error {
 	// Create directory if it doesn't exist
 	dir := strings.TrimSuffix(inventoryFile, "/inventory.json")
 	if dir != inventoryFile {
-		if err := os.MkdirAll(dir, 0755); err != nil {
+		err := os.MkdirAll(dir, 0755)
+		if err != nil {
 			return fmt.Errorf("creating directory: %w", err)
 		}
 	}
@@ -860,17 +907,20 @@ func addVehicleInteractive(inventoryFile string) error {
 	}
 	defer outputF.Close()
 
-	if err := writeOrderedJSON(outputF, vehicleMap); err != nil {
+	err = writeOrderedJSON(outputF, vehicleMap)
+	if err != nil {
 		return fmt.Errorf("encoding inventory JSON: %w", err)
 	}
 
 	fmt.Printf("Vehicle successfully added to %s\n", inventoryFile)
+
 	return nil
 }
 
 func editVehicleInteractively(inventoryFile string, carID int) error {
 	// Load existing inventory
-	if _, err := os.Stat(inventoryFile); err != nil {
+	_, err := os.Stat(inventoryFile)
+	if err != nil {
 		return fmt.Errorf("inventory file does not exist: %w", err)
 	}
 
@@ -880,15 +930,18 @@ func editVehicleInteractively(inventoryFile string, carID int) error {
 	}
 
 	var vehicleMap map[string]vehicles.Vehicle
-	if err := json.Unmarshal(jsonData, &vehicleMap); err != nil {
+
+	err = json.Unmarshal(jsonData, &vehicleMap)
+	if err != nil {
 		return fmt.Errorf("parsing inventory JSON: %w", err)
 	}
 
 	// Check if vehicle exists
 	carIDKey := strconv.Itoa(carID)
+
 	existingVehicle, exists := vehicleMap[carIDKey]
 	if !exists {
-		return fmt.Errorf("vehicle with CarID %d not found in inventory", carID)
+		return fmt.Errorf("%w: CarID %d", ErrVehicleNotFound, carID)
 	}
 
 	scanner := bufio.NewScanner(os.Stdin)
@@ -926,9 +979,11 @@ func editVehicleInteractively(inventoryFile string, carID int) error {
 
 	fmt.Print("\nSave changes to inventory? (y/N): ")
 	scanner.Scan()
+
 	confirm := strings.ToLower(strings.TrimSpace(scanner.Text()))
-	if confirm != "y" && confirm != "yes" {
+	if confirmNegative(confirm) {
 		fmt.Println("Changes not saved.")
+
 		return nil
 	}
 
@@ -948,17 +1003,20 @@ func editVehicleInteractively(inventoryFile string, carID int) error {
 	}
 	defer outputF.Close()
 
-	if err := writeOrderedJSON(outputF, vehicleMap); err != nil {
+	err = writeOrderedJSON(outputF, vehicleMap)
+	if err != nil {
 		return fmt.Errorf("encoding inventory JSON: %w", err)
 	}
 
 	fmt.Printf("Vehicle successfully updated in %s\n", inventoryFile)
+
 	return nil
 }
 
 func deleteVehicle(inventoryFile string, carID int) error {
 	// Load existing inventory
-	if _, err := os.Stat(inventoryFile); err != nil {
+	_, err := os.Stat(inventoryFile)
+	if err != nil {
 		return fmt.Errorf("inventory file does not exist: %w", err)
 	}
 
@@ -968,15 +1026,18 @@ func deleteVehicle(inventoryFile string, carID int) error {
 	}
 
 	var vehicleMap map[string]vehicles.Vehicle
-	if err := json.Unmarshal(jsonData, &vehicleMap); err != nil {
+
+	err = json.Unmarshal(jsonData, &vehicleMap)
+	if err != nil {
 		return fmt.Errorf("parsing inventory JSON: %w", err)
 	}
 
 	// Check if vehicle exists
 	carIDKey := strconv.Itoa(carID)
+
 	vehicle, exists := vehicleMap[carIDKey]
 	if !exists {
-		return fmt.Errorf("vehicle with CarID %d not found in inventory", carID)
+		return fmt.Errorf("%w: CarID %d", ErrVehicleNotFound, carID)
 	}
 
 	// Display vehicle to be deleted
@@ -987,11 +1048,14 @@ func deleteVehicle(inventoryFile string, carID int) error {
 	fmt.Printf("  Year: %d\n", vehicle.Year)
 
 	scanner := bufio.NewScanner(os.Stdin)
+
 	fmt.Print("\nAre you sure you want to delete this vehicle? (y/N): ")
 	scanner.Scan()
+
 	confirm := strings.ToLower(strings.TrimSpace(scanner.Text()))
-	if confirm != "y" && confirm != "yes" {
+	if confirmNegative(confirm) {
 		fmt.Println("Vehicle not deleted.")
+
 		return nil
 	}
 
@@ -1005,29 +1069,31 @@ func deleteVehicle(inventoryFile string, carID int) error {
 	}
 	defer outputF.Close()
 
-	if err := writeOrderedJSON(outputF, vehicleMap); err != nil {
+	err = writeOrderedJSON(outputF, vehicleMap)
+	if err != nil {
 		return fmt.Errorf("encoding inventory JSON: %w", err)
 	}
 
 	fmt.Printf("Vehicle with CarID %d successfully deleted from %s\n", carID, inventoryFile)
+
 	return nil
 }
 
-// PDVehicle represents the structure of a vehicle entry in the PD inventory JSON
+// PDVehicle represents the structure of a vehicle entry in the PD inventory JSON.
 type PDVehicle struct {
-	ID              string `json:"id"`
-	NameShort       string `json:"nameShort"`
-	Manufacturer    string `json:"manufacturer"`
-	Year            int    `json:"year"`
-	DriveTrain      string `json:"driveTrain"`
-	AspirationShort string `json:"aspirationShort"`
-	CarClass        string `json:"carClass"`
-	LengthV         int    `json:"length_v"`
-	WidthV          int    `json:"width_v"`
-	HeightV         int    `json:"height_v"`
+	ID              string `json:"id"`              //nolint:tagliatelle // third party JSON schema
+	NameShort       string `json:"nameShort"`       //nolint:tagliatelle // third party JSON schema
+	Manufacturer    string `json:"manufacturer"`    //nolint:tagliatelle // third party JSON schema
+	Year            int    `json:"year"`            //nolint:tagliatelle // third party JSON schema
+	DriveTrain      string `json:"driveTrain"`      //nolint:tagliatelle // third party JSON schema
+	AspirationShort string `json:"aspirationShort"` //nolint:tagliatelle // third party JSON schema
+	CarClass        string `json:"carClass"`        //nolint:tagliatelle // third party JSON schema
+	LengthV         int    `json:"length_v"`        //nolint:tagliatelle // third party JSON schema
+	WidthV          int    `json:"width_v"`         //nolint:tagliatelle // third party JSON schema
+	HeightV         int    `json:"height_v"`        //nolint:tagliatelle // third party JSON schema
 }
 
-// ANSI color codes
+// ANSI color codes.
 const (
 	colorReset  = "\033[0m"
 	colorRed    = "\033[31m"
@@ -1044,7 +1110,9 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 	}
 
 	var gtVehicleMap map[string]vehicles.Vehicle
-	if err := json.Unmarshal(gtData, &gtVehicleMap); err != nil {
+
+	err = json.Unmarshal(gtData, &gtVehicleMap)
+	if err != nil {
 		return fmt.Errorf("parsing GT inventory JSON: %w", err)
 	}
 
@@ -1055,7 +1123,9 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 	}
 
 	var pdVehicleMap map[string]PDVehicle
-	if err := json.Unmarshal(pdData, &pdVehicleMap); err != nil {
+
+	err = json.Unmarshal(pdData, &pdVehicleMap)
+	if err != nil {
 		return fmt.Errorf("parsing PD inventory JSON: %w", err)
 	}
 
@@ -1064,24 +1134,28 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 		if noColor {
 			return s
 		}
+
 		return colorRed + s + colorReset
 	}
 	green := func(s string) string {
 		if noColor {
 			return s
 		}
+
 		return colorGreen + s + colorReset
 	}
 	yellow := func(s string) string {
 		if noColor {
 			return s
 		}
+
 		return colorYellow + s + colorReset
 	}
 	cyan := func(s string) string {
 		if noColor {
 			return s
 		}
+
 		return colorCyan + s + colorReset
 	}
 
@@ -1095,34 +1169,38 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 		changes []string
 		isNew   bool
 	}
+
 	var allChanges []changeRecord
 
 	// First, update existing vehicles
 	for carIDStr, gtVehicle := range gtVehicleMap {
 		if pdVehicle, exists := pdVehicleMap[carIDStr]; exists {
 			updated := false
+
 			var changes []string
 
 			// Overwrite Manufacturer from manufacturer
-			if pdVehicle.Manufacturer != "" && pdVehicle.Manufacturer != "---" && gtVehicle.Manufacturer != pdVehicle.Manufacturer {
+			if pdVehicle.Manufacturer != "" && pdVehicle.Manufacturer != pdNullValue && gtVehicle.Manufacturer != pdVehicle.Manufacturer {
 				if gtVehicle.Manufacturer != "" {
 					changes = append(changes, fmt.Sprintf("  %s Manufacturer: %s", red("-"), red("'"+gtVehicle.Manufacturer+"'")))
 					changes = append(changes, fmt.Sprintf("  %s Manufacturer: %s", green("+"), green("'"+pdVehicle.Manufacturer+"'")))
 				} else {
 					changes = append(changes, fmt.Sprintf("  %s Manufacturer: %s", green("+"), green("'"+pdVehicle.Manufacturer+"'")))
 				}
+
 				gtVehicle.Manufacturer = pdVehicle.Manufacturer
 				updated = true
 			}
 
 			// Overwrite Model from nameShort
-			if pdVehicle.NameShort != "" && pdVehicle.NameShort != "---" && gtVehicle.Model != pdVehicle.NameShort {
+			if pdVehicle.NameShort != "" && pdVehicle.NameShort != pdNullValue && gtVehicle.Model != pdVehicle.NameShort {
 				if gtVehicle.Model != "" {
 					changes = append(changes, fmt.Sprintf("  %s Model: %s", yellow("|"), cyan("'"+gtVehicle.Model+"'")))
 					changes = append(changes, fmt.Sprintf("  %s Model: %s", green("+"), green("'"+pdVehicle.NameShort+"'")))
 				} else {
 					changes = append(changes, fmt.Sprintf("  %s Model: %s", green("+"), green("'"+pdVehicle.NameShort+"'")))
 				}
+
 				gtVehicle.Model = pdVehicle.NameShort
 				updated = true
 			}
@@ -1130,66 +1208,70 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 			// Overwrite Year if it's 0 or different
 			if pdVehicle.Year > 0 && gtVehicle.Year != pdVehicle.Year {
 				if gtVehicle.Year > 0 {
-					changes = append(changes, fmt.Sprintf("  %s Year: %s", red("-"), red(fmt.Sprintf("%d", gtVehicle.Year))))
-					changes = append(changes, fmt.Sprintf("  %s Year: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.Year))))
+					changes = append(changes, fmt.Sprintf("  %s Year: %s", red("-"), red(strconv.Itoa(gtVehicle.Year))))
+					changes = append(changes, fmt.Sprintf("  %s Year: %s", green("+"), green(strconv.Itoa(pdVehicle.Year))))
 				} else {
-					changes = append(changes, fmt.Sprintf("  %s Year: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.Year))))
+					changes = append(changes, fmt.Sprintf("  %s Year: %s", green("+"), green(strconv.Itoa(pdVehicle.Year))))
 				}
+
 				gtVehicle.Year = pdVehicle.Year
 				updated = true
 			}
 
 			// Overwrite Drivetrain from driveTrain
-			if pdVehicle.DriveTrain != "" && pdVehicle.DriveTrain != "---" && gtVehicle.Drivetrain != pdVehicle.DriveTrain {
+			if pdVehicle.DriveTrain != "" && pdVehicle.DriveTrain != pdNullValue && gtVehicle.Drivetrain != pdVehicle.DriveTrain {
 				if gtVehicle.Drivetrain != "" && gtVehicle.Drivetrain != "-" {
 					changes = append(changes, fmt.Sprintf("  %s Drivetrain: %s", red("-"), red("'"+gtVehicle.Drivetrain+"'")))
 					changes = append(changes, fmt.Sprintf("  %s Drivetrain: %s", green("+"), green("'"+pdVehicle.DriveTrain+"'")))
 				} else {
 					changes = append(changes, fmt.Sprintf("  %s Drivetrain: %s", green("+"), green("'"+pdVehicle.DriveTrain+"'")))
 				}
+
 				gtVehicle.Drivetrain = pdVehicle.DriveTrain
 				updated = true
 			}
 
 			// Overwrite Aspiration from aspirationShort
-			if pdVehicle.AspirationShort != "" && pdVehicle.AspirationShort != "---" && gtVehicle.Aspiration != pdVehicle.AspirationShort {
+			if pdVehicle.AspirationShort != "" && pdVehicle.AspirationShort != pdNullValue && gtVehicle.Aspiration != pdVehicle.AspirationShort {
 				if gtVehicle.Aspiration != "" && gtVehicle.Aspiration != "-" {
 					changes = append(changes, fmt.Sprintf("  %s Aspiration: %s", red("-"), red("'"+gtVehicle.Aspiration+"'")))
 					changes = append(changes, fmt.Sprintf("  %s Aspiration: %s", green("+"), green("'"+pdVehicle.AspirationShort+"'")))
 				} else {
 					changes = append(changes, fmt.Sprintf("  %s Aspiration: %s", green("+"), green("'"+pdVehicle.AspirationShort+"'")))
 				}
+
 				gtVehicle.Aspiration = pdVehicle.AspirationShort
 				updated = true
 			}
 
 			// Overwrite Category from carClass
-			if pdVehicle.CarClass != "" && pdVehicle.CarClass != "---" && gtVehicle.Category != pdVehicle.CarClass {
+			if pdVehicle.CarClass != "" && pdVehicle.CarClass != pdNullValue && gtVehicle.Category != pdVehicle.CarClass {
 				if gtVehicle.Category != "" {
 					changes = append(changes, fmt.Sprintf("  %s Category: %s", red("-"), red("'"+gtVehicle.Category+"'")))
 					changes = append(changes, fmt.Sprintf("  %s Category: %s", green("+"), green("'"+pdVehicle.CarClass+"'")))
 				} else {
 					changes = append(changes, fmt.Sprintf("  %s Category: %s", green("+"), green("'"+pdVehicle.CarClass+"'")))
 				}
+
 				gtVehicle.Category = pdVehicle.CarClass
 				updated = true
 			}
 
 			// Only update dimensions if GT inventory has 0 values
 			if gtVehicle.Length == 0 && pdVehicle.LengthV > 0 {
-				changes = append(changes, fmt.Sprintf("  %s Length: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.LengthV))))
+				changes = append(changes, fmt.Sprintf("  %s Length: %s", green("+"), green(strconv.Itoa(pdVehicle.LengthV))))
 				gtVehicle.Length = pdVehicle.LengthV
 				updated = true
 			}
 
 			if gtVehicle.Width == 0 && pdVehicle.WidthV > 0 {
-				changes = append(changes, fmt.Sprintf("  %s Width: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.WidthV))))
+				changes = append(changes, fmt.Sprintf("  %s Width: %s", green("+"), green(strconv.Itoa(pdVehicle.WidthV))))
 				gtVehicle.Width = pdVehicle.WidthV
 				updated = true
 			}
 
 			if gtVehicle.Height == 0 && pdVehicle.HeightV > 0 {
-				changes = append(changes, fmt.Sprintf("  %s Height: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.HeightV))))
+				changes = append(changes, fmt.Sprintf("  %s Height: %s", green("+"), green(strconv.Itoa(pdVehicle.HeightV))))
 				gtVehicle.Height = pdVehicle.HeightV
 				updated = true
 			}
@@ -1197,6 +1279,7 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 			if updated {
 				gtVehicleMap[carIDStr] = gtVehicle
 				mergedCount++
+
 				if len(changes) > 0 {
 					carID, _ := strconv.Atoi(carIDStr)
 					allChanges = append(allChanges, changeRecord{
@@ -1216,6 +1299,7 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 			carID, err := strconv.Atoi(carIDStr)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Warning: skipping invalid CarID '%s': %v\n", carIDStr, err)
+
 				continue
 			}
 
@@ -1237,32 +1321,40 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 			addedCount++
 
 			var changes []string
-			if pdVehicle.Manufacturer != "" && pdVehicle.Manufacturer != "---" {
+			if pdVehicle.Manufacturer != "" && pdVehicle.Manufacturer != pdNullValue {
 				changes = append(changes, fmt.Sprintf("  %s Manufacturer: %s", green("+"), green("'"+pdVehicle.Manufacturer+"'")))
 			}
-			if pdVehicle.NameShort != "" && pdVehicle.NameShort != "---" {
+
+			if pdVehicle.NameShort != "" && pdVehicle.NameShort != pdNullValue {
 				changes = append(changes, fmt.Sprintf("  %s Model: %s", green("+"), green("'"+pdVehicle.NameShort+"'")))
 			}
+
 			if pdVehicle.Year > 0 {
-				changes = append(changes, fmt.Sprintf("  %s Year: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.Year))))
+				changes = append(changes, fmt.Sprintf("  %s Year: %s", green("+"), green(strconv.Itoa(pdVehicle.Year))))
 			}
-			if pdVehicle.CarClass != "" && pdVehicle.CarClass != "---" {
+
+			if pdVehicle.CarClass != "" && pdVehicle.CarClass != pdNullValue {
 				changes = append(changes, fmt.Sprintf("  %s Category: %s", green("+"), green("'"+pdVehicle.CarClass+"'")))
 			}
-			if pdVehicle.DriveTrain != "" && pdVehicle.DriveTrain != "---" {
+
+			if pdVehicle.DriveTrain != "" && pdVehicle.DriveTrain != pdNullValue {
 				changes = append(changes, fmt.Sprintf("  %s Drivetrain: %s", green("+"), green("'"+pdVehicle.DriveTrain+"'")))
 			}
-			if pdVehicle.AspirationShort != "" && pdVehicle.AspirationShort != "---" {
+
+			if pdVehicle.AspirationShort != "" && pdVehicle.AspirationShort != pdNullValue {
 				changes = append(changes, fmt.Sprintf("  %s Aspiration: %s", green("+"), green("'"+pdVehicle.AspirationShort+"'")))
 			}
+
 			if pdVehicle.LengthV > 0 {
-				changes = append(changes, fmt.Sprintf("  %s Length: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.LengthV))))
+				changes = append(changes, fmt.Sprintf("  %s Length: %s", green("+"), green(strconv.Itoa(pdVehicle.LengthV))))
 			}
+
 			if pdVehicle.WidthV > 0 {
-				changes = append(changes, fmt.Sprintf("  %s Width: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.WidthV))))
+				changes = append(changes, fmt.Sprintf("  %s Width: %s", green("+"), green(strconv.Itoa(pdVehicle.WidthV))))
 			}
+
 			if pdVehicle.HeightV > 0 {
-				changes = append(changes, fmt.Sprintf("  %s Height: %s", green("+"), green(fmt.Sprintf("%d", pdVehicle.HeightV))))
+				changes = append(changes, fmt.Sprintf("  %s Height: %s", green("+"), green(strconv.Itoa(pdVehicle.HeightV))))
 			}
 
 			allChanges = append(allChanges, changeRecord{
@@ -1285,6 +1377,7 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 		} else {
 			fmt.Fprintf(os.Stderr, "%s\n", cyan(fmt.Sprintf("CarID %d:", record.carID)))
 		}
+
 		for _, change := range record.changes {
 			fmt.Fprintf(os.Stderr, "%s\n", change)
 		}
@@ -1293,6 +1386,7 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 	// Write merged inventory to file (unless dry-run)
 	if dryRun {
 		fmt.Fprintf(os.Stderr, "\n[DRY RUN] Would write changes to %s\n", gtInventoryFile)
+
 		if addedCount > 0 {
 			fmt.Fprintf(os.Stderr, "[DRY RUN] Would add %d new vehicles and update %d existing vehicles\n", addedCount, mergedCount)
 		} else {
@@ -1305,7 +1399,8 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 		}
 		defer outputF.Close()
 
-		if err := writeOrderedJSON(outputF, gtVehicleMap); err != nil {
+		err = writeOrderedJSON(outputF, gtVehicleMap)
+		if err != nil {
 			return fmt.Errorf("encoding merged JSON: %w", err)
 		}
 
@@ -1315,31 +1410,32 @@ func mergeInventories(gtInventoryFile, pdInventoryFile string, noColor, dryRun b
 			fmt.Fprintf(os.Stderr, "Successfully updated %d vehicles in %s\n", mergedCount, gtInventoryFile)
 		}
 	}
+
 	return nil
 }
 
-// GTCar represents a car entry from the Gran Turismo website cars.js file
+// GTCar represents a car entry from the Gran Turismo website cars.js file.
 type GTCar struct {
-	ID              string `json:"id"`
-	NameShort       string `json:"nameShort"`
-	NameLong        string `json:"nameLong"`
-	ManufacturerID  string `json:"manufacturerId"`
-	CarClass        string `json:"carClass"`
-	DriveTrain      string `json:"driveTrain"`
-	AspirationShort string `json:"aspirationShort"`
-	LengthV         int    `json:"length_v"`
-	WidthV          int    `json:"width_v"`
-	HeightV         int    `json:"height_v"`
+	ID              string `json:"id"`              //nolint:tagliatelle // third party JSON schema
+	NameShort       string `json:"nameShort"`       //nolint:tagliatelle // third party JSON schema
+	NameLong        string `json:"nameLong"`        //nolint:tagliatelle // third party JSON schema
+	ManufacturerID  string `json:"manufacturerId"`  //nolint:tagliatelle // third party JSON schema
+	CarClass        string `json:"carClass"`        //nolint:tagliatelle // third party JSON schema
+	DriveTrain      string `json:"driveTrain"`      //nolint:tagliatelle // third party JSON schema
+	AspirationShort string `json:"aspirationShort"` //nolint:tagliatelle // third party JSON schema
+	LengthV         int    `json:"length_v"`        //nolint:tagliatelle // third party JSON schema
+	WidthV          int    `json:"width_v"`         //nolint:tagliatelle // third party JSON schema
+	HeightV         int    `json:"height_v"`        //nolint:tagliatelle // third party JSON schema
 }
 
-// GTTuner represents a manufacturer/tuner entry from the Gran Turismo website tuners.js file
+// GTTuner represents a manufacturer/tuner entry from the Gran Turismo website tuners.js file.
 type GTTuner struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	NameShort string `json:"nameShort"`
+	ID        string `json:"id"`        //nolint:tagliatelle // third party JSON schema
+	Name      string `json:"name"`      //nolint:tagliatelle // third party JSON schema
+	NameShort string `json:"nameShort"` //nolint:tagliatelle // third party JSON schema
 }
 
-// fetchAndMergeGTData fetches car data from Gran Turismo website and merges it with local inventory
+// fetchAndMergeGTData fetches car data from Gran Turismo website and merges it with local inventory.
 func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) error {
 	fmt.Fprintf(os.Stderr, "Fetching Gran Turismo car data for locale: %s\n", locale)
 
@@ -1347,7 +1443,12 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 	baseURL := fmt.Sprintf("https://www.gran-turismo.com/%s/gt7/carlist/", locale)
 	fmt.Fprintf(os.Stderr, "Fetching carlist page: %s\n", baseURL)
 
-	resp, err := http.Get(baseURL)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, baseURL, nil)
+	if err != nil {
+		return fmt.Errorf("creating request for carlist page: %w", err)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("fetching carlist page: %w", err)
 	}
@@ -1360,9 +1461,10 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 
 	// Step 2: Extract the main JS bundle filename
 	indexJsPattern := regexp.MustCompile(`src="([^"]*index-[^"]*\.js)"`)
+
 	matches := indexJsPattern.FindSubmatch(htmlBody)
 	if len(matches) < 2 {
-		return fmt.Errorf("could not find main JS bundle in HTML")
+		return ErrMainJSBundleNotFound
 	}
 
 	indexJsPath := string(matches[1])
@@ -1378,7 +1480,12 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 	fmt.Fprintf(os.Stderr, "Found main JS bundle: %s\n", indexJsPath)
 
 	// Step 3: Fetch the main JS bundle
-	resp, err = http.Get(indexJsPath)
+	req, err = http.NewRequestWithContext(context.Background(), http.MethodGet, indexJsPath, nil)
+	if err != nil {
+		return fmt.Errorf("creating request for main JS bundle: %w", err)
+	}
+
+	resp, err = http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("fetching main JS bundle: %w", err)
 	}
@@ -1391,9 +1498,10 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 
 	// Step 4: Extract the cars data filename
 	carsJsPattern := regexp.MustCompile(fmt.Sprintf(`cars\.%s-([A-Za-z0-9_-]+)\.js`, locale))
+
 	matches = carsJsPattern.FindSubmatch(bundleBody)
 	if len(matches) < 1 {
-		return fmt.Errorf("could not find cars.%s-*.js in main bundle", locale)
+		return fmt.Errorf("%w: locale %s", ErrCarsJSNotFound, locale)
 	}
 
 	carsJsFilename := string(matches[0])
@@ -1403,9 +1511,10 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 
 	// Step 4b: Extract the tuners data filename
 	tunersJsPattern := regexp.MustCompile(fmt.Sprintf(`tuners\.%s-([A-Za-z0-9_-]+)\.js`, locale))
+
 	matches = tunersJsPattern.FindSubmatch(bundleBody)
 	if len(matches) < 1 {
-		return fmt.Errorf("could not find tuners.%s-*.js in main bundle", locale)
+		return fmt.Errorf("%w: locale %s", ErrTunersJSNotFound, locale)
 	}
 
 	tunersJsFilename := string(matches[0])
@@ -1414,10 +1523,16 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 	fmt.Fprintf(os.Stderr, "Found tuners data file: %s\n", tunersJsURL)
 
 	// Step 5: Fetch the cars data file
-	resp, err = http.Get(carsJsURL)
+	req, err = http.NewRequestWithContext(context.Background(), http.MethodGet, carsJsURL, nil)
+	if err != nil {
+		return fmt.Errorf("creating request for cars data file: %w", err)
+	}
+
+	resp, err = http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("fetching cars data file: %w", err)
 	}
+
 	defer resp.Body.Close()
 
 	carsBody, err := io.ReadAll(resp.Body)
@@ -1426,7 +1541,12 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 	}
 
 	// Step 5b: Fetch the tuners data file
-	resp, err = http.Get(tunersJsURL)
+	req, err = http.NewRequestWithContext(context.Background(), http.MethodGet, tunersJsURL, nil)
+	if err != nil {
+		return fmt.Errorf("creating request for tuners data file: %w", err)
+	}
+
+	resp, err = http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("fetching tuners data file: %w", err)
 	}
@@ -1446,7 +1566,7 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 	jsCode = regexp.MustCompile(`;\s*export\s*{[^}]*}\s*;?\s*$`).ReplaceAllString(jsCode, "")
 
 	// Use goja to execute the JavaScript
-	vm := goja.New()
+	vm := goja.New() //nolint:varnamelen // descriptive enough
 
 	// Execute the JavaScript code (just the const declaration)
 	_, err = vm.RunString(jsCode)
@@ -1457,16 +1577,18 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 	// Get the variable (it's typically 'r' or similar single-letter var)
 	// Extract the variable name from the const declaration
 	varNamePattern := regexp.MustCompile(`^const\s+(\w+)\s*=`)
+
 	varNameMatches := varNamePattern.FindStringSubmatch(jsCode)
 	if len(varNameMatches) < 2 {
-		return fmt.Errorf("could not find variable name in JavaScript")
+		return ErrVariableNameNotFound
 	}
+
 	varName := varNameMatches[1]
 
 	// Get the Cars object
 	carsValue := vm.Get(varName)
 	if carsValue == nil {
-		return fmt.Errorf("cars object '%s' not found in JavaScript", varName)
+		return fmt.Errorf("%w: '%s'", ErrCarsObjectNotFound, varName)
 	}
 
 	// Convert to JSON
@@ -1477,7 +1599,9 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 
 	// Parse the car data
 	var gtCarsMap map[string]GTCar
-	if err := json.Unmarshal(carDataJSON, &gtCarsMap); err != nil {
+
+	err = json.Unmarshal(carDataJSON, &gtCarsMap)
+	if err != nil {
 		return fmt.Errorf("parsing car data JSON: %w", err)
 	}
 
@@ -1490,6 +1614,7 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 	tunersJsCode = regexp.MustCompile(`;\s*export\s*{[^}]*}\s*;?\s*$`).ReplaceAllString(tunersJsCode, "")
 
 	vm = goja.New()
+
 	_, err = vm.RunString(tunersJsCode)
 	if err != nil {
 		return fmt.Errorf("executing tuners JavaScript: %w", err)
@@ -1497,13 +1622,14 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 
 	varNameMatches = varNamePattern.FindStringSubmatch(tunersJsCode)
 	if len(varNameMatches) < 2 {
-		return fmt.Errorf("could not find variable name in tuners JavaScript")
+		return ErrTunersVariableNameNotFound
 	}
+
 	varName = varNameMatches[1]
 
 	tunersValue := vm.Get(varName)
 	if tunersValue == nil {
-		return fmt.Errorf("tuners object '%s' not found in JavaScript", varName)
+		return fmt.Errorf("%w: '%s'", ErrTunersObjectNotFound, varName)
 	}
 
 	tunerDataJSON, err := json.Marshal(tunersValue.Export())
@@ -1512,7 +1638,9 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 	}
 
 	var gtTunersMap map[string]GTTuner
-	if err := json.Unmarshal(tunerDataJSON, &gtTunersMap); err != nil {
+
+	err = json.Unmarshal(tunerDataJSON, &gtTunersMap)
+	if err != nil {
 		return fmt.Errorf("parsing tuner data JSON: %w", err)
 	}
 
@@ -1528,17 +1656,21 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 
 	// Convert GTCar to PDVehicle format
 	pdVehicleMap := make(map[string]PDVehicle)
+
 	for carKey, gtCar := range gtCarsMap {
 		// Extract numeric car ID from the car key (e.g., "car123" -> "123")
 		carIDPattern := regexp.MustCompile(`car(\d+)`)
+
 		carIDMatches := carIDPattern.FindStringSubmatch(carKey)
 		if len(carIDMatches) < 2 {
 			continue
 		}
+
 		carID := carIDMatches[1]
 
 		// Resolve manufacturer name from manufacturer ID
 		manufacturerName := ""
+
 		if gtCar.ManufacturerID != "" {
 			if tuner, exists := gtTunersMap[gtCar.ManufacturerID]; exists {
 				manufacturerName = strings.TrimSpace(tuner.Name)
@@ -1547,12 +1679,15 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 
 		// Extract year from model name if it ends with '## (e.g., "Camaro Z28 '69")
 		year := 0
+
 		yearPattern := regexp.MustCompile(`'(\d{2})$`)
 		if matches := yearPattern.FindStringSubmatch(gtCar.NameShort); len(matches) > 1 {
-			if shortYear, err := strconv.Atoi(matches[1]); err == nil {
+			shortYear, err := strconv.Atoi(matches[1])
+			if err == nil {
 				// Convert 2-digit year to 4-digit year
 				// Use current year + 1 as cutoff (last 2 digits)
 				currentYear := time.Now().Year()
+
 				cutoff := (currentYear + 1) % 100
 				if shortYear <= cutoff {
 					year = 2000 + shortYear
@@ -1579,7 +1714,9 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 	// Write to temp file
 	encoder := json.NewEncoder(tempFile)
 	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(pdVehicleMap); err != nil {
+
+	err = encoder.Encode(pdVehicleMap)
+	if err != nil {
 		return fmt.Errorf("writing temp file: %w", err)
 	}
 
@@ -1589,4 +1726,36 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 
 	// Step 8: Use existing merge function
 	return mergeInventories(inventoryFile, tempFile.Name(), noColor, dryRun)
+}
+
+// orderedVehicleFields defines the canonical field order for vehicle data.
+func orderedVehicleFields() []string {
+	return []string{
+		"CarID",
+		"Manufacturer",
+		"Model",
+		"Year",
+		"OpenCockpit",
+		"CarType",
+		"Category",
+		"Drivetrain",
+		"Aspiration",
+		"Length",
+		"Width",
+		"Height",
+		"Wheelbase",
+		"TrackFront",
+		"TrackRear",
+		"EngineLayout",
+		"EngineBankAngle",
+		"EngineCrankPlaneAngle",
+	}
+}
+
+func confirmNegative(confirm string) bool {
+	if confirm != "y" && confirm != "yes" {
+		return false
+	}
+
+	return true
 }

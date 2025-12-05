@@ -1,9 +1,10 @@
-package vehicles
+package vehicles_test
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+	"github.com/zetetos/gt-telemetry/pkg/vehicles"
 )
 
 type VehiclesTestSuite struct {
@@ -11,12 +12,13 @@ type VehiclesTestSuite struct {
 }
 
 func TestVehiclesTestSuite(t *testing.T) {
+	t.Parallel()
 	suite.Run(t, new(VehiclesTestSuite))
 }
 
 func (suite *VehiclesTestSuite) TestEmptyJSONParameterFallsBackToBaseInventory() {
 	// Arrange
-	wantValue := Vehicle{
+	wantValue := vehicles.Vehicle{
 		CarID:                 -10000,
 		Model:                 "Dummy Model",
 		Manufacturer:          "Dummy Manufacturer",
@@ -40,7 +42,7 @@ func (suite *VehiclesTestSuite) TestEmptyJSONParameterFallsBackToBaseInventory()
 	var inventoryJSON []byte
 
 	// Act
-	inventory, err := NewDB(inventoryJSON)
+	inventory, err := vehicles.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	gotValue, err := inventory.GetVehicleByID(wantValue.CarID)
@@ -75,7 +77,7 @@ func (suite *VehiclesTestSuite) TestValidJSONParameterCanConstructInventory() {
 	}`)
 
 	// Act
-	_, err := NewDB(inventoryJSON)
+	_, err := vehicles.NewDB(inventoryJSON)
 
 	// Assert
 	suite.Require().NoError(err)
@@ -88,10 +90,10 @@ func (suite *VehiclesTestSuite) TestInvalidJSONParameterReturnsError() {
 	}`)
 
 	// Act
-	_, err := NewDB(inventoryJSON)
+	_, err := vehicles.NewDB(inventoryJSON)
 
 	// Assert
-	suite.Assert().ErrorContains(err, "unmarshall vehicle inventory JSON")
+	suite.ErrorContains(err, "unmarshall vehicle inventory JSON")
 }
 
 func (suite *VehiclesTestSuite) TestGetVehicleIDWithInvalidIDReturnsError() {
@@ -99,18 +101,18 @@ func (suite *VehiclesTestSuite) TestGetVehicleIDWithInvalidIDReturnsError() {
 	inventoryJSON := []byte(`{}`)
 
 	// Act
-	inventory, err := NewDB(inventoryJSON)
+	inventory, err := vehicles.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	_, err = inventory.GetVehicleByID(1)
 
 	// Assert
-	suite.Assert().ErrorContains(err, "no vehicle found with id")
+	suite.ErrorContains(err, "no vehicle found with id")
 }
 
 func (suite *VehiclesTestSuite) TestGetVehicleWIthValidIDReturnsVehicle() {
 	// Arrange
-	wantValue := Vehicle{
+	wantValue := vehicles.Vehicle{
 		CarID:                 1234,
 		Model:                 "Dummy Model",
 		Manufacturer:          "Dummy Manufacturer",
@@ -154,7 +156,7 @@ func (suite *VehiclesTestSuite) TestGetVehicleWIthValidIDReturnsVehicle() {
 	}`)
 
 	// Act
-	inventory, err := NewDB(inventoryJSON)
+	inventory, err := vehicles.NewDB(inventoryJSON)
 	suite.Require().NoError(err)
 
 	gotValue, err := inventory.GetVehicleByID(wantValue.CarID)
@@ -178,7 +180,7 @@ func (suite *VehiclesTestSuite) TestShortAspirationExpandsToLongName() {
 	for shortName, wantValue := range tests {
 		suite.Run(shortName, func() {
 			// Arrange
-			vehicle := Vehicle{
+			vehicle := vehicles.Vehicle{
 				Aspiration: shortName,
 			}
 

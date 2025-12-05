@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"compress/gzip"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -12,9 +13,13 @@ import (
 	"github.com/rs/zerolog"
 )
 
-var packetHeader = []byte{0x30, 0x53, 0x37, 0x47}
-
 const packetInterval = (1000 / 60) * time.Millisecond
+
+var (
+	ErrFilenameTooShort         = errors.New("filename too short")
+	ErrUnsupportedFileExtension = errors.New("unsupported file extension")
+	ErrEOF                      = errors.New("EOF")
+)
 
 type FileReader struct {
 	fileContent *bufio.Scanner
@@ -31,27 +36,28 @@ func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 		return nil, fmt.Errorf("stat file: %w", err)
 	}
 
-	fh, err := os.Open(file)
+	fileHandle, err := os.Open(file)
 	if err != nil {
 		return nil, fmt.Errorf("open file: %w", err)
 	}
 
 	if len(file) < 3 {
-		return nil, fmt.Errorf("filename too short")
+		return nil, ErrFilenameTooShort
 	}
 
 	var reader io.Reader
+
 	fileExt := file[len(file)-3:]
 	switch fileExt {
 	case "gtz":
-		reader, err = gzip.NewReader(fh)
+		reader, err = gzip.NewReader(fileHandle)
 		if err != nil {
 			return nil, fmt.Errorf("create gzip reader: %w", err)
 		}
 	case "gtr":
-		reader = fh
+		reader = fileHandle
 	default:
-		return nil, fmt.Errorf("unsupported file extension: %s", fileExt)
+		return nil, fmt.Errorf("%w: %s", ErrUnsupportedFileExtension, fileExt)
 	}
 
 	scanner := bufio.NewScanner(reader)
@@ -63,17 +69,19 @@ func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 		// Aligned packet starting with a packet header, usually the first bytes of the file on
 		// the first read.
 		// Advances the scanner bhy the magic header length and returns empty bytes.
-		headerLen := len(packetHeader)
-		if bytes.Equal(data[:headerLen], packetHeader) {
+		headerLen := len(PacketHeader())
+		if bytes.Equal(data[:headerLen], PacketHeader()) {
 			return headerLen, []byte{}, nil
 		}
 
 		// Non-aligned packet with magic header prefix removed.
 		// Returns all data up to the next magic header and also prefixes the data with the
 		// magic header to create a valid telemetry packet.
-		if bytes.Contains(data, packetHeader) {
-			packetLen := bytes.Index(data, packetHeader)
-			packet := append(packetHeader, data[:packetLen]...)
+		if bytes.Contains(data, PacketHeader()) {
+			packetLen := bytes.Index(data, PacketHeader())
+
+			packet := append([]byte{}, PacketHeader()...)
+			packet = append(packet, data[:packetLen]...)
 
 			return len(packet), packet, nil
 		}
@@ -82,10 +90,11 @@ func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 		// and return the data with the magic header prefixed.
 		if atEOF {
 			if len(data) == 0 {
-				return 0, nil, fmt.Errorf("EOF")
+				return 0, nil, ErrEOF
 			}
 
-			packet := append(packetHeader, data...)
+			packet := append([]byte{}, PacketHeader()...)
+			packet = append(packet, data...)
 
 			return len(packet), packet, nil
 		}
@@ -99,7 +108,7 @@ func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 		fileContent: scanner,
 		lastRead:    time.Unix(0, 0),
 		log:         log,
-		closer:      fh.Close,
+		closer:      fileHandle.Close,
 	}, nil
 }
 

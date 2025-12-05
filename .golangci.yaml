@@ -1,8 +1,21 @@
 version: "2"
+
 run:
   allow-parallel-runners: true
+
 linters:
-  # default: all
+  default: all
+  disable:
+    - exhaustruct # too noisy
+    - forbidigo # TODO: extensive use in cli code
+    - funlen # TODO: enable and fix
+    - gocyclo # use cyclop instead
+    - godox # TODO: enable and fix
+    - mnd # TODO: enable and fix
+    - nilnil # not bothered by nil val+err
+    - nonamedreturns # prefer named returns in some cases
+    - wrapcheck # TODO: enable and fix or user err113 instead
+    - wsl # use wsl_v5 instead
   exclusions:
     generated: lax
     presets:
@@ -11,14 +24,50 @@ linters:
       - legacy
       - std-error-handling
     paths:
-      - internal/gttelemetry/gran_turismo_telemetry.go
       - third_party$
       - builtin$
       - examples$
+  settings:
+    depguard:
+      rules:
+        main:
+          allow:
+            - $gostd
+            - github.com/dop251/goja
+            - github.com/kaitai-io/kaitai_struct_go_runtime
+            - github.com/rs/zerolog
+            - github.com/santhosh-tekuri/jsonschema
+            - github.com/stretchr/testify
+            - golang.org/x/crypto/salsa20
+            - github.com/zetetos/gt-telemetry
+    lll:
+      line-length: 180
+    gomoddirectives:
+      # replace-allow-list:
+      #   - github.com/bwmarrin/discordgo # temporary until voice fix is merged
+    tagliatelle:
+      case:
+        rules:
+          json: goPascal
+
+
 formatters:
-  exclusions:
-    generated: lax
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
+  default:
+    enable:
+      - gci
+      - gofmt
+      - gofumpt
+      - goimports
+      - golines  exclusions:
+    # generated: lax
+    # paths:
+    #   - third_party$
+    #   - builtin$
+    #   - examples$
+
+issues:
+  exclude-use-default: false
+  exlude:
+    - path: _test.go
+      linters:
+        - mnd

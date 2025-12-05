@@ -1,214 +1,215 @@
 package gttelemetry
 
 import (
-	"fmt"
+	"strconv"
 
-	"github.com/zetetos/gt-telemetry/internal/utils"
+	"github.com/zetetos/gt-telemetry/internal/units"
 	"github.com/zetetos/gt-telemetry/pkg/models"
 )
 
-func (t *transformer) CurrentGearString() string {
-	gear := fmt.Sprint(t.CurrentGear())
+func (t *Transformer) CurrentGearString() string {
+	gear := strconv.Itoa(t.CurrentGear())
 	switch gear {
 	case "0":
 		gear = "R"
 	case "15":
 		gear = "N"
 	}
+
 	return gear
 }
 
-func (t *transformer) GroundSpeedKPH() float32 {
-	return utils.MetersPerSecondToKilometersPerHour(t.GroundSpeedMetersPerSecond())
+func (t *Transformer) GroundSpeedKPH() float32 {
+	return units.MetersPerSecondToKilometersPerHour(t.GroundSpeedMetersPerSecond())
 }
 
-func (t *transformer) OilTemperatureFahrenheit() float32 {
-	return utils.CelsiusToFahrenheit(t.RawTelemetry.OilTemperature)
+func (t *Transformer) OilTemperatureFahrenheit() float32 {
+	return units.CelsiusToFahrenheit(t.RawTelemetry.OilTemperature)
 }
 
-func (t *transformer) RideHeightMillimeters() float32 {
-	return utils.MetersToMillimeters(t.RideHeightMeters())
+func (t *Transformer) RideHeightMillimeters() float32 {
+	return units.MetersToMillimeters(t.RideHeightMeters())
 }
 
-func (t *transformer) SuspensionHeightFeet() models.CornerSet {
+func (t *Transformer) SuspensionHeightFeet() models.CornerSet {
 	set := t.SuspensionHeightMeters()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersToFeet(set.FrontLeft),
-		FrontRight: utils.MetersToFeet(set.FrontRight),
-		RearLeft:   utils.MetersToFeet(set.RearLeft),
-		RearRight:  utils.MetersToFeet(set.RearRight),
+		FrontLeft:  units.MetersToFeet(set.FrontLeft),
+		FrontRight: units.MetersToFeet(set.FrontRight),
+		RearLeft:   units.MetersToFeet(set.RearLeft),
+		RearRight:  units.MetersToFeet(set.RearRight),
 	}
 }
 
-func (t *transformer) SuspensionHeightInches() models.CornerSet {
+func (t *Transformer) SuspensionHeightInches() models.CornerSet {
 	set := t.SuspensionHeightMeters()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersToInches(set.FrontLeft),
-		FrontRight: utils.MetersToInches(set.FrontRight),
-		RearLeft:   utils.MetersToInches(set.RearLeft),
-		RearRight:  utils.MetersToInches(set.RearRight),
+		FrontLeft:  units.MetersToInches(set.FrontLeft),
+		FrontRight: units.MetersToInches(set.FrontRight),
+		RearLeft:   units.MetersToInches(set.RearLeft),
+		RearRight:  units.MetersToInches(set.RearRight),
 	}
 }
 
-func (t *transformer) SuspensionHeightMillimeters() models.CornerSet {
+func (t *Transformer) SuspensionHeightMillimeters() models.CornerSet {
 	set := t.SuspensionHeightMeters()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersToMillimeters(set.FrontLeft),
-		FrontRight: utils.MetersToMillimeters(set.FrontRight),
-		RearLeft:   utils.MetersToMillimeters(set.RearLeft),
-		RearRight:  utils.MetersToMillimeters(set.RearRight),
+		FrontLeft:  units.MetersToMillimeters(set.FrontLeft),
+		FrontRight: units.MetersToMillimeters(set.FrontRight),
+		RearLeft:   units.MetersToMillimeters(set.RearLeft),
+		RearRight:  units.MetersToMillimeters(set.RearRight),
 	}
 }
 
-func (t *transformer) TurboBoostPSI() float32 {
-	return utils.BarToPSI(t.TurboBoostBar())
+func (t *Transformer) TurboBoostPSI() float32 {
+	return units.BarToPSI(t.TurboBoostBar())
 }
 
-func (t *transformer) TurboBoostInHg() float32 {
-	return utils.BarToInHg(t.TurboBoostBar())
+func (t *Transformer) TurboBoostInHg() float32 {
+	return units.BarToInHg(t.TurboBoostBar())
 }
 
-func (t *transformer) TurboBoostKPA() float32 {
-	return utils.BarToKPA(t.TurboBoostBar())
+func (t *Transformer) TurboBoostKPA() float32 {
+	return units.BarToKPA(t.TurboBoostBar())
 }
 
-func (t *transformer) TyreDiameterFeet() models.CornerSet {
+func (t *Transformer) TyreDiameterFeet() models.CornerSet {
 	set := t.TyreDiameterMeters()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersToFeet(set.FrontLeft),
-		FrontRight: utils.MetersToFeet(set.FrontRight),
-		RearLeft:   utils.MetersToFeet(set.RearLeft),
-		RearRight:  utils.MetersToFeet(set.RearRight),
+		FrontLeft:  units.MetersToFeet(set.FrontLeft),
+		FrontRight: units.MetersToFeet(set.FrontRight),
+		RearLeft:   units.MetersToFeet(set.RearLeft),
+		RearRight:  units.MetersToFeet(set.RearRight),
 	}
 }
 
-func (t *transformer) TyreDiameterInches() models.CornerSet {
+func (t *Transformer) TyreDiameterInches() models.CornerSet {
 	set := t.TyreDiameterMeters()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersToInches(set.FrontLeft),
-		FrontRight: utils.MetersToInches(set.FrontRight),
-		RearLeft:   utils.MetersToInches(set.RearLeft),
-		RearRight:  utils.MetersToInches(set.RearRight),
+		FrontLeft:  units.MetersToInches(set.FrontLeft),
+		FrontRight: units.MetersToInches(set.FrontRight),
+		RearLeft:   units.MetersToInches(set.RearLeft),
+		RearRight:  units.MetersToInches(set.RearRight),
 	}
 }
 
-func (t *transformer) TyreDiameterMillimeters() models.CornerSet {
+func (t *Transformer) TyreDiameterMillimeters() models.CornerSet {
 	set := t.TyreDiameterMeters()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersToMillimeters(set.FrontLeft),
-		FrontRight: utils.MetersToMillimeters(set.FrontRight),
-		RearLeft:   utils.MetersToMillimeters(set.RearLeft),
-		RearRight:  utils.MetersToMillimeters(set.RearRight),
+		FrontLeft:  units.MetersToMillimeters(set.FrontLeft),
+		FrontRight: units.MetersToMillimeters(set.FrontRight),
+		RearLeft:   units.MetersToMillimeters(set.RearLeft),
+		RearRight:  units.MetersToMillimeters(set.RearRight),
 	}
 }
 
-func (t *transformer) TyreRadiusFeet() models.CornerSet {
+func (t *Transformer) TyreRadiusFeet() models.CornerSet {
 	set := t.TyreRadiusMeters()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersToFeet(set.FrontLeft),
-		FrontRight: utils.MetersToFeet(set.FrontRight),
-		RearLeft:   utils.MetersToFeet(set.RearLeft),
-		RearRight:  utils.MetersToFeet(set.RearRight),
+		FrontLeft:  units.MetersToFeet(set.FrontLeft),
+		FrontRight: units.MetersToFeet(set.FrontRight),
+		RearLeft:   units.MetersToFeet(set.RearLeft),
+		RearRight:  units.MetersToFeet(set.RearRight),
 	}
 }
 
-func (t *transformer) TyreRadiusInches() models.CornerSet {
+func (t *Transformer) TyreRadiusInches() models.CornerSet {
 	set := t.TyreRadiusMeters()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersToInches(set.FrontLeft),
-		FrontRight: utils.MetersToInches(set.FrontRight),
-		RearLeft:   utils.MetersToInches(set.RearLeft),
-		RearRight:  utils.MetersToInches(set.RearRight),
+		FrontLeft:  units.MetersToInches(set.FrontLeft),
+		FrontRight: units.MetersToInches(set.FrontRight),
+		RearLeft:   units.MetersToInches(set.RearLeft),
+		RearRight:  units.MetersToInches(set.RearRight),
 	}
 }
 
-func (t *transformer) TyreRadiusMillimeters() models.CornerSet {
+func (t *Transformer) TyreRadiusMillimeters() models.CornerSet {
 	set := t.TyreRadiusMeters()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersToMillimeters(set.FrontLeft),
-		FrontRight: utils.MetersToMillimeters(set.FrontRight),
-		RearLeft:   utils.MetersToMillimeters(set.RearLeft),
-		RearRight:  utils.MetersToMillimeters(set.RearRight),
+		FrontLeft:  units.MetersToMillimeters(set.FrontLeft),
+		FrontRight: units.MetersToMillimeters(set.FrontRight),
+		RearLeft:   units.MetersToMillimeters(set.RearLeft),
+		RearRight:  units.MetersToMillimeters(set.RearRight),
 	}
 }
 
-func (t *transformer) TyreTemperatureFahrenheit() models.CornerSet {
+func (t *Transformer) TyreTemperatureFahrenheit() models.CornerSet {
 	set := t.TyreTemperatureCelsius()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersPerSecondToMilesPerHour(set.FrontLeft),
-		FrontRight: utils.MetersPerSecondToMilesPerHour(set.FrontRight),
-		RearLeft:   utils.MetersPerSecondToMilesPerHour(set.RearLeft),
-		RearRight:  utils.MetersPerSecondToMilesPerHour(set.RearRight),
+		FrontLeft:  units.MetersPerSecondToMilesPerHour(set.FrontLeft),
+		FrontRight: units.MetersPerSecondToMilesPerHour(set.FrontRight),
+		RearLeft:   units.MetersPerSecondToMilesPerHour(set.RearLeft),
+		RearRight:  units.MetersPerSecondToMilesPerHour(set.RearRight),
 	}
 }
 
-func (t *transformer) WheelSpeedKPH() models.CornerSet {
+func (t *Transformer) WheelSpeedKPH() models.CornerSet {
 	set := t.WheelSpeedMetersPerSecond()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersPerSecondToKilometersPerHour(set.FrontLeft),
-		FrontRight: utils.MetersPerSecondToKilometersPerHour(set.FrontRight),
-		RearLeft:   utils.MetersPerSecondToKilometersPerHour(set.RearLeft),
-		RearRight:  utils.MetersPerSecondToKilometersPerHour(set.RearRight),
+		FrontLeft:  units.MetersPerSecondToKilometersPerHour(set.FrontLeft),
+		FrontRight: units.MetersPerSecondToKilometersPerHour(set.FrontRight),
+		RearLeft:   units.MetersPerSecondToKilometersPerHour(set.RearLeft),
+		RearRight:  units.MetersPerSecondToKilometersPerHour(set.RearRight),
 	}
 }
 
-func (t *transformer) WheelSpeedMPH() models.CornerSet {
+func (t *Transformer) WheelSpeedMPH() models.CornerSet {
 	set := t.WheelSpeedMetersPerSecond()
 
 	return models.CornerSet{
-		FrontLeft:  utils.MetersPerSecondToMilesPerHour(set.FrontLeft),
-		FrontRight: utils.MetersPerSecondToMilesPerHour(set.FrontRight),
-		RearLeft:   utils.MetersPerSecondToMilesPerHour(set.RearLeft),
-		RearRight:  utils.MetersPerSecondToMilesPerHour(set.RearRight),
+		FrontLeft:  units.MetersPerSecondToMilesPerHour(set.FrontLeft),
+		FrontRight: units.MetersPerSecondToMilesPerHour(set.FrontRight),
+		RearLeft:   units.MetersPerSecondToMilesPerHour(set.RearLeft),
+		RearRight:  units.MetersPerSecondToMilesPerHour(set.RearRight),
 	}
 }
 
-func (t *transformer) WheelSpeedRPM() models.CornerSet {
+func (t *Transformer) WheelSpeedRPM() models.CornerSet {
 	rps := t.WheelSpeedRadiansPerSecond()
 
 	return models.CornerSet{
-		FrontLeft:  utils.RadiansPerSecondToRevolutionsPerMinute(rps.FrontLeft),
-		FrontRight: utils.RadiansPerSecondToRevolutionsPerMinute(rps.FrontRight),
-		RearLeft:   utils.RadiansPerSecondToRevolutionsPerMinute(rps.RearLeft),
-		RearRight:  utils.RadiansPerSecondToRevolutionsPerMinute(rps.RearRight),
+		FrontLeft:  units.RadiansPerSecondToRevolutionsPerMinute(rps.FrontLeft),
+		FrontRight: units.RadiansPerSecondToRevolutionsPerMinute(rps.FrontRight),
+		RearLeft:   units.RadiansPerSecondToRevolutionsPerMinute(rps.RearLeft),
+		RearRight:  units.RadiansPerSecondToRevolutionsPerMinute(rps.RearRight),
 	}
 }
 
-func (t *transformer) WaterTemperatureFahrenheit() float32 {
-	return utils.CelsiusToFahrenheit(t.RawTelemetry.WaterTemperature)
+func (t *Transformer) WaterTemperatureFahrenheit() float32 {
+	return units.CelsiusToFahrenheit(t.RawTelemetry.WaterTemperature)
 }
 
-func (t *transformer) VehicleLengthInches() float32 {
-	return utils.MillimetersToInches(t.VehicleLengthMillimeters())
+func (t *Transformer) VehicleLengthInches() float32 {
+	return units.MillimetersToInches(t.VehicleLengthMillimeters())
 }
 
-func (t *transformer) VehicleWidthInches() float32 {
-	return utils.MillimetersToInches(t.VehicleWidthMillimeters())
+func (t *Transformer) VehicleWidthInches() float32 {
+	return units.MillimetersToInches(t.VehicleWidthMillimeters())
 }
 
-func (t *transformer) VehicleHeightInches() float32 {
-	return utils.MillimetersToInches(t.VehicleHeightMillimeters())
+func (t *Transformer) VehicleHeightInches() float32 {
+	return units.MillimetersToInches(t.VehicleHeightMillimeters())
 }
 
-func (t *transformer) VehicleWheelbaseInches() float32 {
-	return utils.MillimetersToInches(t.VehicleWheelbaseMillimeters())
+func (t *Transformer) VehicleWheelbaseInches() float32 {
+	return units.MillimetersToInches(t.VehicleWheelbaseMillimeters())
 }
 
-func (t *transformer) VehicleTrackFrontInches() float32 {
-	return utils.MillimetersToInches(t.VehicleTrackFrontMillimeters())
+func (t *Transformer) VehicleTrackFrontInches() float32 {
+	return units.MillimetersToInches(t.VehicleTrackFrontMillimeters())
 }
 
-func (t *transformer) VehicleTrackRearInches() float32 {
-	return utils.MillimetersToInches(t.VehicleTrackRearMillimeters())
+func (t *Transformer) VehicleTrackRearInches() float32 {
+	return units.MillimetersToInches(t.VehicleTrackRearMillimeters())
 }

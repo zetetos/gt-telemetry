@@ -29,15 +29,15 @@ type CircuitData struct {
 	Coordinates   CircuitCoordinates `json:"Coordinates"`
 }
 
-// CircuitProcessingResult holds the results of processing circuit files during analysis
+// CircuitProcessingResult holds the results of processing circuit files during analysis.
 type CircuitProcessingResult struct {
 	CoordinateMap       map[string][]string
-	CircuitsMap         map[string]map[string]interface{}
+	CircuitsMap         map[string]map[string]any
 	CircuitStartLines   map[string]gtmodels.CoordinateNorm
 	RawCoordinateCounts map[string]int // Track raw coordinate counts per circuit
 }
 
-// CircuitStats holds statistical information about a circuit
+// CircuitStats holds statistical information about a circuit.
 type CircuitStats struct {
 	ID                    string
 	VariationName         string
@@ -79,7 +79,8 @@ func main() {
 	displayAnalysisResults(stats)
 
 	// Write output file
-	if err := writeInventoryFile(processed, outputFile); err != nil {
+	err = writeInventoryFile(processed, outputFile)
+	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to write output: %v\n", err)
 		os.Exit(1)
 	}
@@ -87,42 +88,44 @@ func main() {
 	fmt.Printf("Wrote inventory to %s\n", outputFile)
 }
 
-// loadCircuitSchema loads and compiles the JSON schema for circuit validation
+// loadCircuitSchema loads and compiles the JSON schema for circuit validation.
 func loadCircuitSchema(circuitsDir string) (*jsonschema.Schema, error) {
 	schemaPath := filepath.Join(circuitsDir, "schema", "circuit-schema.json")
 
 	// Check if schema file exists
-	if _, err := os.Stat(schemaPath); os.IsNotExist(err) {
-		return nil, fmt.Errorf("schema file not found at %s", schemaPath)
+	_, err := os.Stat(schemaPath)
+	if os.IsNotExist(err) {
+		return nil, fmt.Errorf("schema file not found at %s: %w", schemaPath, os.ErrNotExist)
 	}
 
 	// Read schema file
 	schemaData, err := os.ReadFile(schemaPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read schema file: %v", err)
+		return nil, fmt.Errorf("failed to read schema file: %w", err)
 	}
 
 	// Compile schema
 	compiler := jsonschema.NewCompiler()
 	compiler.Draft = jsonschema.Draft7
 
-	if err := compiler.AddResource("schema.json", strings.NewReader(string(schemaData))); err != nil {
-		return nil, fmt.Errorf("failed to add schema resource: %v", err)
+	err = compiler.AddResource("schema.json", strings.NewReader(string(schemaData)))
+	if err != nil {
+		return nil, fmt.Errorf("failed to add schema resource: %w", err)
 	}
 
 	schema, err := compiler.Compile("schema.json")
 	if err != nil {
-		return nil, fmt.Errorf("failed to compile schema: %v", err)
+		return nil, fmt.Errorf("failed to compile schema: %w", err)
 	}
 
 	return schema, nil
 }
 
-// processCircuitFiles reads and processes all circuit JSON files in the given directory
+// processCircuitFiles reads and processes all circuit JSON files in the given directory.
 func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Schema) (*CircuitProcessingResult, error) {
 	processed := &CircuitProcessingResult{
 		CoordinateMap:       make(map[string][]string),
-		CircuitsMap:         make(map[string]map[string]interface{}),
+		CircuitsMap:         make(map[string]map[string]any),
 		CircuitStartLines:   make(map[string]gtmodels.CoordinateNorm),
 		RawCoordinateCounts: make(map[string]int),
 	}
@@ -149,7 +152,9 @@ func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Sche
 		}
 
 		var circuitData CircuitData
-		if err := json.Unmarshal(data, &circuitData); err != nil {
+
+		err = json.Unmarshal(data, &circuitData)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to parse %s: %v\n", path, err)
 
 			return nil
@@ -157,13 +162,16 @@ func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Sche
 
 		// Validate against JSON schema
 		var jsonData interface{}
-		if err := json.Unmarshal(data, &jsonData); err != nil {
+
+		err = json.Unmarshal(data, &jsonData)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to parse JSON for validation %s: %v\n", path, err)
 
 			return nil
 		}
 
-		if err := schema.Validate(jsonData); err != nil {
+		err = schema.Validate(jsonData)
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Schema validation failed for %s: %v\n", path, err)
 
 			return nil
@@ -177,7 +185,7 @@ func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Sche
 		// Build coordinate map
 		for _, coordinate := range circuitData.Coordinates.Circuit {
 			coordinateNorm := gtcircuits.NormaliseCircuitCoordinate(coordinate)
-			key := gtcircuits.CoordinateNormToKey(coordinateNorm)
+			key := coordinateNorm.String()
 
 			if !slices.Contains(processed.CoordinateMap[key], circuitID) {
 				processed.CoordinateMap[key] = append(processed.CoordinateMap[key], circuitID)
@@ -189,13 +197,13 @@ func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Sche
 		processed.CircuitStartLines[circuitID] = startingLineNorm
 
 		// Store circuit info
-		processed.CircuitsMap[circuitID] = map[string]interface{}{
+		processed.CircuitsMap[circuitID] = map[string]any{
 			"id":        circuitID,
 			"name":      circuitData.Name,
 			"variation": circuitData.VariationName,
 			"default":   circuitData.Default,
 			"country":   circuitData.Country,
-			"length":    uint16(circuitData.LengthMeters),
+			"length":    uint16(circuitData.LengthMeters), //nolint:gosec // Length will always be positive and less than max uint16
 			"startline": startingLineNorm,
 		}
 
@@ -205,17 +213,16 @@ func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Sche
 	return processed, err
 }
 
-// analyzeCircuitCoordinates performs statistical analysis on circuit coordinates
-func analyzeCircuitCoordinates(processed *CircuitProcessingResult) []CircuitStats {
+// analyzeCircuitCoordinates performs statistical analysis on circuit coordinates.
+func analyzeCircuitCoordinates(processed *CircuitProcessingResult) (stats []CircuitStats) {
 	// Build a map of circuit -> coordinates for easier counting
 	circuitCoordinates := make(map[string][]string)
+
 	for coord, circuitList := range processed.CoordinateMap {
 		for _, circuitID := range circuitList {
 			circuitCoordinates[circuitID] = append(circuitCoordinates[circuitID], coord)
 		}
 	}
-
-	var stats []CircuitStats
 
 	// For each circuit, calculate uniqueness stats
 	for circuitID := range processed.CircuitsMap {
@@ -234,8 +241,15 @@ func analyzeCircuitCoordinates(processed *CircuitProcessingResult) []CircuitStat
 			uniquePercent = float64(uniqueCoords) / float64(totalCoords) * 100
 		}
 
-		variationName := processed.CircuitsMap[circuitID]["variation"].(string)
-		country := processed.CircuitsMap[circuitID]["country"].(string)
+		variationName, ok := processed.CircuitsMap[circuitID]["variation"].(string) //nolint:varnamelen // idiomatic name
+		if !ok {
+			variationName = ""
+		}
+
+		country, ok := processed.CircuitsMap[circuitID]["country"].(string)
+		if !ok {
+			country = ""
+		}
 
 		// Check if starting line coordinate is unique
 		startLineCoord := processed.CircuitStartLines[circuitID]
@@ -260,19 +274,20 @@ func analyzeCircuitCoordinates(processed *CircuitProcessingResult) []CircuitStat
 	return stats
 }
 
-// isStartLineUnique checks if a circuit's starting line coordinate is unique
+// isStartLineUnique checks if a circuit's starting line coordinate is unique.
 func isStartLineUnique(circuitID string, startLineCoord gtmodels.CoordinateNorm, allStartLines map[string]gtmodels.CoordinateNorm) bool {
 	for otherCircuitID, otherStartLine := range allStartLines {
 		if otherCircuitID != circuitID && otherStartLine == startLineCoord {
 			return false
 		}
 	}
+
 	return true
 }
 
-// sortStatsByVariationName sorts circuit stats alphabetically by name
+// sortStatsByVariationName sorts circuit stats alphabetically by name.
 func sortStatsByVariationName(stats []CircuitStats) {
-	for i := 0; i < len(stats)-1; i++ {
+	for i := range len(stats) - 1 {
 		for j := i + 1; j < len(stats); j++ {
 			if stats[i].VariationName > stats[j].VariationName {
 				stats[i], stats[j] = stats[j], stats[i]
@@ -281,7 +296,7 @@ func sortStatsByVariationName(stats []CircuitStats) {
 	}
 }
 
-// displayAnalysisResults prints the analysis results in a formatted table
+// displayAnalysisResults prints the analysis results in a formatted table.
 func displayAnalysisResults(stats []CircuitStats) {
 	fmt.Println("\n=== ANALYSIS: Circuit Coordinate Uniqueness ===")
 
@@ -309,6 +324,7 @@ func displayAnalysisResults(stats []CircuitStats) {
 		if stat.UniquePoints == 0 {
 			circuitsWithoutUniqueCoords++
 		}
+
 		if !stat.StartLineUnique {
 			nonUniqueStartLines++
 		}
@@ -317,13 +333,13 @@ func displayAnalysisResults(stats []CircuitStats) {
 	printSummary(circuitsWithoutUniqueCoords, nonUniqueStartLines)
 }
 
-// printTableHeader prints the table header
+// printTableHeader prints the table header.
 func printTableHeader(circuitNameColWidth int) {
 	headerFormat := fmt.Sprintf("%%-%ds %%-%ds %%8s %%8s %%8s %%8s %%10s\n", circuitNameColWidth, 12)
 	fmt.Printf(headerFormat, "Circuit Name", "Country", "Raw", "Norm", "Unique", "% Unique", "Start Uniq")
 }
 
-// printTableSeparator prints the table separator line
+// printTableSeparator prints the table separator line.
 func printTableSeparator(circuitNameColWidth int) {
 	separatorFormat := fmt.Sprintf("%%-%ds %%-%ds %%8s %%8s %%8s %%8s %%10s\n", circuitNameColWidth, 12)
 	fmt.Printf(separatorFormat,
@@ -336,7 +352,7 @@ func printTableSeparator(circuitNameColWidth int) {
 		"----------")
 }
 
-// printStatRow prints a single statistics row
+// printStatRow prints a single statistics row.
 func printStatRow(stat CircuitStats, circuitNameColWidth int) {
 	dataFormat := fmt.Sprintf("%%s%%-%ds %%-%ds %%8d %%8d %%8d %%7.1f%%%% %%8s\n", circuitNameColWidth-2, 12) // -2 for marker space
 
@@ -361,7 +377,7 @@ func printStatRow(stat CircuitStats, circuitNameColWidth int) {
 		startLineMarker)
 }
 
-// printSummary prints the analysis summary
+// printSummary prints the analysis summary.
 func printSummary(circuitsWithoutUniqueCoords, nonUniqueStartLines int) {
 	if circuitsWithoutUniqueCoords > 0 {
 		fmt.Printf("\n⚠️  %d circuits have ZERO unique coordinates and are completely composed of shared coordinates.\n", circuitsWithoutUniqueCoords)
@@ -376,11 +392,12 @@ func printSummary(circuitsWithoutUniqueCoords, nonUniqueStartLines int) {
 	}
 }
 
-// writeInventoryFile writes the processed circuit data to the output file
+// writeInventoryFile writes the processed circuit data to the output file.
 func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) error {
 	// Filter coordinates to only include those with a single entry (unique to one circuit)
 	// Store as single string values instead of arrays
 	filteredCoordinateMap := make(map[string]string)
+
 	for coord, circuits := range processed.CoordinateMap {
 		if len(circuits) == 1 {
 			filteredCoordinateMap[coord] = circuits[0]
@@ -389,8 +406,8 @@ func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) e
 
 	// Convert processed circuit maps to CircuitInfo structs
 	circuits := make(map[string]gtcircuits.CircuitInfo)
-	for id, circuitData := range processed.CircuitsMap {
-		circuits[id] = gtcircuits.CircuitInfo{
+	for circuitID, circuitData := range processed.CircuitsMap {
+		circuits[circuitID] = gtcircuits.CircuitInfo{ //nolint:forcetypeassert // Safe due to controlled data source
 			ID:                    circuitData["id"].(string),
 			Name:                  circuitData["name"].(string),
 			Variation:             circuitData["variation"].(string),
@@ -398,11 +415,10 @@ func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) e
 			Country:               circuitData["country"].(string),
 			Length:                int(circuitData["length"].(uint16)),
 			StartLine:             circuitData["startline"].(gtmodels.CoordinateNorm),
-			UniqueCoordinateCount: getUniqCoordCount(processed, id),
+			UniqueCoordinateCount: getUniqCoordCount(processed, circuitID),
 		}
 	}
 
-	// Create the proper CircuitInventory struct
 	inventory := gtcircuits.CircuitInventory{
 		Coordinates: filteredCoordinateMap,
 		Circuits:    circuits,
@@ -410,11 +426,12 @@ func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) e
 
 	outData, err := json.MarshalIndent(inventory, "", "  ")
 	if err != nil {
-		return fmt.Errorf("failed to marshal output: %v", err)
+		return fmt.Errorf("failed to marshal output: %w", err)
 	}
 
-	if err := os.WriteFile(outputFile, outData, 0644); err != nil {
-		return fmt.Errorf("failed to write output: %v", err)
+	err = os.WriteFile(outputFile, outData, 0644) //nolint:gosec // File permission is acceptable for this use case
+	if err != nil {
+		return fmt.Errorf("failed to write output: %w", err)
 	}
 
 	return nil
@@ -422,11 +439,13 @@ func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) e
 
 func getUniqCoordCount(processed *CircuitProcessingResult, id string) int {
 	uniqueCoordCount := 0
+
 	for _, circuitList := range processed.CoordinateMap {
 		if len(circuitList) == 1 && circuitList[0] == id {
 			uniqueCoordCount++
 		}
 	}
+
 	return uniqueCoordCount
 }
 

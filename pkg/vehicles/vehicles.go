@@ -3,11 +3,16 @@ package vehicles
 import (
 	_ "embed"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
 )
 
-// Vehicle represents information about a specific vehicle
+var (
+	ErrVehicleNotFound = errors.New("no vehicle found with id")
+)
+
+// Vehicle represents information about a specific vehicle.
 type Vehicle struct {
 	CarID                 int     `json:"CarID"`
 	Manufacturer          string  `json:"Manufacturer"`
@@ -29,10 +34,10 @@ type Vehicle struct {
 	EngineCrankPlaneAngle float32 `json:"EngineCrankPlaneAngle"`
 }
 
-// VehicleInventory represents the complete JSON structure from the embedded vehicle inventory data
+// VehicleInventory represents the complete JSON structure from the embedded vehicle inventory data.
 type VehicleInventory map[string]Vehicle
 
-// VehicleDB provides an object and methods to access vehicle information from the embedded inventory
+// VehicleDB provides an object and methods to access vehicle information from the embedded inventory.
 type VehicleDB struct {
 	inventory VehicleInventory
 }
@@ -40,7 +45,7 @@ type VehicleDB struct {
 //go:embed vehicles.json
 var baseInventoryJSON []byte
 
-// NewDB creates a new VehicleDB instance by loading the vehicle inventory from embedded JSON data
+// NewDB creates a new VehicleDB instance by loading the vehicle inventory from embedded JSON data.
 func NewDB(inventoryJSON []byte) (*VehicleDB, error) {
 	inventory := VehicleInventory{}
 
@@ -48,7 +53,7 @@ func NewDB(inventoryJSON []byte) (*VehicleDB, error) {
 		inventoryJSON = baseInventoryJSON
 	}
 
-	err := json.Unmarshal([]byte(inventoryJSON), &inventory)
+	err := json.Unmarshal(inventoryJSON, &inventory)
 	if err != nil {
 		return &VehicleDB{}, fmt.Errorf("unmarshall vehicle inventory JSON: %w", err)
 	}
@@ -58,17 +63,17 @@ func NewDB(inventoryJSON []byte) (*VehicleDB, error) {
 	}, nil
 }
 
-// GetVehicleByID retrieves a Vehicle from the inventory by its CarID
+// GetVehicleByID retrieves a Vehicle from the inventory by its CarID.
 func (i *VehicleDB) GetVehicleByID(id int) (Vehicle, error) {
 	vehicle, ok := i.inventory[strconv.Itoa(id)]
 	if !ok {
-		return Vehicle{}, fmt.Errorf("no vehicle found with id %d", id)
+		return Vehicle{}, fmt.Errorf("%w: %d", ErrVehicleNotFound, id)
 	}
 
 	return vehicle, nil
 }
 
-// ExpandedAspiration provides a human-readable description of the vehicle's aspiration type
+// ExpandedAspiration provides a human-readable description of the vehicle's aspiration type.
 func (v *Vehicle) ExpandedAspiration() string {
 	switch v.Aspiration {
 	case "EV":

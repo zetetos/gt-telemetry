@@ -46,7 +46,12 @@ audit:
 ## lint: run linters
 .PHONY: lint
 lint:
-	golangci-lint run
+	golangci-lint run --max-issues-per-linter 0 --max-same-issues 0
+
+## lint/fix: run linter against the project and fix issues where possible
+.PHONY: lint/fix
+lint/fix:
+	golangci-lint run --fix
 
 
 # ==================================================================================== #

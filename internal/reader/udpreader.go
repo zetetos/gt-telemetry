@@ -1,17 +1,24 @@
 package reader
 
 import (
+	"errors"
 	"fmt"
 	"net"
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/zetetos/gt-telemetry/internal/utils"
+	"github.com/zetetos/gt-telemetry/internal/salsa20"
 	"github.com/zetetos/gt-telemetry/pkg/models"
 )
 
 const (
 	HeartbeatInterval = 10 * time.Second
+)
+
+var (
+	ErrFailedToReceiveTelemetry  = errors.New("failed to receive telemetry")
+	ErrNoDataReceived            = errors.New("no data received")
+	ErrFailedToDecipherTelemetry = errors.New("failed to decipher telemetry")
 )
 
 type UDPReader struct {
@@ -28,6 +35,7 @@ func NewUDPReader(host string, sendPort int, format models.Name, log zerolog.Log
 	log.Debug().Msg("creating UDP reader")
 
 	receivePort := sendPort + 1
+
 	addr, err := net.ResolveUDPAddr("udp", fmt.Sprintf(":%d", receivePort))
 	if err != nil {
 		return nil, fmt.Errorf("resolve UDP address: %w", err)
@@ -38,7 +46,7 @@ func NewUDPReader(host string, sendPort int, format models.Name, log zerolog.Log
 		return nil, fmt.Errorf("setup UDP listener %d: %w", receivePort, err)
 	}
 
-	r := UDPReader{
+	reader := UDPReader{
 		conn:      conn,
 		address:   host,
 		sendPort:  sendPort,
@@ -49,39 +57,41 @@ func NewUDPReader(host string, sendPort int, format models.Name, log zerolog.Log
 	}
 
 	ticker := time.NewTicker(HeartbeatInterval)
+
 	go func() {
 		// Initial heartbeat
-		err := r.sendHeartbeat()
+		err := reader.sendHeartbeat()
 		if err != nil {
-			r.log.Error().Err(err).Msg("send initial heartbeat")
+			reader.log.Error().Err(err).Msg("send initial heartbeat")
 		}
 
 		// Keep sending heartbeats periodically
 		for range ticker.C {
-			err := r.sendHeartbeat()
+			err := reader.sendHeartbeat()
 			if err != nil {
-				r.log.Error().Err(err).Msg("send heartbeat")
+				reader.log.Error().Err(err).Msg("send heartbeat")
 			}
 		}
 	}()
 
-	return &r, nil
+	return &reader, nil
 }
 
 func (r *UDPReader) Read() (int, []byte, error) {
 	buffer := make([]byte, 4096)
+
 	bufLen, _, err := r.conn.ReadFromUDP(buffer)
 	if err != nil {
-		return 0, buffer, fmt.Errorf("failed to receive telemetry: %s", err.Error())
+		return 0, buffer, fmt.Errorf("%w: %s", ErrFailedToReceiveTelemetry, err.Error())
 	}
 
 	if len(buffer[:bufLen]) == 0 {
-		return 0, buffer, fmt.Errorf("no data received")
+		return 0, buffer, ErrNoDataReceived
 	}
 
-	decipheredPacket, err := utils.Salsa20Decode(r.ivSeed, buffer[:bufLen])
+	decipheredPacket, err := salsa20.Decode(r.ivSeed, buffer[:bufLen])
 	if err != nil {
-		return 0, buffer, fmt.Errorf("failed to decipher telemetry: %s", err.Error())
+		return 0, buffer, fmt.Errorf("%w: %s", ErrFailedToDecipherTelemetry, err.Error())
 	}
 
 	return bufLen, decipheredPacket, nil
@@ -101,6 +111,7 @@ func (r *UDPReader) sendHeartbeat() error {
 	if err != nil {
 		return fmt.Errorf("send UDP heartbeat: %w", err)
 	}
+
 	err = r.conn.SetReadDeadline(time.Now().Add(HeartbeatInterval))
 	if err != nil {
 		return fmt.Errorf("set read deadline: %w", err)

@@ -3,6 +3,7 @@ package gttelemetry
 import (
 	"bytes"
 	"compress/gzip"
+	"errors"
 	"fmt"
 	"io"
 	"net"
@@ -20,6 +21,13 @@ import (
 	"github.com/zetetos/gt-telemetry/pkg/circuits"
 	"github.com/zetetos/gt-telemetry/pkg/models"
 	"github.com/zetetos/gt-telemetry/pkg/vehicles"
+)
+
+var (
+	ErrInvalidURLScheme           = errors.New("invalid URL scheme")
+	ErrRecordingAlreadyInProgress = errors.New("recording already in progress")
+	ErrUnsupportedFileExtension   = errors.New("unsupported file extension, use either .gtr or .gtz")
+	ErrNoRecordingInProgress      = errors.New("no recording in progress")
 )
 
 type statistics struct {
@@ -55,7 +63,7 @@ type Client struct {
 	DecipheredPacket []byte
 	Finished         bool
 	Statistics       *statistics
-	Telemetry        *transformer
+	Telemetry        *Transformer
 	CircuitDB        *circuits.CircuitDB
 
 	// Recording state
@@ -93,6 +101,7 @@ func New(opts Options) (*Client, error) {
 			zerolog.SetGlobalLevel(zerolog.WarnLevel)
 		default:
 			opts.LogLevel = "warn"
+
 			zerolog.SetGlobalLevel(zerolog.WarnLevel)
 			log.Warn().Str("log_level", opts.LogLevel).Msg("unknown log level, setting level to warn")
 		}
@@ -107,8 +116,10 @@ func New(opts Options) (*Client, error) {
 	}
 
 	var circuitsJSON []byte
+
 	if opts.CircuitDB != "" {
 		var err error
+
 		circuitsJSON, err = os.ReadFile(opts.CircuitDB)
 		if err != nil {
 			return nil, fmt.Errorf("reading circuit DB from file: %w", err)
@@ -121,8 +132,10 @@ func New(opts Options) (*Client, error) {
 	}
 
 	var vehiclesJSON []byte
+
 	if opts.VehicleDB != "" {
 		var err error
+
 		vehiclesJSON, err = os.ReadFile(opts.VehicleDB)
 		if err != nil {
 			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
@@ -170,10 +183,12 @@ func (c *Client) Run() (err error, recoverable bool) {
 	switch sourceURL.Scheme {
 	case "udp":
 		host, portStr, _ := net.SplitHostPort(sourceURL.Host)
+
 		port, err := strconv.Atoi(portStr)
 		if err != nil {
 			return fmt.Errorf("parse URL port: %w", err), false
 		}
+
 		telemetryReader, err = reader.NewUDPReader(host, port, c.format, c.log)
 		if err != nil {
 			return fmt.Errorf("setup UDP reader: %w", err), true
@@ -184,7 +199,7 @@ func (c *Client) Run() (err error, recoverable bool) {
 			return fmt.Errorf("setup file reader: %w", err), false
 		}
 	default:
-		return fmt.Errorf("invalid URL scheme %q", sourceURL.Scheme), false
+		return fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme), false
 	}
 
 	rawTelemetry := telemetry.NewGranTurismoTelemetry()
@@ -224,6 +239,7 @@ readTelemetry:
 				if err.Error() == "EOF" {
 					break parseTelemetry
 				}
+
 				c.log.Error().Err(err).Msg("failed to parse telemetry")
 				c.Statistics.PacketsInvalid++
 			}
@@ -241,49 +257,6 @@ readTelemetry:
 	}
 }
 
-func (c *Client) collectStats() {
-	if !c.Statistics.enabled {
-		return
-	}
-
-	c.Statistics.PacketsTotal++
-
-	if c.Statistics.packetIDLast != c.Telemetry.SequenceID() {
-		c.Statistics.PacketSize, _ = c.Telemetry.RawTelemetry.PacketSize()
-
-		if c.Statistics.packetIDLast == 0 {
-			c.Statistics.packetIDLast = c.Telemetry.SequenceID()
-			return
-		}
-
-		c.Statistics.DecodeTimeAvg = (c.Statistics.DecodeTimeAvg + c.Statistics.decodeTimeLast) / 2
-		if c.Statistics.decodeTimeLast > c.Statistics.DecodeTimeMax {
-			c.Statistics.DecodeTimeMax = c.Statistics.decodeTimeLast
-		}
-
-		delta := int(c.Telemetry.SequenceID() - c.Statistics.packetIDLast)
-		if delta > 1 {
-			c.log.Warn().Int("count", delta-1).Msg("packets dropped")
-			c.Statistics.PacketsDropped += int(delta - 1)
-		} else if delta < 0 {
-			c.log.Warn().Int("count", 1).Msg("packets delayed")
-		}
-
-		c.Statistics.packetIDLast = c.Telemetry.SequenceID()
-
-		if c.Telemetry.SequenceID()%10 == 0 {
-			rate := time.Since(c.Statistics.packetRateLast)
-			c.Statistics.PacketRateCurrent = int(10 / rate.Seconds())
-			c.Statistics.packetRateLast = time.Now()
-			c.Statistics.PacketRateAvg = (c.Statistics.PacketRateAvg + c.Statistics.PacketRateCurrent) / 2
-			if c.Statistics.PacketRateCurrent > c.Statistics.PacketRateMax {
-				c.Statistics.PacketRateMax = c.Statistics.PacketRateCurrent
-			}
-		}
-	}
-
-}
-
 // StartRecording starts recording telemetry data to the specified file path.
 // Supports both plain (.gtr) and compressed (.gtz) formats based on file extension.
 func (c *Client) StartRecording(filePath string) error {
@@ -291,7 +264,7 @@ func (c *Client) StartRecording(filePath string) error {
 	defer c.recordingMutex.Unlock()
 
 	if c.isRecording {
-		return fmt.Errorf("recording already in progress")
+		return ErrRecordingAlreadyInProgress
 	}
 
 	// Create the file
@@ -302,14 +275,17 @@ func (c *Client) StartRecording(filePath string) error {
 
 	// Determine format based on file extension
 	var buffer io.Writer
+
 	fileExt := filePath[len(filePath)-3:]
 	switch fileExt {
 	case "gtz":
 		gzipWriter, err := gzip.NewWriterLevel(file, gzip.BestCompression)
 		if err != nil {
 			file.Close()
+
 			return fmt.Errorf("failed to create gzip writer: %w", err)
 		}
+
 		gzipWriter.Comment = "Gran Turismo Telemetry Recording"
 		buffer = gzipWriter
 		c.recordingFile = &gzipFileWrapper{file: file, gzipWriter: gzipWriter}
@@ -318,7 +294,8 @@ func (c *Client) StartRecording(filePath string) error {
 		c.recordingFile = file
 	default:
 		file.Close()
-		return fmt.Errorf("unsupported file extension %q, use either .gtr or .gtz", fileExt)
+
+		return fmt.Errorf("%w: %q", ErrUnsupportedFileExtension, fileExt)
 	}
 
 	c.recordingBuffer = buffer
@@ -335,12 +312,14 @@ func (c *Client) StopRecording() error {
 	defer c.recordingMutex.Unlock()
 
 	if !c.isRecording {
-		return fmt.Errorf("no recording in progress")
+		return ErrNoRecordingInProgress
 	}
 
 	// Flush and close the file
-	if err := c.recordingFile.Close(); err != nil {
+	err := c.recordingFile.Close()
+	if err != nil {
 		c.log.Error().Err(err).Msg("error closing recording file")
+
 		return fmt.Errorf("failed to close recording file: %w", err)
 	}
 
@@ -380,7 +359,7 @@ func (c *Client) recordPacket() {
 	}
 }
 
-// gzipFileWrapper wraps a gzip writer and file to handle proper closing
+// gzipFileWrapper wraps a gzip writer and file to handle proper closing.
 type gzipFileWrapper struct {
 	file       *os.File
 	gzipWriter *gzip.Writer
@@ -391,11 +370,56 @@ func (g *gzipFileWrapper) Write(p []byte) (n int, err error) {
 }
 
 func (g *gzipFileWrapper) Close() error {
-	if err := g.gzipWriter.Close(); err != nil {
+	err := g.gzipWriter.Close()
+	if err != nil {
 		g.file.Close()
 
 		return err
 	}
 
 	return g.file.Close()
+}
+
+func (c *Client) collectStats() {
+	if !c.Statistics.enabled {
+		return
+	}
+
+	c.Statistics.PacketsTotal++
+
+	if c.Statistics.packetIDLast != c.Telemetry.SequenceID() {
+		c.Statistics.PacketSize, _ = c.Telemetry.RawTelemetry.PacketSize()
+
+		if c.Statistics.packetIDLast == 0 {
+			c.Statistics.packetIDLast = c.Telemetry.SequenceID()
+
+			return
+		}
+
+		c.Statistics.DecodeTimeAvg = (c.Statistics.DecodeTimeAvg + c.Statistics.decodeTimeLast) / 2
+		if c.Statistics.decodeTimeLast > c.Statistics.DecodeTimeMax {
+			c.Statistics.DecodeTimeMax = c.Statistics.decodeTimeLast
+		}
+
+		delta := int(c.Telemetry.SequenceID() - c.Statistics.packetIDLast)
+		if delta > 1 {
+			c.log.Warn().Int("count", delta-1).Msg("packets dropped")
+			c.Statistics.PacketsDropped += delta - 1
+		} else if delta < 0 {
+			c.log.Warn().Int("count", 1).Msg("packets delayed")
+		}
+
+		c.Statistics.packetIDLast = c.Telemetry.SequenceID()
+
+		if c.Telemetry.SequenceID()%10 == 0 {
+			rate := time.Since(c.Statistics.packetRateLast)
+			c.Statistics.PacketRateCurrent = int(10 / rate.Seconds())
+			c.Statistics.packetRateLast = time.Now()
+
+			c.Statistics.PacketRateAvg = (c.Statistics.PacketRateAvg + c.Statistics.PacketRateCurrent) / 2
+			if c.Statistics.PacketRateCurrent > c.Statistics.PacketRateMax {
+				c.Statistics.PacketRateMax = c.Statistics.PacketRateCurrent
+			}
+		}
+	}
 }
