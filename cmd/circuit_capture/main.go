@@ -25,18 +25,18 @@ const (
 )
 
 type CircuitCoordinates struct {
-	Circuit      []gtmodels.Coordinate `json:"circuit"`
-	StartingLine gtmodels.Coordinate   `json:"starting_line"`
+	Circuit      []gtmodels.Coordinate `json:"Circuit"`
+	StartingLine gtmodels.Coordinate   `json:"StartingLine"`
 }
 
 type CircuitData struct {
 	Schema        string             `json:"$schema"`
-	Name          string             `json:"name"`
-	VariationName string             `json:"variation_name"`
-	Default       bool               `json:"default"`
-	CountryCode   string             `json:"country"`
-	LengthMeters  int                `json:"length_meters"`
-	Coordinates   CircuitCoordinates `json:"coordinates"`
+	Name          string             `json:"Name"`
+	VariationName string             `json:"VariationName"`
+	Default       bool               `json:"Default"`
+	CountryCode   string             `json:"CountryCode"`
+	LengthMeters  int                `json:"LengthMeters"`
+	Coordinates   CircuitCoordinates `json:"Coordinates"`
 }
 
 // Config holds the application configuration
@@ -144,27 +144,26 @@ func (c *Config) validate() error {
 	return nil
 }
 
-// nameToID converts a circuit name to an ID
+// nameToID converts a circuit name to an ID using Go Pascal case.
 func nameToID(name string) string {
-	circuitID := strings.ToLower(name)
-	circuitID = strings.ReplaceAll(circuitID, " ", "_")
-	circuitID = strings.ReplaceAll(circuitID, "-", "_")
-	circuitID = strings.Map(func(r rune) rune {
-		if unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_' {
-			return r
-		}
-		return -1
-	}, circuitID)
+	words := strings.FieldsFunc(name, func(r rune) bool {
+		return !unicode.IsLetter(r) && !unicode.IsDigit(r)
+	})
 
-	// Remove multiple consecutive underscores
-	for strings.Contains(circuitID, "__") {
-		circuitID = strings.ReplaceAll(circuitID, "__", "_")
+	var result strings.Builder
+
+	for _, word := range words {
+		if len(word) > 0 {
+			runes := []rune(word)
+			result.WriteRune(unicode.ToUpper(runes[0]))
+
+			for i := 1; i < len(runes); i++ {
+				result.WriteRune(unicode.ToLower(runes[i]))
+			}
+		}
 	}
 
-	// Remove leading and trailing underscores
-	circuitID = strings.Trim(circuitID, "_")
-
-	return circuitID
+	return result.String()
 }
 
 // NewCircuitCapture creates a new circuit capture instance

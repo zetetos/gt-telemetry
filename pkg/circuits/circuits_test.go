@@ -284,13 +284,13 @@ func (suite *CircuitsTestSuite) TestNormaliseCircuitCoordinate() {
 	}
 }
 
-func (suite *CircuitsTestSuite) TestCoordinateToKey() {
+func (suite *CircuitsTestSuite) TestCoordinateNormToString() {
 	// Arrange
 	want := "x:100,y:200,z:300"
 	coordinate := models.CoordinateNorm{X: 100, Y: 200, Z: 300}
 
 	// Act
-	got := CoordinateNormToKey(coordinate)
+	got := coordinate.String()
 
 	// Assert
 	suite.Equal(want, got)
