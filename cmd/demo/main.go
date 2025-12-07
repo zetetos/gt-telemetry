@@ -12,7 +12,7 @@ import (
 
 func main() {
 	clientConfig := gttelemetry.Options{
-		// Source:       "file://data/replays/20251016.215307-circuit-de-spa-francorchamps-toyota-gr010-hybrid-21.gtz",
+		// Source:       "file://data/replays/demo.gtz",
 		Format:       gtmodels.Addendum2,
 		StatsEnabled: true,
 	}
