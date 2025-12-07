@@ -181,10 +181,10 @@ func loadVehicleDB(path string) (*vehicles.VehicleDB, error) {
 	return vehicleDB, nil
 }
 
-func (c *Client) Run() (err error, recoverable bool) {
+func (c *Client) Run() (recoverable bool, err error) {
 	sourceURL, err := url.Parse(c.source)
 	if err != nil {
-		return fmt.Errorf("parse source URL: %w", err), false
+		return false, fmt.Errorf("parse source URL: %w", err)
 	}
 
 	var telemetryReader reader.Reader
@@ -195,20 +195,20 @@ func (c *Client) Run() (err error, recoverable bool) {
 
 		port, err := strconv.Atoi(portStr)
 		if err != nil {
-			return fmt.Errorf("parse URL port: %w", err), false
+			return false, fmt.Errorf("parse URL port: %w", err)
 		}
 
 		telemetryReader, err = reader.NewUDPReader(host, port, c.format, c.log)
 		if err != nil {
-			return fmt.Errorf("setup UDP reader: %w", err), true
+			return true, fmt.Errorf("setup UDP reader: %w", err)
 		}
 	case "file":
 		telemetryReader, err = reader.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
 		if err != nil {
-			return fmt.Errorf("setup file reader: %w", err), false
+			return false, fmt.Errorf("setup file reader: %w", err)
 		}
 	default:
-		return fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme), false
+		return false, fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme)
 	}
 
 	rawTelemetry := telemetry.NewGranTurismoTelemetry()

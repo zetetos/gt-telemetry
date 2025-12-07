@@ -61,7 +61,7 @@ func createTelemetryClient() *gttelemetry.Client {
 func startTelemetryClient(client *gttelemetry.Client) {
 	go func() {
 		for {
-			err, recoverable := client.Run()
+			recoverable, err := client.Run()
 			if err != nil {
 				if recoverable {
 					log.Printf("Recoverable error: %s", err.Error())

@@ -209,7 +209,7 @@ func NewCircuitCapture(config *Config) (*CircuitCapture, error) {
 func (c *CircuitCapture) startTelemetry() {
 	go func() {
 		for {
-			err, recoverable := c.gt.Run()
+			recoverable, err := c.gt.Run()
 			if err != nil {
 				if recoverable {
 					log.Printf("GT client error (recoverable): %v", err)
