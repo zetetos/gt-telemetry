@@ -8,9 +8,7 @@ import (
 	"strconv"
 )
 
-var (
-	ErrVehicleNotFound = errors.New("no vehicle found with id")
-)
+var ErrVehicleNotFound = errors.New("no vehicle found with id")
 
 // Vehicle represents information about a specific vehicle.
 type Vehicle struct {

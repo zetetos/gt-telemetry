@@ -15,7 +15,6 @@ import (
 
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"github.com/rs/zerolog"
-
 	"github.com/zetetos/gt-telemetry/internal/reader"
 	"github.com/zetetos/gt-telemetry/internal/telemetry"
 	"github.com/zetetos/gt-telemetry/pkg/circuits"

@@ -434,7 +434,7 @@ func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) e
 		return fmt.Errorf("failed to marshal output: %w", err)
 	}
 
-	err = os.WriteFile(outputFile, outData, 0644) //nolint:gosec // File permission is acceptable for this use case
+	err = os.WriteFile(outputFile, outData, 0o644) //nolint:gosec // File permission is acceptable for this use case
 	if err != nil {
 		return fmt.Errorf("failed to write output: %w", err)
 	}

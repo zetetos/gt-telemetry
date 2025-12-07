@@ -151,7 +151,7 @@ func (c *Config) validate() error {
 	}
 
 	// Ensure output directory exists
-	err := os.MkdirAll(c.OutputDir, 0755)
+	err := os.MkdirAll(c.OutputDir, 0o755)
 	if err != nil {
 		return fmt.Errorf("failed to create output directory %s: %w", c.OutputDir, err)
 	}
@@ -322,7 +322,7 @@ func (c *CircuitCapture) processCapture() error {
 // saveCircuitData saves the captured circuit data to a JSON file.
 func (c *CircuitCapture) saveCircuitData(dropped int) error {
 	// Ensure output directory exists
-	err := os.MkdirAll(c.config.OutputDir, 0755)
+	err := os.MkdirAll(c.config.OutputDir, 0o755)
 	if err != nil {
 		return fmt.Errorf("failed to create output directory %s: %w", c.config.OutputDir, err)
 	}

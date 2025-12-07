@@ -76,6 +76,7 @@ func (suite *Salsa20TestSuite) TestValidSalsa20ContentReturnsDecodedData() {
 func magicPacketHeader() []byte {
 	return []byte{0x30, 0x53, 0x37, 0x47}
 }
+
 func validSalsa20Content() []byte {
 	return []byte{
 		0xf6, 0x37, 0x4a, 0x12, 0x43, 0x32, 0x23, 0xcf,
