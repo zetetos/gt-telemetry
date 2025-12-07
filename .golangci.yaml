@@ -44,14 +44,10 @@ linters:
             - github.com/zetetos/gt-telemetry
     lll:
       line-length: 180
-    # gomoddirectives:
-      # replace-allow-list:
-      #   - github.com/bwmarrin/discordgo # temporary until voice fix is merged
     tagliatelle:
       case:
         rules:
           json: goPascal
-
 
 formatters:
   enable:
