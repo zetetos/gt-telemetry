@@ -18,7 +18,6 @@ const packetInterval = (1000 / 60) * time.Millisecond
 var (
 	ErrFilenameTooShort         = errors.New("filename too short")
 	ErrUnsupportedFileExtension = errors.New("unsupported file extension")
-	ErrEOF                      = errors.New("EOF")
 )
 
 // FileReader reads GT7 replay files packet by packet.
@@ -94,31 +93,55 @@ func getFileReader(file string, fileHandle *os.File) (io.Reader, error) {
 	}
 }
 
-// packetSplitFunc is the bufio.SplitFunc for packet splitting.
+// packetSplitFunc is the bufio.SplitFunc for splitting packets on magic header sequence boundaries.
+// Packets are delimited by a 4-byte header (0x30 0x53 0x37 0x47).
+// This function extracts complete packets by finding the boundary between consecutive headers.
 func packetSplitFunc(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	headerLen := len(PacketHeader())
-	if len(data) >= headerLen && bytes.Equal(data[:headerLen], PacketHeader()) {
-		return headerLen, []byte{}, nil
-	}
+	header := packetHeaderBytes()
+	headerLen := len(header)
 
-	if idx := bytes.Index(data, PacketHeader()); idx != -1 {
-		packet := append([]byte{}, PacketHeader()...)
-		packet = append(packet, data[:idx]...)
-
-		return len(packet), packet, nil
-	}
-
-	if atEOF {
-		if len(data) == 0 {
-			return 0, nil, ErrEOF
+	// Data available is less than header length
+	if len(data) < headerLen {
+		if atEOF {
+			return len(data), nil, nil // Discard incomplete data at EOF
 		}
 
-		packet := append([]byte{}, PacketHeader()...)
-		packet = append(packet, data...)
-
-		return len(packet), packet, nil
+		return 0, nil, nil // Request more data
 	}
 
+	// Check if data starts with a valid header
+	startsWithHeader := bytes.Equal(data[:headerLen], header)
+
+	if !startsWithHeader {
+		// Scan forward to find a header
+		if idx := bytes.Index(data, header); idx != -1 {
+			return idx, nil, nil // Skip junk bytes
+		}
+
+		// No header found in current data
+		if atEOF {
+			return len(data), nil, nil // Discard all junk up to EOF
+		}
+
+		return 0, nil, nil // Request more data
+	}
+
+	// Data starts with a header - find where this packet ends (next header position)
+	nextHeaderIdx := bytes.Index(data[headerLen:], header)
+
+	// Next header located - return packet data between current and next header
+	if nextHeaderIdx != -1 {
+		packetLen := headerLen + nextHeaderIdx
+
+		return packetLen, data[:packetLen], nil
+	}
+
+	// Return remaining data at end of file
+	if atEOF {
+		return len(data), data, nil
+	}
+
+	// Request more data to find the next header
 	return 0, nil, nil
 }
 
@@ -131,7 +154,12 @@ func (r *FileReader) Read() (int, []byte, error) {
 
 	ok := r.fileContent.Scan()
 	if !ok {
-		return 0, nil, r.fileContent.Err()
+		err := r.fileContent.Err()
+		if err != nil {
+			return 0, nil, err
+		}
+		// Scanner finished with no error - EOF reached
+		return 0, nil, io.EOF
 	}
 
 	packet := r.fileContent.Bytes()

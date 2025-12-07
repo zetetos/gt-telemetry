@@ -334,6 +334,13 @@ func (c *Client) setupTelemetryReader(sourceURL *url.URL) (reader.Reader, bool, 
 // handleReadError processes errors from telemetryReader.Read.
 func (c *Client) handleReadError(err error) (shouldContinue bool, finished bool) {
 	if err != nil {
+		if errors.Is(err, io.EOF) {
+			c.Finished = true
+			c.log.Info().Msg("reached end of telemetry data")
+
+			return false, true
+		}
+
 		if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
 			c.Finished = true
 
@@ -361,26 +368,18 @@ func (c *Client) handleEmptyBuffer(buffer []byte, bufLen int) bool {
 
 // processTelemetry parses and processes telemetry packets.
 func (c *Client) processTelemetry(rawTelemetry *telemetry.GranTurismoTelemetry, stream *kaitai.Stream, decodeStart time.Time) {
-	for {
-		err := rawTelemetry.Read(stream, nil, nil)
-		if err != nil {
-			if err.Error() == "EOF" {
-				break
-			}
+	err := rawTelemetry.Read(stream, nil, nil)
+	if err != nil {
+		c.Statistics.PacketsInvalid++
+		c.log.Error().Err(err).Msg("failed to parse telemetry")
 
-			c.Statistics.PacketsInvalid++
-
-			c.log.Error().Err(err).Msg("failed to parse telemetry")
-		}
-
-		c.Telemetry.RawTelemetry = *rawTelemetry
-		c.Statistics.decodeTimeLast = time.Since(decodeStart)
-		c.collectStats()
-		c.recordPacket()
-
-		timer := time.NewTimer(4 * time.Millisecond)
-		<-timer.C
+		return
 	}
+
+	c.Telemetry.RawTelemetry = *rawTelemetry
+	c.Statistics.decodeTimeLast = time.Since(decodeStart)
+	c.collectStats()
+	c.recordPacket()
 }
 
 // recordPacket writes the current packet to the recording file if recording is active.

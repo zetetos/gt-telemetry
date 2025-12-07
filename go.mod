@@ -8,7 +8,7 @@ require (
 	github.com/dop251/goja v0.0.0-20251201205617-2bb4c724c0f9
 	github.com/fatih/color v1.18.0
 	github.com/gocarina/gocsv v0.0.0-20240520201108-78e41c74b4b1
-	github.com/kaitai-io/kaitai_struct_go_runtime v0.10.0
+	github.com/kaitai-io/kaitai_struct_go_runtime v0.11.0
 	github.com/rs/zerolog v1.34.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/stretchr/testify v1.11.1

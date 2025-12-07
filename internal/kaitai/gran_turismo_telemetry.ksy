@@ -205,7 +205,6 @@ types:
           any-of:
           - 810760007
           - 1194808112
-
   vector:
     doc: 3D direction vector
     seq:

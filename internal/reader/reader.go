@@ -5,7 +5,7 @@ type Reader interface {
 	Close() error
 }
 
-// PacketHeader returns the GT packet header bytes.
-func PacketHeader() []byte {
+// packetHeaderBytes returns the GT packet header bytes.
+func packetHeaderBytes() []byte {
 	return []byte{0x30, 0x53, 0x37, 0x47}
 }
