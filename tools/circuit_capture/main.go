@@ -42,7 +42,7 @@ type CircuitData struct {
 	Name          string             `json:"Name"`
 	VariationName string             `json:"VariationName"`
 	Default       bool               `json:"Default"`
-	CountryCode   string             `json:"CountryCode"`
+	CountryCode   string             `json:"Country"`
 	LengthMeters  int                `json:"LengthMeters"`
 	Coordinates   CircuitCoordinates `json:"Coordinates"`
 }

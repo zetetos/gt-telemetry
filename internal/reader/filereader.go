@@ -21,6 +21,7 @@ var (
 	ErrEOF                      = errors.New("EOF")
 )
 
+// FileReader reads GT7 replay files packet by packet.
 type FileReader struct {
 	fileContent *bufio.Scanner
 	lastRead    time.Time
@@ -28,12 +29,11 @@ type FileReader struct {
 	closer      func() error
 }
 
+// NewFileReader creates a new FileReader for the specified GT7 replay file.
 func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
-	_, err := os.Stat(file)
-	if os.IsNotExist(err) {
-		return nil, fmt.Errorf("file does not exist: %w", err)
-	} else if err != nil {
-		return nil, fmt.Errorf("stat file: %w", err)
+	err := validateFile(file)
+	if err != nil {
+		return nil, err
 	}
 
 	fileHandle, err := os.Open(file)
@@ -41,68 +41,15 @@ func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 		return nil, fmt.Errorf("open file: %w", err)
 	}
 
-	if len(file) < 3 {
-		return nil, ErrFilenameTooShort
-	}
+	reader, err := getFileReader(file, fileHandle)
+	if err != nil {
+		fileHandle.Close()
 
-	var reader io.Reader
-
-	fileExt := file[len(file)-3:]
-	switch fileExt {
-	case "gtz":
-		reader, err = gzip.NewReader(fileHandle)
-		if err != nil {
-			return nil, fmt.Errorf("create gzip reader: %w", err)
-		}
-	case "gtr":
-		reader = fileHandle
-	default:
-		return nil, fmt.Errorf("%w: %s", ErrUnsupportedFileExtension, fileExt)
+		return nil, err
 	}
 
 	scanner := bufio.NewScanner(reader)
-
-	// Usually splits on a delimiter at the end of a token and drops the delimiter. However since
-	// the delimiter is a magic header at the beginning of a token it is re-added to the beginning
-	// of the token and the length updated accordingly.
-	splitFunc := func(data []byte, atEOF bool) (advance int, token []byte, err error) {
-		// Aligned packet starting with a packet header, usually the first bytes of the file on
-		// the first read.
-		// Advances the scanner bhy the magic header length and returns empty bytes.
-		headerLen := len(PacketHeader())
-		if bytes.Equal(data[:headerLen], PacketHeader()) {
-			return headerLen, []byte{}, nil
-		}
-
-		// Non-aligned packet with magic header prefix removed.
-		// Returns all data up to the next magic header and also prefixes the data with the
-		// magic header to create a valid telemetry packet.
-		if bytes.Contains(data, PacketHeader()) {
-			packetLen := bytes.Index(data, PacketHeader())
-
-			packet := append([]byte{}, PacketHeader()...)
-			packet = append(packet, data[:packetLen]...)
-
-			return len(packet), packet, nil
-		}
-
-		// When emd of file reached, assume that the packet is complete
-		// and return the data with the magic header prefixed.
-		if atEOF {
-			if len(data) == 0 {
-				return 0, nil, ErrEOF
-			}
-
-			packet := append([]byte{}, PacketHeader()...)
-			packet = append(packet, data...)
-
-			return len(packet), packet, nil
-		}
-
-		return 0, nil, nil
-	}
-
-	scanner.Split(splitFunc)
+	scanner.Split(packetSplitFunc)
 
 	return &FileReader{
 		fileContent: scanner,
@@ -112,6 +59,70 @@ func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 	}, nil
 }
 
+// validateFile checks file existence and length.
+func validateFile(file string) error {
+	_, err := os.Stat(file)
+	if os.IsNotExist(err) {
+		return fmt.Errorf("file does not exist: %w", err)
+	} else if err != nil {
+		return fmt.Errorf("stat file: %w", err)
+	}
+
+	if len(file) < 3 {
+		return ErrFilenameTooShort
+	}
+
+	return nil
+}
+
+// getFileReader returns the appropriate reader based on file extension.
+func getFileReader(file string, fileHandle *os.File) (io.Reader, error) {
+	fileExt := file[len(file)-3:]
+
+	switch fileExt {
+	case "gtz":
+		reader, err := gzip.NewReader(fileHandle)
+		if err != nil {
+			return nil, fmt.Errorf("create gzip reader: %w", err)
+		}
+
+		return reader, nil
+	case "gtr":
+		return fileHandle, nil
+	default:
+		return nil, fmt.Errorf("%w: %s", ErrUnsupportedFileExtension, fileExt)
+	}
+}
+
+// packetSplitFunc is the bufio.SplitFunc for packet splitting.
+func packetSplitFunc(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	headerLen := len(PacketHeader())
+	if len(data) >= headerLen && bytes.Equal(data[:headerLen], PacketHeader()) {
+		return headerLen, []byte{}, nil
+	}
+
+	if idx := bytes.Index(data, PacketHeader()); idx != -1 {
+		packet := append([]byte{}, PacketHeader()...)
+		packet = append(packet, data[:idx]...)
+
+		return len(packet), packet, nil
+	}
+
+	if atEOF {
+		if len(data) == 0 {
+			return 0, nil, ErrEOF
+		}
+
+		packet := append([]byte{}, PacketHeader()...)
+		packet = append(packet, data...)
+
+		return len(packet), packet, nil
+	}
+
+	return 0, nil, nil
+}
+
+// Read reads the next packet from the file, simulating real-time intervals.
 func (r *FileReader) Read() (int, []byte, error) {
 	if r.lastRead.IsZero() {
 		r.log.Debug().Msg("reset last read time")
@@ -141,6 +152,7 @@ func (r *FileReader) Read() (int, []byte, error) {
 	return len(packet), packet, nil
 }
 
+// Close closes the underlying file reader.
 func (r *FileReader) Close() error {
 	return nil
 }

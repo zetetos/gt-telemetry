@@ -74,38 +74,7 @@ type Client struct {
 }
 
 func New(opts Options) (*Client, error) {
-	var log zerolog.Logger
-	if opts.Logger != nil {
-		log = *opts.Logger
-	} else {
-		log = zerolog.New(os.Stdout).With().Timestamp().Logger()
-
-		switch opts.LogLevel {
-		case "trace":
-			zerolog.SetGlobalLevel(zerolog.TraceLevel)
-		case "debug":
-			zerolog.SetGlobalLevel(zerolog.DebugLevel)
-		case "info":
-			zerolog.SetGlobalLevel(zerolog.InfoLevel)
-		case "warn":
-			zerolog.SetGlobalLevel(zerolog.WarnLevel)
-		case "error":
-			zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-		case "fatal":
-			zerolog.SetGlobalLevel(zerolog.FatalLevel)
-		case "panic":
-			zerolog.SetGlobalLevel(zerolog.PanicLevel)
-		case "off":
-			zerolog.SetGlobalLevel(zerolog.Disabled)
-		case "":
-			zerolog.SetGlobalLevel(zerolog.WarnLevel)
-		default:
-			opts.LogLevel = "warn"
-
-			zerolog.SetGlobalLevel(zerolog.WarnLevel)
-			log.Warn().Str("log_level", opts.LogLevel).Msg("unknown log level, setting level to warn")
-		}
-	}
+	log := setupLogger(opts)
 
 	if opts.Source == "" {
 		opts.Source = "udp://255.255.255.255:33739"
@@ -115,36 +84,14 @@ func New(opts Options) (*Client, error) {
 		opts.Format = models.Addendum2
 	}
 
-	var circuitsJSON []byte
-
-	if opts.CircuitDB != "" {
-		var err error
-
-		circuitsJSON, err = os.ReadFile(opts.CircuitDB)
-		if err != nil {
-			return nil, fmt.Errorf("reading circuit DB from file: %w", err)
-		}
-	}
-
-	circuitDB, err := circuits.NewDB(circuitsJSON)
+	circuitDB, err := loadCircuitDB(opts.CircuitDB)
 	if err != nil {
-		return nil, fmt.Errorf("setting up new circuit database: %w", err)
+		return nil, err
 	}
 
-	var vehiclesJSON []byte
-
-	if opts.VehicleDB != "" {
-		var err error
-
-		vehiclesJSON, err = os.ReadFile(opts.VehicleDB)
-		if err != nil {
-			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
-		}
-	}
-
-	vehicleDB, err := vehicles.NewDB(vehiclesJSON)
+	vehicleDB, err := loadVehicleDB(opts.VehicleDB)
 	if err != nil {
-		return nil, fmt.Errorf("setting up new vehicle database: %w", err)
+		return nil, err
 	}
 
 	return &Client{
@@ -170,6 +117,68 @@ func New(opts Options) (*Client, error) {
 		Telemetry: NewTransformer(vehicleDB),
 		CircuitDB: circuitDB,
 	}, nil
+}
+
+// setupLogger initializes the zerolog.Logger based on options.
+func setupLogger(opts Options) zerolog.Logger {
+	if opts.Logger != nil {
+		return *opts.Logger
+	}
+
+	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
+
+	logLevel, err := zerolog.ParseLevel(opts.LogLevel)
+	if err != nil {
+		logLevel = zerolog.WarnLevel
+
+		log.Warn().Str("log_level", opts.LogLevel).Msg("unknown log level, setting level to warn")
+	}
+
+	zerolog.SetGlobalLevel(logLevel)
+
+	return log
+}
+
+// loadCircuitDB loads the circuit database from file if provided.
+func loadCircuitDB(path string) (*circuits.CircuitDB, error) {
+	var circuitsJSON []byte
+
+	var err error
+
+	if path != "" {
+		circuitsJSON, err = os.ReadFile(path)
+		if err != nil {
+			return nil, fmt.Errorf("reading circuit DB from file: %w", err)
+		}
+	}
+
+	circuitDB, err := circuits.NewDB(circuitsJSON)
+	if err != nil {
+		return nil, fmt.Errorf("setting up new circuit database: %w", err)
+	}
+
+	return circuitDB, nil
+}
+
+// loadVehicleDB loads the vehicle database from file if provided.
+func loadVehicleDB(path string) (*vehicles.VehicleDB, error) {
+	var vehiclesJSON []byte
+
+	var err error
+
+	if path != "" {
+		vehiclesJSON, err = os.ReadFile(path)
+		if err != nil {
+			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
+		}
+	}
+
+	vehicleDB, err := vehicles.NewDB(vehiclesJSON)
+	if err != nil {
+		return nil, fmt.Errorf("setting up new vehicle database: %w", err)
+	}
+
+	return vehicleDB, nil
 }
 
 func (c *Client) Run() (err error, recoverable bool) {
@@ -365,10 +374,12 @@ type gzipFileWrapper struct {
 	gzipWriter *gzip.Writer
 }
 
+// Write writes data to the gzip writer.
 func (g *gzipFileWrapper) Write(p []byte) (n int, err error) {
 	return g.gzipWriter.Write(p)
 }
 
+// Close closes the gzip writer and the underlying file.
 func (g *gzipFileWrapper) Close() error {
 	err := g.gzipWriter.Close()
 	if err != nil {
@@ -380,6 +391,7 @@ func (g *gzipFileWrapper) Close() error {
 	return g.file.Close()
 }
 
+// collectStats updates the telemetry statistics based on the latest packet.
 func (c *Client) collectStats() {
 	if !c.Statistics.enabled {
 		return
@@ -387,39 +399,41 @@ func (c *Client) collectStats() {
 
 	c.Statistics.PacketsTotal++
 
-	if c.Statistics.packetIDLast != c.Telemetry.SequenceID() {
-		c.Statistics.PacketSize, _ = c.Telemetry.RawTelemetry.PacketSize()
+	if c.Statistics.packetIDLast == c.Telemetry.SequenceID() {
+		return
+	}
 
-		if c.Statistics.packetIDLast == 0 {
-			c.Statistics.packetIDLast = c.Telemetry.SequenceID()
+	c.Statistics.PacketSize, _ = c.Telemetry.RawTelemetry.PacketSize()
 
-			return
-		}
-
-		c.Statistics.DecodeTimeAvg = (c.Statistics.DecodeTimeAvg + c.Statistics.decodeTimeLast) / 2
-		if c.Statistics.decodeTimeLast > c.Statistics.DecodeTimeMax {
-			c.Statistics.DecodeTimeMax = c.Statistics.decodeTimeLast
-		}
-
-		delta := int(c.Telemetry.SequenceID() - c.Statistics.packetIDLast)
-		if delta > 1 {
-			c.log.Warn().Int("count", delta-1).Msg("packets dropped")
-			c.Statistics.PacketsDropped += delta - 1
-		} else if delta < 0 {
-			c.log.Warn().Int("count", 1).Msg("packets delayed")
-		}
-
+	if c.Statistics.packetIDLast == 0 {
 		c.Statistics.packetIDLast = c.Telemetry.SequenceID()
 
-		if c.Telemetry.SequenceID()%10 == 0 {
-			rate := time.Since(c.Statistics.packetRateLast)
-			c.Statistics.PacketRateCurrent = int(10 / rate.Seconds())
-			c.Statistics.packetRateLast = time.Now()
+		return
+	}
 
-			c.Statistics.PacketRateAvg = (c.Statistics.PacketRateAvg + c.Statistics.PacketRateCurrent) / 2
-			if c.Statistics.PacketRateCurrent > c.Statistics.PacketRateMax {
-				c.Statistics.PacketRateMax = c.Statistics.PacketRateCurrent
-			}
+	c.Statistics.DecodeTimeAvg = (c.Statistics.DecodeTimeAvg + c.Statistics.decodeTimeLast) / 2
+	if c.Statistics.decodeTimeLast > c.Statistics.DecodeTimeMax {
+		c.Statistics.DecodeTimeMax = c.Statistics.decodeTimeLast
+	}
+
+	delta := int(c.Telemetry.SequenceID() - c.Statistics.packetIDLast)
+	if delta > 1 {
+		c.log.Warn().Int("count", delta-1).Msg("packets dropped")
+		c.Statistics.PacketsDropped += delta - 1
+	} else if delta < 0 {
+		c.log.Warn().Int("count", 1).Msg("packets delayed")
+	}
+
+	c.Statistics.packetIDLast = c.Telemetry.SequenceID()
+
+	if c.Telemetry.SequenceID()%10 == 0 {
+		rate := time.Since(c.Statistics.packetRateLast)
+		c.Statistics.PacketRateCurrent = int(10 / rate.Seconds())
+		c.Statistics.packetRateLast = time.Now()
+
+		c.Statistics.PacketRateAvg = (c.Statistics.PacketRateAvg + c.Statistics.PacketRateCurrent) / 2
+		if c.Statistics.PacketRateCurrent > c.Statistics.PacketRateMax {
+			c.Statistics.PacketRateMax = c.Statistics.PacketRateCurrent
 		}
 	}
 }

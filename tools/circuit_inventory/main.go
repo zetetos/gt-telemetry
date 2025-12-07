@@ -139,78 +139,83 @@ func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Sche
 			return nil
 		}
 
-		// // Ignore the schema file if it exists in the same dir
+		// Ignore the schema file and output file if present
 		if strings.HasSuffix(fileInfo.Name(), "circuit-schema.json") || strings.HasSuffix(fileInfo.Name(), filepath.Base(outputFile)) {
 			return nil
 		}
 
-		data, err := os.ReadFile(path)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to read %s: %v\n", path, err)
-
-			return nil
-		}
-
-		var circuitData CircuitData
-
-		err = json.Unmarshal(data, &circuitData)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to parse %s: %v\n", path, err)
-
-			return nil
-		}
-
-		// Validate against JSON schema
-		var jsonData interface{}
-
-		err = json.Unmarshal(data, &jsonData)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to parse JSON for validation %s: %v\n", path, err)
-
-			return nil
-		}
-
-		err = schema.Validate(jsonData)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Schema validation failed for %s: %v\n", path, err)
-
-			return nil
-		}
-
-		circuitID := nameToID(circuitData.VariationName)
-
-		// Track raw coordinate count
-		processed.RawCoordinateCounts[circuitID] = len(circuitData.Coordinates.Circuit)
-
-		// Build coordinate map
-		for _, coordinate := range circuitData.Coordinates.Circuit {
-			coordinateNorm := gtcircuits.NormaliseCircuitCoordinate(coordinate)
-			key := coordinateNorm.String()
-
-			if !slices.Contains(processed.CoordinateMap[key], circuitID) {
-				processed.CoordinateMap[key] = append(processed.CoordinateMap[key], circuitID)
-			}
-		}
-
-		// Store starting line for analysis
-		startingLineNorm := gtcircuits.NormaliseStartLineCoordinate(circuitData.Coordinates.StartingLine)
-		processed.CircuitStartLines[circuitID] = startingLineNorm
-
-		// Store circuit info
-		processed.CircuitsMap[circuitID] = map[string]any{
-			"id":        circuitID,
-			"name":      circuitData.Name,
-			"variation": circuitData.VariationName,
-			"default":   circuitData.Default,
-			"country":   circuitData.Country,
-			"length":    uint16(circuitData.LengthMeters), //nolint:gosec // Length will always be positive and less than max uint16
-			"startline": startingLineNorm,
-		}
-
-		return nil
+		return processSingleCircuitFile(path, processed, schema)
 	})
 
 	return processed, err
+}
+
+// processSingleCircuitFile processes a single circuit JSON file and updates the processed result.
+func processSingleCircuitFile(path string, processed *CircuitProcessingResult, schema *jsonschema.Schema) error {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to read %s: %v\n", path, err)
+
+		return nil
+	}
+
+	var circuitData CircuitData
+
+	err = json.Unmarshal(data, &circuitData)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to parse %s: %v\n", path, err)
+
+		return nil
+	}
+
+	// Validate against JSON schema
+	var jsonData interface{}
+
+	err = json.Unmarshal(data, &jsonData)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to parse JSON for validation %s: %v\n", path, err)
+
+		return nil
+	}
+
+	err = schema.Validate(jsonData)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Schema validation failed for %s: %v\n", path, err)
+
+		return nil
+	}
+
+	circuitID := nameToID(circuitData.VariationName)
+
+	// Track raw coordinate count
+	processed.RawCoordinateCounts[circuitID] = len(circuitData.Coordinates.Circuit)
+
+	// Build coordinate map
+	for _, coordinate := range circuitData.Coordinates.Circuit {
+		coordinateNorm := gtcircuits.NormaliseCircuitCoordinate(coordinate)
+		key := coordinateNorm.String()
+
+		if !slices.Contains(processed.CoordinateMap[key], circuitID) {
+			processed.CoordinateMap[key] = append(processed.CoordinateMap[key], circuitID)
+		}
+	}
+
+	// Store starting line for analysis
+	startingLineNorm := gtcircuits.NormaliseStartLineCoordinate(circuitData.Coordinates.StartingLine)
+	processed.CircuitStartLines[circuitID] = startingLineNorm
+
+	// Store circuit info
+	processed.CircuitsMap[circuitID] = map[string]any{
+		"id":        circuitID,
+		"name":      circuitData.Name,
+		"variation": circuitData.VariationName,
+		"default":   circuitData.Default,
+		"country":   circuitData.Country,
+		"length":    uint16(circuitData.LengthMeters), //nolint:gosec // Length will always be positive and less than max uint16
+		"startline": startingLineNorm,
+	}
+
+	return nil
 }
 
 // analyzeCircuitCoordinates performs statistical analysis on circuit coordinates.

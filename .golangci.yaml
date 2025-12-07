@@ -34,6 +34,8 @@ linters:
           allow:
             - $gostd
             - github.com/dop251/goja
+            - github.com/fatih/color
+            - github.com/gocarina/gocsv
             - github.com/kaitai-io/kaitai_struct_go_runtime
             - github.com/rs/zerolog
             - github.com/santhosh-tekuri/jsonschema

@@ -14,24 +14,24 @@ var (
 
 // Vehicle represents information about a specific vehicle.
 type Vehicle struct {
-	CarID                 int     `json:"CarID"`
-	Manufacturer          string  `json:"Manufacturer"`
-	Model                 string  `json:"Model"`
-	Year                  int     `json:"Year"`
-	OpenCockpit           bool    `json:"OpenCockpit"`
-	CarType               string  `json:"CarType"`
-	Category              string  `json:"Category"`
-	Drivetrain            string  `json:"Drivetrain"`
-	Aspiration            string  `json:"Aspiration"`
-	Length                int     `json:"Length"`
-	Width                 int     `json:"Width"`
-	Height                int     `json:"Height"`
-	Wheelbase             int     `json:"Wheelbase"`
-	TrackFront            int     `json:"TrackFront"`
-	TrackRear             int     `json:"TrackRear"`
-	EngineLayout          string  `json:"EngineLayout"`
-	EngineBankAngle       float32 `json:"EngineBankAngle"`
-	EngineCrankPlaneAngle float32 `json:"EngineCrankPlaneAngle"`
+	CarID                 int     `csv:"CarID"                 json:"CarID"`
+	Manufacturer          string  `csv:"Manufacturer"          json:"Manufacturer"`
+	Model                 string  `csv:"Model"                 json:"Model"`
+	Year                  int     `csv:"Year"                  json:"Year"`
+	OpenCockpit           bool    `csv:"OpenCockpit"           json:"OpenCockpit"`
+	CarType               string  `csv:"CarType"               json:"CarType"`
+	Category              string  `csv:"Category"              json:"Category"`
+	Drivetrain            string  `csv:"Drivetrain"            json:"Drivetrain"`
+	Aspiration            string  `csv:"Aspiration"            json:"Aspiration"`
+	Length                int     `csv:"Length"                json:"Length"`
+	Width                 int     `csv:"Width"                 json:"Width"`
+	Height                int     `csv:"Height"                json:"Height"`
+	Wheelbase             int     `csv:"Wheelbase"             json:"Wheelbase"`
+	TrackFront            int     `csv:"TrackFront"            json:"TrackFront"`
+	TrackRear             int     `csv:"TrackRear"             json:"TrackRear"`
+	EngineLayout          string  `csv:"EngineLayout"          json:"EngineLayout"`
+	EngineBankAngle       float32 `csv:"EngineBankAngle"       json:"EngineBankAngle"`
+	EngineCrankPlaneAngle float32 `csv:"EngineCrankPlaneAngle" json:"EngineCrankPlaneAngle"`
 }
 
 // VehicleInventory represents the complete JSON structure from the embedded vehicle inventory data.
