@@ -74,6 +74,11 @@ test/cover:
 test/cover/show: test/cover
 	go tool cover -html=coverage.out
 
+## upgradeable: list direct dependencies that have upgrades available
+.PHONY: upgradeable
+upgradeable:
+	@go run github.com/oligot/go-mod-upgrade@latest
+
 ## build/kaitai: compile the GT telemetry package from the Kaitai Struct
 .PHONY: build/kaitai
 build/kaitai:
