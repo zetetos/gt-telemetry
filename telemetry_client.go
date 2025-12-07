@@ -181,88 +181,42 @@ func loadVehicleDB(path string) (*vehicles.VehicleDB, error) {
 	return vehicleDB, nil
 }
 
+// Run starts the telemetry client to read and process telemetry data.
 func (c *Client) Run() (recoverable bool, err error) {
 	sourceURL, err := url.Parse(c.source)
 	if err != nil {
 		return false, fmt.Errorf("parse source URL: %w", err)
 	}
 
-	var telemetryReader reader.Reader
-
-	switch sourceURL.Scheme {
-	case "udp":
-		host, portStr, _ := net.SplitHostPort(sourceURL.Host)
-
-		port, err := strconv.Atoi(portStr)
-		if err != nil {
-			return false, fmt.Errorf("parse URL port: %w", err)
-		}
-
-		telemetryReader, err = reader.NewUDPReader(host, port, c.format, c.log)
-		if err != nil {
-			return true, fmt.Errorf("setup UDP reader: %w", err)
-		}
-	case "file":
-		telemetryReader, err = reader.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
-		if err != nil {
-			return false, fmt.Errorf("setup file reader: %w", err)
-		}
-	default:
-		return false, fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme)
+	telemetryReader, recoverable, err := c.setupTelemetryReader(sourceURL)
+	if err != nil {
+		return recoverable, err
 	}
 
 	rawTelemetry := telemetry.NewGranTurismoTelemetry()
 
-readTelemetry:
 	for {
 		bufLen, buffer, err := telemetryReader.Read()
-		if err != nil {
-			if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
-				c.Finished = true
-
-				continue readTelemetry
+		if shouldContinue, finished := c.handleReadError(err); !shouldContinue {
+			if finished {
+				continue
 			}
 
-			c.log.Debug().Err(err).Msg("failed to receive telemetry")
-
-			continue readTelemetry
+			return recoverable, err
 		}
 
-		if len(buffer[:bufLen]) == 0 {
-			c.log.Debug().Msg("no data received")
-
-			continue readTelemetry
+		if !c.handleEmptyBuffer(buffer, bufLen) {
+			continue
 		}
-
-		decodeStart := time.Now()
 
 		c.DecipheredPacket = buffer[:bufLen]
+
+		decodeStart := time.Now()
 
 		reader := bytes.NewReader(c.DecipheredPacket)
 		stream := kaitai.NewStream(reader)
 
-	parseTelemetry:
-		for {
-			err = rawTelemetry.Read(stream, nil, nil)
-			if err != nil {
-				if err.Error() == "EOF" {
-					break parseTelemetry
-				}
-
-				c.log.Error().Err(err).Msg("failed to parse telemetry")
-				c.Statistics.PacketsInvalid++
-			}
-
-			c.Telemetry.RawTelemetry = *rawTelemetry
-
-			c.Statistics.decodeTimeLast = time.Since(decodeStart)
-			c.collectStats()
-
-			c.recordPacket()
-
-			timer := time.NewTimer(4 * time.Millisecond)
-			<-timer.C
-		}
+		c.processTelemetry(rawTelemetry, stream, decodeStart)
 	}
 }
 
@@ -347,6 +301,87 @@ func (c *Client) IsRecording() bool {
 	defer c.recordingMutex.RUnlock()
 
 	return c.isRecording
+}
+
+// setupTelemetryReader initializes the telemetry reader based on the URL scheme.
+func (c *Client) setupTelemetryReader(sourceURL *url.URL) (reader.Reader, bool, error) { //nolint:ireturn
+	switch sourceURL.Scheme {
+	case "udp":
+		host, portStr, _ := net.SplitHostPort(sourceURL.Host)
+
+		port, err := strconv.Atoi(portStr)
+		if err != nil {
+			return nil, false, fmt.Errorf("parse URL port: %w", err)
+		}
+
+		telemetryReader, err := reader.NewUDPReader(host, port, c.format, c.log)
+		if err != nil {
+			return nil, true, fmt.Errorf("setup UDP reader: %w", err)
+		}
+
+		return telemetryReader, true, nil
+	case "file":
+		telemetryReader, err := reader.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
+		if err != nil {
+			return nil, false, fmt.Errorf("setup file reader: %w", err)
+		}
+
+		return telemetryReader, false, nil
+	default:
+		return nil, false, fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme)
+	}
+}
+
+// handleReadError processes errors from telemetryReader.Read.
+func (c *Client) handleReadError(err error) (shouldContinue bool, finished bool) {
+	if err != nil {
+		if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
+			c.Finished = true
+
+			return false, true
+		}
+
+		c.log.Debug().Err(err).Msg("failed to receive telemetry")
+
+		return false, true
+	}
+
+	return true, false
+}
+
+// handleEmptyBuffer checks if the buffer is empty and logs if so.
+func (c *Client) handleEmptyBuffer(buffer []byte, bufLen int) bool {
+	if len(buffer[:bufLen]) == 0 {
+		c.log.Debug().Msg("no data received")
+
+		return false
+	}
+
+	return true
+}
+
+// processTelemetry parses and processes telemetry packets.
+func (c *Client) processTelemetry(rawTelemetry *telemetry.GranTurismoTelemetry, stream *kaitai.Stream, decodeStart time.Time) {
+	for {
+		err := rawTelemetry.Read(stream, nil, nil)
+		if err != nil {
+			if err.Error() == "EOF" {
+				break
+			}
+
+			c.Statistics.PacketsInvalid++
+
+			c.log.Error().Err(err).Msg("failed to parse telemetry")
+		}
+
+		c.Telemetry.RawTelemetry = *rawTelemetry
+		c.Statistics.decodeTimeLast = time.Since(decodeStart)
+		c.collectStats()
+		c.recordPacket()
+
+		timer := time.NewTimer(4 * time.Millisecond)
+		<-timer.C
+	}
 }
 
 // recordPacket writes the current packet to the recording file if recording is active.
