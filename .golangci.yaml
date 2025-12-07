@@ -44,7 +44,7 @@ linters:
             - github.com/zetetos/gt-telemetry
     lll:
       line-length: 180
-    gomoddirectives:
+    # gomoddirectives:
       # replace-allow-list:
       #   - github.com/bwmarrin/discordgo # temporary until voice fix is merged
     tagliatelle:
@@ -54,22 +54,20 @@ linters:
 
 
 formatters:
-  default:
-    enable:
-      - gci
-      - gofmt
-      - gofumpt
-      - goimports
-      - golines  exclusions:
-    # generated: lax
-    # paths:
-    #   - third_party$
-    #   - builtin$
-    #   - examples$
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+    # - golines # conflicts with nolintlint
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
 
 issues:
-  exclude-use-default: false
-  exlude:
-    - path: _test.go
-      linters:
-        - mnd
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  fix: true
