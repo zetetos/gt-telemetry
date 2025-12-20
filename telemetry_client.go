@@ -345,14 +345,18 @@ func (c *Client) setupTelemetryReader(sourceURL *url.URL) (reader.Reader, bool, 
 func (c *Client) handleReadError(err error) (shouldContinue bool, finished bool) {
 	if err != nil {
 		if errors.Is(err, io.EOF) {
-			c.Finished = true
-			c.log.Info().Msg("reached end of telemetry data")
+			if !c.Finished {
+				c.Finished = true
+				c.log.Info().Msg("reached end of telemetry data")
+			}
 
 			return false, true
 		}
 
 		if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
-			c.Finished = true
+			if !c.Finished {
+				c.Finished = true
+			}
 
 			return false, true
 		}
