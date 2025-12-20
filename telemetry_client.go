@@ -182,6 +182,16 @@ func loadVehicleDB(path string) (*vehicles.VehicleDB, error) {
 
 // Run starts the telemetry client to read and process telemetry data.
 func (c *Client) Run() (recoverable bool, err error) {
+	// Ensure recording is stopped when Run exits
+	defer func() {
+		if c.IsRecording() {
+			stopErr := c.StopRecording()
+			if stopErr != nil {
+				c.log.Error().Err(stopErr).Msg("failed to stop recording on exit")
+			}
+		}
+	}()
+
 	sourceURL, err := url.Parse(c.source)
 	if err != nil {
 		return false, fmt.Errorf("parse source URL: %w", err)
@@ -392,6 +402,16 @@ func (c *Client) recordPacket() {
 	}
 
 	if len(c.DecipheredPacket) == 0 {
+		return
+	}
+
+	// Skip writing if the game is paused
+	if c.Telemetry.Flags().GamePaused {
+		return
+	}
+
+	// Skip writing if in main menu or race menu
+	if c.Telemetry.IsInMainMenu() || c.Telemetry.IsInRaceMenu() {
 		return
 	}
 
