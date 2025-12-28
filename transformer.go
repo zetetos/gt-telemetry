@@ -328,6 +328,26 @@ func (t *Transformer) RaceLaps() int16 {
 	return t.RawTelemetry.RaceLaps
 }
 
+func (t *Transformer) RaceType() models.RaceType {
+	if !t.IsOnCircuit() {
+		return models.RaceTypeUnknown
+	}
+
+	if t.RawTelemetry.RaceEntrants <= 3 && t.RawTelemetry.RaceLaps == 0 {
+		return models.RaceTypeTimeTrial
+	}
+
+	if t.RawTelemetry.RaceEntrants > 3 && t.RawTelemetry.RaceLaps == 0 {
+		return models.RaceTypeEndurance
+	}
+
+	if t.RawTelemetry.RaceEntrants > 3 && t.RawTelemetry.RaceLaps > 0 {
+		return models.RaceTypeSprint
+	}
+
+	return models.RaceTypeUnknown
+}
+
 func (t *Transformer) RideHeightMeters() float32 {
 	return t.RawTelemetry.RideHeight
 }

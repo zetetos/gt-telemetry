@@ -22,6 +22,15 @@ const (
 	GameStateReplay
 )
 
+type RaceType int
+
+const (
+	RaceTypeUnknown RaceType = iota
+	RaceTypeSprint
+	RaceTypeEndurance
+	RaceTypeTimeTrial
+)
+
 type CoordinateType int
 
 const (

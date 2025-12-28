@@ -107,18 +107,32 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 		boostStr = fmt.Sprintf("Boost: %+1.02f Bar", client.Telemetry.TurboBoostBar())
 	}
 
+	var raceType string
+
+	switch client.Telemetry.RaceType() { //nolint:axhaustive // Ignore missing cases
+	case gtmodels.RaceTypeSprint:
+		raceType = "Sprint"
+	case gtmodels.RaceTypeEndurance:
+		raceType = "Endurance"
+	case gtmodels.RaceTypeTimeTrial:
+		raceType = "Time Trial"
+	default:
+		raceType = ""
+	}
+
 	fmt.Print("\033[H\033[2J")
 	fmt.Printf("Sequence ID:  %d\nTime of day:  %+v\n",
 		client.Telemetry.SequenceID(),
 		client.Telemetry.TimeOfDay(),
 	)
-	fmt.Printf("Race          Lap: %d of %d  Last lap: %+v  Best lap: %+v  Grid position: %d  Race entrants: %d\n",
+	fmt.Printf("Race          Lap: %d of %d  Last lap: %+v  Best lap: %+v  Grid position: %d  Race entrants: %d  Race Type: %s\n",
 		client.Telemetry.CurrentLap(),
 		client.Telemetry.RaceLaps(),
 		client.Telemetry.LastLaptime(),
 		client.Telemetry.BestLaptime(),
 		client.Telemetry.GridPosition(),
 		client.Telemetry.RaceEntrants(),
+		raceType,
 	)
 	fmt.Printf("Circuit	      Length: %d m   Name: %s\n",
 		circuit.Length,
