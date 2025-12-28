@@ -512,7 +512,7 @@ func (t *Transformer) TyreSlipRatio() models.CornerSet {
 	groundSpeed := units.MetersPerSecondToKilometersPerHour(t.GroundSpeedMetersPerSecond())
 	wheelSpeed := t.WheelSpeedMetersPerSecond()
 
-	if groundSpeed == 0 {
+	if groundSpeed < 0.0001 {
 		return models.CornerSet{
 			FrontLeft:  1,
 			FrontRight: 1,
