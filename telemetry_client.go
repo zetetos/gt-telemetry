@@ -343,30 +343,30 @@ func (c *Client) setupTelemetryReader(sourceURL *url.URL) (reader.Reader, bool, 
 
 // handleReadError processes errors from telemetryReader.Read.
 func (c *Client) handleReadError(err error) (shouldContinue bool, finished bool) {
-	if err != nil {
-		if errors.Is(err, io.EOF) {
-			if !c.Finished {
-				c.Finished = true
-				c.log.Info().Msg("reached end of telemetry data")
-			}
+	if err == nil {
+		return true, false
+	}
 
-			return false, true
+	if errors.Is(err, io.EOF) {
+		if !c.Finished {
+			c.Finished = true
+			c.log.Info().Msg("reached end of telemetry data")
 		}
-
-		if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
-			if !c.Finished {
-				c.Finished = true
-			}
-
-			return false, true
-		}
-
-		c.log.Debug().Err(err).Msg("failed to receive telemetry")
 
 		return false, true
 	}
 
-	return true, false
+	if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
+		if !c.Finished {
+			c.Finished = true
+		}
+
+		return false, true
+	}
+
+	c.log.Debug().Err(err).Msg("failed to receive telemetry")
+
+	return false, true
 }
 
 // handleEmptyBuffer checks if the buffer is empty and logs if so.

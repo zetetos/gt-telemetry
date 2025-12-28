@@ -92,7 +92,7 @@ func updateCircuitInfo(client *gttelemetry.Client, lapNumber int16, circuit gtci
 	return lapNumber, circuit
 }
 
-func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Options, circuit gtcircuits.CircuitInfo) {
+func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Options, circuit gtcircuits.CircuitInfo) { //nolint:maintidx // long but simple enough
 	suggestedGear := client.Telemetry.SuggestedGear()
 
 	suggestedGearStr := fmt.Sprintf("[%d]", suggestedGear)
@@ -109,7 +109,7 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 
 	var raceType string
 
-	switch client.Telemetry.RaceType() { //nolint:axhaustive // Ignore missing cases
+	switch client.Telemetry.RaceType() {
 	case gtmodels.RaceTypeSprint:
 		raceType = "Sprint"
 	case gtmodels.RaceTypeEndurance:

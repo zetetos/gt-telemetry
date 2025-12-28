@@ -45,7 +45,7 @@ type CircuitDB struct {
 //go:embed circuits.json
 var baseInventoryJSON []byte
 
-// newDB creates a new CircuitDB instance by loading the circuit inventory from embedded JSON data.
+// NewDB creates a new CircuitDB instance by loading the circuit inventory from embedded JSON data.
 func NewDB(inventoryJSON []byte) (*CircuitDB, error) {
 	inventory := CircuitInventory{}
 
