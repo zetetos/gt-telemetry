@@ -12,6 +12,16 @@ const (
 	Addendum2 Name = "~" // Adds throttle input and brake output data and more (unknown)
 )
 
+type GameState int
+
+const (
+	GameStateUnknown GameState = iota
+	GameStateMainMenu
+	GameStateRaceMenu
+	GameStateLive
+	GameStateReplay
+)
+
 type CoordinateType int
 
 const (

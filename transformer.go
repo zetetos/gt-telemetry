@@ -225,6 +225,26 @@ func (t *Transformer) FuelLevelPercent() float32 {
 	return val * 100
 }
 
+func (t *Transformer) GameState() models.GameState {
+	if t.IsInMainMenu() {
+		return models.GameStateMainMenu
+	}
+
+	if t.IsInRaceMenu() {
+		return models.GameStateRaceMenu
+	}
+
+	if t.IsOnCircuit() {
+		if t.Flags().Live {
+			return models.GameStateLive
+		}
+
+		return models.GameStateReplay
+	}
+
+	return models.GameStateUnknown
+}
+
 func (t *Transformer) GameVersion() string {
 	isGT7, err := t.RawTelemetry.HeaderIsGt7()
 	if err != nil && isGT7 {
