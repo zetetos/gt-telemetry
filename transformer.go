@@ -299,6 +299,14 @@ func (t *Transformer) LastLaptime() time.Duration {
 	return time.Duration(t.RawTelemetry.LastLaptime) * time.Millisecond
 }
 
+func (t *Transformer) RaceComplete() bool {
+	if t.RawTelemetry.RaceLaps < 1 {
+		return false
+	}
+
+	return t.RawTelemetry.CurrentLap > t.RawTelemetry.RaceLaps
+}
+
 func (t *Transformer) OilPressureKPA() float32 {
 	return t.RawTelemetry.OilPressure
 }
