@@ -229,6 +229,23 @@ func (c *Client) Run() (recoverable bool, err error) {
 	}
 }
 
+// IsReplaySource checks if the telemetry source is a replay file.
+func (c *Client) IsReplaySource() (bool, error) {
+	sourceURL, err := url.Parse(c.source)
+	if err != nil {
+		return false, fmt.Errorf("parse source URL: %w", err)
+	}
+
+	switch sourceURL.Scheme {
+	case "file":
+		return true, nil
+	case "udp":
+		return false, nil
+	default:
+		return false, fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme)
+	}
+}
+
 // StartRecording starts recording telemetry data to the specified file path.
 // Supports both plain (.gtr) and compressed (.gtz) formats based on file extension.
 func (c *Client) StartRecording(filePath string) error {
