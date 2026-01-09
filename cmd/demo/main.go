@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
@@ -50,7 +51,7 @@ func main() {
 
 func runClient(client *gttelemetry.Client) {
 	for {
-		recoverable, err := client.Run()
+		recoverable, err := client.Run(context.Background())
 		if err != nil {
 			if recoverable {
 				log.Printf("Recoverable error: %s", err.Error())
@@ -314,10 +315,11 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 		renderFlag(client.Telemetry.Flags().GamePaused, "Paused", "red", "grey"),
 		renderFlag(client.Telemetry.Flags().Flag16, "16", "red", "grey"),
 	)
-	fmt.Printf("Game flags    %s    %s   %s\n",
+	fmt.Printf("Game flags    %s    %s   %s   %s\n",
 		renderFlag(client.Telemetry.IsInMainMenu(), "MainMenu", "green", "grey"),
 		renderFlag(client.Telemetry.IsInRaceMenu(), "RaceMenu", "green", "grey"),
 		renderFlag(client.Telemetry.IsOnCircuit(), "OnCircuit", "green", "grey"),
+		renderFlag(client.Telemetry.RaceComplete(), "RaceComplete", "green", "grey"),
 	)
 
 	fmt.Println()

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -61,7 +62,7 @@ func createTelemetryClient() *gttelemetry.Client {
 func startTelemetryClient(client *gttelemetry.Client) {
 	go func() {
 		for {
-			recoverable, err := client.Run()
+			recoverable, err := client.Run(context.Background())
 			if err != nil {
 				if recoverable {
 					log.Printf("Recoverable error: %s", err.Error())

@@ -3,6 +3,7 @@ package gttelemetry
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -181,7 +182,8 @@ func loadVehicleDB(path string) (*vehicles.VehicleDB, error) {
 }
 
 // Run starts the telemetry client to read and process telemetry data.
-func (c *Client) Run() (recoverable bool, err error) {
+// The context parameter allows for graceful cancellation.
+func (c *Client) Run(ctx context.Context) (recoverable bool, err error) {
 	// Ensure recording is stopped when Run exits
 	defer func() {
 		if c.IsRecording() {
@@ -205,27 +207,16 @@ func (c *Client) Run() (recoverable bool, err error) {
 	rawTelemetry := telemetry.NewGranTurismoTelemetry()
 
 	for {
-		bufLen, buffer, err := telemetryReader.Read()
-		if shouldContinue, finished := c.handleReadError(err); !shouldContinue {
-			if finished {
-				continue
+		select {
+		case <-ctx.Done():
+			c.log.Debug().Msg("context cancelled, stopping telemetry client")
+
+			return false, ctx.Err()
+		default:
+			if done, recovErr := c.readAndProcessPacket(telemetryReader, rawTelemetry); done {
+				return recoverable, recovErr
 			}
-
-			return recoverable, err
 		}
-
-		if !c.handleEmptyBuffer(buffer, bufLen) {
-			continue
-		}
-
-		c.DecipheredPacket = buffer[:bufLen]
-
-		decodeStart := time.Now()
-
-		reader := bytes.NewReader(c.DecipheredPacket)
-		stream := kaitai.NewStream(reader)
-
-		c.processTelemetry(rawTelemetry, stream, decodeStart)
 	}
 }
 
@@ -356,6 +347,34 @@ func (c *Client) setupTelemetryReader(sourceURL *url.URL) (reader.Reader, bool, 
 	default:
 		return nil, false, fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme)
 	}
+}
+
+// readAndProcessPacket reads a single packet and processes it.
+// Returns true if the Run loop should return.
+func (c *Client) readAndProcessPacket(telemetryReader reader.Reader, rawTelemetry *telemetry.GranTurismoTelemetry) (done bool, err error) {
+	bufLen, buffer, err := telemetryReader.Read()
+	if shouldContinue, finished := c.handleReadError(err); !shouldContinue {
+		if finished {
+			return false, nil
+		}
+
+		return true, err
+	}
+
+	if !c.handleEmptyBuffer(buffer, bufLen) {
+		return false, nil
+	}
+
+	c.DecipheredPacket = buffer[:bufLen]
+
+	decodeStart := time.Now()
+
+	reader := bytes.NewReader(c.DecipheredPacket)
+	stream := kaitai.NewStream(reader)
+
+	c.processTelemetry(rawTelemetry, stream, decodeStart)
+
+	return false, nil
 }
 
 // handleReadError processes errors from telemetryReader.Read.
