@@ -431,6 +431,10 @@ func (t *Transformer) TelemetryFormat() models.Name {
 	return "unknown"
 }
 
+func (t *Transformer) TelemetryStarted() bool {
+	return t.RawTelemetry.SequenceId > 0
+}
+
 func (t *Transformer) ThrottleInputPercent() float32 {
 	return float32(t.RawTelemetry.ThrottleInput) / 2.55
 }
