@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"sync"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -22,13 +23,15 @@ var (
 )
 
 type UDPReader struct {
-	conn      *net.UDPConn
-	address   string
-	sendPort  int
-	format    models.Name
-	ivSeed    uint32
-	closeFunc func() error
-	log       zerolog.Logger
+	conn       *net.UDPConn
+	address    string
+	sendPort   int
+	format     models.Name
+	ivSeed     uint32
+	closeFunc  func() error
+	stopTicker chan struct{}
+	closeOnce  sync.Once
+	log        zerolog.Logger
 }
 
 func NewUDPReader(host string, sendPort int, format models.Name, log zerolog.Logger) (*UDPReader, error) {
@@ -47,29 +50,39 @@ func NewUDPReader(host string, sendPort int, format models.Name, log zerolog.Log
 	}
 
 	reader := UDPReader{
-		conn:      conn,
-		address:   host,
-		sendPort:  sendPort,
-		format:    format,
-		ivSeed:    getIVSeedForFormat(format),
-		closeFunc: conn.Close,
-		log:       log,
+		conn:       conn,
+		address:    host,
+		sendPort:   sendPort,
+		format:     format,
+		ivSeed:     getIVSeedForFormat(format),
+		closeFunc:  conn.Close,
+		stopTicker: make(chan struct{}),
+		log:        log,
 	}
 
 	ticker := time.NewTicker(HeartbeatInterval)
 
 	go func() {
+		defer ticker.Stop()
+
 		// Initial heartbeat
 		err := reader.sendHeartbeat()
 		if err != nil {
 			reader.log.Error().Err(err).Msg("send initial heartbeat")
 		}
 
-		// Keep sending heartbeats periodically
-		for range ticker.C {
-			err := reader.sendHeartbeat()
-			if err != nil {
-				reader.log.Error().Err(err).Msg("send heartbeat")
+		// Keep sending heartbeats periodically until stopped
+		for {
+			select {
+			case <-reader.stopTicker:
+				reader.log.Debug().Msg("heartbeat goroutine stopping")
+
+				return
+			case <-ticker.C:
+				err := reader.sendHeartbeat()
+				if err != nil {
+					reader.log.Error().Err(err).Msg("send heartbeat")
+				}
 			}
 		}
 	}()
@@ -98,7 +111,21 @@ func (r *UDPReader) Read() (int, []byte, error) {
 }
 
 func (r *UDPReader) Close() error {
-	return r.closeFunc()
+	var closeErr error
+
+	r.closeOnce.Do(func() {
+		r.log.Debug().Msg("closing UDP reader")
+
+		// Stop the heartbeat goroutine
+		close(r.stopTicker)
+
+		// Set a short deadline to unblock any pending Read calls
+		_ = r.conn.SetReadDeadline(time.Now())
+
+		closeErr = r.closeFunc()
+	})
+
+	return closeErr
 }
 
 func (r *UDPReader) sendHeartbeat() error {

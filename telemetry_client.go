@@ -204,6 +204,22 @@ func (c *Client) Run(ctx context.Context) (recoverable bool, err error) {
 		return recoverable, err
 	}
 
+	// Ensure the reader is closed when Run exits
+	defer func() {
+		closeErr := telemetryReader.Close()
+		if closeErr != nil {
+			c.log.Error().Err(closeErr).Msg("failed to close telemetry reader")
+		}
+	}()
+
+	// Watch for context cancellation and close the reader immediately to unblock ReadFromUDP
+	go func() {
+		<-ctx.Done()
+		c.log.Debug().Msg("context cancelled, closing telemetry reader to unblock read")
+
+		_ = telemetryReader.Close()
+	}()
+
 	rawTelemetry := telemetry.NewGranTurismoTelemetry()
 
 	for {
