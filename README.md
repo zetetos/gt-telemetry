@@ -22,7 +22,7 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
   * Type (racing or street)
   * Racing category
   * Open cockpit exposure
-* A circuit inventory database with methods for matching a circuit based on a given coordinate and providing the following infromation:
+* A circuit inventory database with methods for matching a circuit based on a given coordinate and providing the following information:
   * Name
   * Length
   * Region
@@ -31,7 +31,7 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 
 ## Installation ##
 
-To start using gt-telemetry, install Go 1.24.6 or above. From your project, run the following command to retrieve the module:
+To start using gt-telemetry, install Go 1.25.6 or above. From your project, run the following command to retrieve the module:
 
 ```bash
 go get github.com/zetetos/gt-telemetry
@@ -51,7 +51,7 @@ main() {
         LogLevel: "warn",
         StatsEnabled: false,
         VehicleDB: "./pkg/vehicles/vehicles.json",
-        CircuitDB: "./pkg/circuits/cicuits.json",
+        CircuitDB: "./pkg/circuits/circuits.json",
     }
     gtclient, _ := gttelemetry.New(options)
     go func() {
@@ -149,47 +149,48 @@ if client.IsRecording() {
 
 ### Vehicle Inventory Management ###
 
-The `inventory` CLI tool allows you to import and export vehicle inventory data between JSON and CSV formats, and manage vehicle entries with interactive add, edit, and delete operations. The tool uses action-based commands and outputs to stdout, making it compatible with Unix pipes and redirections.
+The `vehicle_inventory` CLI tool allows you to sync data with the [Gran Turismo website](https://www.gran-turismo.com/au/gt7/carlist/) and also import and export vehicle inventory data between JSON and CSV formats. The tool uses action-based commands and outputs to stdout, making it compatible with Unix pipes and redirections.
 
 The output format is automatically determined by the input file extension:
 - `.json` files are converted to CSV format
 - `.csv` files are converted to JSON format
 
 
-#### Adding new vehicles interactively ####
+#### Synchronising the local DB file with the Gran Turismo website ####
+
+Synchronisation will default to vehicle data in British English.
 
 ```bash
-go run cmd/inventory/main.go add internal/vehicles/inventory.json
+go run tool/vehicle_inventory/*.go update internal/vehicles/inventory.json
 ```
 
-The tool will prompt for each field and display a summary before saving. It also checks for duplicate vehicle IDs and provides confirmation prompts.
-
-#### Editing existing vehicles ####
+To synchronise in another language add the country code to the command:
 
 ```bash
-go run cmd/inventory/main.go edit internal/vehicles/inventory.json 3267
+go run tool/vehicle_inventory/*.go update internal/vehicles/inventory.json jp
 ```
 
-The edit action loads the existing vehicle data and allows you to modify any field. Current values are shown in brackets, and pressing Enter without input keeps the existing value.
+Most data is synchronised with the exception of the following fields which need to be manually updated by searching for vehicle specifications on the Internet:
 
-#### Deleting vehicles ####
+- CarType
+- Wheelbase
+- TrackFront
+- TrackRear
+- EngineLayout
+- EngineBankAngle
+- EngineCrankPlaneAngle
 
-```bash
-go run cmd/inventory/main.go delete internal/vehicles/inventory.json 3267
-```
-
-The delete action shows the vehicle details and asks for confirmation before removal.
 
 #### Converting JSON to CSV ####
 
 ```bash
-go run cmd/inventory/main.go convert internal/vehicles/inventory.json
+go run tool/vehicle_inventory/*.go convert internal/vehicles/inventory.json
 ```
 
 #### Converting CSV to JSON ####
 
 ```bash
-go run cmd/inventory/main.go convert data/inventory.csv
+go run tool/vehicle_inventory/*.go convert data/inventory.csv
 ```
 
 #### CSV Format ####
@@ -204,9 +205,44 @@ The CSV format includes the following columns:
 - Category: Racing category (e.g., Gr.1, Gr.3, Gr.4, Gr.B)
 - Drivetrain: Drivetrain type (FR, FF, MR, RR, 4WD)
 - Aspiration: Engine aspiration (NA, TC, SC, EV, etc.)
+- Length: Length of the vehicle in millimeters
+- Width: Width of the vehicle in millimeters
+- Height: Height of the vehicle in millimeters
+- Wheelbase: Distance between the centreline of the front and rear wheels in millimeters
+- TrackFront: Distance between the centreline of the front left and right wheels in millimeters
+- TrackRear: Distance between the centreline of the rear left and right wheels in millimeters
 - EngineLayout: Engine layout configuration
 - EngineBankAngle: Engine cylinder bank angle in degrees
 - EngineCrankPlaneAngle: Engine crank plane angle in degrees
+
+
+
+### Circuit Inventory Management ###
+
+#### Capture Circuit Data ####
+
+To capture a circuit do the following preparations:
+
+1. In GT7 select a Gr.3 vehicle for general consistency with existing Captures
+2. Navigate to the circuit in World Circuits
+2. Enter a time trial for the specific track layout (variation), any time of day. Don't enter the event by clicking start as the console will be driving a car around the circuit in the background.
+
+Once preparations are complete, run the following command with appropriate circuit details. The capture will start when the vehicle passes the start line and end when a full lap is completed.
+
+```bash
+go run tool/circuit_capture/main.go \
+    -d "data/circuits" \
+    -n "Suzuka Circuit" \
+    -v "Suzuka Circuit East Course" \
+    -c "jp"
+```
+
+#### Compile Circuit Data Into Inventory ####
+
+The following command will convert all of the circuit capture data into the `circuits.json` database.
+
+```bash
+go run tool/circuit_inventory/main.go data/circuits pkg/circuits/circuits.json
 ```
 
 ## Examples ##

@@ -169,7 +169,7 @@ func processSingleCircuitFile(path string, processed *CircuitProcessingResult, s
 	}
 
 	// Validate against JSON schema
-	var jsonData interface{}
+	var jsonData any
 
 	err = json.Unmarshal(data, &jsonData)
 	if err != nil {

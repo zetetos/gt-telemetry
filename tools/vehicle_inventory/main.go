@@ -16,14 +16,10 @@ Usage:
 
 Actions:
   convert <file.csv|file.json>   Convert between JSON and CSV formats
-  add     <file.json>            Add a new vehicle entry interactively
-  edit    <file.json> <car-id>   Edit an existing vehicle entry
-  delete  <file.json> <car-id>   Delete a vehicle entry
-  fetch   <file.json> [locale]   Fetch and merge car data from Gran Turismo website
+  update  <file.json> [locale]   Fetch and merge car data from Gran Turismo website
 
 Arguments:
   file                     Path to input file.
-  car-id                   CarID of the vehicle to edit or delete
   locale                   Locale code for fetch (default: gb). Examples: gb, us, jp, au
 
 Flags:
