@@ -140,6 +140,16 @@ run/capture-replay:
 	@go run cmd/capture_replay/main.go
 	@echo "Replay saved to gt7-replay.gtz"
 
+## update/vehicledb: update the vehicle inventory JSON file from GT7 website
+.PHONY: update/vehicledb
+update/vehicledb:
+	@go run tools/vehicle_inventory/*.go update pkg/vehicles/vehicles.json
+
+## update/circuitdbs: update the circuit inventory JSON file from saved circuit data
+.PHONY: update/circuitdb
+update/circuitdb:
+	@ go run tools/circuit_inventory/main.go data/circuits pkg/circuits/circuits.json
+
 ## clean: clean up project and return to a pristine state
 .PHONY: clean
 clean:
