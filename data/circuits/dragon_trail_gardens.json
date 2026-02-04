@@ -4,7 +4,7 @@
     "VariationName": "Dragon Trail - Gardens",
     "Default": false,
     "Country": "hr",
-    "LengthMeters": 4294,
+    "LengthMetres": 4294,
     "Coordinates": {
         "Circuit": [
             { "X": -428.09015, "Y": 4.609378, "Z": -27.685675 },

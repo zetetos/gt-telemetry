@@ -4,7 +4,7 @@
     "VariationName": "Red Bull Ring Short Track",
     "Default": false,
     "Country": "at",
-    "LengthMeters": 2192,
+    "LengthMetres": 2192,
     "Coordinates": {
         "Circuit": [
             { "X": 448.32477, "Y": -27.866112, "Z": 306.75598 },

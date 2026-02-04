@@ -4,7 +4,7 @@
     "VariationName": "Mount Panorama Motor Racing Circuit",
     "Default": true,
     "Country": "au",
-    "LengthMeters": 6165,
+    "LengthMetres": 6165,
     "Coordinates": {
         "Circuit": [
             { "X": 357.82224, "Y": -74.94841, "Z": -1051.534 },

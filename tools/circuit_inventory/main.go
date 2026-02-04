@@ -25,7 +25,7 @@ type CircuitData struct {
 	VariationName string             `json:"VariationName"`
 	Default       bool               `json:"Default"`
 	Country       string             `json:"Country"`
-	LengthMeters  int                `json:"LengthMeters"`
+	LengthMetres  int                `json:"LengthMetres"`
 	Coordinates   CircuitCoordinates `json:"Coordinates"`
 }
 
@@ -211,7 +211,7 @@ func processSingleCircuitFile(path string, processed *CircuitProcessingResult, s
 		"variation": circuitData.VariationName,
 		"default":   circuitData.Default,
 		"country":   circuitData.Country,
-		"length":    uint16(circuitData.LengthMeters), //nolint:gosec // Length will always be positive and less than max uint16
+		"length":    uint16(circuitData.LengthMetres), //nolint:gosec // Length will always be positive and less than max uint16
 		"startline": startingLineNorm,
 	}
 

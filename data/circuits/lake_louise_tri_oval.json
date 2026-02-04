@@ -4,7 +4,7 @@
     "VariationName": "Lake Louise Tri-Oval",
     "Default": false,
     "Country": "ca",
-    "LengthMeters": 3052,
+    "LengthMetres": 3052,
     "Coordinates": {
         "Circuit": [
             { "X": 156.18906, "Y": -10.408256, "Z": 173.85284 },

@@ -4,7 +4,7 @@
     "VariationName": "Autodrome Lago Maggiore - Full Course",
     "Default": true,
     "Country": "it",
-    "LengthMeters": 5717,
+    "LengthMetres": 5717,
     "Coordinates": {
         "Circuit": [
             { "X": -26.810581, "Y": 12.282489, "Z": 27.438873 },

@@ -149,12 +149,12 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 		client.Telemetry.VehicleAspirationExpanded(),
 	)
 	fmt.Printf("Dimensions    Length: %d mm  Width: %d mm  Height: %d mm  Wheelbase: %d mm  Track Front: %d mm  Track Rear: %d mm\n",
-		client.Telemetry.VehicleLengthMillimeters(),
-		client.Telemetry.VehicleWidthMillimeters(),
-		client.Telemetry.VehicleHeightMillimeters(),
-		client.Telemetry.VehicleWheelbaseMillimeters(),
-		client.Telemetry.VehicleTrackFrontMillimeters(),
-		client.Telemetry.VehicleTrackRearMillimeters(),
+		client.Telemetry.VehicleLengthMillimetres(),
+		client.Telemetry.VehicleWidthMillimetres(),
+		client.Telemetry.VehicleHeightMillimetres(),
+		client.Telemetry.VehicleWheelbaseMillimetres(),
+		client.Telemetry.VehicleTrackFrontMillimetres(),
+		client.Telemetry.VehicleTrackRearMillimetres(),
 	)
 	fmt.Printf("Engine        Layout: %s  Bank angle: %3.0f°  Crank plane: %3.0f°\n",
 		client.Telemetry.VehicleEngineLayout(),
@@ -218,11 +218,11 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 	fmt.Println()
 	fmt.Println("                    [  FL  ]  [  FR  ]  [  RL  ]  [  RR  ]")
 	fmt.Printf("Suspension height:  [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] mm   Ride height: %0.02f mm\n",
-		client.Telemetry.SuspensionHeightMillimeters().FrontLeft,
-		client.Telemetry.SuspensionHeightMillimeters().FrontRight,
-		client.Telemetry.SuspensionHeightMillimeters().RearLeft,
-		client.Telemetry.SuspensionHeightMillimeters().RearRight,
-		client.Telemetry.RideHeightMillimeters(),
+		client.Telemetry.SuspensionHeightMillimetres().FrontLeft,
+		client.Telemetry.SuspensionHeightMillimetres().FrontRight,
+		client.Telemetry.SuspensionHeightMillimetres().RearLeft,
+		client.Telemetry.SuspensionHeightMillimetres().RearRight,
+		client.Telemetry.RideHeightMillimetres(),
 	)
 	fmt.Printf("Tyre temperature:   [%3.2f ]  [%3.2f ]  [%3.2f ]  [%3.2f ] °c\n",
 		client.Telemetry.TyreTemperatureCelsius().FrontLeft,
@@ -231,10 +231,10 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 		client.Telemetry.TyreTemperatureCelsius().RearRight,
 	)
 	fmt.Printf("Tyre diameter:      [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] mm\n",
-		client.Telemetry.TyreDiameterMillimeters().FrontLeft,
-		client.Telemetry.TyreDiameterMillimeters().FrontRight,
-		client.Telemetry.TyreDiameterMillimeters().RearLeft,
-		client.Telemetry.TyreDiameterMillimeters().RearRight,
+		client.Telemetry.TyreDiameterMillimetres().FrontLeft,
+		client.Telemetry.TyreDiameterMillimetres().FrontRight,
+		client.Telemetry.TyreDiameterMillimetres().RearLeft,
+		client.Telemetry.TyreDiameterMillimetres().RearRight,
 	)
 	fmt.Printf("Wheel RPM:          [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] rpm\n",
 		client.Telemetry.WheelSpeedRPM().FrontLeft,

@@ -44,7 +44,7 @@ type CircuitData struct {
 	VariationName string             `json:"VariationName"`
 	Default       bool               `json:"Default"`
 	CountryCode   string             `json:"Country"`
-	LengthMeters  int                `json:"LengthMeters"`
+	LengthMetres  int                `json:"LengthMetres"`
 	Coordinates   CircuitCoordinates `json:"Coordinates"`
 }
 
@@ -290,7 +290,7 @@ func (c *CircuitCapture) processCapture() error {
 		if c.captureActive {
 			fmt.Println("Lap complete. Saving circuit data...")
 
-			c.circuitData.LengthMeters = int(math.Round(c.distanceTravelled))
+			c.circuitData.LengthMetres = int(math.Round(c.distanceTravelled))
 			dropped := c.gt.Statistics.PacketsDropped - c.startDropped
 
 			err := c.saveCircuitData(dropped)
@@ -355,7 +355,7 @@ func (c *CircuitCapture) printSummary(dropped int) {
 	fmt.Println("#### Capture Summary ####")
 	fmt.Printf("Frames dropped: %d\n", dropped)
 	fmt.Printf("Points captured: %d\n", len(c.circuitData.Coordinates.Circuit))
-	fmt.Printf("Circuit length: %d meters\n", c.circuitData.LengthMeters)
+	fmt.Printf("Circuit length: %d metres\n", c.circuitData.LengthMetres)
 
 	fmt.Printf("Starting line: X = %.4f, Y = %.4f, Z = %.4f\n",
 		c.circuitData.Coordinates.StartingLine.X,

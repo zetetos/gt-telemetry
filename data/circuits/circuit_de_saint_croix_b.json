@@ -4,7 +4,7 @@
     "VariationName": "Circuit de Saint-Croix - B",
     "Default": false,
     "Country": "fr",
-    "LengthMeters": 6992,
+    "LengthMetres": 6992,
     "Coordinates": {
         "Circuit": [
             { "X": -680.09546, "Y": 16.173418, "Z": -610.2439 },

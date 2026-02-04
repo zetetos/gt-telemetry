@@ -4,7 +4,7 @@
     "VariationName": "Suzuka Circuit East Course",
     "Default": false,
     "Country": "jp",
-    "LengthMeters": 1912,
+    "LengthMetres": 1912,
     "Coordinates": {
         "Circuit": [
             { "X": 738.948, "Y": -9.701413, "Z": 76.068115 },

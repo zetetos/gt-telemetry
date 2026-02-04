@@ -4,7 +4,7 @@
     "VariationName": "Nürburgring GP",
     "Default": false,
     "Country": "de",
-    "LengthMeters": 5069,
+    "LengthMetres": 5069,
     "Coordinates": {
         "Circuit": [
             { "X": -1073.8779, "Y": 144.08752, "Z": 1882.9039 },

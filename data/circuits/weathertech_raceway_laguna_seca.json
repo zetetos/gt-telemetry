@@ -4,7 +4,7 @@
     "VariationName": "WeatherTech Raceway Laguna Seca",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 3560,
+    "LengthMetres": 3560,
     "Coordinates": {
         "Circuit": [
             { "X": -276.98264, "Y": -21.126053, "Z": -242.40092 },

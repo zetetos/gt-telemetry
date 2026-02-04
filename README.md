@@ -205,12 +205,12 @@ The CSV format includes the following columns:
 - Category: Racing category (e.g., Gr.1, Gr.3, Gr.4, Gr.B)
 - Drivetrain: Drivetrain type (FR, FF, MR, RR, 4WD)
 - Aspiration: Engine aspiration (NA, TC, SC, EV, etc.)
-- Length: Length of the vehicle in millimeters
-- Width: Width of the vehicle in millimeters
-- Height: Height of the vehicle in millimeters
-- Wheelbase: Distance between the centreline of the front and rear wheels in millimeters
-- TrackFront: Distance between the centreline of the front left and right wheels in millimeters
-- TrackRear: Distance between the centreline of the rear left and right wheels in millimeters
+- Length: Length of the vehicle in millimetres
+- Width: Width of the vehicle in millimetres
+- Height: Height of the vehicle in millimetres
+- Wheelbase: Distance between the centreline of the front and rear wheels in millimetres
+- TrackFront: Distance between the centreline of the front left and right wheels in millimetres
+- TrackRear: Distance between the centreline of the rear left and right wheels in millimetres
 - EngineLayout: Engine layout configuration
 - EngineBankAngle: Engine cylinder bank angle in degrees
 - EngineCrankPlaneAngle: Engine crank plane angle in degrees

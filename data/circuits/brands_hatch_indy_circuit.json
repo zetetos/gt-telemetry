@@ -4,7 +4,7 @@
     "VariationName": "Brands Hatch Indy Circuit",
     "Default": false,
     "Country": "uk",
-    "LengthMeters": 1919,
+    "LengthMetres": 1919,
     "Coordinates": {
         "Circuit": [
             { "X": -139.28612, "Y": -3.4873552, "Z": -399.29895 },

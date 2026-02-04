@@ -4,7 +4,7 @@
     "VariationName": "Goodwood Motor Circuit",
     "Default": true,
     "Country": "uk",
-    "LengthMeters": 3810,
+    "LengthMetres": 3810,
     "Coordinates": {
         "Circuit": [
             { "X": 381.53482, "Y": -1.3897859, "Z": 115.750626 },

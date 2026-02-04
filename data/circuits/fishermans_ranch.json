@@ -4,7 +4,7 @@
     "VariationName": "Fishermans Ranch",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 6699,
+    "LengthMetres": 6699,
     "Coordinates": {
         "Circuit": [
             { "X": -390.03015, "Y": 37.041603, "Z": 639.36383 },

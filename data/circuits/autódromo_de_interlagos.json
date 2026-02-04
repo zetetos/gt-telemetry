@@ -4,7 +4,7 @@
     "VariationName": "Autódromo de Interlagos",
     "Default": true,
     "Country": "br",
-    "LengthMeters": 4219,
+    "LengthMetres": 4219,
     "Coordinates": {
         "Circuit": [
             { "X": -375.44217, "Y": 16.349905, "Z": 199.08246 },

@@ -4,7 +4,7 @@
     "VariationName": "Autodromo Nazionale Monza",
     "Default": true,
     "Country": "it",
-    "LengthMeters": 5756,
+    "LengthMetres": 5756,
     "Coordinates": {
         "Circuit": [
             { "X": -522.52747, "Y": 175.57495, "Z": 421.27423 },

@@ -4,7 +4,7 @@
     "VariationName": "Nürburgring Nordeschleife",
     "Default": true,
     "Country": "de",
-    "LengthMeters": 20701,
+    "LengthMetres": 20701,
     "Coordinates": {
         "Circuit": [
             { "X": -958.7505, "Y": 151.82018, "Z": 1532.3795 },

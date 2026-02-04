@@ -4,7 +4,7 @@
     "VariationName": "Suzuka Circuit",
     "Default": true,
     "Country": "jp",
-    "LengthMeters": 5742,
+    "LengthMetres": 5742,
     "Coordinates": {
         "Circuit": [
             { "X": 548.38684, "Y": -1.313817, "Z": -154.2526 },

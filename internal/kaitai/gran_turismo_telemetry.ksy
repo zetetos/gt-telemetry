@@ -10,10 +10,10 @@ seq:
     -doc: File header section
   - id: map_position_coordinates
     type: coordinate
-    -doc: Positional coordinates of vehicle on map in meters
+    -doc: Positional coordinates of vehicle on map in metres
   - id: velocity_vector
     type: vector
-    -doc: Vehicle velocity vector in meters per second
+    -doc: Vehicle velocity vector in metres per second
   - id: rotational_envelope
     type: rotational_envelope
     -doc: Body rotation around axes (-1 to 1)
@@ -25,7 +25,7 @@ seq:
     -doc: Angular velocity vector in radians per second (-1 to +1)
   - id: ride_height
     type: f4
-    -doc: Vehicle ride height in meters
+    -doc: Vehicle ride height in metres
   - id: engine_rpm
     type: f4
     -doc: Engine speed in RPM
@@ -40,7 +40,7 @@ seq:
     -doc: Total fuel capacity (0.0 to 1.0)
   - id: ground_speed
     type: f4
-    -doc: Vehicle ground speed in meters per second
+    -doc: Vehicle ground speed in metres per second
   - id: manifold_pressure
     type: f4
     -doc: Manifold pressure in bar, only populated when turbo present (subtract 1 for boost pressure as negative values report vacuum)
@@ -88,7 +88,7 @@ seq:
     -doc: Maximum engine RPM at which the shift light activates
   - id: calculated_max_speed
     type: u2
-    -doc: Calculated maximum speed of the vehicle in kilometers per hour
+    -doc: Calculated maximum speed of the vehicle in kilometres per hour
   - id: flags
     type: flags
     -doc: Various flags for the current state of play and instrument cluster lights
@@ -115,10 +115,10 @@ seq:
     -doc: Individual wheel rotational speed in radians per second
   - id: tyre_radius
     type: corner_set
-    -doc: Individual tyre radius in meters
+    -doc: Individual tyre radius in metres
   - id: suspension_height
     type: corner_set
-    -doc: Individual suspension height at each corner in meters
+    -doc: Individual suspension height at each corner in metres
   - id: reserved
     size: 32
     -doc: Reserved data, currently unused

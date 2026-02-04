@@ -4,7 +4,7 @@
     "VariationName": "BB Raceway",
     "Default": true,
     "Country": "jp",
-    "LengthMeters": 1691,
+    "LengthMetres": 1691,
     "Coordinates": {
         "Circuit": [
             { "X": 0.4364774, "Y": 0.3761086, "Z": 205.08586 },

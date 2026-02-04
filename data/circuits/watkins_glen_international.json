@@ -4,7 +4,7 @@
     "VariationName": "Watkins Glen International",
     "Default": false,
     "Country": "us",
-    "LengthMeters": 3896,
+    "LengthMetres": 3896,
     "Coordinates": {
         "Circuit": [
             { "X": -344.44254, "Y": 6.081839, "Z": -517.6385 },

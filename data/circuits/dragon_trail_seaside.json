@@ -4,7 +4,7 @@
     "VariationName": "Dragon Trail - Seaside",
     "Default": false,
     "Country": "hr",
-    "LengthMeters": 5151,
+    "LengthMetres": 5151,
     "Coordinates": {
         "Circuit": [
             { "X": -314.3746, "Y": -1.4361472, "Z": 240.27687 },

@@ -4,7 +4,7 @@
     "VariationName": "Fuji International Speedway (Short)",
     "Default": false,
     "Country": "jp",
-    "LengthMeters": 4164,
+    "LengthMetres": 4164,
     "Coordinates": {
         "Circuit": [
             { "X": 234.6436, "Y": 19.350462, "Z": -380.93582 },

@@ -4,7 +4,7 @@
     "VariationName": "Grand Valley - South",
     "Default": false,
     "Country": "us",
-    "LengthMeters": 3033,
+    "LengthMetres": 3033,
     "Coordinates": {
         "Circuit": [
             { "X": 97.112625, "Y": 123.07774, "Z": 959.337 },

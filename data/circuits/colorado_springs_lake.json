@@ -4,7 +4,7 @@
     "VariationName": "Colorado Springs - Lake",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 2932,
+    "LengthMetres": 2932,
     "Coordinates": {
         "Circuit": [
             { "X": -247.93289, "Y": 20.107107, "Z": -534.8924 },

@@ -4,7 +4,7 @@
     "VariationName": "Blue Moon Bay Speedway",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 3236,
+    "LengthMetres": 3236,
     "Coordinates": {
         "Circuit": [
             { "X": -10.585267, "Y": 0.008136511, "Z": 371.28436 },

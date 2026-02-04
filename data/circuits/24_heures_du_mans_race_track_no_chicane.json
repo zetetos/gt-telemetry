@@ -4,7 +4,7 @@
     "VariationName": "24 Heures du Mans race track, no chicane",
     "Default": false,
     "Country": "fr",
-    "LengthMeters": 13494,
+    "LengthMetres": 13494,
     "Coordinates": {
         "Circuit": [
             { "X": -1348.1512, "Y": -4.903332, "Z": -1241.7216 },

@@ -4,7 +4,7 @@
     "VariationName": "High Speed Ring",
     "Default": true,
     "Country": "jp",
-    "LengthMeters": 4344,
+    "LengthMetres": 4344,
     "Coordinates": {
         "Circuit": [
             { "X": 75.11955, "Y": 0.055804968, "Z": -387.10312 },

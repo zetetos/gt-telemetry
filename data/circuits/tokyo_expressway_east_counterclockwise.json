@@ -4,7 +4,7 @@
     "VariationName": "Tokyo Expressway - East Counterclockwise",
     "Default": false,
     "Country": "jp",
-    "LengthMeters": 7170,
+    "LengthMetres": 7170,
     "Coordinates": {
         "Circuit": [
             { "X": -0.39175785, "Y": -19.98832, "Z": -111.34911 },

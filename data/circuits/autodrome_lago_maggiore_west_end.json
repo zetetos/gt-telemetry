@@ -4,7 +4,7 @@
     "VariationName": "Autodrome Lago Maggiore - West End",
     "Default": false,
     "Country": "it",
-    "LengthMeters": 2373,
+    "LengthMetres": 2373,
     "Coordinates": {
         "Circuit": [
             { "X": -612.371, "Y": 50.450066, "Z": -167.10672 },

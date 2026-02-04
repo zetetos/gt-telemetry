@@ -4,7 +4,7 @@
     "VariationName": "Northern Isle Speedway",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 975,
+    "LengthMetres": 975,
     "Coordinates": {
         "Circuit": [
             { "X": 0.2839414, "Y": 0.68149, "Z": 96.25744 },

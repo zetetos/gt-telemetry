@@ -4,7 +4,7 @@
     "VariationName": "Circuit de Spa-Francorchamps",
     "Default": true,
     "Country": "be",
-    "LengthMeters": 6938,
+    "LengthMetres": 6938,
     "Coordinates": {
         "Circuit": [
             { "X": -306.93277, "Y": 115.771034, "Z": -593.2395 },

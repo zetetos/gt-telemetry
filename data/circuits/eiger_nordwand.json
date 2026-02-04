@@ -4,7 +4,7 @@
     "VariationName": "Eiger Nordwand",
     "Default": true,
     "Country": "ch",
-    "LengthMeters": 2359,
+    "LengthMetres": 2359,
     "Coordinates": {
         "Circuit": [
             { "X": 69.944595, "Y": 43.583294, "Z": -267.88806 },

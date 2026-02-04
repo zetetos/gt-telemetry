@@ -4,7 +4,7 @@
     "VariationName": "Lake Louise Long Track",
     "Default": true,
     "Country": "ca",
-    "LengthMeters": 3664,
+    "LengthMetres": 3664,
     "Coordinates": {
         "Circuit": [
             { "X": 154.32925, "Y": -10.421085, "Z": 172.56378 },

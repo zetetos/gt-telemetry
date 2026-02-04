@@ -4,7 +4,7 @@
     "VariationName": "Sardegna - Road Track - C",
     "Default": false,
     "Country": "it",
-    "LengthMeters": 2637,
+    "LengthMetres": 2637,
     "Coordinates": {
         "Circuit": [
             { "X": -398.88968, "Y": 8.646052, "Z": 207.7865 },

@@ -86,12 +86,12 @@ func (t *Transformer) BrakeOutputPercent() float32 {
 
 func (t *Transformer) CalculatedVmax() Vmax {
 	vMaxSpeed := t.RawTelemetry.CalculatedMaxSpeed
-	vMaxMetersPerMinute := float32(vMaxSpeed) * 1000 / 60
-	tyreCircumference := t.TyreDiameterMeters().RearLeft * math.Pi
+	vMaxMetresPerMinute := float32(vMaxSpeed) * 1000 / 60
+	tyreCircumference := t.TyreDiameterMetres().RearLeft * math.Pi
 
 	return Vmax{
 		Speed: vMaxSpeed,
-		RPM:   uint16((vMaxMetersPerMinute / tyreCircumference) * t.TransmissionTopSpeedRatio()),
+		RPM:   uint16((vMaxMetresPerMinute / tyreCircumference) * t.TransmissionTopSpeedRatio()),
 	}
 }
 
@@ -145,13 +145,13 @@ func (t *Transformer) DifferentialRatio() float32 {
 
 	switch t.Vehicle.Drivetrain {
 	case "FF":
-		rollingDiameter = t.TyreDiameterMeters().FrontLeft
+		rollingDiameter = t.TyreDiameterMetres().FrontLeft
 	default:
-		rollingDiameter = t.TyreDiameterMeters().RearLeft
+		rollingDiameter = t.TyreDiameterMetres().RearLeft
 	}
 
-	vMaxMetersPerMinute := float32(vMax.Speed) * 1000 / 60
-	wheelRpm := vMaxMetersPerMinute / (rollingDiameter * math.Pi)
+	vMaxMetresPerMinute := float32(vMax.Speed) * 1000 / 60
+	wheelRpm := vMaxMetresPerMinute / (rollingDiameter * math.Pi)
 	diffRatio := (float32(vMax.RPM) / highestRatio) / wheelRpm
 
 	return diffRatio
@@ -263,7 +263,7 @@ func (t *Transformer) GridPosition() int16 {
 	return t.RawTelemetry.GridPosition
 }
 
-func (t *Transformer) GroundSpeedMetersPerSecond() float32 {
+func (t *Transformer) GroundSpeedMetresPerSecond() float32 {
 	return t.RawTelemetry.GroundSpeed
 }
 
@@ -356,7 +356,7 @@ func (t *Transformer) RaceType() models.RaceType {
 	return models.RaceTypeUnknown
 }
 
-func (t *Transformer) RideHeightMeters() float32 {
+func (t *Transformer) RideHeightMetres() float32 {
 	return t.RawTelemetry.RideHeight
 }
 
@@ -398,7 +398,7 @@ func (t *Transformer) SuggestedGear() uint64 {
 	return gear.Suggested
 }
 
-func (t *Transformer) SuspensionHeightMeters() models.CornerSet {
+func (t *Transformer) SuspensionHeightMetres() models.CornerSet {
 	height := t.RawTelemetry.SuspensionHeight
 	if height == nil {
 		return models.CornerSet{}
@@ -492,7 +492,7 @@ func (t *Transformer) TurboBoostBar() float32 {
 	return (t.RawTelemetry.ManifoldPressure - 1)
 }
 
-func (t *Transformer) TyreDiameterMeters() models.CornerSet {
+func (t *Transformer) TyreDiameterMetres() models.CornerSet {
 	radius := t.RawTelemetry.TyreRadius
 	if radius == nil {
 		return models.CornerSet{}
@@ -506,7 +506,7 @@ func (t *Transformer) TyreDiameterMeters() models.CornerSet {
 	}
 }
 
-func (t *Transformer) TyreRadiusMeters() models.CornerSet {
+func (t *Transformer) TyreRadiusMetres() models.CornerSet {
 	radius := t.RawTelemetry.TyreRadius
 	if radius == nil {
 		return models.CornerSet{}
@@ -521,8 +521,8 @@ func (t *Transformer) TyreRadiusMeters() models.CornerSet {
 }
 
 func (t *Transformer) TyreSlipRatio() models.CornerSet {
-	groundSpeed := units.MetersPerSecondToKilometersPerHour(t.GroundSpeedMetersPerSecond())
-	wheelSpeed := t.WheelSpeedMetersPerSecond()
+	groundSpeed := units.MetresPerSecondToKilometresPerHour(t.GroundSpeedMetresPerSecond())
+	wheelSpeed := t.WheelSpeedMetresPerSecond()
 
 	if groundSpeed < 0.0001 {
 		return models.CornerSet{
@@ -534,10 +534,10 @@ func (t *Transformer) TyreSlipRatio() models.CornerSet {
 	}
 
 	return models.CornerSet{
-		FrontLeft:  units.MetersPerSecondToKilometersPerHour(wheelSpeed.FrontLeft) / groundSpeed,
-		FrontRight: units.MetersPerSecondToKilometersPerHour(wheelSpeed.FrontRight) / groundSpeed,
-		RearLeft:   units.MetersPerSecondToKilometersPerHour(wheelSpeed.RearLeft) / groundSpeed,
-		RearRight:  units.MetersPerSecondToKilometersPerHour(wheelSpeed.RearRight) / groundSpeed,
+		FrontLeft:  units.MetresPerSecondToKilometresPerHour(wheelSpeed.FrontLeft) / groundSpeed,
+		FrontRight: units.MetresPerSecondToKilometresPerHour(wheelSpeed.FrontRight) / groundSpeed,
+		RearLeft:   units.MetresPerSecondToKilometresPerHour(wheelSpeed.RearLeft) / groundSpeed,
+		RearRight:  units.MetresPerSecondToKilometresPerHour(wheelSpeed.RearRight) / groundSpeed,
 	}
 }
 
@@ -661,37 +661,37 @@ func (t *Transformer) VehicleYear() int {
 	return t.Vehicle.Year
 }
 
-func (t *Transformer) VehicleLengthMillimeters() int {
+func (t *Transformer) VehicleLengthMillimetres() int {
 	t.UpdateVehicle()
 
 	return t.Vehicle.Length
 }
 
-func (t *Transformer) VehicleWidthMillimeters() int {
+func (t *Transformer) VehicleWidthMillimetres() int {
 	t.UpdateVehicle()
 
 	return t.Vehicle.Width
 }
 
-func (t *Transformer) VehicleHeightMillimeters() int {
+func (t *Transformer) VehicleHeightMillimetres() int {
 	t.UpdateVehicle()
 
 	return t.Vehicle.Height
 }
 
-func (t *Transformer) VehicleWheelbaseMillimeters() int {
+func (t *Transformer) VehicleWheelbaseMillimetres() int {
 	t.UpdateVehicle()
 
 	return t.Vehicle.Wheelbase
 }
 
-func (t *Transformer) VehicleTrackFrontMillimeters() int {
+func (t *Transformer) VehicleTrackFrontMillimetres() int {
 	t.UpdateVehicle()
 
 	return t.Vehicle.TrackFront
 }
 
-func (t *Transformer) VehicleTrackRearMillimeters() int {
+func (t *Transformer) VehicleTrackRearMillimetres() int {
 	t.UpdateVehicle()
 
 	return t.Vehicle.TrackRear
@@ -710,8 +710,8 @@ func (t *Transformer) VelocityVector() models.Vector {
 	}
 }
 
-func (t *Transformer) WheelSpeedMetersPerSecond() models.CornerSet {
-	radius := t.TyreRadiusMeters()
+func (t *Transformer) WheelSpeedMetresPerSecond() models.CornerSet {
+	radius := t.TyreRadiusMetres()
 	rps := t.WheelSpeedRadiansPerSecond()
 
 	return models.CornerSet{

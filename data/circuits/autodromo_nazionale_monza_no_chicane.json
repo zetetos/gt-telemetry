@@ -4,7 +4,7 @@
     "VariationName": "Autodromo Nazionale Monza No Chicane",
     "Default": false,
     "Country": "it",
-    "LengthMeters": 5722,
+    "LengthMetres": 5722,
     "Coordinates": {
         "Circuit": [
             { "X": -522.6514, "Y": 175.5625, "Z": 421.50592 },

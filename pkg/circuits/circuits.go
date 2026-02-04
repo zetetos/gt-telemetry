@@ -124,7 +124,7 @@ func (c *CircuitDB) GetAllCircuitIDs() (circuitIDs []string) {
 
 // NormaliseStartLineCoordinate normalises a start line coordinate to reduce precision for location matching.
 func NormaliseStartLineCoordinate(coordinate models.Coordinate) (normalised models.CoordinateNorm) {
-	// The FIA rules state that the starting grid has a min width of 15 meters.
+	// The FIA rules state that the starting grid has a min width of 15 metres.
 	// 32m resolution should provide sufficient accuracy for most tracks.
 	return coordinate.Normalise(
 		startLineCoorindateResolutionX,

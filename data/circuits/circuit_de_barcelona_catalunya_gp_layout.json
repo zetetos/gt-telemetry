@@ -4,7 +4,7 @@
     "VariationName": "Circuit de Barcelona-Catalunya GP Layout",
     "Default": true,
     "Country": "es",
-    "LengthMeters": 4580,
+    "LengthMetres": 4580,
     "Coordinates": {
         "Circuit": [
             { "X": 239.8485, "Y": -6.560982, "Z": -93.89609 },

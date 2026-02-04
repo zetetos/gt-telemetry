@@ -4,7 +4,7 @@
     "VariationName": "Willow Springs International Raceway: Big Willow",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 3917,
+    "LengthMetres": 3917,
     "Coordinates": {
         "Circuit": [
             { "X": 84.83138, "Y": -36.690186, "Z": 373.94333 },

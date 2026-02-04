@@ -4,7 +4,7 @@
     "VariationName": "Autopolis International Racing Course",
     "Default": true,
     "Country": "jp",
-    "LengthMeters": 4606,
+    "LengthMetres": 4606,
     "Coordinates": {
         "Circuit": [
             { "X": -92.55072, "Y": -12.0673275, "Z": -8.822681 },

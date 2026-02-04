@@ -4,7 +4,7 @@
     "VariationName": "Yas Marina Circuit",
     "Default": true,
     "Country": "ae",
-    "LengthMeters": 5100,
+    "LengthMetres": 5100,
     "Coordinates": {
         "Circuit": [
             { "X": -23.262072, "Y": -4.896671, "Z": 107.32584 },

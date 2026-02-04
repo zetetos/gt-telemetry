@@ -4,7 +4,7 @@
     "VariationName": "Alsace - Test Course",
     "Default": false,
     "Country": "fr",
-    "LengthMeters": 2082,
+    "LengthMetres": 2082,
     "Coordinates": {
         "Circuit": [
             { "X": -0.023122946, "Y": 86.54441, "Z": 214.65056 },

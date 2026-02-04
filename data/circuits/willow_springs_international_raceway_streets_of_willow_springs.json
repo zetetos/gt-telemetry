@@ -4,7 +4,7 @@
     "VariationName": "Willow Springs International Raceway: Streets of Willow Springs",
     "Default": false,
     "Country": "us",
-    "LengthMeters": 2493,
+    "LengthMetres": 2493,
     "Coordinates": {
         "Circuit": [
             { "X": 535.95197, "Y": -28.541328, "Z": 19.120474 },

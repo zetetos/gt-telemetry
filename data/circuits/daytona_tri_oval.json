@@ -4,7 +4,7 @@
     "VariationName": "Daytona Tri-Oval",
     "Default": false,
     "Country": "us",
-    "LengthMeters": 3986,
+    "LengthMetres": 3986,
     "Coordinates": {
         "Circuit": [
             { "X": -395.22208, "Y": 1.2492077, "Z": -285.4317 },

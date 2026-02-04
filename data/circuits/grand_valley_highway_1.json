@@ -4,7 +4,7 @@
     "VariationName": "Grand Valley - Highway 1",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 5020,
+    "LengthMetres": 5020,
     "Coordinates": {
         "Circuit": [
             { "X": 94.93385, "Y": 123.03352, "Z": 958.03436 },

@@ -4,7 +4,7 @@
     "VariationName": "Nürburgring Nordschleife Tourist",
     "Default": false,
     "Country": "de",
-    "LengthMeters": 18191,
+    "LengthMetres": 18191,
     "Coordinates": {
         "Circuit": [
             { "X": -185.83392, "Y": 112.02877, "Z": 981.9698 },

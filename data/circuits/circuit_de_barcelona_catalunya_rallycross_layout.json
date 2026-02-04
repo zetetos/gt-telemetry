@@ -4,7 +4,7 @@
     "VariationName": "Circuit de Barcelona-Catalunya Rallycross Layout",
     "Default": false,
     "Country": "es",
-    "LengthMeters": 993,
+    "LengthMetres": 993,
     "Coordinates": {
         "Circuit": [
             { "X": 88.95383, "Y": 8.364591, "Z": -344.72104 },

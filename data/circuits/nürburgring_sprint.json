@@ -4,7 +4,7 @@
     "VariationName": "Nürburgring Sprint",
     "Default": false,
     "Country": "de",
-    "LengthMeters": 3335,
+    "LengthMetres": 3335,
     "Coordinates": {
         "Circuit": [
             { "X": -1240.8188, "Y": 142.19258, "Z": 2052.8914 },

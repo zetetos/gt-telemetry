@@ -4,7 +4,7 @@
     "VariationName": "Watkins Glen Long Course",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 5411,
+    "LengthMetres": 5411,
     "Coordinates": {
         "Circuit": [
             { "X": -344.76385, "Y": 6.0942845, "Z": -518.02405 },

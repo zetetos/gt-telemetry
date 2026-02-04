@@ -4,7 +4,7 @@
     "VariationName": "Red Bull Ring",
     "Default": true,
     "Country": "at",
-    "LengthMeters": 4286,
+    "LengthMetres": 4286,
     "Coordinates": {
         "Circuit": [
             { "X": 564.7325, "Y": -27.803608, "Z": 274.768 },

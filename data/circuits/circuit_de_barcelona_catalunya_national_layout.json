@@ -4,7 +4,7 @@
     "VariationName": "Circuit de Barcelona-Catalunya National Layout",
     "Default": false,
     "Country": "es",
-    "LengthMeters": 2790,
+    "LengthMetres": 2790,
     "Coordinates": {
         "Circuit": [
             { "X": 172.65198, "Y": -6.604388, "Z": 13.141271 },

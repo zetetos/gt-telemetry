@@ -4,7 +4,7 @@
     "VariationName": "Tokyo Expressway - South Clockwise",
     "Default": false,
     "Country": "jp",
-    "LengthMeters": 5175,
+    "LengthMetres": 5175,
     "Coordinates": {
         "Circuit": [
             { "X": -303.7127, "Y": 0.018196136, "Z": 23.564402 },

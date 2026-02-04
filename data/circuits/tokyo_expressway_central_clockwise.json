@@ -4,7 +4,7 @@
     "VariationName": "Tokyo Expressway - Central Clockwise",
     "Default": false,
     "Country": "jp",
-    "LengthMeters": 4393,
+    "LengthMetres": 4393,
     "Coordinates": {
         "Circuit": [
             { "X": -46.039036, "Y": 8.058041, "Z": 824.5724 },

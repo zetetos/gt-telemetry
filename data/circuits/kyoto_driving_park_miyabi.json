@@ -4,7 +4,7 @@
     "VariationName": "Kyoto Driving Park - Miyabi",
     "Default": false,
     "Country": "jp",
-    "LengthMeters": 1916,
+    "LengthMetres": 1916,
     "Coordinates": {
         "Circuit": [
             { "X": -163.30205, "Y": 89.7881, "Z": 652.79645 },

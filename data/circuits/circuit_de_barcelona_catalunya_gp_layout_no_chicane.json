@@ -4,7 +4,7 @@
     "VariationName": "Circuit de Barcelona-Catalunya GP Layout No Chicane",
     "Default": false,
     "Country": "es",
-    "LengthMeters": 4567,
+    "LengthMetres": 4567,
     "Coordinates": {
         "Circuit": [
             { "X": 238.80377, "Y": -6.5873027, "Z": -94.46449 },

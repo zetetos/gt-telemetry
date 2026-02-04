@@ -4,7 +4,7 @@
     "VariationName": "Alsace - Village",
     "Default": false,
     "Country": "fr",
-    "LengthMeters": 5345,
+    "LengthMetres": 5345,
     "Coordinates": {
         "Circuit": [
             { "X": 775.3305, "Y": 63.016987, "Z": -763.7504 },

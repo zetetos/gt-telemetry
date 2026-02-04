@@ -4,7 +4,7 @@
     "VariationName": "Trial Mountain Circuit",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 5332,
+    "LengthMetres": 5332,
     "Coordinates": {
         "Circuit": [
             { "X": 143.96898, "Y": -15.953242, "Z": 311.0628 },

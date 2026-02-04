@@ -4,7 +4,7 @@
     "VariationName": "Autodrome Lago Maggiore - West",
     "Default": false,
     "Country": "it",
-    "LengthMeters": 4107,
+    "LengthMetres": 4107,
     "Coordinates": {
         "Circuit": [
             { "X": -26.341534, "Y": 12.284063, "Z": 27.33874 },

@@ -18,27 +18,27 @@ func CelsiusToFahrenheit(c float32) float32 {
 	return c*1.8 + 32
 }
 
-func MetersToFeet(m float32) float32 {
+func MetresToFeet(m float32) float32 {
 	return m * 3.28084
 }
 
-func MetersToInches(m float32) float32 {
+func MetresToInches(m float32) float32 {
 	return m * 39.3701
 }
 
-func MetersToMillimeters(m float32) float32 {
+func MetresToMillimetres(m float32) float32 {
 	return m * 1000
 }
 
-func MillimetersToInches(mm int) float32 {
+func MillimetresToInches(mm int) float32 {
 	return float32(mm) / 25.4
 }
 
-func MetersPerSecondToKilometersPerHour(mps float32) float32 {
+func MetresPerSecondToKilometresPerHour(mps float32) float32 {
 	return mps * 3.6
 }
 
-func MetersPerSecondToMilesPerHour(mps float32) float32 {
+func MetresPerSecondToMilesPerHour(mps float32) float32 {
 	return mps / 0.44704
 }
 

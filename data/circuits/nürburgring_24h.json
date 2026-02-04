@@ -4,7 +4,7 @@
     "VariationName": "Nürburgring 24h",
     "Default": false,
     "Country": "de",
-    "LengthMeters": 24982,
+    "LengthMetres": 24982,
     "Coordinates": {
         "Circuit": [
             { "X": -1241.0208, "Y": 142.19037, "Z": 2053.5652 },

@@ -33,11 +33,11 @@ func (suite *UnitConversionTestSuite) TestUnitConversionFunctionsReturnCorrectVa
 		{units.BarToKPA, 1, 100},
 		{units.CelsiusToFahrenheit, 0, 32},
 		{units.CelsiusToFahrenheit, 100, 212},
-		{units.MetersToFeet, 1, 3.28084},
-		{units.MetersToInches, 1, 39.3701},
-		{units.MetersToMillimeters, 1, 1000},
-		{units.MetersPerSecondToKilometersPerHour, 1, 3.6},
-		{units.MetersPerSecondToMilesPerHour, 1, 2.2369363},
+		{units.MetresToFeet, 1, 3.28084},
+		{units.MetresToInches, 1, 39.3701},
+		{units.MetresToMillimetres, 1, 1000},
+		{units.MetresPerSecondToKilometresPerHour, 1, 3.6},
+		{units.MetresPerSecondToMilesPerHour, 1, 2.2369363},
 		{units.RadiansPerSecondToRevolutionsPerMinute, 1, 9.549296},
 		{units.RadiansToDegrees, 1, 57.29578},
 		{units.RadiansToDegrees, -3.14159265, -180},
@@ -57,7 +57,7 @@ func (suite *UnitConversionTestSuite) TestUnitConversionFunctionsReturnCorrectVa
 	}
 }
 
-func (suite *UnitConversionTestSuite) TestMillimetersToInchesReturnsCorrectValue() {
+func (suite *UnitConversionTestSuite) TestMillimetresToInchesReturnsCorrectValue() {
 	// Arrange
 	testCases := []struct {
 		withValue int
@@ -75,7 +75,7 @@ func (suite *UnitConversionTestSuite) TestMillimetersToInchesReturnsCorrectValue
 
 	for _, tc := range testCases {
 		// Act
-		gotValue := units.MillimetersToInches(tc.withValue)
+		gotValue := units.MillimetresToInches(tc.withValue)
 
 		// Assert
 		suite.InEpsilon(tc.wantValue, gotValue, 1e-5)

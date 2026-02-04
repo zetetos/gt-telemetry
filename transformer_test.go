@@ -613,13 +613,13 @@ func (suite *TransformerTestSuite) TestGridPositionReturnsCorrectValue() {
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestGroundSpeedMetersPerSecondReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestGroundSpeedMetresPerSecondReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(39.33952)
 	suite.transformer.RawTelemetry.GroundSpeed = wantValue
 
 	// Act
-	gotValue := suite.transformer.GroundSpeedMetersPerSecond()
+	gotValue := suite.transformer.GroundSpeedMetresPerSecond()
 
 	// Assert
 	suite.InEpsilon(wantValue, gotValue, 1e-5)
@@ -727,13 +727,13 @@ func (suite *TransformerTestSuite) TestRaceLapsReturnsCorrectValue() {
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestRideHeightMetersReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestRideHeightMetresReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(0.12345)
 	suite.transformer.RawTelemetry.RideHeight = wantValue
 
 	// Act
-	gotValue := suite.transformer.RideHeightMeters()
+	gotValue := suite.transformer.RideHeightMetres()
 
 	// Assert
 	suite.InEpsilon(wantValue, gotValue, 1e-5)
@@ -836,18 +836,18 @@ func (suite *TransformerTestSuite) TestSuggestedGearReturnsCorrectValue() {
 	}
 }
 
-func (suite *TransformerTestSuite) TestSuspensionHeightMetersReturnsEmptyCornerSetWhenTelemetryNil() {
+func (suite *TransformerTestSuite) TestSuspensionHeightMetresReturnsEmptyCornerSetWhenTelemetryNil() {
 	// Arrange
 	suite.transformer.RawTelemetry.SuspensionHeight = nil
 
 	// Act
-	gotValue := suite.transformer.SuspensionHeightMeters()
+	gotValue := suite.transformer.SuspensionHeightMetres()
 
 	// Assert
 	suite.Equal(models.CornerSet{}, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestSuspensionHeightMetersRetursCorrectValue() {
+func (suite *TransformerTestSuite) TestSuspensionHeightMetresRetursCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.SuspensionHeight = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.101,
@@ -857,7 +857,7 @@ func (suite *TransformerTestSuite) TestSuspensionHeightMetersRetursCorrectValue(
 	}
 
 	// Act
-	gotValue := suite.transformer.SuspensionHeightMeters()
+	gotValue := suite.transformer.SuspensionHeightMetres()
 
 	// Assert
 	suite.InEpsilon(float32(0.101), gotValue.FrontLeft, 1e-5)
@@ -1003,19 +1003,19 @@ func (suite *TransformerTestSuite) TestTurboBoostBarReturnsCorrectValue() {
 	suite.InEpsilon(wantValue, gotValue, 1e-5)
 }
 
-func (suite *TransformerTestSuite) TestTyreDiameterMetersReturnsEmptyObjectWhenTelemetryIsNil() {
+func (suite *TransformerTestSuite) TestTyreDiameterMetresReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Arrange
 	wantValue := models.CornerSet{}
 	suite.transformer.RawTelemetry.TyreRadius = nil
 
 	// Act
-	gotValue := suite.transformer.TyreDiameterMeters()
+	gotValue := suite.transformer.TyreDiameterMetres()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestTyreDiameterMetersReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestTyreDiameterMetresReturnsCorrectValue() {
 	// Arrange
 	tyreRadius := float32(0.323)
 	wantValue := models.CornerSet{
@@ -1032,25 +1032,25 @@ func (suite *TransformerTestSuite) TestTyreDiameterMetersReturnsCorrectValue() {
 	}
 
 	// Act
-	gotValue := suite.transformer.TyreDiameterMeters()
+	gotValue := suite.transformer.TyreDiameterMetres()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestTyreRadiusMetersReturnsEmptyObjectWhenTelemetryIsNil() {
+func (suite *TransformerTestSuite) TestTyreRadiusMetresReturnsEmptyObjectWhenTelemetryIsNil() {
 	// Arrange
 	wantValue := models.CornerSet{}
 	suite.transformer.RawTelemetry.TyreRadius = nil
 
 	// Act
-	gotValue := suite.transformer.TyreRadiusMeters()
+	gotValue := suite.transformer.TyreRadiusMetres()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestTyreRadiusMetersReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestTyreRadiusMetresReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(0.317)
 	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
@@ -1061,7 +1061,7 @@ func (suite *TransformerTestSuite) TestTyreRadiusMetersReturnsCorrectValue() {
 	}
 
 	// Act
-	gotValue := suite.transformer.TyreRadiusMeters()
+	gotValue := suite.transformer.TyreRadiusMetres()
 
 	// Assert
 	suite.InEpsilon(wantValue, gotValue.FrontLeft, 1e-5)
@@ -1353,79 +1353,79 @@ func (suite *TransformerTestSuite) TestVehicleYearReturnsCorrectValueWhenTelemet
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestVehicleLengthMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+func (suite *TransformerTestSuite) TestVehicleLengthMillimetresReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
 	wantValue := 4500
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
 
 	// Act
-	gotValue := suite.transformer.VehicleLengthMillimeters()
+	gotValue := suite.transformer.VehicleLengthMillimetres()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestVehicleWidthMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+func (suite *TransformerTestSuite) TestVehicleWidthMillimetresReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
 	wantValue := 1800
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
 
 	// Act
-	gotValue := suite.transformer.VehicleWidthMillimeters()
+	gotValue := suite.transformer.VehicleWidthMillimetres()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestVehicleHeightMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+func (suite *TransformerTestSuite) TestVehicleHeightMillimetresReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
 	wantValue := 1300
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
 
 	// Act
-	gotValue := suite.transformer.VehicleHeightMillimeters()
+	gotValue := suite.transformer.VehicleHeightMillimetres()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestVehicleWheelbaseMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+func (suite *TransformerTestSuite) TestVehicleWheelbaseMillimetresReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
 	wantValue := 2700
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
 
 	// Act
-	gotValue := suite.transformer.VehicleWheelbaseMillimeters()
+	gotValue := suite.transformer.VehicleWheelbaseMillimetres()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestVehicleTrackFrontMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+func (suite *TransformerTestSuite) TestVehicleTrackFrontMillimetresReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
 	wantValue := 1550
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
 
 	// Act
-	gotValue := suite.transformer.VehicleTrackFrontMillimeters()
+	gotValue := suite.transformer.VehicleTrackFrontMillimetres()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
 }
 
-func (suite *TransformerTestSuite) TestVehicleTrackRearMillimetersReturnsCorrectValueWhenTelemetryHasKnownID() {
+func (suite *TransformerTestSuite) TestVehicleTrackRearMillimetresReturnsCorrectValueWhenTelemetryHasKnownID() {
 	// Arrange
 	wantValue := 1600
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
 
 	// Act
-	gotValue := suite.transformer.VehicleTrackRearMillimeters()
+	gotValue := suite.transformer.VehicleTrackRearMillimetres()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)

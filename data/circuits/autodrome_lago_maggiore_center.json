@@ -4,7 +4,7 @@
     "VariationName": "Autodrome Lago Maggiore - Center",
     "Default": false,
     "Country": "it",
-    "LengthMeters": 1972,
+    "LengthMetres": 1972,
     "Coordinates": {
         "Circuit": [
             { "X": -26.887444, "Y": 12.284322, "Z": 26.989788 },

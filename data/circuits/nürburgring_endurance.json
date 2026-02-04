@@ -4,7 +4,7 @@
     "VariationName": "Nürburgring Endurance",
     "Default": false,
     "Country": "de",
-    "LengthMeters": 24029,
+    "LengthMetres": 24029,
     "Coordinates": {
         "Circuit": [
             { "X": -1241.0134, "Y": 142.18536, "Z": 2052.9194 },

@@ -4,7 +4,7 @@
     "VariationName": "Spa 24h layout",
     "Default": false,
     "Country": "be",
-    "LengthMeters": 6126,
+    "LengthMetres": 6126,
     "Coordinates": {
         "Circuit": [
             { "X": -146.98679, "Y": 100.74747, "Z": -699.50885 },

@@ -4,7 +4,7 @@
     "VariationName": "Willow Springs International Raceway: Horse Thief Mile",
     "Default": false,
     "Country": "us",
-    "LengthMeters": 1591,
+    "LengthMetres": 1591,
     "Coordinates": {
         "Circuit": [
             { "X": 136.98978, "Y": -0.23064043, "Z": -346.4266 },

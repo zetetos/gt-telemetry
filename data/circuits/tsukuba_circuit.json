@@ -4,7 +4,7 @@
     "VariationName": "Tsukuba Circuit",
     "Default": true,
     "Country": "jp",
-    "LengthMeters": 2070,
+    "LengthMetres": 2070,
     "Coordinates": {
         "Circuit": [
             { "X": -151.59976, "Y": 10.419478, "Z": -179.72087 },

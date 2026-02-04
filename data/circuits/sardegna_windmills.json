@@ -4,7 +4,7 @@
     "VariationName": "Sardegna - Windmills",
     "Default": false,
     "Country": "it",
-    "LengthMeters": 3237,
+    "LengthMetres": 3237,
     "Coordinates": {
         "Circuit": [
             { "X": 20.034737, "Y": 42.31716, "Z": 168.39368 },

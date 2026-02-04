@@ -4,7 +4,7 @@
     "VariationName": "Autodrome Lago Maggiore - East End",
     "Default": false,
     "Country": "it",
-    "LengthMeters": 1883,
+    "LengthMetres": 1883,
     "Coordinates": {
         "Circuit": [
             { "X": 633.7052, "Y": -1.4260557, "Z": 105.06923 },

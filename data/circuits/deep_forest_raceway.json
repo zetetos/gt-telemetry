@@ -4,7 +4,7 @@
     "VariationName": "Deep Forest Raceway",
     "Default": true,
     "Country": "ch",
-    "LengthMeters": 4191,
+    "LengthMetres": 4191,
     "Coordinates": {
         "Circuit": [
             { "X": -52.91735, "Y": 7.0769672, "Z": -262.76675 },

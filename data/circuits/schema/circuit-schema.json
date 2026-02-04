@@ -29,7 +29,7 @@
             "description": "Two-letter ISO 3166-1 alpha-2 country code",
             "examples": [ "us", "br", "jp", "gb", "de", "it", "fr" ]
         },
-        "LengthMeters": { "type": "integer", "minimum": 1, "description": "Total length of the circuit in meters" },
+        "LengthMetres": { "type": "integer", "minimum": 1, "description": "Total length of the circuit in metres" },
         "Coordinates": {
             "type": "object",
             "description": "3D coordinate data for the circuit",
@@ -65,6 +65,6 @@
             "additionalProperties": false
         }
     },
-    "required": [ "Name", "VariationName", "Default", "Country", "LengthMeters", "Coordinates" ],
+    "required": [ "Name", "VariationName", "Default", "Country", "LengthMetres", "Coordinates" ],
     "additionalProperties": false
 }

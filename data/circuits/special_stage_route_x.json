@@ -4,7 +4,7 @@
     "VariationName": "Special Stage Route X",
     "Default": false,
     "Country": "us",
-    "LengthMeters": 30395,
+    "LengthMetres": 30395,
     "Coordinates": {
         "Circuit": [
             { "X": -2815.1897, "Y": 0.04417211, "Z": -4255.8657 },

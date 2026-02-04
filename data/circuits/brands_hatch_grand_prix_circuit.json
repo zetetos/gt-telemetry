@@ -4,7 +4,7 @@
     "VariationName": "Brands Hatch Grand Prix Circuit",
     "Default": true,
     "Country": "uk",
-    "LengthMeters": 3890,
+    "LengthMetres": 3890,
     "Coordinates": {
         "Circuit": [
             { "X": -141.51279, "Y": -3.1394875, "Z": -402.41486 },

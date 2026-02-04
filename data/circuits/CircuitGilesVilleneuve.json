@@ -4,7 +4,7 @@
     "VariationName": "Circuit Giles-Villeneuve",
     "Default": true,
     "Country": "ca",
-    "LengthMeters": 4313,
+    "LengthMetres": 4313,
     "Coordinates": {
         "Circuit": [
             { "X": 250.01611, "Y": -2.3976355, "Z": 619.321 },

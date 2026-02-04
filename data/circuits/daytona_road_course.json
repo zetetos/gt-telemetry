@@ -4,7 +4,7 @@
     "VariationName": "Daytona Road Course",
     "Default": true,
     "Country": "us",
-    "LengthMeters": 5702,
+    "LengthMetres": 5702,
     "Coordinates": {
         "Circuit": [
             { "X": -394.73376, "Y": 1.1617268, "Z": -285.6337 },
