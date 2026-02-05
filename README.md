@@ -34,7 +34,7 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 To start using gt-telemetry, install Go 1.25.6 or above. From your project, run the following command to retrieve the module:
 
 ```bash
-go get github.com/zetetos/gt-telemetry
+go get github.com/zetetos/gt-telemetry/v2
 ```
 
 ## Usage ##
@@ -42,7 +42,7 @@ go get github.com/zetetos/gt-telemetry
 Construct a new GT client and start reading the telemetry stream. All configuration fields in the example are optional and use the default values that would be used when not provided.
 
 ```go
-import "github.com/zetetos/gt-telemetry"
+import "github.com/zetetos/gt-telemetry/v2"
 
 main() {
     options := gttelemetry.Options{
