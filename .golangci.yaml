@@ -42,7 +42,7 @@ linters:
             - github.com/santhosh-tekuri/jsonschema
             - github.com/stretchr/testify
             - golang.org/x/crypto/salsa20
-            - github.com/zetetos/gt-telemetry
+            - github.com/zetetos/gt-telemetry/v2
     lll:
       line-length: 180
     tagliatelle:

@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft-07/schema#",
-    "$id": "https://github.com/zetetos/gt-telemetry/data/circuit-schema.json",
+    "$id": "https://github.com/zetetos/gt-telemetry/data/circuits/schema/circuit-schema.json",
     "title": "Gran Turismo Circuit Schema",
     "description": "JSON schema for Gran Turismo circuit configuration files",
     "type": "object",
