@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/zetetos/gt-telemetry/pkg/vehicles"
+	"github.com/zetetos/gt-telemetry/v2/pkg/vehicles"
 )
 
 // mergeInventories merges PD inventory data into the GT inventory file.

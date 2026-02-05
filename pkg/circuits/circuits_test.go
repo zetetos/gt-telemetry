@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zetetos/gt-telemetry/pkg/circuits"
-	"github.com/zetetos/gt-telemetry/pkg/models"
+	"github.com/zetetos/gt-telemetry/v2/pkg/circuits"
+	"github.com/zetetos/gt-telemetry/v2/pkg/models"
 )
 
 type CircuitsTestSuite struct {

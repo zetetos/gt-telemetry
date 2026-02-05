@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zetetos/gt-telemetry/pkg/vehicles"
+	"github.com/zetetos/gt-telemetry/v2/pkg/vehicles"
 )
 
 type VehiclesTestSuite struct {

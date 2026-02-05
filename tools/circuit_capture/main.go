@@ -16,8 +16,8 @@ import (
 	"time"
 	"unicode"
 
-	gttelemetry "github.com/zetetos/gt-telemetry"
-	gtmodels "github.com/zetetos/gt-telemetry/pkg/models"
+	gttelemetry "github.com/zetetos/gt-telemetry/v2"
+	gtmodels "github.com/zetetos/gt-telemetry/v2/pkg/models"
 )
 
 const (

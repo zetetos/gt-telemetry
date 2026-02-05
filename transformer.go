@@ -4,10 +4,10 @@ import (
 	"math"
 	"time"
 
-	"github.com/zetetos/gt-telemetry/internal/telemetry"
-	"github.com/zetetos/gt-telemetry/internal/units"
-	"github.com/zetetos/gt-telemetry/pkg/models"
-	"github.com/zetetos/gt-telemetry/pkg/vehicles"
+	"github.com/zetetos/gt-telemetry/v2/internal/telemetry"
+	"github.com/zetetos/gt-telemetry/v2/internal/units"
+	"github.com/zetetos/gt-telemetry/v2/pkg/models"
+	"github.com/zetetos/gt-telemetry/v2/pkg/vehicles"
 )
 
 type Flags struct {

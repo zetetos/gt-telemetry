@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zetetos/gt-telemetry/internal/units"
+	"github.com/zetetos/gt-telemetry/v2/internal/units"
 )
 
 type UnitConversionTestSuite struct {

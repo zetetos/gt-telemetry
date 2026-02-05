@@ -1,8 +1,6 @@
-module github.com/zetetos/gt-telemetry
+module github.com/zetetos/gt-telemetry/v2
 
 go 1.25.6
-
-retract [v1.0.0, v1.5.1] // broken versions during migration to the zetetos org
 
 require (
 	github.com/dop251/goja v0.0.0-20260106131823-651366fbe6e3
