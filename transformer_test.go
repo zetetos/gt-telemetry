@@ -26,24 +26,24 @@ func TestTransformerTestSuite(t *testing.T) {
 func (suite *TransformerTestSuite) SetupTest() {
 	inventoryJSON := []byte(`{
 		"1234": {
-			"Model": "Dummy Model",
-			"Manufacturer": "Dummy Manufacturer",
-			"Category": "Gr.1",
-			"Drivetrain": "FR",
-			"Aspiration": "NA",
-			"EngineLayout": "V6",
-			"EngineBankAngle": 60,
-			"EngineCrankPlaneAngle": 120,
-			"Year": 2025,
-			"CarID": 1234,
-			"OpenCockpit": false,
-			"CarType": "race",
-			"Length": 4500,
-			"Width": 1800,
-			"Height": 1300,
-			"Wheelbase": 2700,
-			"TrackFront": 1550,
-			"TrackRear": 1600
+			"model": "Dummy Model",
+			"manufacturer": "Dummy Manufacturer",
+			"category": "Gr.1",
+			"drivetrain": "FR",
+			"aspiration": "NA",
+			"engineLayout": "V6",
+			"engineBankAngle": 60,
+			"engineCrankPlaneAngle": 120,
+			"year": 2025,
+			"carId": 1234,
+			"openCockpit": false,
+			"carType": "race",
+			"length": 4500,
+			"width": 1800,
+			"height": 1300,
+			"wheelbase": 2700,
+			"trackFront": 1550,
+			"trackRear": 1600
 		}
 	}`)
 	inventory, _ := vehicles.NewDB(inventoryJSON)

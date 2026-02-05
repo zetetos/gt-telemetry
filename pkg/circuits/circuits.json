@@ -1,5 +1,5 @@
 {
-  "Coordinates": {
+  "coordinates": {
     "x:-1008,y:-8,z:1088": "24HeuresDuMansRaceTrackNoChicane",
     "x:-1008,y:0,z:-2448": "SpecialStageRouteX",
     "x:-1008,y:0,z:-2464": "SpecialStageRouteX",
@@ -16684,1182 +16684,1182 @@
     "x:992,y:96,z:-64": "AlsaceVillage",
     "x:992,y:98,z:-64": "AlsaceVillage"
   },
-  "Circuits": {
+  "circuits": {
     "24HeuresDuMansRaceTrack": {
-      "ID": "24HeuresDuMansRaceTrack",
-      "Name": "Circuit de la Sarthe",
-      "Variation": "24 Heures du Mans race track",
-      "Country": "fr",
-      "Default": true,
-      "Length": 13550,
-      "StartLine": {
-        "X": -1344,
-        "Y": -4,
-        "Z": -1232
+      "id": "24HeuresDuMansRaceTrack",
+      "name": "Circuit de la Sarthe",
+      "variation": "24 Heures du Mans race track",
+      "country": "fr",
+      "default": true,
+      "length": 13550,
+      "startLine": {
+        "x": -1344,
+        "y": -4,
+        "z": -1232
       },
-      "UniqueCoordinateCount": 106
+      "uniqueCoordinateCount": 106
     },
     "24HeuresDuMansRaceTrackNoChicane": {
-      "ID": "24HeuresDuMansRaceTrackNoChicane",
-      "Name": "Circuit de la Sarthe",
-      "Variation": "24 Heures du Mans race track, no chicane",
-      "Country": "fr",
-      "Default": false,
-      "Length": 13494,
-      "StartLine": {
-        "X": -1344,
-        "Y": -4,
-        "Z": -1232
+      "id": "24HeuresDuMansRaceTrackNoChicane",
+      "name": "Circuit de la Sarthe",
+      "variation": "24 Heures du Mans race track, no chicane",
+      "country": "fr",
+      "default": false,
+      "length": 13494,
+      "startLine": {
+        "x": -1344,
+        "y": -4,
+        "z": -1232
       },
-      "UniqueCoordinateCount": 109
+      "uniqueCoordinateCount": 109
     },
     "AlsaceTestCourse": {
-      "ID": "AlsaceTestCourse",
-      "Name": "Alsace",
-      "Variation": "Alsace - Test Course",
-      "Country": "fr",
-      "Default": false,
-      "Length": 2082,
-      "StartLine": {
-        "X": 0,
-        "Y": 86,
-        "Z": 208
+      "id": "AlsaceTestCourse",
+      "name": "Alsace",
+      "variation": "Alsace - Test Course",
+      "country": "fr",
+      "default": false,
+      "length": 2082,
+      "startLine": {
+        "x": 0,
+        "y": 86,
+        "z": 208
       },
-      "UniqueCoordinateCount": 108
+      "uniqueCoordinateCount": 108
     },
     "AlsaceVillage": {
-      "ID": "AlsaceVillage",
-      "Name": "Alsace",
-      "Variation": "Alsace - Village",
-      "Country": "fr",
-      "Default": false,
-      "Length": 5345,
-      "StartLine": {
-        "X": 768,
-        "Y": 62,
-        "Z": -752
+      "id": "AlsaceVillage",
+      "name": "Alsace",
+      "variation": "Alsace - Village",
+      "country": "fr",
+      "default": false,
+      "length": 5345,
+      "startLine": {
+        "x": 768,
+        "y": 62,
+        "z": -752
       },
-      "UniqueCoordinateCount": 418
+      "uniqueCoordinateCount": 418
     },
     "AutodromeLagoMaggioreCenter": {
-      "ID": "AutodromeLagoMaggioreCenter",
-      "Name": "Autodrome Lago Maggiore",
-      "Variation": "Autodrome Lago Maggiore - Center",
-      "Country": "it",
-      "Default": false,
-      "Length": 1972,
-      "StartLine": {
-        "X": -16,
-        "Y": 12,
-        "Z": 16
+      "id": "AutodromeLagoMaggioreCenter",
+      "name": "Autodrome Lago Maggiore",
+      "variation": "Autodrome Lago Maggiore - Center",
+      "country": "it",
+      "default": false,
+      "length": 1972,
+      "startLine": {
+        "x": -16,
+        "y": 12,
+        "z": 16
       },
-      "UniqueCoordinateCount": 1
+      "uniqueCoordinateCount": 1
     },
     "AutodromeLagoMaggioreEast": {
-      "ID": "AutodromeLagoMaggioreEast",
-      "Name": "Autodrome Lago Maggiore ",
-      "Variation": "Autodrome Lago Maggiore - East",
-      "Country": "it",
-      "Default": false,
-      "Length": 3582,
-      "StartLine": {
-        "X": -16,
-        "Y": 12,
-        "Z": 16
+      "id": "AutodromeLagoMaggioreEast",
+      "name": "Autodrome Lago Maggiore ",
+      "variation": "Autodrome Lago Maggiore - East",
+      "country": "it",
+      "default": false,
+      "length": 3582,
+      "startLine": {
+        "x": -16,
+        "y": 12,
+        "z": 16
       },
-      "UniqueCoordinateCount": 4
+      "uniqueCoordinateCount": 4
     },
     "AutodromeLagoMaggioreEastEnd": {
-      "ID": "AutodromeLagoMaggioreEastEnd",
-      "Name": "Autodrome Lago Maggiore",
-      "Variation": "Autodrome Lago Maggiore - East End",
-      "Country": "it",
-      "Default": false,
-      "Length": 1883,
-      "StartLine": {
-        "X": 624,
-        "Y": 0,
-        "Z": 96
+      "id": "AutodromeLagoMaggioreEastEnd",
+      "name": "Autodrome Lago Maggiore",
+      "variation": "Autodrome Lago Maggiore - East End",
+      "country": "it",
+      "default": false,
+      "length": 1883,
+      "startLine": {
+        "x": 624,
+        "y": 0,
+        "z": 96
       },
-      "UniqueCoordinateCount": 22
+      "uniqueCoordinateCount": 22
     },
     "AutodromeLagoMaggioreFullCourse": {
-      "ID": "AutodromeLagoMaggioreFullCourse",
-      "Name": "Autodrome Lago Maggiore",
-      "Variation": "Autodrome Lago Maggiore - Full Course",
-      "Country": "it",
-      "Default": true,
-      "Length": 5717,
-      "StartLine": {
-        "X": -16,
-        "Y": 12,
-        "Z": 16
+      "id": "AutodromeLagoMaggioreFullCourse",
+      "name": "Autodrome Lago Maggiore",
+      "variation": "Autodrome Lago Maggiore - Full Course",
+      "country": "it",
+      "default": true,
+      "length": 5717,
+      "startLine": {
+        "x": -16,
+        "y": 12,
+        "z": 16
       },
-      "UniqueCoordinateCount": 12
+      "uniqueCoordinateCount": 12
     },
     "AutodromeLagoMaggioreWest": {
-      "ID": "AutodromeLagoMaggioreWest",
-      "Name": "Autodrome Lago Maggiore ",
-      "Variation": "Autodrome Lago Maggiore - West",
-      "Country": "it",
-      "Default": false,
-      "Length": 4107,
-      "StartLine": {
-        "X": -16,
-        "Y": 12,
-        "Z": 16
+      "id": "AutodromeLagoMaggioreWest",
+      "name": "Autodrome Lago Maggiore ",
+      "variation": "Autodrome Lago Maggiore - West",
+      "country": "it",
+      "default": false,
+      "length": 4107,
+      "startLine": {
+        "x": -16,
+        "y": 12,
+        "z": 16
       },
-      "UniqueCoordinateCount": 8
+      "uniqueCoordinateCount": 8
     },
     "AutodromeLagoMaggioreWestEnd": {
-      "ID": "AutodromeLagoMaggioreWestEnd",
-      "Name": "Autodrome Lago Maggiore ",
-      "Variation": "Autodrome Lago Maggiore - West End",
-      "Country": "it",
-      "Default": false,
-      "Length": 2373,
-      "StartLine": {
-        "X": -608,
-        "Y": 50,
-        "Z": -160
+      "id": "AutodromeLagoMaggioreWestEnd",
+      "name": "Autodrome Lago Maggiore ",
+      "variation": "Autodrome Lago Maggiore - West End",
+      "country": "it",
+      "default": false,
+      "length": 2373,
+      "startLine": {
+        "x": -608,
+        "y": 50,
+        "z": -160
       },
-      "UniqueCoordinateCount": 30
+      "uniqueCoordinateCount": 30
     },
     "AutodromoNazionaleMonza": {
-      "ID": "AutodromoNazionaleMonza",
-      "Name": "Autodromo Nazionale Monza",
-      "Variation": "Autodromo Nazionale Monza",
-      "Country": "it",
-      "Default": true,
-      "Length": 5756,
-      "StartLine": {
-        "X": -512,
-        "Y": 174,
-        "Z": 416
+      "id": "AutodromoNazionaleMonza",
+      "name": "Autodromo Nazionale Monza",
+      "variation": "Autodromo Nazionale Monza",
+      "country": "it",
+      "default": true,
+      "length": 5756,
+      "startLine": {
+        "x": -512,
+        "y": 174,
+        "z": 416
       },
-      "UniqueCoordinateCount": 56
+      "uniqueCoordinateCount": 56
     },
     "AutodromoNazionaleMonzaNoChicane": {
-      "ID": "AutodromoNazionaleMonzaNoChicane",
-      "Name": "Autodromo Nazionale Monza",
-      "Variation": "Autodromo Nazionale Monza No Chicane",
-      "Country": "it",
-      "Default": false,
-      "Length": 5722,
-      "StartLine": {
-        "X": -512,
-        "Y": 174,
-        "Z": 416
+      "id": "AutodromoNazionaleMonzaNoChicane",
+      "name": "Autodromo Nazionale Monza",
+      "variation": "Autodromo Nazionale Monza No Chicane",
+      "country": "it",
+      "default": false,
+      "length": 5722,
+      "startLine": {
+        "x": -512,
+        "y": 174,
+        "z": 416
       },
-      "UniqueCoordinateCount": 46
+      "uniqueCoordinateCount": 46
     },
     "AutopolisInternationalRacingCourse": {
-      "ID": "AutopolisInternationalRacingCourse",
-      "Name": "Autopolis International Racing Course",
-      "Variation": "Autopolis International Racing Course",
-      "Country": "jp",
-      "Default": true,
-      "Length": 4606,
-      "StartLine": {
-        "X": -80,
-        "Y": -12,
-        "Z": 0
+      "id": "AutopolisInternationalRacingCourse",
+      "name": "Autopolis International Racing Course",
+      "variation": "Autopolis International Racing Course",
+      "country": "jp",
+      "default": true,
+      "length": 4606,
+      "startLine": {
+        "x": -80,
+        "y": -12,
+        "z": 0
       },
-      "UniqueCoordinateCount": 201
+      "uniqueCoordinateCount": 201
     },
     "AutopolisInternationalRacingCourseShortCourse": {
-      "ID": "AutopolisInternationalRacingCourseShortCourse",
-      "Name": "Autopolis International Racing Course",
-      "Variation": "Autopolis International Racing Course - Short Course",
-      "Country": "jp",
-      "Default": false,
-      "Length": 2737,
-      "StartLine": {
-        "X": 112,
-        "Y": -12,
-        "Z": 112
+      "id": "AutopolisInternationalRacingCourseShortCourse",
+      "name": "Autopolis International Racing Course",
+      "variation": "Autopolis International Racing Course - Short Course",
+      "country": "jp",
+      "default": false,
+      "length": 2737,
+      "startLine": {
+        "x": 112,
+        "y": -12,
+        "z": 112
       },
-      "UniqueCoordinateCount": 29
+      "uniqueCoordinateCount": 29
     },
     "AutódromoDeInterlagos": {
-      "ID": "AutódromoDeInterlagos",
-      "Name": "Autódromo de Interlagos",
-      "Variation": "Autódromo de Interlagos",
-      "Country": "br",
-      "Default": true,
-      "Length": 4219,
-      "StartLine": {
-        "X": -368,
-        "Y": 16,
-        "Z": 192
+      "id": "AutódromoDeInterlagos",
+      "name": "Autódromo de Interlagos",
+      "variation": "Autódromo de Interlagos",
+      "country": "br",
+      "default": true,
+      "length": 4219,
+      "startLine": {
+        "x": -368,
+        "y": 16,
+        "z": 192
       },
-      "UniqueCoordinateCount": 339
+      "uniqueCoordinateCount": 339
     },
     "BbRaceway": {
-      "ID": "BbRaceway",
-      "Name": "Broad Bean Raceway",
-      "Variation": "BB Raceway",
-      "Country": "jp",
-      "Default": true,
-      "Length": 1691,
-      "StartLine": {
-        "X": 0,
-        "Y": 0,
-        "Z": 192
+      "id": "BbRaceway",
+      "name": "Broad Bean Raceway",
+      "variation": "BB Raceway",
+      "country": "jp",
+      "default": true,
+      "length": 1691,
+      "startLine": {
+        "x": 0,
+        "y": 0,
+        "z": 192
       },
-      "UniqueCoordinateCount": 74
+      "uniqueCoordinateCount": 74
     },
     "BlueMoonBaySpeedway": {
-      "ID": "BlueMoonBaySpeedway",
-      "Name": "Blue Moon Bay Speedway",
-      "Variation": "Blue Moon Bay Speedway",
-      "Country": "us",
-      "Default": true,
-      "Length": 3236,
-      "StartLine": {
-        "X": 0,
-        "Y": 0,
-        "Z": 368
+      "id": "BlueMoonBaySpeedway",
+      "name": "Blue Moon Bay Speedway",
+      "variation": "Blue Moon Bay Speedway",
+      "country": "us",
+      "default": true,
+      "length": 3236,
+      "startLine": {
+        "x": 0,
+        "y": 0,
+        "z": 368
       },
-      "UniqueCoordinateCount": 109
+      "uniqueCoordinateCount": 109
     },
     "BlueMoonBaySpeedwayInfieldA": {
-      "ID": "BlueMoonBaySpeedwayInfieldA",
-      "Name": "Blue Moon Bay Speedway",
-      "Variation": "Blue Moon Bay Speedway - Infield A",
-      "Country": "us",
-      "Default": false,
-      "Length": 3324,
-      "StartLine": {
-        "X": 0,
-        "Y": 0,
-        "Z": 368
+      "id": "BlueMoonBaySpeedwayInfieldA",
+      "name": "Blue Moon Bay Speedway",
+      "variation": "Blue Moon Bay Speedway - Infield A",
+      "country": "us",
+      "default": false,
+      "length": 3324,
+      "startLine": {
+        "x": 0,
+        "y": 0,
+        "z": 368
       },
-      "UniqueCoordinateCount": 64
+      "uniqueCoordinateCount": 64
     },
     "BlueMoonBaySpeedwayInfieldB": {
-      "ID": "BlueMoonBaySpeedwayInfieldB",
-      "Name": "Blue Moon Bay Speedway",
-      "Variation": "Blue Moon Bay Speedway - Infield B",
-      "Country": "us",
-      "Default": false,
-      "Length": 2864,
-      "StartLine": {
-        "X": 0,
-        "Y": 0,
-        "Z": 368
+      "id": "BlueMoonBaySpeedwayInfieldB",
+      "name": "Blue Moon Bay Speedway",
+      "variation": "Blue Moon Bay Speedway - Infield B",
+      "country": "us",
+      "default": false,
+      "length": 2864,
+      "startLine": {
+        "x": 0,
+        "y": 0,
+        "z": 368
       },
-      "UniqueCoordinateCount": 47
+      "uniqueCoordinateCount": 47
     },
     "BrandsHatchGrandPrixCircuit": {
-      "ID": "BrandsHatchGrandPrixCircuit",
-      "Name": "Brands Hatch",
-      "Variation": "Brands Hatch Grand Prix Circuit",
-      "Country": "uk",
-      "Default": true,
-      "Length": 3890,
-      "StartLine": {
-        "X": -128,
-        "Y": -2,
-        "Z": -400
+      "id": "BrandsHatchGrandPrixCircuit",
+      "name": "Brands Hatch",
+      "variation": "Brands Hatch Grand Prix Circuit",
+      "country": "uk",
+      "default": true,
+      "length": 3890,
+      "startLine": {
+        "x": -128,
+        "y": -2,
+        "z": -400
       },
-      "UniqueCoordinateCount": 190
+      "uniqueCoordinateCount": 190
     },
     "BrandsHatchIndyCircuit": {
-      "ID": "BrandsHatchIndyCircuit",
-      "Name": "Brands Hatch",
-      "Variation": "Brands Hatch Indy Circuit",
-      "Country": "uk",
-      "Default": false,
-      "Length": 1919,
-      "StartLine": {
-        "X": -128,
-        "Y": -2,
-        "Z": -384
+      "id": "BrandsHatchIndyCircuit",
+      "name": "Brands Hatch",
+      "variation": "Brands Hatch Indy Circuit",
+      "country": "uk",
+      "default": false,
+      "length": 1919,
+      "startLine": {
+        "x": -128,
+        "y": -2,
+        "z": -384
       },
-      "UniqueCoordinateCount": 26
+      "uniqueCoordinateCount": 26
     },
     "CircuitDeBarcelonaCatalunyaGpLayout": {
-      "ID": "CircuitDeBarcelonaCatalunyaGpLayout",
-      "Name": "Circuit de Barcelona-Catalunya",
-      "Variation": "Circuit de Barcelona-Catalunya GP Layout",
-      "Country": "es",
-      "Default": true,
-      "Length": 4580,
-      "StartLine": {
-        "X": 224,
-        "Y": -6,
-        "Z": -80
+      "id": "CircuitDeBarcelonaCatalunyaGpLayout",
+      "name": "Circuit de Barcelona-Catalunya",
+      "variation": "Circuit de Barcelona-Catalunya GP Layout",
+      "country": "es",
+      "default": true,
+      "length": 4580,
+      "startLine": {
+        "x": 224,
+        "y": -6,
+        "z": -80
       },
-      "UniqueCoordinateCount": 7
+      "uniqueCoordinateCount": 7
     },
     "CircuitDeBarcelonaCatalunyaGpLayoutNoChicane": {
-      "ID": "CircuitDeBarcelonaCatalunyaGpLayoutNoChicane",
-      "Name": "Circuit de Barcelona-Catalunya",
-      "Variation": "Circuit de Barcelona-Catalunya GP Layout No Chicane",
-      "Country": "es",
-      "Default": false,
-      "Length": 4567,
-      "StartLine": {
-        "X": 224,
-        "Y": -6,
-        "Z": -80
+      "id": "CircuitDeBarcelonaCatalunyaGpLayoutNoChicane",
+      "name": "Circuit de Barcelona-Catalunya",
+      "variation": "Circuit de Barcelona-Catalunya GP Layout No Chicane",
+      "country": "es",
+      "default": false,
+      "length": 4567,
+      "startLine": {
+        "x": 224,
+        "y": -6,
+        "z": -80
       },
-      "UniqueCoordinateCount": 12
+      "uniqueCoordinateCount": 12
     },
     "CircuitDeBarcelonaCatalunyaNationalLayout": {
-      "ID": "CircuitDeBarcelonaCatalunyaNationalLayout",
-      "Name": "Circuit de Barcelona-Catalunya",
-      "Variation": "Circuit de Barcelona-Catalunya National Layout",
-      "Country": "es",
-      "Default": false,
-      "Length": 2790,
-      "StartLine": {
-        "X": 160,
-        "Y": -6,
-        "Z": 0
+      "id": "CircuitDeBarcelonaCatalunyaNationalLayout",
+      "name": "Circuit de Barcelona-Catalunya",
+      "variation": "Circuit de Barcelona-Catalunya National Layout",
+      "country": "es",
+      "default": false,
+      "length": 2790,
+      "startLine": {
+        "x": 160,
+        "y": -6,
+        "z": 0
       },
-      "UniqueCoordinateCount": 12
+      "uniqueCoordinateCount": 12
     },
     "CircuitDeBarcelonaCatalunyaRallycrossLayout": {
-      "ID": "CircuitDeBarcelonaCatalunyaRallycrossLayout",
-      "Name": "Circuit de Barcelona-Catalunya",
-      "Variation": "Circuit de Barcelona-Catalunya Rallycross Layout",
-      "Country": "es",
-      "Default": false,
-      "Length": 993,
-      "StartLine": {
-        "X": 80,
-        "Y": 8,
-        "Z": -336
+      "id": "CircuitDeBarcelonaCatalunyaRallycrossLayout",
+      "name": "Circuit de Barcelona-Catalunya",
+      "variation": "Circuit de Barcelona-Catalunya Rallycross Layout",
+      "country": "es",
+      "default": false,
+      "length": 993,
+      "startLine": {
+        "x": 80,
+        "y": 8,
+        "z": -336
       },
-      "UniqueCoordinateCount": 46
+      "uniqueCoordinateCount": 46
     },
     "CircuitDeSaintCroixA": {
-      "ID": "CircuitDeSaintCroixA",
-      "Name": "Circuit de Saint-Croix",
-      "Variation": "Circuit de Saint-Croix - A",
-      "Country": "fr",
-      "Default": false,
-      "Length": 9401,
-      "StartLine": {
-        "X": -672,
-        "Y": 16,
-        "Z": -608
+      "id": "CircuitDeSaintCroixA",
+      "name": "Circuit de Saint-Croix",
+      "variation": "Circuit de Saint-Croix - A",
+      "country": "fr",
+      "default": false,
+      "length": 9401,
+      "startLine": {
+        "x": -672,
+        "y": 16,
+        "z": -608
       },
-      "UniqueCoordinateCount": 390
+      "uniqueCoordinateCount": 390
     },
     "CircuitDeSaintCroixB": {
-      "ID": "CircuitDeSaintCroixB",
-      "Name": "Circuit de Saint-Croix",
-      "Variation": "Circuit de Saint-Croix - B",
-      "Country": "fr",
-      "Default": false,
-      "Length": 6992,
-      "StartLine": {
-        "X": -672,
-        "Y": 16,
-        "Z": -608
+      "id": "CircuitDeSaintCroixB",
+      "name": "Circuit de Saint-Croix",
+      "variation": "Circuit de Saint-Croix - B",
+      "country": "fr",
+      "default": false,
+      "length": 6992,
+      "startLine": {
+        "x": -672,
+        "y": 16,
+        "z": -608
       },
-      "UniqueCoordinateCount": 168
+      "uniqueCoordinateCount": 168
     },
     "CircuitDeSaintCroixC": {
-      "ID": "CircuitDeSaintCroixC",
-      "Name": "Circuit de Saint-Croix",
-      "Variation": "Circuit de Saint-Croix - C",
-      "Country": "fr",
-      "Default": true,
-      "Length": 10760,
-      "StartLine": {
-        "X": -656,
-        "Y": 16,
-        "Z": -592
+      "id": "CircuitDeSaintCroixC",
+      "name": "Circuit de Saint-Croix",
+      "variation": "Circuit de Saint-Croix - C",
+      "country": "fr",
+      "default": true,
+      "length": 10760,
+      "startLine": {
+        "x": -656,
+        "y": 16,
+        "z": -592
       },
-      "UniqueCoordinateCount": 444
+      "uniqueCoordinateCount": 444
     },
     "CircuitDeSpaFrancorchamps": {
-      "ID": "CircuitDeSpaFrancorchamps",
-      "Name": "Circuit de Spa-Francorchamps",
-      "Variation": "Circuit de Spa-Francorchamps",
-      "Country": "be",
-      "Default": true,
-      "Length": 6938,
-      "StartLine": {
-        "X": -304,
-        "Y": 114,
-        "Z": -592
+      "id": "CircuitDeSpaFrancorchamps",
+      "name": "Circuit de Spa-Francorchamps",
+      "variation": "Circuit de Spa-Francorchamps",
+      "country": "be",
+      "default": true,
+      "length": 6938,
+      "startLine": {
+        "x": -304,
+        "y": 114,
+        "z": -592
       },
-      "UniqueCoordinateCount": 105
+      "uniqueCoordinateCount": 105
     },
     "CircuitGilesVilleneuve": {
-      "ID": "CircuitGilesVilleneuve",
-      "Name": "Circuit Giles-Villeneuve",
-      "Variation": "Circuit Giles-Villeneuve",
-      "Country": "ca",
-      "Default": true,
-      "Length": 4313,
-      "StartLine": {
-        "X": 240,
-        "Y": -2,
-        "Z": 608
+      "id": "CircuitGilesVilleneuve",
+      "name": "Circuit Giles-Villeneuve",
+      "variation": "Circuit Giles-Villeneuve",
+      "country": "ca",
+      "default": true,
+      "length": 4313,
+      "startLine": {
+        "x": 240,
+        "y": -2,
+        "z": 608
       },
-      "UniqueCoordinateCount": 272
+      "uniqueCoordinateCount": 272
     },
     "ColoradoSpringsLake": {
-      "ID": "ColoradoSpringsLake",
-      "Name": "Colorado Springs",
-      "Variation": "Colorado Springs - Lake",
-      "Country": "us",
-      "Default": true,
-      "Length": 2932,
-      "StartLine": {
-        "X": -240,
-        "Y": 20,
-        "Z": -528
+      "id": "ColoradoSpringsLake",
+      "name": "Colorado Springs",
+      "variation": "Colorado Springs - Lake",
+      "country": "us",
+      "default": true,
+      "length": 2932,
+      "startLine": {
+        "x": -240,
+        "y": 20,
+        "z": -528
       },
-      "UniqueCoordinateCount": 275
+      "uniqueCoordinateCount": 275
     },
     "DaytonaRoadCourse": {
-      "ID": "DaytonaRoadCourse",
-      "Name": "Daytona International Speedway",
-      "Variation": "Daytona Road Course",
-      "Country": "us",
-      "Default": true,
-      "Length": 5702,
-      "StartLine": {
-        "X": -384,
-        "Y": 0,
-        "Z": -272
+      "id": "DaytonaRoadCourse",
+      "name": "Daytona International Speedway",
+      "variation": "Daytona Road Course",
+      "country": "us",
+      "default": true,
+      "length": 5702,
+      "startLine": {
+        "x": -384,
+        "y": 0,
+        "z": -272
       },
-      "UniqueCoordinateCount": 145
+      "uniqueCoordinateCount": 145
     },
     "DaytonaTriOval": {
-      "ID": "DaytonaTriOval",
-      "Name": "Daytona International Speedway",
-      "Variation": "Daytona Tri-Oval",
-      "Country": "us",
-      "Default": false,
-      "Length": 3986,
-      "StartLine": {
-        "X": -384,
-        "Y": 0,
-        "Z": -272
+      "id": "DaytonaTriOval",
+      "name": "Daytona International Speedway",
+      "variation": "Daytona Tri-Oval",
+      "country": "us",
+      "default": false,
+      "length": 3986,
+      "startLine": {
+        "x": -384,
+        "y": 0,
+        "z": -272
       },
-      "UniqueCoordinateCount": 74
+      "uniqueCoordinateCount": 74
     },
     "DeepForestRaceway": {
-      "ID": "DeepForestRaceway",
-      "Name": "Deep Forest Raceway",
-      "Variation": "Deep Forest Raceway",
-      "Country": "ch",
-      "Default": true,
-      "Length": 4191,
-      "StartLine": {
-        "X": -48,
-        "Y": 6,
-        "Z": -256
+      "id": "DeepForestRaceway",
+      "name": "Deep Forest Raceway",
+      "variation": "Deep Forest Raceway",
+      "country": "ch",
+      "default": true,
+      "length": 4191,
+      "startLine": {
+        "x": -48,
+        "y": 6,
+        "z": -256
       },
-      "UniqueCoordinateCount": 344
+      "uniqueCoordinateCount": 344
     },
     "DragonTrailGardens": {
-      "ID": "DragonTrailGardens",
-      "Name": "Dragon Trail",
-      "Variation": "Dragon Trail - Gardens",
-      "Country": "hr",
-      "Default": false,
-      "Length": 4294,
-      "StartLine": {
-        "X": -416,
-        "Y": 4,
-        "Z": -16
+      "id": "DragonTrailGardens",
+      "name": "Dragon Trail",
+      "variation": "Dragon Trail - Gardens",
+      "country": "hr",
+      "default": false,
+      "length": 4294,
+      "startLine": {
+        "x": -416,
+        "y": 4,
+        "z": -16
       },
-      "UniqueCoordinateCount": 331
+      "uniqueCoordinateCount": 331
     },
     "DragonTrailSeaside": {
-      "ID": "DragonTrailSeaside",
-      "Name": "Dragon Trail",
-      "Variation": "Dragon Trail - Seaside",
-      "Country": "hr",
-      "Default": false,
-      "Length": 5151,
-      "StartLine": {
-        "X": -304,
-        "Y": 0,
-        "Z": 240
+      "id": "DragonTrailSeaside",
+      "name": "Dragon Trail",
+      "variation": "Dragon Trail - Seaside",
+      "country": "hr",
+      "default": false,
+      "length": 5151,
+      "startLine": {
+        "x": -304,
+        "y": 0,
+        "z": 240
       },
-      "UniqueCoordinateCount": 391
+      "uniqueCoordinateCount": 391
     },
     "EigerNordwand": {
-      "ID": "EigerNordwand",
-      "Name": "Eiger Nordwand",
-      "Variation": "Eiger Nordwand",
-      "Country": "ch",
-      "Default": true,
-      "Length": 2359,
-      "StartLine": {
-        "X": 64,
-        "Y": 42,
-        "Z": -256
+      "id": "EigerNordwand",
+      "name": "Eiger Nordwand",
+      "variation": "Eiger Nordwand",
+      "country": "ch",
+      "default": true,
+      "length": 2359,
+      "startLine": {
+        "x": 64,
+        "y": 42,
+        "z": -256
       },
-      "UniqueCoordinateCount": 262
+      "uniqueCoordinateCount": 262
     },
     "FishermansRanch": {
-      "ID": "FishermansRanch",
-      "Name": "Fishermans Ranch",
-      "Variation": "Fishermans Ranch",
-      "Country": "us",
-      "Default": true,
-      "Length": 6699,
-      "StartLine": {
-        "X": -384,
-        "Y": 36,
-        "Z": 624
+      "id": "FishermansRanch",
+      "name": "Fishermans Ranch",
+      "variation": "Fishermans Ranch",
+      "country": "us",
+      "default": true,
+      "length": 6699,
+      "startLine": {
+        "x": -384,
+        "y": 36,
+        "z": 624
       },
-      "UniqueCoordinateCount": 721
+      "uniqueCoordinateCount": 721
     },
     "FujiInternationalSpeedway": {
-      "ID": "FujiInternationalSpeedway",
-      "Name": "Fuji International Speedway",
-      "Variation": "Fuji International Speedway",
-      "Country": "jp",
-      "Default": true,
-      "Length": 4499,
-      "StartLine": {
-        "X": 0,
-        "Y": 18,
-        "Z": -176
+      "id": "FujiInternationalSpeedway",
+      "name": "Fuji International Speedway",
+      "variation": "Fuji International Speedway",
+      "country": "jp",
+      "default": true,
+      "length": 4499,
+      "startLine": {
+        "x": 0,
+        "y": 18,
+        "z": -176
       },
-      "UniqueCoordinateCount": 55
+      "uniqueCoordinateCount": 55
     },
     "FujiInternationalSpeedwayShort": {
-      "ID": "FujiInternationalSpeedwayShort",
-      "Name": "Fuji International Speedway",
-      "Variation": "Fuji International Speedway (Short)",
-      "Country": "jp",
-      "Default": false,
-      "Length": 4164,
-      "StartLine": {
-        "X": 224,
-        "Y": 18,
-        "Z": -368
+      "id": "FujiInternationalSpeedwayShort",
+      "name": "Fuji International Speedway",
+      "variation": "Fuji International Speedway (Short)",
+      "country": "jp",
+      "default": false,
+      "length": 4164,
+      "startLine": {
+        "x": 224,
+        "y": 18,
+        "z": -368
       },
-      "UniqueCoordinateCount": 28
+      "uniqueCoordinateCount": 28
     },
     "GoodwoodMotorCircuit": {
-      "ID": "GoodwoodMotorCircuit",
-      "Name": "Goodwood Motor Circuit",
-      "Variation": "Goodwood Motor Circuit",
-      "Country": "uk",
-      "Default": true,
-      "Length": 3810,
-      "StartLine": {
-        "X": 368,
-        "Y": 0,
-        "Z": 112
+      "id": "GoodwoodMotorCircuit",
+      "name": "Goodwood Motor Circuit",
+      "variation": "Goodwood Motor Circuit",
+      "country": "uk",
+      "default": true,
+      "length": 3810,
+      "startLine": {
+        "x": 368,
+        "y": 0,
+        "z": 112
       },
-      "UniqueCoordinateCount": 225
+      "uniqueCoordinateCount": 225
     },
     "GrandValleyHighway1": {
-      "ID": "GrandValleyHighway1",
-      "Name": "Grand Valley",
-      "Variation": "Grand Valley - Highway 1",
-      "Country": "us",
-      "Default": true,
-      "Length": 5020,
-      "StartLine": {
-        "X": 80,
-        "Y": 122,
-        "Z": 944
+      "id": "GrandValleyHighway1",
+      "name": "Grand Valley",
+      "variation": "Grand Valley - Highway 1",
+      "country": "us",
+      "default": true,
+      "length": 5020,
+      "startLine": {
+        "x": 80,
+        "y": 122,
+        "z": 944
       },
-      "UniqueCoordinateCount": 296
+      "uniqueCoordinateCount": 296
     },
     "GrandValleySouth": {
-      "ID": "GrandValleySouth",
-      "Name": "Grand Valley",
-      "Variation": "Grand Valley - South",
-      "Country": "us",
-      "Default": false,
-      "Length": 3033,
-      "StartLine": {
-        "X": 96,
-        "Y": 122,
-        "Z": 944
+      "id": "GrandValleySouth",
+      "name": "Grand Valley",
+      "variation": "Grand Valley - South",
+      "country": "us",
+      "default": false,
+      "length": 3033,
+      "startLine": {
+        "x": 96,
+        "y": 122,
+        "z": 944
       },
-      "UniqueCoordinateCount": 121
+      "uniqueCoordinateCount": 121
     },
     "HighSpeedRing": {
-      "ID": "HighSpeedRing",
-      "Name": "High Speed Ring",
-      "Variation": "High Speed Ring",
-      "Country": "jp",
-      "Default": true,
-      "Length": 4344,
-      "StartLine": {
-        "X": 64,
-        "Y": 0,
-        "Z": -384
+      "id": "HighSpeedRing",
+      "name": "High Speed Ring",
+      "variation": "High Speed Ring",
+      "country": "jp",
+      "default": true,
+      "length": 4344,
+      "startLine": {
+        "x": 64,
+        "y": 0,
+        "z": -384
       },
-      "UniqueCoordinateCount": 275
+      "uniqueCoordinateCount": 275
     },
     "KyotoDrivingParkMiyabi": {
-      "ID": "KyotoDrivingParkMiyabi",
-      "Name": "Kyoto Driving Park",
-      "Variation": "Kyoto Driving Park - Miyabi",
-      "Country": "jp",
-      "Default": false,
-      "Length": 1916,
-      "StartLine": {
-        "X": -160,
-        "Y": 88,
-        "Z": 640
+      "id": "KyotoDrivingParkMiyabi",
+      "name": "Kyoto Driving Park",
+      "variation": "Kyoto Driving Park - Miyabi",
+      "country": "jp",
+      "default": false,
+      "length": 1916,
+      "startLine": {
+        "x": -160,
+        "y": 88,
+        "z": 640
       },
-      "UniqueCoordinateCount": 31
+      "uniqueCoordinateCount": 31
     },
     "KyotoDrivingParkYamagiwa": {
-      "ID": "KyotoDrivingParkYamagiwa",
-      "Name": "Kyoto Driving Park",
-      "Variation": "Kyoto Driving Park - Yamagiwa",
-      "Country": "jp",
-      "Default": false,
-      "Length": 4843,
-      "StartLine": {
-        "X": 16,
-        "Y": 106,
-        "Z": 0
+      "id": "KyotoDrivingParkYamagiwa",
+      "name": "Kyoto Driving Park",
+      "variation": "Kyoto Driving Park - Yamagiwa",
+      "country": "jp",
+      "default": false,
+      "length": 4843,
+      "startLine": {
+        "x": 16,
+        "y": 106,
+        "z": 0
       },
-      "UniqueCoordinateCount": 41
+      "uniqueCoordinateCount": 41
     },
     "KyotoDrivingParkYamagiwaMiyabi": {
-      "ID": "KyotoDrivingParkYamagiwaMiyabi",
-      "Name": "Kyoto Driving Park",
-      "Variation": "Kyoto Driving Park - Yamagiwa+Miyabi",
-      "Country": "jp",
-      "Default": false,
-      "Length": 6757,
-      "StartLine": {
-        "X": 16,
-        "Y": 106,
-        "Z": 0
+      "id": "KyotoDrivingParkYamagiwaMiyabi",
+      "name": "Kyoto Driving Park",
+      "variation": "Kyoto Driving Park - Yamagiwa+Miyabi",
+      "country": "jp",
+      "default": false,
+      "length": 6757,
+      "startLine": {
+        "x": 16,
+        "y": 106,
+        "z": 0
       },
-      "UniqueCoordinateCount": 74
+      "uniqueCoordinateCount": 74
     },
     "LakeLouiseLongTrack": {
-      "ID": "LakeLouiseLongTrack",
-      "Name": "Lake Louise",
-      "Variation": "Lake Louise Long Track",
-      "Country": "ca",
-      "Default": true,
-      "Length": 3664,
-      "StartLine": {
-        "X": 144,
-        "Y": -10,
-        "Z": 160
+      "id": "LakeLouiseLongTrack",
+      "name": "Lake Louise",
+      "variation": "Lake Louise Long Track",
+      "country": "ca",
+      "default": true,
+      "length": 3664,
+      "startLine": {
+        "x": 144,
+        "y": -10,
+        "z": 160
       },
-      "UniqueCoordinateCount": 161
+      "uniqueCoordinateCount": 161
     },
     "LakeLouiseShortTrack": {
-      "ID": "LakeLouiseShortTrack",
-      "Name": "Lake Louise",
-      "Variation": "Lake Louise Short Track",
-      "Country": "ca",
-      "Default": false,
-      "Length": 2555,
-      "StartLine": {
-        "X": 144,
-        "Y": -10,
-        "Z": 160
+      "id": "LakeLouiseShortTrack",
+      "name": "Lake Louise",
+      "variation": "Lake Louise Short Track",
+      "country": "ca",
+      "default": false,
+      "length": 2555,
+      "startLine": {
+        "x": 144,
+        "y": -10,
+        "z": 160
       },
-      "UniqueCoordinateCount": 62
+      "uniqueCoordinateCount": 62
     },
     "LakeLouiseTriOval": {
-      "ID": "LakeLouiseTriOval",
-      "Name": "Lake Louise",
-      "Variation": "Lake Louise Tri-Oval",
-      "Country": "ca",
-      "Default": false,
-      "Length": 3052,
-      "StartLine": {
-        "X": 144,
-        "Y": -10,
-        "Z": 160
+      "id": "LakeLouiseTriOval",
+      "name": "Lake Louise",
+      "variation": "Lake Louise Tri-Oval",
+      "country": "ca",
+      "default": false,
+      "length": 3052,
+      "startLine": {
+        "x": 144,
+        "y": -10,
+        "z": 160
       },
-      "UniqueCoordinateCount": 119
+      "uniqueCoordinateCount": 119
     },
     "MichelinRacewayRoadAtlanta": {
-      "ID": "MichelinRacewayRoadAtlanta",
-      "Name": "Road Atlanta",
-      "Variation": "Michelin Raceway Road Atlanta",
-      "Country": "us",
-      "Default": true,
-      "Length": 4049,
-      "StartLine": {
-        "X": 32,
-        "Y": -6,
-        "Z": -768
+      "id": "MichelinRacewayRoadAtlanta",
+      "name": "Road Atlanta",
+      "variation": "Michelin Raceway Road Atlanta",
+      "country": "us",
+      "default": true,
+      "length": 4049,
+      "startLine": {
+        "x": 32,
+        "y": -6,
+        "z": -768
       },
-      "UniqueCoordinateCount": 356
+      "uniqueCoordinateCount": 356
     },
     "MountPanoramaMotorRacingCircuit": {
-      "ID": "MountPanoramaMotorRacingCircuit",
-      "Name": "Mount Panorama Motor Racing Circuit",
-      "Variation": "Mount Panorama Motor Racing Circuit",
-      "Country": "au",
-      "Default": true,
-      "Length": 6165,
-      "StartLine": {
-        "X": 352,
-        "Y": -74,
-        "Z": -1040
+      "id": "MountPanoramaMotorRacingCircuit",
+      "name": "Mount Panorama Motor Racing Circuit",
+      "variation": "Mount Panorama Motor Racing Circuit",
+      "country": "au",
+      "default": true,
+      "length": 6165,
+      "startLine": {
+        "x": 352,
+        "y": -74,
+        "z": -1040
       },
-      "UniqueCoordinateCount": 618
+      "uniqueCoordinateCount": 618
     },
     "NorthernIsleSpeedway": {
-      "ID": "NorthernIsleSpeedway",
-      "Name": "Northern Isle Speedway",
-      "Variation": "Northern Isle Speedway",
-      "Country": "us",
-      "Default": true,
-      "Length": 975,
-      "StartLine": {
-        "X": 0,
-        "Y": 0,
-        "Z": 96
+      "id": "NorthernIsleSpeedway",
+      "name": "Northern Isle Speedway",
+      "variation": "Northern Isle Speedway",
+      "country": "us",
+      "default": true,
+      "length": 975,
+      "startLine": {
+        "x": 0,
+        "y": 0,
+        "z": 96
       },
-      "UniqueCoordinateCount": 70
+      "uniqueCoordinateCount": 70
     },
     "Nürburgring24h": {
-      "ID": "Nürburgring24h",
-      "Name": "Nürburgring",
-      "Variation": "Nürburgring 24h",
-      "Country": "de",
-      "Default": false,
-      "Length": 24982,
-      "StartLine": {
-        "X": -1232,
-        "Y": 142,
-        "Z": 2048
+      "id": "Nürburgring24h",
+      "name": "Nürburgring",
+      "variation": "Nürburgring 24h",
+      "country": "de",
+      "default": false,
+      "length": 24982,
+      "startLine": {
+        "x": -1232,
+        "y": 142,
+        "z": 2048
       },
-      "UniqueCoordinateCount": 74
+      "uniqueCoordinateCount": 74
     },
     "NürburgringEndurance": {
-      "ID": "NürburgringEndurance",
-      "Name": "Nürburgring",
-      "Variation": "Nürburgring Endurance",
-      "Country": "de",
-      "Default": false,
-      "Length": 24029,
-      "StartLine": {
-        "X": -1232,
-        "Y": 142,
-        "Z": 2048
+      "id": "NürburgringEndurance",
+      "name": "Nürburgring",
+      "variation": "Nürburgring Endurance",
+      "country": "de",
+      "default": false,
+      "length": 24029,
+      "startLine": {
+        "x": -1232,
+        "y": 142,
+        "z": 2048
       },
-      "UniqueCoordinateCount": 38
+      "uniqueCoordinateCount": 38
     },
     "NürburgringGp": {
-      "ID": "NürburgringGp",
-      "Name": "Nürburgring",
-      "Variation": "Nürburgring GP",
-      "Country": "de",
-      "Default": false,
-      "Length": 5069,
-      "StartLine": {
-        "X": -1072,
-        "Y": 144,
-        "Z": 1872
+      "id": "NürburgringGp",
+      "name": "Nürburgring",
+      "variation": "Nürburgring GP",
+      "country": "de",
+      "default": false,
+      "length": 5069,
+      "startLine": {
+        "x": -1072,
+        "y": 144,
+        "z": 1872
       },
-      "UniqueCoordinateCount": 32
+      "uniqueCoordinateCount": 32
     },
     "NürburgringNordeschleife": {
-      "ID": "NürburgringNordeschleife",
-      "Name": "Nürburgring",
-      "Variation": "Nürburgring Nordeschleife",
-      "Country": "de",
-      "Default": true,
-      "Length": 20701,
-      "StartLine": {
-        "X": -944,
-        "Y": 150,
-        "Z": 1520
+      "id": "NürburgringNordeschleife",
+      "name": "Nürburgring",
+      "variation": "Nürburgring Nordeschleife",
+      "country": "de",
+      "default": true,
+      "length": 20701,
+      "startLine": {
+        "x": -944,
+        "y": 150,
+        "z": 1520
       },
-      "UniqueCoordinateCount": 46
+      "uniqueCoordinateCount": 46
     },
     "NürburgringNordschleifeTourist": {
-      "ID": "NürburgringNordschleifeTourist",
-      "Name": "Nürburgring",
-      "Variation": "Nürburgring Nordschleife Tourist",
-      "Country": "de",
-      "Default": false,
-      "Length": 18191,
-      "StartLine": {
-        "X": -176,
-        "Y": 112,
-        "Z": 976
+      "id": "NürburgringNordschleifeTourist",
+      "name": "Nürburgring",
+      "variation": "Nürburgring Nordschleife Tourist",
+      "country": "de",
+      "default": false,
+      "length": 18191,
+      "startLine": {
+        "x": -176,
+        "y": 112,
+        "z": 976
       },
-      "UniqueCoordinateCount": 74
+      "uniqueCoordinateCount": 74
     },
     "NürburgringSprint": {
-      "ID": "NürburgringSprint",
-      "Name": "Nürburgring",
-      "Variation": "Nürburgring Sprint",
-      "Country": "de",
-      "Default": false,
-      "Length": 3335,
-      "StartLine": {
-        "X": -1232,
-        "Y": 142,
-        "Z": 2048
+      "id": "NürburgringSprint",
+      "name": "Nürburgring",
+      "variation": "Nürburgring Sprint",
+      "country": "de",
+      "default": false,
+      "length": 3335,
+      "startLine": {
+        "x": -1232,
+        "y": 142,
+        "z": 2048
       },
-      "UniqueCoordinateCount": 7
+      "uniqueCoordinateCount": 7
     },
     "RedBullRing": {
-      "ID": "RedBullRing",
-      "Name": "Red Bull Ring",
-      "Variation": "Red Bull Ring",
-      "Country": "at",
-      "Default": true,
-      "Length": 4286,
-      "StartLine": {
-        "X": 560,
-        "Y": -26,
-        "Z": 272
+      "id": "RedBullRing",
+      "name": "Red Bull Ring",
+      "variation": "Red Bull Ring",
+      "country": "at",
+      "default": true,
+      "length": 4286,
+      "startLine": {
+        "x": 560,
+        "y": -26,
+        "z": 272
       },
-      "UniqueCoordinateCount": 191
+      "uniqueCoordinateCount": 191
     },
     "RedBullRingShortTrack": {
-      "ID": "RedBullRingShortTrack",
-      "Name": "Red Bull Ring",
-      "Variation": "Red Bull Ring Short Track",
-      "Country": "at",
-      "Default": false,
-      "Length": 2192,
-      "StartLine": {
-        "X": 448,
-        "Y": -26,
-        "Z": 304
+      "id": "RedBullRingShortTrack",
+      "name": "Red Bull Ring",
+      "variation": "Red Bull Ring Short Track",
+      "country": "at",
+      "default": false,
+      "length": 2192,
+      "startLine": {
+        "x": 448,
+        "y": -26,
+        "z": 304
       },
-      "UniqueCoordinateCount": 24
+      "uniqueCoordinateCount": 24
     },
     "SardegnaRoadTrackA": {
-      "ID": "SardegnaRoadTrackA",
-      "Name": "Sardegna",
-      "Variation": "Sardegna - Road Track - A",
-      "Country": "it",
-      "Default": false,
-      "Length": 5086,
-      "StartLine": {
-        "X": -384,
-        "Y": 8,
-        "Z": 192
+      "id": "SardegnaRoadTrackA",
+      "name": "Sardegna",
+      "variation": "Sardegna - Road Track - A",
+      "country": "it",
+      "default": false,
+      "length": 5086,
+      "startLine": {
+        "x": -384,
+        "y": 8,
+        "z": 192
       },
-      "UniqueCoordinateCount": 276
+      "uniqueCoordinateCount": 276
     },
     "SardegnaRoadTrackB": {
-      "ID": "SardegnaRoadTrackB",
-      "Name": "Sardegna",
-      "Variation": "Sardegna - Road Track - B",
-      "Country": "it",
-      "Default": false,
-      "Length": 3855,
-      "StartLine": {
-        "X": -384,
-        "Y": 8,
-        "Z": 208
+      "id": "SardegnaRoadTrackB",
+      "name": "Sardegna",
+      "variation": "Sardegna - Road Track - B",
+      "country": "it",
+      "default": false,
+      "length": 3855,
+      "startLine": {
+        "x": -384,
+        "y": 8,
+        "z": 208
       },
-      "UniqueCoordinateCount": 224
+      "uniqueCoordinateCount": 224
     },
     "SardegnaRoadTrackC": {
-      "ID": "SardegnaRoadTrackC",
-      "Name": "Sardegna",
-      "Variation": "Sardegna - Road Track - C",
-      "Country": "it",
-      "Default": false,
-      "Length": 2637,
-      "StartLine": {
-        "X": -384,
-        "Y": 8,
-        "Z": 192
+      "id": "SardegnaRoadTrackC",
+      "name": "Sardegna",
+      "variation": "Sardegna - Road Track - C",
+      "country": "it",
+      "default": false,
+      "length": 2637,
+      "startLine": {
+        "x": -384,
+        "y": 8,
+        "z": 192
       },
-      "UniqueCoordinateCount": 90
+      "uniqueCoordinateCount": 90
     },
     "SardegnaWindmills": {
-      "ID": "SardegnaWindmills",
-      "Name": "Sardegna",
-      "Variation": "Sardegna - Windmills",
-      "Country": "it",
-      "Default": false,
-      "Length": 3237,
-      "StartLine": {
-        "X": 16,
-        "Y": 42,
-        "Z": 160
+      "id": "SardegnaWindmills",
+      "name": "Sardegna",
+      "variation": "Sardegna - Windmills",
+      "country": "it",
+      "default": false,
+      "length": 3237,
+      "startLine": {
+        "x": 16,
+        "y": 42,
+        "z": 160
       },
-      "UniqueCoordinateCount": 311
+      "uniqueCoordinateCount": 311
     },
     "Spa24hLayout": {
-      "ID": "Spa24hLayout",
-      "Name": "Circuit de Spa-Francorchamps",
-      "Variation": "Spa 24h layout",
-      "Country": "be",
-      "Default": false,
-      "Length": 6126,
-      "StartLine": {
-        "X": -144,
-        "Y": 100,
-        "Z": -688
+      "id": "Spa24hLayout",
+      "name": "Circuit de Spa-Francorchamps",
+      "variation": "Spa 24h layout",
+      "country": "be",
+      "default": false,
+      "length": 6126,
+      "startLine": {
+        "x": -144,
+        "y": 100,
+        "z": -688
       },
-      "UniqueCoordinateCount": 26
+      "uniqueCoordinateCount": 26
     },
     "SpecialStageRouteX": {
-      "ID": "SpecialStageRouteX",
-      "Name": "Special Stage Route X",
-      "Variation": "Special Stage Route X",
-      "Country": "us",
-      "Default": false,
-      "Length": 30395,
-      "StartLine": {
-        "X": -2800,
-        "Y": 0,
-        "Z": -4240
+      "id": "SpecialStageRouteX",
+      "name": "Special Stage Route X",
+      "variation": "Special Stage Route X",
+      "country": "us",
+      "default": false,
+      "length": 30395,
+      "startLine": {
+        "x": -2800,
+        "y": 0,
+        "z": -4240
       },
-      "UniqueCoordinateCount": 2196
+      "uniqueCoordinateCount": 2196
     },
     "SuzukaCircuit": {
-      "ID": "SuzukaCircuit",
-      "Name": "Suzuka Circuit",
-      "Variation": "Suzuka Circuit",
-      "Country": "jp",
-      "Default": true,
-      "Length": 5742,
-      "StartLine": {
-        "X": 544,
-        "Y": 0,
-        "Z": -144
+      "id": "SuzukaCircuit",
+      "name": "Suzuka Circuit",
+      "variation": "Suzuka Circuit",
+      "country": "jp",
+      "default": true,
+      "length": 5742,
+      "startLine": {
+        "x": 544,
+        "y": 0,
+        "z": -144
       },
-      "UniqueCoordinateCount": 325
+      "uniqueCoordinateCount": 325
     },
     "SuzukaCircuitEastCourse": {
-      "ID": "SuzukaCircuitEastCourse",
-      "Name": "Suzuka Circuit",
-      "Variation": "Suzuka Circuit East Course",
-      "Country": "jp",
-      "Default": false,
-      "Length": 1912,
-      "StartLine": {
-        "X": 736,
-        "Y": -8,
-        "Z": 64
+      "id": "SuzukaCircuitEastCourse",
+      "name": "Suzuka Circuit",
+      "variation": "Suzuka Circuit East Course",
+      "country": "jp",
+      "default": false,
+      "length": 1912,
+      "startLine": {
+        "x": 736,
+        "y": -8,
+        "z": 64
       },
-      "UniqueCoordinateCount": 21
+      "uniqueCoordinateCount": 21
     },
     "TokyoExpresswayCentralClockwise": {
-      "ID": "TokyoExpresswayCentralClockwise",
-      "Name": "Tokyo Expressway",
-      "Variation": "Tokyo Expressway - Central Clockwise",
-      "Country": "jp",
-      "Default": false,
-      "Length": 4393,
-      "StartLine": {
-        "X": -32,
-        "Y": 8,
-        "Z": 816
+      "id": "TokyoExpresswayCentralClockwise",
+      "name": "Tokyo Expressway",
+      "variation": "Tokyo Expressway - Central Clockwise",
+      "country": "jp",
+      "default": false,
+      "length": 4393,
+      "startLine": {
+        "x": -32,
+        "y": 8,
+        "z": 816
       },
-      "UniqueCoordinateCount": 214
+      "uniqueCoordinateCount": 214
     },
     "TokyoExpresswayCentralCounterclockwise": {
-      "ID": "TokyoExpresswayCentralCounterclockwise",
-      "Name": "Tokyo Expressway",
-      "Variation": "Tokyo Expressway - Central Counterclockwise",
-      "Country": "jp",
-      "Default": false,
-      "Length": 4359,
-      "StartLine": {
-        "X": -48,
-        "Y": 8,
-        "Z": 800
+      "id": "TokyoExpresswayCentralCounterclockwise",
+      "name": "Tokyo Expressway",
+      "variation": "Tokyo Expressway - Central Counterclockwise",
+      "country": "jp",
+      "default": false,
+      "length": 4359,
+      "startLine": {
+        "x": -48,
+        "y": 8,
+        "z": 800
       },
-      "UniqueCoordinateCount": 247
+      "uniqueCoordinateCount": 247
     },
     "TokyoExpresswayEastClockwise": {
-      "ID": "TokyoExpresswayEastClockwise",
-      "Name": "Tokyo Expressway",
-      "Variation": "Tokyo Expressway - East Clockwise",
-      "Country": "jp",
-      "Default": false,
-      "Length": 7267,
-      "StartLine": {
-        "X": -96,
-        "Y": -18,
-        "Z": -112
+      "id": "TokyoExpresswayEastClockwise",
+      "name": "Tokyo Expressway",
+      "variation": "Tokyo Expressway - East Clockwise",
+      "country": "jp",
+      "default": false,
+      "length": 7267,
+      "startLine": {
+        "x": -96,
+        "y": -18,
+        "z": -112
       },
-      "UniqueCoordinateCount": 399
+      "uniqueCoordinateCount": 399
     },
     "TokyoExpresswayEastCounterclockwise": {
-      "ID": "TokyoExpresswayEastCounterclockwise",
-      "Name": "Tokyo Expressway",
-      "Variation": "Tokyo Expressway - East Counterclockwise",
-      "Country": "jp",
-      "Default": false,
-      "Length": 7170,
-      "StartLine": {
-        "X": 0,
-        "Y": -18,
-        "Z": -96
+      "id": "TokyoExpresswayEastCounterclockwise",
+      "name": "Tokyo Expressway",
+      "variation": "Tokyo Expressway - East Counterclockwise",
+      "country": "jp",
+      "default": false,
+      "length": 7170,
+      "startLine": {
+        "x": 0,
+        "y": -18,
+        "z": -96
       },
-      "UniqueCoordinateCount": 405
+      "uniqueCoordinateCount": 405
     },
     "TokyoExpresswaySouthClockwise": {
-      "ID": "TokyoExpresswaySouthClockwise",
-      "Name": "Tokyo Expressway",
-      "Variation": "Tokyo Expressway - South Clockwise",
-      "Country": "jp",
-      "Default": false,
-      "Length": 5175,
-      "StartLine": {
-        "X": -288,
-        "Y": 0,
-        "Z": 16
+      "id": "TokyoExpresswaySouthClockwise",
+      "name": "Tokyo Expressway",
+      "variation": "Tokyo Expressway - South Clockwise",
+      "country": "jp",
+      "default": false,
+      "length": 5175,
+      "startLine": {
+        "x": -288,
+        "y": 0,
+        "z": 16
       },
-      "UniqueCoordinateCount": 287
+      "uniqueCoordinateCount": 287
     },
     "TokyoExpresswaySouthCounterclockwise": {
-      "ID": "TokyoExpresswaySouthCounterclockwise",
-      "Name": "Tokyo Expressway",
-      "Variation": "Tokyo Expressway - South Counterclockwise",
-      "Country": "jp",
-      "Default": false,
-      "Length": 6498,
-      "StartLine": {
-        "X": -288,
-        "Y": 0,
-        "Z": 16
+      "id": "TokyoExpresswaySouthCounterclockwise",
+      "name": "Tokyo Expressway",
+      "variation": "Tokyo Expressway - South Counterclockwise",
+      "country": "jp",
+      "default": false,
+      "length": 6498,
+      "startLine": {
+        "x": -288,
+        "y": 0,
+        "z": 16
       },
-      "UniqueCoordinateCount": 366
+      "uniqueCoordinateCount": 366
     },
     "TrialMountainCircuit": {
-      "ID": "TrialMountainCircuit",
-      "Name": "Trial Mountain Circuit",
-      "Variation": "Trial Mountain Circuit",
-      "Country": "us",
-      "Default": true,
-      "Length": 5332,
-      "StartLine": {
-        "X": 128,
-        "Y": -14,
-        "Z": 304
+      "id": "TrialMountainCircuit",
+      "name": "Trial Mountain Circuit",
+      "variation": "Trial Mountain Circuit",
+      "country": "us",
+      "default": true,
+      "length": 5332,
+      "startLine": {
+        "x": 128,
+        "y": -14,
+        "z": 304
       },
-      "UniqueCoordinateCount": 494
+      "uniqueCoordinateCount": 494
     },
     "TsukubaCircuit": {
-      "ID": "TsukubaCircuit",
-      "Name": "Tsukuba Circuit",
-      "Variation": "Tsukuba Circuit",
-      "Country": "jp",
-      "Default": true,
-      "Length": 2070,
-      "StartLine": {
-        "X": -144,
-        "Y": 10,
-        "Z": -176
+      "id": "TsukubaCircuit",
+      "name": "Tsukuba Circuit",
+      "variation": "Tsukuba Circuit",
+      "country": "jp",
+      "default": true,
+      "length": 2070,
+      "startLine": {
+        "x": -144,
+        "y": 10,
+        "z": -176
       },
-      "UniqueCoordinateCount": 140
+      "uniqueCoordinateCount": 140
     },
     "WatkinsGlenInternational": {
-      "ID": "WatkinsGlenInternational",
-      "Name": "Watkins Glen International",
-      "Variation": "Watkins Glen International",
-      "Country": "us",
-      "Default": false,
-      "Length": 3896,
-      "StartLine": {
-        "X": -336,
-        "Y": 6,
-        "Z": -512
+      "id": "WatkinsGlenInternational",
+      "name": "Watkins Glen International",
+      "variation": "Watkins Glen International",
+      "country": "us",
+      "default": false,
+      "length": 3896,
+      "startLine": {
+        "x": -336,
+        "y": 6,
+        "z": -512
       },
-      "UniqueCoordinateCount": 40
+      "uniqueCoordinateCount": 40
     },
     "WatkinsGlenLongCourse": {
-      "ID": "WatkinsGlenLongCourse",
-      "Name": "Watkins Glen International",
-      "Variation": "Watkins Glen Long Course",
-      "Country": "us",
-      "Default": true,
-      "Length": 5411,
-      "StartLine": {
-        "X": -336,
-        "Y": 6,
-        "Z": -512
+      "id": "WatkinsGlenLongCourse",
+      "name": "Watkins Glen International",
+      "variation": "Watkins Glen Long Course",
+      "country": "us",
+      "default": true,
+      "length": 5411,
+      "startLine": {
+        "x": -336,
+        "y": 6,
+        "z": -512
       },
-      "UniqueCoordinateCount": 178
+      "uniqueCoordinateCount": 178
     },
     "WeathertechRacewayLagunaSeca": {
-      "ID": "WeathertechRacewayLagunaSeca",
-      "Name": "Laguna Seca Raceway",
-      "Variation": "WeatherTech Raceway Laguna Seca",
-      "Country": "us",
-      "Default": true,
-      "Length": 3560,
-      "StartLine": {
-        "X": -272,
-        "Y": -20,
-        "Z": -240
+      "id": "WeathertechRacewayLagunaSeca",
+      "name": "Laguna Seca Raceway",
+      "variation": "WeatherTech Raceway Laguna Seca",
+      "country": "us",
+      "default": true,
+      "length": 3560,
+      "startLine": {
+        "x": -272,
+        "y": -20,
+        "z": -240
       },
-      "UniqueCoordinateCount": 314
+      "uniqueCoordinateCount": 314
     },
     "WillowSpringsInternationalRacewayBigWillow": {
-      "ID": "WillowSpringsInternationalRacewayBigWillow",
-      "Name": "Willow Springs International Raceway",
-      "Variation": "Willow Springs International Raceway: Big Willow",
-      "Country": "us",
-      "Default": true,
-      "Length": 3917,
-      "StartLine": {
-        "X": 80,
-        "Y": -36,
-        "Z": 368
+      "id": "WillowSpringsInternationalRacewayBigWillow",
+      "name": "Willow Springs International Raceway",
+      "variation": "Willow Springs International Raceway: Big Willow",
+      "country": "us",
+      "default": true,
+      "length": 3917,
+      "startLine": {
+        "x": 80,
+        "y": -36,
+        "z": 368
       },
-      "UniqueCoordinateCount": 347
+      "uniqueCoordinateCount": 347
     },
     "WillowSpringsInternationalRacewayHorseThiefMile": {
-      "ID": "WillowSpringsInternationalRacewayHorseThiefMile",
-      "Name": "Willow Springs International Raceway",
-      "Variation": "Willow Springs International Raceway: Horse Thief Mile",
-      "Country": "us",
-      "Default": false,
-      "Length": 1591,
-      "StartLine": {
-        "X": 128,
-        "Y": 0,
-        "Z": -336
+      "id": "WillowSpringsInternationalRacewayHorseThiefMile",
+      "name": "Willow Springs International Raceway",
+      "variation": "Willow Springs International Raceway: Horse Thief Mile",
+      "country": "us",
+      "default": false,
+      "length": 1591,
+      "startLine": {
+        "x": 128,
+        "y": 0,
+        "z": -336
       },
-      "UniqueCoordinateCount": 169
+      "uniqueCoordinateCount": 169
     },
     "WillowSpringsInternationalRacewayStreetsOfWillowSprings": {
-      "ID": "WillowSpringsInternationalRacewayStreetsOfWillowSprings",
-      "Name": "Willow Springs International Raceway",
-      "Variation": "Willow Springs International Raceway: Streets of Willow Springs",
-      "Country": "us",
-      "Default": false,
-      "Length": 2493,
-      "StartLine": {
-        "X": 528,
-        "Y": -28,
-        "Z": 16
+      "id": "WillowSpringsInternationalRacewayStreetsOfWillowSprings",
+      "name": "Willow Springs International Raceway",
+      "variation": "Willow Springs International Raceway: Streets of Willow Springs",
+      "country": "us",
+      "default": false,
+      "length": 2493,
+      "startLine": {
+        "x": 528,
+        "y": -28,
+        "z": 16
       },
-      "UniqueCoordinateCount": 227
+      "uniqueCoordinateCount": 227
     },
     "YasMarinaCircuit": {
-      "ID": "YasMarinaCircuit",
-      "Name": "Yas Marina Circuit",
-      "Variation": "Yas Marina Circuit",
-      "Country": "ae",
-      "Default": true,
-      "Length": 5100,
-      "StartLine": {
-        "X": -16,
-        "Y": -4,
-        "Z": 96
+      "id": "YasMarinaCircuit",
+      "name": "Yas Marina Circuit",
+      "variation": "Yas Marina Circuit",
+      "country": "ae",
+      "default": true,
+      "length": 5100,
+      "startLine": {
+        "x": -16,
+        "y": -4,
+        "z": 96
       },
-      "UniqueCoordinateCount": 371
+      "uniqueCoordinateCount": 371
     }
   }
 }

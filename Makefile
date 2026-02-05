@@ -145,7 +145,7 @@ run/capture-replay:
 update/vehicledb:
 	@go run tools/vehicle_inventory/*.go update pkg/vehicles/vehicles.json
 
-## update/circuitdbs: update the circuit inventory JSON file from saved circuit data
+## update/circuitdb: update the circuit inventory JSON file from saved circuit data
 .PHONY: update/circuitdb
 update/circuitdb:
 	@ go run tools/circuit_inventory/main.go data/circuits pkg/circuits/circuits.json

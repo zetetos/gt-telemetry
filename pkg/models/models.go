@@ -40,46 +40,46 @@ const (
 
 // Coordinate represents a coordinate in 3D space.
 type Coordinate struct {
-	X float32 `json:"X"`
-	Y float32 `json:"Y"`
-	Z float32 `json:"Z"`
+	X float32 `json:"x"`
+	Y float32 `json:"y"`
+	Z float32 `json:"z"`
 }
 
 // CoordinateNorm is a normalised, reduced precision coordinate in 3D space
 // Primarily used for location matching.
 type CoordinateNorm struct {
-	X int16 `json:"X"`
-	Y int16 `json:"Y"`
-	Z int16 `json:"Z"`
+	X int16 `json:"x"`
+	Y int16 `json:"y"`
+	Z int16 `json:"z"`
 }
 
 // CornerSet represents individual values at each corner or wheel of a vehicle.
 type CornerSet struct {
-	FrontLeft  float32 `json:"FrontLeft"`
-	FrontRight float32 `json:"FrontRight"`
-	RearLeft   float32 `json:"RearLeft"`
-	RearRight  float32 `json:"RearRight"`
+	FrontLeft  float32 `json:"frontLeft"`
+	FrontRight float32 `json:"frontRight"`
+	RearLeft   float32 `json:"rearLeft"`
+	RearRight  float32 `json:"rearRight"`
 }
 
 // RotationalEnvelope represents the rotational orientation of a body.
 type RotationalEnvelope struct {
-	Pitch float32 `json:"Pitch"`
-	Yaw   float32 `json:"Yaw"`
-	Roll  float32 `json:"Roll"`
+	Pitch float32 `json:"pitch"`
+	Yaw   float32 `json:"yaw"`
+	Roll  float32 `json:"roll"`
 }
 
 // TranslationalEnvelope represents the acceleration of a body along 3 axes.
 type TranslationalEnvelope struct {
-	Sway  float32 `json:"Sway"`
-	Heave float32 `json:"Heave"`
-	Surge float32 `json:"Surge"`
+	Sway  float32 `json:"sway"`
+	Heave float32 `json:"heave"`
+	Surge float32 `json:"surge"`
 }
 
 // Vector represents the velocity of a body along 3 axes.
 type Vector struct {
-	X float32 `json:"X"`
-	Y float32 `json:"Y"`
-	Z float32 `json:"Z"`
+	X float32 `json:"x"`
+	Y float32 `json:"y"`
+	Z float32 `json:"z"`
 }
 
 // Normalise normalises the Coordinate to reduce precision for location matching.

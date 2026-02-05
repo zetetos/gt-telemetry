@@ -21,37 +21,37 @@ const pdNullValue = "---"
 
 // PDVehicle represents the structure of a vehicle entry in the PD inventory JSON.
 type PDVehicle struct {
-	ID              string `json:"id"`              //nolint:tagliatelle // third party JSON schema
-	NameShort       string `json:"nameShort"`       //nolint:tagliatelle // third party JSON schema
-	Manufacturer    string `json:"manufacturer"`    //nolint:tagliatelle // third party JSON schema
-	Year            int    `json:"year"`            //nolint:tagliatelle // third party JSON schema
-	DriveTrain      string `json:"driveTrain"`      //nolint:tagliatelle // third party JSON schema
-	AspirationShort string `json:"aspirationShort"` //nolint:tagliatelle // third party JSON schema
-	CarClass        string `json:"carClass"`        //nolint:tagliatelle // third party JSON schema
-	LengthV         int    `json:"length_v"`        //nolint:tagliatelle // third party JSON schema
-	WidthV          int    `json:"width_v"`         //nolint:tagliatelle // third party JSON schema
-	HeightV         int    `json:"height_v"`        //nolint:tagliatelle // third party JSON schema
+	ID              string `json:"id"`
+	NameShort       string `json:"nameShort"`
+	Manufacturer    string `json:"manufacturer"`
+	Year            int    `json:"year"`
+	DriveTrain      string `json:"driveTrain"`
+	AspirationShort string `json:"aspirationShort"`
+	CarClass        string `json:"carClass"`
+	LengthV         int    `json:"length_v"` //nolint:tagliatelle // third party JSON schema
+	WidthV          int    `json:"width_v"`  //nolint:tagliatelle // third party JSON schema
+	HeightV         int    `json:"height_v"` //nolint:tagliatelle // third party JSON schema
 }
 
 // GTCar represents a car entry from the Gran Turismo website cars.js file.
 type GTCar struct {
-	ID              string `json:"id"`              //nolint:tagliatelle // third party JSON schema
-	NameShort       string `json:"nameShort"`       //nolint:tagliatelle // third party JSON schema
-	NameLong        string `json:"nameLong"`        //nolint:tagliatelle // third party JSON schema
-	ManufacturerID  string `json:"manufacturerId"`  //nolint:tagliatelle // third party JSON schema
-	CarClass        string `json:"carClass"`        //nolint:tagliatelle // third party JSON schema
-	DriveTrain      string `json:"driveTrain"`      //nolint:tagliatelle // third party JSON schema
-	AspirationShort string `json:"aspirationShort"` //nolint:tagliatelle // third party JSON schema
-	LengthV         int    `json:"length_v"`        //nolint:tagliatelle // third party JSON schema
-	WidthV          int    `json:"width_v"`         //nolint:tagliatelle // third party JSON schema
-	HeightV         int    `json:"height_v"`        //nolint:tagliatelle // third party JSON schema
+	ID              string `json:"id"`
+	NameShort       string `json:"nameShort"`
+	NameLong        string `json:"nameLong"`
+	ManufacturerID  string `json:"manufacturerId"`
+	CarClass        string `json:"carClass"`
+	DriveTrain      string `json:"driveTrain"`
+	AspirationShort string `json:"aspirationShort"`
+	LengthV         int    `json:"length_v"` //nolint:tagliatelle // third party JSON schema
+	WidthV          int    `json:"width_v"`  //nolint:tagliatelle // third party JSON schema
+	HeightV         int    `json:"height_v"` //nolint:tagliatelle // third party JSON schema
 }
 
 // GTTuner represents a manufacturer/tuner entry from the Gran Turismo website tuners.js file.
 type GTTuner struct {
-	ID        string `json:"id"`        //nolint:tagliatelle // third party JSON schema
-	Name      string `json:"name"`      //nolint:tagliatelle // third party JSON schema
-	NameShort string `json:"nameShort"` //nolint:tagliatelle // third party JSON schema
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	NameShort string `json:"nameShort"`
 }
 
 // changeRecord tracks changes made to a vehicle during merge operations.

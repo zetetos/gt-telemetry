@@ -34,18 +34,18 @@ var (
 )
 
 type CircuitCoordinates struct {
-	Circuit      []gtmodels.Coordinate `json:"Circuit"`
-	StartingLine gtmodels.Coordinate   `json:"StartingLine"`
+	Circuit      []gtmodels.Coordinate `json:"circuit"`
+	StartingLine gtmodels.Coordinate   `json:"startingLine"`
 }
 
 type CircuitData struct {
 	Schema        string             `json:"$schema"`
-	Name          string             `json:"Name"`
-	VariationName string             `json:"VariationName"`
-	Default       bool               `json:"Default"`
-	CountryCode   string             `json:"Country"`
-	LengthMetres  int                `json:"LengthMetres"`
-	Coordinates   CircuitCoordinates `json:"Coordinates"`
+	Name          string             `json:"name"`
+	VariationName string             `json:"variationName"`
+	Default       bool               `json:"default"`
+	CountryCode   string             `json:"country"`
+	LengthMetres  int                `json:"lengthMetres"`
+	Coordinates   CircuitCoordinates `json:"coordinates"`
 }
 
 // Config holds the application configuration.
