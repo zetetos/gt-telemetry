@@ -1,7 +1,22 @@
 version: "2"
+
 run:
   allow-parallel-runners: true
+
 linters:
+  default: all
+  disable:
+    - exhaustruct # too noisy
+    - exhaustive # not bothered by missing enum cases
+    - forbidigo # TODO: extensive use in cli code
+    - funlen # TODO: enable and fix
+    - gocyclo # use cyclop instead
+    - godox # TODO: enable and fix
+    - mnd # TODO: enable and fix
+    - nilnil # not bothered by nil val+err
+    - nonamedreturns # prefer named returns in some cases
+    - wrapcheck # TODO: enable and fix or user err113 instead
+    - wsl # use wsl_v5 instead
   exclusions:
     generated: lax
     presets:
@@ -10,14 +25,46 @@ linters:
       - legacy
       - std-error-handling
     paths:
-      - internal/gttelemetry/gran_turismo_telemetry.go
       - third_party$
       - builtin$
       - examples$
+  settings:
+    depguard:
+      rules:
+        main:
+          allow:
+            - $gostd
+            - github.com/dop251/goja
+            - github.com/fatih/color
+            - github.com/gocarina/gocsv
+            - github.com/kaitai-io/kaitai_struct_go_runtime
+            - github.com/rs/zerolog
+            - github.com/santhosh-tekuri/jsonschema
+            - github.com/stretchr/testify
+            - golang.org/x/crypto/salsa20
+            - github.com/zetetos/gt-telemetry
+    lll:
+      line-length: 180
+    tagliatelle:
+      case:
+        rules:
+          json: camel
+
 formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+    # - golines # conflicts with nolintlint
   exclusions:
     generated: lax
     paths:
       - third_party$
       - builtin$
       - examples$
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  fix: true

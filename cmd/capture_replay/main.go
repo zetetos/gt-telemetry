@@ -1,146 +1,192 @@
 package main
 
 import (
-	"compress/gzip"
+	"context"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
-	telemetry_client "github.com/zetetos/gt-telemetry"
+	gttelemetry "github.com/zetetos/gt-telemetry"
 )
 
 func main() {
 	var outFile string
-
 	flag.StringVar(&outFile, "o", "gt7-replay.gtz", "Output file name. Default: gt7-replay.gtz")
 	flag.Parse()
 
-	fh, err := os.Create(outFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer fh.Close()
+	validateFileExtension(outFile)
 
-	var buffer io.Writer
+	client := createTelemetryClient()
+
+	startTelemetryClient(client)
+
+	sigChan := setupSignalHandling()
+
+	fmt.Println("Waiting for replay to start...")
+
+	captureReplayLoop(client, outFile, sigChan)
+}
+
+func setupSignalHandling() chan os.Signal {
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+
+	return sigChan
+}
+
+func validateFileExtension(outFile string) {
 	fileExt := outFile[len(outFile)-3:]
-	switch fileExt {
-	case "gtz":
-		buffer, err = gzip.NewWriterLevel(fh, gzip.BestCompression)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		buffer.(*gzip.Writer).Comment = "Gran Turismo 7 Telemetry Replay"
-	case "gtr":
-		buffer = fh
-	default:
-		os.Remove(outFile)
+
+	if fileExt != "gtz" && fileExt != "gtr" {
 		log.Fatalf("Unsupported file extension %q, use either .gtr or .gtz", fileExt)
 	}
+}
 
-	gt, err := telemetry_client.NewGTClient(telemetry_client.GTClientOpts{})
+func createTelemetryClient() *gttelemetry.Client {
+	client, err := gttelemetry.New(
+		gttelemetry.Options{
+			LogLevel: "info",
+		},
+	)
 	if err != nil {
-		fmt.Println("Error creating GT client: ", err)
-		os.Exit(1)
+		log.Fatalf("Error creating GT client: %v", err)
 	}
 
+	return client
+}
+
+func startTelemetryClient(client *gttelemetry.Client) {
 	go func() {
-		_, _ = gt.Run()
+		for {
+			recoverable, err := client.Run(context.Background())
+			if err != nil {
+				if recoverable {
+					log.Printf("Recoverable error: %s", err.Error())
+
+					time.Sleep(1 * time.Second)
+				} else {
+					log.Printf("Telemetry client finished: %s", err.Error())
+
+					return
+				}
+			}
+		}
 	}()
+}
 
-	fmt.Println("Waiting for replay to start")
-
-	framesCaptured := -1
+func captureReplayLoop(client *gttelemetry.Client, outFile string, sigChan chan os.Signal) {
+	framesCaptured := 0
 	lastTimeOfDay := time.Duration(0)
 	sequenceID := ^uint32(0)
 	startTime := time.Duration(0)
-	diff := uint32(0)
+	recordingStarted := false
+
 	for {
-		// ignore packets that have aldready been processed
-		if sequenceID == gt.Telemetry.SequenceID() {
-			timer := time.NewTimer(4 * time.Millisecond)
-			<-timer.C
-			continue
-		}
+		select {
+		case <-sigChan:
+			handleInterrupt(client)
 
-		diff = gt.Telemetry.SequenceID() - sequenceID
-		sequenceID = gt.Telemetry.SequenceID()
+			return
+		default:
+			if shouldSkipFrame(sequenceID, client) {
+				time.Sleep(4 * time.Millisecond)
 
-		// Set the last time seen when the first frame is received
-		if lastTimeOfDay == time.Duration(0) {
-			lastTimeOfDay = gt.Telemetry.TimeOfDay()
-			continue
-		}
-
-		// Finish recording when the replay restarts
-		if gt.Telemetry.TimeOfDay() <= startTime {
-			// The time of day sometimes flaps in the first few frames
-			if framesCaptured < 60 {
 				continue
 			}
 
-			fmt.Println("Replay restart detected")
-			if b, ok := buffer.(*gzip.Writer); ok {
-				if err := b.Flush(); err != nil {
-					log.Fatal(err)
-				}
-			}
-			break
-		}
+			sequenceID = client.Telemetry.SequenceID()
 
-		// Start recording when the replay starts
-		if framesCaptured == -1 && gt.Telemetry.TimeOfDay() != lastTimeOfDay {
-			fmt.Printf("Starting capture, frame size: %d bytes\n", len(gt.DecipheredPacket))
+			if isFirstFrame(lastTimeOfDay) {
+				lastTimeOfDay = client.Telemetry.TimeOfDay()
 
-			startTime = gt.Telemetry.TimeOfDay()
-			framesCaptured = 0
-
-			extraData := fmt.Sprintf("Time of day: %+v, Manufacturer: %s, Model: %s",
-				startTime,
-				gt.Telemetry.VehicleManufacturer(),
-				gt.Telemetry.VehicleModel(),
-			)
-
-			// add extra data to the gzip header
-			if b, ok := buffer.(*gzip.Writer); ok {
-				b.Extra = []byte(extraData)
+				continue
 			}
 
-			fmt.Println(extraData)
-		} else {
+			if shouldStopRecording(recordingStarted, client, startTime, framesCaptured) {
+				handleReplayRestart(client, framesCaptured)
+
+				return
+			}
+
+			if shouldStartRecording(recordingStarted, client, lastTimeOfDay) {
+				startRecording(client, outFile)
+
+				startTime = client.Telemetry.TimeOfDay()
+				recordingStarted = true
+
+				printSessionInfo(client, outFile)
+			}
+
+			if recordingStarted {
+				framesCaptured++
+				lastTimeOfDay = client.Telemetry.TimeOfDay()
+
+				printFrameCount(framesCaptured)
+			}
+
 			time.Sleep(4 * time.Millisecond)
 		}
-
-		// write the frame to the file buffer
-		if framesCaptured >= 0 {
-			if diff > 1 {
-				fmt.Printf("Dropped %d frames\n", diff-1)
-			}
-
-			_, err := buffer.Write(gt.DecipheredPacket)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			framesCaptured++
-			lastTimeOfDay = gt.Telemetry.TimeOfDay()
-		}
-
-		timer := time.NewTimer(4 * time.Millisecond)
-		<-timer.C
-
-		if framesCaptured%300 == 0 {
-			fmt.Printf("%d frames captured\n", framesCaptured)
-		}
 	}
+}
 
-	// flush and close the gzip file fuffer
-	if b, ok := buffer.(*gzip.Writer); ok {
-		b.Flush()
-		b.Close()
-	}
+func shouldSkipFrame(sequenceID uint32, client *gttelemetry.Client) bool {
+	return sequenceID == client.Telemetry.SequenceID()
+}
 
+func isFirstFrame(lastTimeOfDay time.Duration) bool {
+	return lastTimeOfDay == time.Duration(0)
+}
+
+func shouldStopRecording(recordingStarted bool, client *gttelemetry.Client, startTime time.Duration, framesCaptured int) bool {
+	return recordingStarted && client.Telemetry.TimeOfDay() <= startTime && framesCaptured >= 60
+}
+
+func handleReplayRestart(client *gttelemetry.Client, framesCaptured int) {
+	fmt.Println("Replay restart detected, stopping recording...")
+	stopRecordingIfNeeded(client)
 	fmt.Printf("Capture complete, total frames: %d\n", framesCaptured)
+}
+
+func shouldStartRecording(recordingStarted bool, client *gttelemetry.Client, lastTimeOfDay time.Duration) bool {
+	return !recordingStarted && client.Telemetry.TimeOfDay() != lastTimeOfDay
+}
+
+func printFrameCount(framesCaptured int) {
+	if framesCaptured%300 == 0 {
+		fmt.Printf("%d frames captured\n", framesCaptured)
+	}
+}
+
+func handleInterrupt(client *gttelemetry.Client) {
+	fmt.Println("\nInterrupt received, stopping recording...")
+	stopRecordingIfNeeded(client)
+}
+
+func stopRecordingIfNeeded(client *gttelemetry.Client) {
+	if client.IsRecording() {
+		err := client.StopRecording()
+		if err != nil {
+			log.Printf("Error stopping recording: %v", err)
+		}
+	}
+}
+
+func startRecording(client *gttelemetry.Client, outFile string) {
+	err := client.StartRecording(outFile)
+	if err != nil {
+		log.Fatalf("Failed to start recording: %v", err)
+	}
+}
+
+func printSessionInfo(client *gttelemetry.Client, outFile string) {
+	fmt.Printf("Starting capture to %s\n", outFile)
+	fmt.Printf("Frame size: %d bytes\n", len(client.DecipheredPacket))
+	fmt.Printf("Time of day: %+v\n", client.Telemetry.TimeOfDay())
+	fmt.Printf("Vehicle: %s %s\n",
+		client.Telemetry.VehicleManufacturer(),
+		client.Telemetry.VehicleModel())
 }

@@ -1,8 +1,8 @@
 
 # Change these variables as necessary.
-MAIN_PACKAGE_PATH := ./examples/simple
-BINARY_PATH := ./examples/bin
-BINARY_NAME := gt-telemetry
+MAIN_PACKAGE_PATH := ./cmd/demo
+BINARY_PATH := ./bin
+BINARY_NAME := demo
 
 
 # ==================================================================================== #
@@ -38,7 +38,7 @@ tidy:
 .PHONY: audit
 audit:
 	go mod verify
-	go vet ./ ./internal/utils   # ignore Kaitai Struct files as they trip some rules
+	go vet ./pkg/... ./internal/reader ./internal/salsa20 ./internal/units # ignore generated Kaitai Struct files as they trip some rules
 	@echo DISABLED: go run honnef.co/go/tools/cmd/staticcheck@latest -checks=all,-ST1000,-U1000 ./...
 	go run golang.org/x/vuln/cmd/govulncheck@latest ./...
 	go test -race -buildvcs -vet=off ./...
@@ -46,7 +46,12 @@ audit:
 ## lint: run linters
 .PHONY: lint
 lint:
-	golangci-lint run
+	golangci-lint run --max-issues-per-linter 0 --max-same-issues 0
+
+## lint/fix: run linter against the project and fix issues where possible
+.PHONY: lint/fix
+lint/fix:
+	golangci-lint run --fix
 
 
 # ==================================================================================== #
@@ -69,15 +74,20 @@ test/cover:
 test/cover/show: test/cover
 	go tool cover -html=coverage.out
 
+## upgradeable: list direct dependencies that have upgrades available
+.PHONY: upgradeable
+upgradeable:
+	@go run github.com/oligot/go-mod-upgrade@latest
+
 ## build/kaitai: compile the GT telemetry package from the Kaitai Struct
 .PHONY: build/kaitai
 build/kaitai:
-	@docker build --output=internal/gttelemetry --progress=plain -f build/Dockerfile .
+	@docker build --output=internal/telemetry --progress=plain -f build/Dockerfile .
 
-## build: build the example application for the local platform
+## build: build the demo application for the local platform
 .PHONY: build
 build:
-	@go build -o examples/bin/${BINARY_NAME} ${MAIN_PACKAGE_PATH}
+	@go build -o bin/${BINARY_NAME} ${MAIN_PACKAGE_PATH}
 
 ## build/darwin/silicon: build the application for Apple Silicon
 .PHONY: build/darwin/silicon
@@ -107,18 +117,18 @@ build/rpi/armv8:
 ## build/windows: build the application for Windows amd64
 .PHONY: build/windows
 build/windows:
-	@GOOS=windows GOARCH=amd64 go build -o examples/bin/${BINARY_NAME}-amd64.exe ${MAIN_PACKAGE_PATH}
+	@GOOS=windows GOARCH=amd64 go build -o ${BINARY_PATH}/${BINARY_NAME}-amd64.exe ${MAIN_PACKAGE_PATH}
 
 ## run: run the  application
 .PHONY: run
 run: build
-	@./examples/bin/${BINARY_NAME}
+	@./bin/${BINARY_NAME}
 
 ## run/watch: run the application locally and reload on file changes
 .PHONY: run/watch
 run/watch:
 	go run github.com/air-verse/air@latest \
-		--build.cmd "make build" --build.bin "examples/bin/${BINARY_NAME}" --build.delay "100" \
+		--build.cmd "make build" --build.bin "${BINARY_PATH}/${BINARY_NAME}" --build.delay "100" \
 		--build.include_ext "go" \
 		--build.send_interrupt "true" \
 		--misc.clean_on_exit "true"
@@ -130,9 +140,19 @@ run/capture-replay:
 	@go run cmd/capture_replay/main.go
 	@echo "Replay saved to gt7-replay.gtz"
 
+## update/vehicledb: update the vehicle inventory JSON file from GT7 website
+.PHONY: update/vehicledb
+update/vehicledb:
+	@go run tools/vehicle_inventory/*.go update pkg/vehicles/vehicles.json
+
+## update/circuitdb: update the circuit inventory JSON file from saved circuit data
+.PHONY: update/circuitdb
+update/circuitdb:
+	@ go run tools/circuit_inventory/main.go data/circuits pkg/circuits/circuits.json
+
 ## clean: clean up project and return to a pristine state
 .PHONY: clean
 clean:
 	@go clean
-	@rm -rf examples/bin
+	@rm -rf ./bin
 	@rm -f coverage.out

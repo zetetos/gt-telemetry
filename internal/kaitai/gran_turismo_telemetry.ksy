@@ -10,10 +10,10 @@ seq:
     -doc: File header section
   - id: map_position_coordinates
     type: coordinate
-    -doc: Positional coordinates of vehicle on map in meters
+    -doc: Positional coordinates of vehicle on map in metres
   - id: velocity_vector
     type: vector
-    -doc: Vehicle velocity vector in meters per second
+    -doc: Vehicle velocity vector in metres per second
   - id: rotational_envelope
     type: rotational_envelope
     -doc: Body rotation around axes (-1 to 1)
@@ -25,7 +25,7 @@ seq:
     -doc: Angular velocity vector in radians per second (-1 to +1)
   - id: ride_height
     type: f4
-    -doc: Vehicle ride height in meters
+    -doc: Vehicle ride height in metres
   - id: engine_rpm
     type: f4
     -doc: Engine speed in RPM
@@ -40,7 +40,7 @@ seq:
     -doc: Total fuel capacity (0.0 to 1.0)
   - id: ground_speed
     type: f4
-    -doc: Vehicle ground speed in meters per second
+    -doc: Vehicle ground speed in metres per second
   - id: manifold_pressure
     type: f4
     -doc: Manifold pressure in bar, only populated when turbo present (subtract 1 for boost pressure as negative values report vacuum)
@@ -88,7 +88,7 @@ seq:
     -doc: Maximum engine RPM at which the shift light activates
   - id: calculated_max_speed
     type: u2
-    -doc: Calculated maximum speed of the vehicle in kilometers per hour
+    -doc: Calculated maximum speed of the vehicle in kilometres per hour
   - id: flags
     type: flags
     -doc: Various flags for the current state of play and instrument cluster lights
@@ -115,10 +115,10 @@ seq:
     -doc: Individual wheel rotational speed in radians per second
   - id: tyre_radius
     type: corner_set
-    -doc: Individual tyre radius in meters
+    -doc: Individual tyre radius in metres
   - id: suspension_height
     type: corner_set
-    -doc: Individual suspension height at each corner in meters
+    -doc: Individual suspension height at each corner in metres
   - id: reserved
     size: 32
     -doc: Reserved data, currently unused
@@ -142,55 +142,55 @@ seq:
     -doc: ID of the vehicle
   - id: steering_wheel_angle_radians
     type: f4
-    if: has_section_b
+    if: addendum_1_format
     -doc: Steering wheel angular position in radians
   - id: steering_wheel_force_feedback
     type: f4
-    if: has_section_b
+    if: addendum_1_format
     -doc: Steering wheel force feedback signal (unverified)
   - id: translational_envelope
     type: translational_envelope
-    if: has_section_b
+    if: addendum_1_format
     -doc: Body forces along axes (-1 to 1)
   - id: throttle_input
     type: u1
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Throttle input value from controller (0-255)
   - id: brake_output
     type: u1
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Brake output value after ABS applied (0-255) (live sessions only)
   - id: unknown0x13e
     type: u1
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly bitfield related to EV
   - id: unknown0x13f
     type: u1
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly bitfield
   - id: unknown0x140
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly FL torque vectoring
   - id: unknown0x144
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly FR torque vectoring
   - id: unknown0x148
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly RL torque vectoring
   - id: unknown0x14c
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, possibly RR torque vectoring
   - id: energy_recovery
     type: f4
-    if: has_section_tilde
-    -doc: Energy recovery value in FIXME
+    if: addendum_2_format
+    -doc: Energy recovery value in [unknown units]
   - id: unknown0x154
     type: f4
-    if: has_section_tilde
+    if: addendum_2_format
     -doc: Unknown value, something related to vehicle motion
 types:
   header:
@@ -205,7 +205,6 @@ types:
           any-of:
           - 810760007
           - 1194808112
-
   vector:
     doc: 3D direction vector
     seq:
@@ -314,12 +313,12 @@ instances:
   header_is_gt7:
     doc: True when the telemetry data is sent from Gran Turismo 7 or Sport
     value: header.magic == 1194808112
-  has_section_a:
+  standard_format:
     doc: True when the telemetry data contains data requested with format "A"
     value: _io.size >= 296
-  has_section_b:
+  addendum_1_format:
     doc: True when the telemetry data contains data requested with format "B"
     value: _io.size > 296
-  has_section_tilde:
+  addendum_2_format:
     doc: True when the telemetry data contains data requested with format "~"
     value: _io.size > 316

@@ -8,10 +8,12 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 
 ## Features
 
-* Support for all fields contained within the telemetry data packet.
+* Support for all known fields contained within the telemetry data packet.
+* Support for all current telemetry formats (A, B and ~)
 * Access data in both metric and imperial units.
+* Recording capability to capture telemetry data to files.
 * An additional field for the differential gear ratio is computed based on the rolling wheel diameter of the driven wheels.
-* A vehicle inventory database for providing the follwing information on a given vehicle ID:
+* A vehicle inventory database with methods for providing the following information on a given vehicle ID:
   * Manufacturer
   * Model
   * Year
@@ -20,13 +22,16 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
   * Type (racing or street)
   * Racing category
   * Open cockpit exposure
-
+* A circuit inventory database with methods for matching a circuit based on a given coordinate and providing the following information:
+  * Name
+  * Length
+  * Region
 
 [![asciicast](https://asciinema.org/a/fSBcGOR1EPjhTCMFLY0gHP0Py.svg)](https://asciinema.org/a/fSBcGOR1EPjhTCMFLY0gHP0Py)
 
 ## Installation ##
 
-To start using gt-telemetry, install Go 1.21 or above. From your project, run the following command to retrieve the module:
+To start using gt-telemetry, install Go 1.25.6 or above. From your project, run the following command to retrieve the module:
 
 ```bash
 go get github.com/zetetos/gt-telemetry
@@ -34,31 +39,32 @@ go get github.com/zetetos/gt-telemetry
 
 ## Usage ##
 
-```go
-import telemetry_client "github.com/zetetos/gt-telemetry"
-```
-
-Construct a new GT client and start reading the telemetry stream. All configuration fields are optional with the default values show in the example.
+Construct a new GT client and start reading the telemetry stream. All configuration fields in the example are optional and use the default values that would be used when not provided.
 
 ```go
-config := telemetry_client.GTClientOpts{
-    Source: "udp://255.255.255.255:33739"
-    Format: telemetrysrc.TelemetryFormatA,
-    LogLevel: "warn",
-    StatsEnabled: false,
-    VehicleDB: "./internal/vehicles/inventory.json",
-}
-gt, _ := telemetry_client.NewGTClient(config)
-go func() {
-    err, recoverable = gt.Run()
-    if err != nil {
-        if recoverable {
-            log.Printf("Recoverable error: %s", err.Error())
-        } else {
-            log.Fatalf("Fatal client error: %s", err.Error())
-        }
+import "github.com/zetetos/gt-telemetry"
+
+main() {
+    options := gttelemetry.Options{
+        Source: "udp://255.255.255.255:33739"
+        Format: telemetryformat.Addendum2,
+        LogLevel: "warn",
+        StatsEnabled: false,
+        VehicleDB: "./pkg/vehicles/vehicles.json",
+        CircuitDB: "./pkg/circuits/circuits.json",
     }
-}()
+    gtclient, _ := gttelemetry.New(options)
+    go func() {
+        err, recoverable = gtclient.Run()
+        if err != nil {
+            if recoverable {
+                log.Printf("Recoverable error: %s", err.Error())
+            } else {
+                log.Fatalf("Fatal client error: %s", err.Error())
+            }
+        }
+    }()
+}
 ```
 
 _If the PlayStation is on the same network segment then you will probably find that the default broadcast address `255.255.255.255` will be sufficient to start reading data. If it does not work then enter the IP address of the PlayStation device instead._
@@ -77,11 +83,11 @@ Read some data from the stream:
 
 Offline saves of replay files can also be used to read in telemetry data. Files can be in either plain (`*.gtr`) or compressed (`*.gtz`) format.
 
-Read telemetry from a replay file by setting the `Source` value in the `GTClientOpts` to a file URL, like so:
+Read telemetry from a replay file by setting the `Source` value in the `gttelemetry.Options` to a file URL, like so:
 
 ```go
-config := telemetry_client.GTClientOpts{
-    Source: "file://examples/simple/replay.gtz"
+config := gttelemetry.Options{
+    Source: "file://data/replays/demo.gtz"
 }
 ```
 
@@ -101,49 +107,90 @@ Alternatively, the replay can be captured to a compressed file with a different 
 go run cmd/capture_replay/main.go -o /path/to/replay-file.gtz
 ```
 
+#### Recording telemetry data programmatically ####
+
+The GT Telemetry client provides built-in methods for recording telemetry data to files during runtime. This allows you to start and stop recording at any point in your application.
+
+**Basic usage:**
+
+```go
+// Create a telemetry client.
+client, err := gttelemetry.New(gttelemetry.Options{
+    Source: "udp://255.255.255.255:33739", // Live telemetry
+})
+if err != nil {
+    log.Fatal(err)
+}
+
+// Start recording to a compressed file.
+err = client.StartRecording("my_recording.gtz")
+if err != nil {
+    log.Fatal(err)
+}
+
+// Your application logic here...
+// Telemetry data will be automatically recorded at the same time.
+
+// Stop recording
+err = client.StopRecording()
+if err != nil {
+    log.Fatal(err)
+}
+
+// Check if currently recording.
+if client.IsRecording() {
+    fmt.Println("Recording is active")
+}
+```
+
+**Supported file formats:**
+- `.gtr` - Plain binary telemetry data
+- `.gtz` - Compressed telemetry data (recommended for storage efficiency)
+
 ### Vehicle Inventory Management ###
 
-The `inventory` CLI tool allows you to import and export vehicle inventory data between JSON and CSV formats, and manage vehicle entries with interactive add, edit, and delete operations. The tool uses action-based commands and outputs to stdout, making it compatible with Unix pipes and redirections.
+The `vehicle_inventory` CLI tool allows you to sync data with the [Gran Turismo website](https://www.gran-turismo.com/au/gt7/carlist/) and also import and export vehicle inventory data between JSON and CSV formats. The tool uses action-based commands and outputs to stdout, making it compatible with Unix pipes and redirections.
 
 The output format is automatically determined by the input file extension:
 - `.json` files are converted to CSV format
 - `.csv` files are converted to JSON format
 
 
-#### Adding new vehicles interactively ####
+#### Synchronising the local DB file with the Gran Turismo website ####
+
+Synchronisation will default to vehicle data in British English.
 
 ```bash
-go run cmd/inventory/main.go add internal/vehicles/inventory.json
+go run tool/vehicle_inventory/*.go update internal/vehicles/inventory.json
 ```
 
-The tool will prompt for each field and display a summary before saving. It also checks for duplicate vehicle IDs and provides confirmation prompts.
-
-#### Editing existing vehicles ####
+To synchronise in another language add the country code to the command:
 
 ```bash
-go run cmd/inventory/main.go edit internal/vehicles/inventory.json 3267
+go run tool/vehicle_inventory/*.go update internal/vehicles/inventory.json jp
 ```
 
-The edit action loads the existing vehicle data and allows you to modify any field. Current values are shown in brackets, and pressing Enter without input keeps the existing value.
+Most data is synchronised with the exception of the following fields which need to be manually updated by searching for vehicle specifications on the Internet:
 
-#### Deleting vehicles ####
+- CarType
+- Wheelbase
+- TrackFront
+- TrackRear
+- EngineLayout
+- EngineBankAngle
+- EngineCrankPlaneAngle
 
-```bash
-go run cmd/inventory/main.go delete internal/vehicles/inventory.json 3267
-```
-
-The delete action shows the vehicle details and asks for confirmation before removal.
 
 #### Converting JSON to CSV ####
 
 ```bash
-go run cmd/inventory/main.go convert internal/vehicles/inventory.json
+go run tool/vehicle_inventory/*.go convert internal/vehicles/inventory.json
 ```
 
 #### Converting CSV to JSON ####
 
 ```bash
-go run cmd/inventory/main.go convert data/inventory.csv
+go run tool/vehicle_inventory/*.go convert data/inventory.csv
 ```
 
 #### CSV Format ####
@@ -158,9 +205,44 @@ The CSV format includes the following columns:
 - Category: Racing category (e.g., Gr.1, Gr.3, Gr.4, Gr.B)
 - Drivetrain: Drivetrain type (FR, FF, MR, RR, 4WD)
 - Aspiration: Engine aspiration (NA, TC, SC, EV, etc.)
+- Length: Length of the vehicle in millimetres
+- Width: Width of the vehicle in millimetres
+- Height: Height of the vehicle in millimetres
+- Wheelbase: Distance between the centreline of the front and rear wheels in millimetres
+- TrackFront: Distance between the centreline of the front left and right wheels in millimetres
+- TrackRear: Distance between the centreline of the rear left and right wheels in millimetres
 - EngineLayout: Engine layout configuration
 - EngineBankAngle: Engine cylinder bank angle in degrees
 - EngineCrankPlaneAngle: Engine crank plane angle in degrees
+
+
+
+### Circuit Inventory Management ###
+
+#### Capture Circuit Data ####
+
+To capture a circuit do the following preparations:
+
+1. In GT7 select a Gr.3 vehicle for general consistency with existing Captures
+2. Navigate to the circuit in World Circuits
+2. Enter a time trial for the specific track layout (variation), any time of day. Don't enter the event by clicking start as the console will be driving a car around the circuit in the background.
+
+Once preparations are complete, run the following command with appropriate circuit details. The capture will start when the vehicle passes the start line and end when a full lap is completed.
+
+```bash
+go run tool/circuit_capture/main.go \
+    -d "data/circuits" \
+    -n "Suzuka Circuit" \
+    -v "Suzuka Circuit East Course" \
+    -c "jp"
+```
+
+#### Compile Circuit Data Into Inventory ####
+
+The following command will convert all of the circuit capture data into the `circuits.json` database.
+
+```bash
+go run tool/circuit_inventory/main.go data/circuits pkg/circuits/circuits.json
 ```
 
 ## Examples ##

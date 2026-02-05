@@ -1,20 +1,33 @@
-package telemetry
+package gttelemetry
 
 import (
 	"bytes"
+	"compress/gzip"
+	"context"
+	"errors"
 	"fmt"
+	"io"
 	"net"
 	"net/url"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"github.com/rs/zerolog"
+	"github.com/zetetos/gt-telemetry/internal/reader"
+	"github.com/zetetos/gt-telemetry/internal/telemetry"
+	"github.com/zetetos/gt-telemetry/pkg/circuits"
+	"github.com/zetetos/gt-telemetry/pkg/models"
+	"github.com/zetetos/gt-telemetry/pkg/vehicles"
+)
 
-	"github.com/zetetos/gt-telemetry/internal/gttelemetry"
-	"github.com/zetetos/gt-telemetry/internal/telemetrysrc"
-	"github.com/zetetos/gt-telemetry/internal/vehicles"
+var (
+	ErrInvalidURLScheme           = errors.New("invalid URL scheme")
+	ErrRecordingAlreadyInProgress = errors.New("recording already in progress")
+	ErrUnsupportedFileExtension   = errors.New("unsupported file extension, use either .gtr or .gtz")
+	ErrNoRecordingInProgress      = errors.New("no recording in progress")
 )
 
 type statistics struct {
@@ -33,81 +46,55 @@ type statistics struct {
 	PacketSize        int
 }
 
-type GTClientOpts struct {
+type Options struct {
 	Source       string
-	Format       telemetrysrc.TelemetryFormat
+	Format       models.Name
 	LogLevel     string
 	Logger       *zerolog.Logger
 	StatsEnabled bool
+	CircuitDB    string
 	VehicleDB    string
 }
 
-type GTClient struct {
+type Client struct {
 	log              zerolog.Logger
 	source           string
-	format           telemetrysrc.TelemetryFormat
+	format           models.Name
 	DecipheredPacket []byte
 	Finished         bool
 	Statistics       *statistics
-	Telemetry        *transformer
+	Telemetry        *Transformer
+	CircuitDB        *circuits.CircuitDB
+
+	// Recording state
+	recordingMutex  sync.RWMutex
+	recordingFile   io.WriteCloser
+	recordingBuffer io.Writer
+	isRecording     bool
 }
 
-func NewGTClient(opts GTClientOpts) (*GTClient, error) {
-	var log zerolog.Logger
-	if opts.Logger != nil {
-		log = *opts.Logger
-	} else {
-		log = zerolog.New(os.Stdout).With().Timestamp().Logger()
-
-		switch opts.LogLevel {
-		case "trace":
-			zerolog.SetGlobalLevel(zerolog.TraceLevel)
-		case "debug":
-			zerolog.SetGlobalLevel(zerolog.DebugLevel)
-		case "info":
-			zerolog.SetGlobalLevel(zerolog.InfoLevel)
-		case "warn":
-			zerolog.SetGlobalLevel(zerolog.WarnLevel)
-		case "error":
-			zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-		case "fatal":
-			zerolog.SetGlobalLevel(zerolog.FatalLevel)
-		case "panic":
-			zerolog.SetGlobalLevel(zerolog.PanicLevel)
-		case "off":
-			zerolog.SetGlobalLevel(zerolog.Disabled)
-		case "":
-			zerolog.SetGlobalLevel(zerolog.WarnLevel)
-		default:
-			opts.LogLevel = "warn"
-			zerolog.SetGlobalLevel(zerolog.WarnLevel)
-			log.Warn().Str("log_level", opts.LogLevel).Msg("unknown log level, setting level to warn")
-		}
-	}
+func New(opts Options) (*Client, error) {
+	log := setupLogger(opts)
 
 	if opts.Source == "" {
 		opts.Source = "udp://255.255.255.255:33739"
 	}
 
 	if opts.Format == "" {
-		opts.Format = telemetrysrc.TelemetryFormatTilde
+		opts.Format = models.Addendum2
 	}
 
-	var inventoryJSON []byte
-	if opts.VehicleDB != "" {
-		var err error
-		inventoryJSON, err = os.ReadFile(opts.VehicleDB)
-		if err != nil {
-			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
-		}
-	}
-
-	inventory, err := vehicles.NewInventory(inventoryJSON)
+	circuitDB, err := loadCircuitDB(opts.CircuitDB)
 	if err != nil {
-		return nil, fmt.Errorf("setting up new inventory: %w", err)
+		return nil, err
 	}
 
-	return &GTClient{
+	vehicleDB, err := loadVehicleDB(opts.VehicleDB)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Client{
 		log:              log,
 		source:           opts.Source,
 		format:           opts.Format,
@@ -127,129 +114,435 @@ func NewGTClient(opts GTClientOpts) (*GTClient, error) {
 			PacketsInvalid:    0,
 			packetIDLast:      0,
 		},
-		Telemetry: NewTransformer(inventory),
+		Telemetry: NewTransformer(vehicleDB),
+		CircuitDB: circuitDB,
 	}, nil
 }
 
-func (c *GTClient) Run() (err error, recoverable bool) {
+// setupLogger initializes the zerolog.Logger based on options.
+func setupLogger(opts Options) zerolog.Logger {
+	if opts.Logger != nil {
+		return *opts.Logger
+	}
+
+	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
+
+	logLevel, err := zerolog.ParseLevel(opts.LogLevel)
+	if err != nil {
+		logLevel = zerolog.WarnLevel
+
+		log.Warn().Str("log_level", opts.LogLevel).Msg("unknown log level, setting level to warn")
+	}
+
+	zerolog.SetGlobalLevel(logLevel)
+
+	return log
+}
+
+// loadCircuitDB loads the circuit database from file if provided.
+func loadCircuitDB(path string) (*circuits.CircuitDB, error) {
+	var circuitsJSON []byte
+
+	var err error
+
+	if path != "" {
+		circuitsJSON, err = os.ReadFile(path)
+		if err != nil {
+			return nil, fmt.Errorf("reading circuit DB from file: %w", err)
+		}
+	}
+
+	circuitDB, err := circuits.NewDB(circuitsJSON)
+	if err != nil {
+		return nil, fmt.Errorf("setting up new circuit database: %w", err)
+	}
+
+	return circuitDB, nil
+}
+
+// loadVehicleDB loads the vehicle database from file if provided.
+func loadVehicleDB(path string) (*vehicles.VehicleDB, error) {
+	var vehiclesJSON []byte
+
+	var err error
+
+	if path != "" {
+		vehiclesJSON, err = os.ReadFile(path)
+		if err != nil {
+			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
+		}
+	}
+
+	vehicleDB, err := vehicles.NewDB(vehiclesJSON)
+	if err != nil {
+		return nil, fmt.Errorf("setting up new vehicle database: %w", err)
+	}
+
+	return vehicleDB, nil
+}
+
+// Run starts the telemetry client to read and process telemetry data.
+// The context parameter allows for graceful cancellation.
+func (c *Client) Run(ctx context.Context) (recoverable bool, err error) {
+	// Ensure recording is stopped when Run exits
+	defer func() {
+		if c.IsRecording() {
+			stopErr := c.StopRecording()
+			if stopErr != nil {
+				c.log.Error().Err(stopErr).Msg("failed to stop recording on exit")
+			}
+		}
+	}()
+
 	sourceURL, err := url.Parse(c.source)
 	if err != nil {
-		return fmt.Errorf("parse source URL: %w", err), false
+		return false, fmt.Errorf("parse source URL: %w", err)
 	}
 
-	var telemetrySource telemetrysrc.Reader
-
-	switch sourceURL.Scheme {
-	case "udp":
-		host, portStr, _ := net.SplitHostPort(sourceURL.Host)
-		port, err := strconv.Atoi(portStr)
-		if err != nil {
-			return fmt.Errorf("parse URL port: %w", err), false
-		}
-		telemetrySource, err = telemetrysrc.NewNetworkUDPReader(host, port, c.format, c.log)
-		if err != nil {
-			return fmt.Errorf("setup UDP reader: %w", err), true
-		}
-	case "file":
-		telemetrySource, err = telemetrysrc.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
-		if err != nil {
-			return fmt.Errorf("setup file reader: %w", err), false
-		}
-	default:
-		return fmt.Errorf("invalid URL scheme %q", sourceURL.Scheme), false
+	telemetryReader, recoverable, err := c.setupTelemetryReader(sourceURL)
+	if err != nil {
+		return recoverable, err
 	}
 
-	rawTelemetry := gttelemetry.NewGranTurismoTelemetry()
+	// Ensure the reader is closed when Run exits
+	defer func() {
+		closeErr := telemetryReader.Close()
+		if closeErr != nil {
+			c.log.Error().Err(closeErr).Msg("failed to close telemetry reader")
+		}
+	}()
 
-readTelemetry:
+	// Watch for context cancellation and close the reader immediately to unblock ReadFromUDP
+	go func() {
+		<-ctx.Done()
+		c.log.Debug().Msg("context cancelled, closing telemetry reader to unblock read")
+
+		_ = telemetryReader.Close()
+	}()
+
+	rawTelemetry := telemetry.NewGranTurismoTelemetry()
+
 	for {
-		bufLen, buffer, err := telemetrySource.Read()
-		if err != nil {
-			if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
-				c.Finished = true
+		select {
+		case <-ctx.Done():
+			c.log.Debug().Msg("context cancelled, stopping telemetry client")
 
-				continue readTelemetry
+			return false, ctx.Err()
+		default:
+			if done, recovErr := c.readAndProcessPacket(telemetryReader, rawTelemetry); done {
+				return recoverable, recovErr
 			}
-
-			c.log.Debug().Err(err).Msg("failed to receive telemetry")
-
-			continue readTelemetry
-		}
-
-		if len(buffer[:bufLen]) == 0 {
-			c.log.Debug().Msg("no data received")
-
-			continue readTelemetry
-		}
-
-		decodeStart := time.Now()
-
-		c.DecipheredPacket = buffer[:bufLen]
-
-		reader := bytes.NewReader(c.DecipheredPacket)
-		stream := kaitai.NewStream(reader)
-
-	parseTelemetry:
-		for {
-			err = rawTelemetry.Read(stream, nil, nil)
-			if err != nil {
-				if err.Error() == "EOF" {
-					break parseTelemetry
-				}
-				c.log.Error().Err(err).Msg("failed to parse telemetry")
-				c.Statistics.PacketsInvalid++
-			}
-
-			c.Telemetry.RawTelemetry = *rawTelemetry
-
-			c.Statistics.decodeTimeLast = time.Since(decodeStart)
-			c.collectStats()
-
-			timer := time.NewTimer(4 * time.Millisecond)
-			<-timer.C
 		}
 	}
 }
 
-func (c *GTClient) collectStats() {
+// IsReplaySource checks if the telemetry source is a replay file.
+func (c *Client) IsReplaySource() (bool, error) {
+	sourceURL, err := url.Parse(c.source)
+	if err != nil {
+		return false, fmt.Errorf("parse source URL: %w", err)
+	}
+
+	switch sourceURL.Scheme {
+	case "file":
+		return true, nil
+	case "udp":
+		return false, nil
+	default:
+		return false, fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme)
+	}
+}
+
+// StartRecording starts recording telemetry data to the specified file path.
+// Supports both plain (.gtr) and compressed (.gtz) formats based on file extension.
+func (c *Client) StartRecording(filePath string) error {
+	c.recordingMutex.Lock()
+	defer c.recordingMutex.Unlock()
+
+	if c.isRecording {
+		return ErrRecordingAlreadyInProgress
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create recording file: %w", err)
+	}
+
+	// Determine format based on file extension
+	var buffer io.Writer
+
+	fileExt := filePath[len(filePath)-3:]
+	switch fileExt {
+	case "gtz":
+		gzipWriter, err := gzip.NewWriterLevel(file, gzip.BestCompression)
+		if err != nil {
+			file.Close()
+
+			return fmt.Errorf("failed to create gzip writer: %w", err)
+		}
+
+		gzipWriter.Comment = "Gran Turismo Telemetry Recording"
+		buffer = gzipWriter
+		c.recordingFile = &gzipFileWrapper{file: file, gzipWriter: gzipWriter}
+	case "gtr":
+		buffer = file
+		c.recordingFile = file
+	default:
+		file.Close()
+
+		return fmt.Errorf("%w: %q", ErrUnsupportedFileExtension, fileExt)
+	}
+
+	c.recordingBuffer = buffer
+	c.isRecording = true
+
+	c.log.Info().Str("file", filePath).Msg("started recording telemetry data")
+
+	return nil
+}
+
+// StopRecording stops the current recording and closes the file.
+func (c *Client) StopRecording() error {
+	c.recordingMutex.Lock()
+	defer c.recordingMutex.Unlock()
+
+	if !c.isRecording {
+		return ErrNoRecordingInProgress
+	}
+
+	// Flush and close the file
+	err := c.recordingFile.Close()
+	if err != nil {
+		c.log.Error().Err(err).Msg("error closing recording file")
+
+		return fmt.Errorf("failed to close recording file: %w", err)
+	}
+
+	c.recordingFile = nil
+	c.recordingBuffer = nil
+	c.isRecording = false
+
+	c.log.Info().Msg("stopped recording telemetry data")
+
+	return nil
+}
+
+// IsRecording returns true if telemetry data is currently being recorded.
+func (c *Client) IsRecording() bool {
+	c.recordingMutex.RLock()
+	defer c.recordingMutex.RUnlock()
+
+	return c.isRecording
+}
+
+// setupTelemetryReader initializes the telemetry reader based on the URL scheme.
+func (c *Client) setupTelemetryReader(sourceURL *url.URL) (reader.Reader, bool, error) { //nolint:ireturn
+	switch sourceURL.Scheme {
+	case "udp":
+		host, portStr, _ := net.SplitHostPort(sourceURL.Host)
+
+		port, err := strconv.Atoi(portStr)
+		if err != nil {
+			return nil, false, fmt.Errorf("parse URL port: %w", err)
+		}
+
+		telemetryReader, err := reader.NewUDPReader(host, port, c.format, c.log)
+		if err != nil {
+			return nil, true, fmt.Errorf("setup UDP reader: %w", err)
+		}
+
+		return telemetryReader, true, nil
+	case "file":
+		telemetryReader, err := reader.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
+		if err != nil {
+			return nil, false, fmt.Errorf("setup file reader: %w", err)
+		}
+
+		return telemetryReader, false, nil
+	default:
+		return nil, false, fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme)
+	}
+}
+
+// readAndProcessPacket reads a single packet and processes it.
+// Returns true if the Run loop should return.
+func (c *Client) readAndProcessPacket(telemetryReader reader.Reader, rawTelemetry *telemetry.GranTurismoTelemetry) (done bool, err error) {
+	bufLen, buffer, err := telemetryReader.Read()
+	if shouldContinue, finished := c.handleReadError(err); !shouldContinue {
+		if finished {
+			return false, nil
+		}
+
+		return true, err
+	}
+
+	if !c.handleEmptyBuffer(buffer, bufLen) {
+		return false, nil
+	}
+
+	c.DecipheredPacket = buffer[:bufLen]
+
+	decodeStart := time.Now()
+
+	reader := bytes.NewReader(c.DecipheredPacket)
+	stream := kaitai.NewStream(reader)
+
+	c.processTelemetry(rawTelemetry, stream, decodeStart)
+
+	return false, nil
+}
+
+// handleReadError processes errors from telemetryReader.Read.
+func (c *Client) handleReadError(err error) (shouldContinue bool, finished bool) {
+	if err == nil {
+		return true, false
+	}
+
+	if errors.Is(err, io.EOF) {
+		if !c.Finished {
+			c.Finished = true
+			c.log.Info().Msg("reached end of telemetry data")
+		}
+
+		return false, true
+	}
+
+	if err.Error() == "bufio.Scanner: SplitFunc returns advance count beyond input" {
+		if !c.Finished {
+			c.Finished = true
+		}
+
+		return false, true
+	}
+
+	c.log.Debug().Err(err).Msg("failed to receive telemetry")
+
+	return false, true
+}
+
+// handleEmptyBuffer checks if the buffer is empty and logs if so.
+func (c *Client) handleEmptyBuffer(buffer []byte, bufLen int) bool {
+	if len(buffer[:bufLen]) == 0 {
+		c.log.Debug().Msg("no data received")
+
+		return false
+	}
+
+	return true
+}
+
+// processTelemetry parses and processes telemetry packets.
+func (c *Client) processTelemetry(rawTelemetry *telemetry.GranTurismoTelemetry, stream *kaitai.Stream, decodeStart time.Time) {
+	err := rawTelemetry.Read(stream, nil, nil)
+	if err != nil {
+		c.Statistics.PacketsInvalid++
+		c.log.Error().Err(err).Msg("failed to parse telemetry")
+
+		return
+	}
+
+	c.Telemetry.RawTelemetry = *rawTelemetry
+	c.Statistics.decodeTimeLast = time.Since(decodeStart)
+	c.collectStats()
+	c.recordPacket()
+}
+
+// recordPacket writes the current packet to the recording file if recording is active.
+func (c *Client) recordPacket() {
+	c.recordingMutex.RLock()
+	defer c.recordingMutex.RUnlock()
+
+	if !c.isRecording || c.recordingBuffer == nil {
+		return
+	}
+
+	if len(c.DecipheredPacket) == 0 {
+		return
+	}
+
+	// Skip writing if the game is paused
+	if c.Telemetry.Flags().GamePaused {
+		return
+	}
+
+	// Skip writing if in main menu or race menu
+	if c.Telemetry.IsInMainMenu() || c.Telemetry.IsInRaceMenu() {
+		return
+	}
+
+	_, err := c.recordingBuffer.Write(c.DecipheredPacket)
+	if err != nil {
+		c.log.Error().Err(err).Msg("failed to write packet to recording file")
+	}
+}
+
+// gzipFileWrapper wraps a gzip writer and file to handle proper closing.
+type gzipFileWrapper struct {
+	file       *os.File
+	gzipWriter *gzip.Writer
+}
+
+// Write writes data to the gzip writer.
+func (g *gzipFileWrapper) Write(p []byte) (n int, err error) {
+	return g.gzipWriter.Write(p)
+}
+
+// Close closes the gzip writer and the underlying file.
+func (g *gzipFileWrapper) Close() error {
+	err := g.gzipWriter.Close()
+	if err != nil {
+		g.file.Close()
+
+		return err
+	}
+
+	return g.file.Close()
+}
+
+// collectStats updates the telemetry statistics based on the latest packet.
+func (c *Client) collectStats() {
 	if !c.Statistics.enabled {
 		return
 	}
 
 	c.Statistics.PacketsTotal++
 
-	if c.Statistics.packetIDLast != c.Telemetry.SequenceID() {
-		c.Statistics.PacketSize, _ = c.Telemetry.RawTelemetry.PacketSize()
-
-		if c.Statistics.packetIDLast == 0 {
-			c.Statistics.packetIDLast = c.Telemetry.SequenceID()
-			return
-		}
-
-		c.Statistics.DecodeTimeAvg = (c.Statistics.DecodeTimeAvg + c.Statistics.decodeTimeLast) / 2
-		if c.Statistics.decodeTimeLast > c.Statistics.DecodeTimeMax {
-			c.Statistics.DecodeTimeMax = c.Statistics.decodeTimeLast
-		}
-
-		delta := int(c.Telemetry.SequenceID() - c.Statistics.packetIDLast)
-		if delta > 1 {
-			c.log.Warn().Int("count", delta-1).Msg("packets dropped")
-			c.Statistics.PacketsDropped += int(delta - 1)
-		} else if delta < 0 {
-			c.log.Warn().Int("count", 1).Msg("packets delayed")
-		}
-
-		c.Statistics.packetIDLast = c.Telemetry.SequenceID()
-
-		if c.Telemetry.SequenceID()%10 == 0 {
-			rate := time.Since(c.Statistics.packetRateLast)
-			c.Statistics.PacketRateCurrent = int(10 / rate.Seconds())
-			c.Statistics.packetRateLast = time.Now()
-			c.Statistics.PacketRateAvg = (c.Statistics.PacketRateAvg + c.Statistics.PacketRateCurrent) / 2
-			if c.Statistics.PacketRateCurrent > c.Statistics.PacketRateMax {
-				c.Statistics.PacketRateMax = c.Statistics.PacketRateCurrent
-			}
-		}
+	if c.Statistics.packetIDLast == c.Telemetry.SequenceID() {
+		return
 	}
 
+	c.Statistics.PacketSize, _ = c.Telemetry.RawTelemetry.PacketSize()
+
+	if c.Statistics.packetIDLast == 0 {
+		c.Statistics.packetIDLast = c.Telemetry.SequenceID()
+
+		return
+	}
+
+	c.Statistics.DecodeTimeAvg = (c.Statistics.DecodeTimeAvg + c.Statistics.decodeTimeLast) / 2
+	if c.Statistics.decodeTimeLast > c.Statistics.DecodeTimeMax {
+		c.Statistics.DecodeTimeMax = c.Statistics.decodeTimeLast
+	}
+
+	delta := int(c.Telemetry.SequenceID() - c.Statistics.packetIDLast)
+	if delta > 1 {
+		c.log.Warn().Int("count", delta-1).Msg("packets dropped")
+		c.Statistics.PacketsDropped += delta - 1
+	} else if delta < 0 {
+		c.log.Warn().Int("count", 1).Msg("packets delayed")
+	}
+
+	c.Statistics.packetIDLast = c.Telemetry.SequenceID()
+
+	if c.Telemetry.SequenceID()%10 == 0 {
+		rate := time.Since(c.Statistics.packetRateLast)
+		c.Statistics.PacketRateCurrent = int(10 / rate.Seconds())
+		c.Statistics.packetRateLast = time.Now()
+
+		c.Statistics.PacketRateAvg = (c.Statistics.PacketRateAvg + c.Statistics.PacketRateCurrent) / 2
+		if c.Statistics.PacketRateCurrent > c.Statistics.PacketRateMax {
+			c.Statistics.PacketRateMax = c.Statistics.PacketRateCurrent
+		}
+	}
 }

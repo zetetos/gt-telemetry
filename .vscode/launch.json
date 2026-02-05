@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "debug",
-            "program": "${workspaceFolder}/examples/simple/main.go",
+            "program": "${workspaceFolder}/cmd/demo/main.go",
             "cwd": "${workspaceFolder}"
         }
     ]
