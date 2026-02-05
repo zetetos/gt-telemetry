@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/zetetos/gt-telemetry/internal/salsa20"
-	"github.com/zetetos/gt-telemetry/pkg/models"
+	"github.com/zetetos/gt-telemetry/v2/internal/salsa20"
+	"github.com/zetetos/gt-telemetry/v2/pkg/models"
 )
 
 const (

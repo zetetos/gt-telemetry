@@ -3,8 +3,8 @@ package gttelemetry
 import (
 	"strconv"
 
-	"github.com/zetetos/gt-telemetry/internal/units"
-	"github.com/zetetos/gt-telemetry/pkg/models"
+	"github.com/zetetos/gt-telemetry/v2/internal/units"
+	"github.com/zetetos/gt-telemetry/v2/pkg/models"
 )
 
 func (t *Transformer) CurrentGearString() string {

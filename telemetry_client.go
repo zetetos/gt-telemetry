@@ -16,11 +16,11 @@ import (
 
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"github.com/rs/zerolog"
-	"github.com/zetetos/gt-telemetry/internal/reader"
-	"github.com/zetetos/gt-telemetry/internal/telemetry"
-	"github.com/zetetos/gt-telemetry/pkg/circuits"
-	"github.com/zetetos/gt-telemetry/pkg/models"
-	"github.com/zetetos/gt-telemetry/pkg/vehicles"
+	"github.com/zetetos/gt-telemetry/v2/internal/reader"
+	"github.com/zetetos/gt-telemetry/v2/internal/telemetry"
+	"github.com/zetetos/gt-telemetry/v2/pkg/circuits"
+	"github.com/zetetos/gt-telemetry/v2/pkg/models"
+	"github.com/zetetos/gt-telemetry/v2/pkg/vehicles"
 )
 
 var (

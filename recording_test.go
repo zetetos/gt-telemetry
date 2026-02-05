@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/suite"
-	gttelemetry "github.com/zetetos/gt-telemetry"
+	gttelemetry "github.com/zetetos/gt-telemetry/v2"
 )
 
 type RecordingTestSuite struct {

@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/gocarina/gocsv"
-	"github.com/zetetos/gt-telemetry/pkg/vehicles"
+	"github.com/zetetos/gt-telemetry/v2/pkg/vehicles"
 )
 
 // convertFile converts between JSON and CSV formats based on the format parameter.

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zetetos/gt-telemetry/internal/salsa20"
+	"github.com/zetetos/gt-telemetry/v2/internal/salsa20"
 )
 
 const ivSeed = 0xDEADBEAF

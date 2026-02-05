@@ -10,8 +10,8 @@ import (
 	"unicode"
 
 	"github.com/santhosh-tekuri/jsonschema/v5"
-	gtcircuits "github.com/zetetos/gt-telemetry/pkg/circuits"
-	gtmodels "github.com/zetetos/gt-telemetry/pkg/models"
+	gtcircuits "github.com/zetetos/gt-telemetry/v2/pkg/circuits"
+	gtmodels "github.com/zetetos/gt-telemetry/v2/pkg/models"
 )
 
 type CircuitCoordinates struct {

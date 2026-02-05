@@ -6,9 +6,9 @@ import (
 	"log"
 	"time"
 
-	gttelemetry "github.com/zetetos/gt-telemetry"
-	gtcircuits "github.com/zetetos/gt-telemetry/pkg/circuits"
-	gtmodels "github.com/zetetos/gt-telemetry/pkg/models"
+	gttelemetry "github.com/zetetos/gt-telemetry/v2"
+	gtcircuits "github.com/zetetos/gt-telemetry/v2/pkg/circuits"
+	gtmodels "github.com/zetetos/gt-telemetry/v2/pkg/models"
 )
 
 func main() {

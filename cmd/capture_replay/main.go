@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"time"
 
-	gttelemetry "github.com/zetetos/gt-telemetry"
+	gttelemetry "github.com/zetetos/gt-telemetry/v2"
 )
 
 func main() {
