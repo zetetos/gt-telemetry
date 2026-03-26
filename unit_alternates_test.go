@@ -16,7 +16,7 @@ type UnitAlternatesTestSuite struct {
 	transformer *gttelemetry.Transformer
 }
 
-func TestUnitAlternatesTestSuite(t *testing.T) {
+func TestTestSuite(t *testing.T) {
 	t.Parallel()
 	suite.Run(t, new(UnitAlternatesTestSuite))
 }
@@ -51,7 +51,7 @@ func (suite *UnitAlternatesTestSuite) SetupTest() {
 	suite.transformer = transformer
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesCurrentGearStringReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestCurrentGearStringReturnsCorrectValue() {
 	wantValues := map[int]string{
 		0:  "R",
 		1:  "1",
@@ -87,7 +87,31 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesCurrentGearStringReturns
 	}
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesGroundSpeedKPHReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestDynamicWheelbaseLeftInchesReturnsCorrectValue() {
+	// Arrange
+	wantValue := float32(1.23456)
+	suite.transformer.RawTelemetry.DynamicWheelbaseLeft = wantValue
+
+	// Act
+	gotValue := suite.transformer.DynamicWheelbaseLeftInches()
+
+	// Assert
+	suite.InEpsilon(float32(48.604724), gotValue, 1e-5)
+}
+
+func (suite *TransformerTestSuite) TestDynamicWheelbaseLeftMillimetresReturnsCorrectValue() {
+	// Arrange
+	wantValue := float32(1.23456)
+	suite.transformer.RawTelemetry.DynamicWheelbaseLeft = wantValue
+
+	// Act
+	gotValue := suite.transformer.DynamicWheelbaseLeftMillimetres()
+
+	// Assert
+	suite.InEpsilon(float32(1234.56), gotValue, 1e-5)
+}
+
+func (suite *UnitAlternatesTestSuite) TestGroundSpeedKPHReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.GroundSpeed = 82
 
@@ -98,7 +122,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesGroundSpeedKPHReturnsCor
 	suite.InEpsilon(float32(295.19998), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesOilTemperatureFahrenheitReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestOilTemperatureFahrenheitReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.OilTemperature = 104.2945
 
@@ -109,7 +133,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesOilTemperatureFahrenheit
 	suite.InEpsilon(float32(219.7301), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesRideHeightMillimetresReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestRideHeightMillimetresReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.RideHeight = 0.10267
 
@@ -120,7 +144,31 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesRideHeightMillimetresRet
 	suite.InEpsilon(float32(102.67), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesSuspensionHeightFeetReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestSteeringWheelAngleDegreesReturnsCorrectValue() {
+	// Arrange
+	wantValue := float32(125.096176)
+	suite.transformer.RawTelemetry.SteeringWheelAngleRadians = float32(2.18334)
+
+	// Act
+	gotValue := suite.transformer.SteeringWheelAngleDegrees()
+
+	// Assert
+	suite.InEpsilon(wantValue, gotValue, 1e-5)
+}
+
+func (suite *TransformerTestSuite) TestSteeringWheelAngleDegreesPerSecondReturnsCorrectValue() {
+	// Arrange
+	wantValue := float32(28)
+	suite.transformer.RawTelemetry.SteeringWheelAngleRadiansPerSecond = float32(0.4886922)
+
+	// Act
+	gotValue := suite.transformer.SteeringWheelAngleDegreesPerSecond()
+
+	// Assert
+	suite.InEpsilon(wantValue, gotValue, 1e-5)
+}
+
+func (suite *UnitAlternatesTestSuite) TestSuspensionHeightFeetReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.SuspensionHeight = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.0267,
@@ -139,7 +187,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesSuspensionHeightFeetRetu
 	suite.InEpsilon(float32(0.09776903), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesSuspensionHeightInchesReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestSuspensionHeightInchesReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.SuspensionHeight = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.0267,
@@ -158,7 +206,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesSuspensionHeightInchesRe
 	suite.InEpsilon(float32(1.1732289), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesSuspensionHeightMillimetresReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestSuspensionHeightMillimetresReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.SuspensionHeight = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.0267,
@@ -177,7 +225,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesSuspensionHeightMillimet
 	suite.InEpsilon(float32(29.8), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTurboBoostPSIReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTurboBoostPSIReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.ManifoldPressure = 2.13
 
@@ -188,7 +236,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTurboBoostPSIReturnsCorr
 	suite.InEpsilon(float32(16.389261), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTurboBoostInHgReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTurboBoostInHgReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.ManifoldPressure = 2.13
 
@@ -199,7 +247,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTurboBoostInHgReturnsCor
 	suite.InEpsilon(float32(33.36888), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTurboBoostKPAReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTurboBoostKPAReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.ManifoldPressure = 2.13
 
@@ -210,7 +258,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTurboBoostKPAReturnsCorr
 	suite.InEpsilon(float32(113.000015), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreDiameterFeetReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTyreDiameterFeetReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
@@ -229,7 +277,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreDiameterFeetReturnsC
 	suite.InEpsilon(float32(2.2506561), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreDiameterInchesReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTyreDiameterInchesReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
@@ -247,7 +295,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreDiameterInchesReturn
 	suite.InEpsilon(float32(27.007887), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreDiameterMillimetresReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTyreDiameterMillimetresReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
@@ -266,7 +314,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreDiameterMillimetresR
 	suite.InEpsilon(float32(686), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreRadiusFeetReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTyreRadiusFeetReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
@@ -285,7 +333,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreRadiusFeetReturnsCor
 	suite.InEpsilon(float32(1.1253281), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreRadiusInchesReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTyreRadiusInchesReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
@@ -304,7 +352,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreRadiusInchesReturnsC
 	suite.InEpsilon(float32(13.503943), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreRadiusMillimetresReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTyreRadiusMillimetresReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.314,
@@ -323,7 +371,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreRadiusMillimetresRet
 	suite.InEpsilon(float32(343), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreTemperatureFahrenheitReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestTyreTemperatureFahrenheitReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.TyreTemperature = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  64.3,
@@ -342,7 +390,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesTyreTemperatureFahrenhei
 	suite.InEpsilon(float32(151.66429), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesWheelSpeedKPHReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestWheelSpeedKPHReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.317,
@@ -367,7 +415,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesWheelSpeedKPHReturnsCorr
 	suite.InEpsilon(float32(151.09486), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesWheelSpeedMPHReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestWheelSpeedMPHReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.TyreRadius = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  0.317,
@@ -392,7 +440,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesWheelSpeedMPHReturnsCorr
 	suite.InEpsilon(float32(93.886), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesWheelSpeedRPMReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestWheelSpeedRPMReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.WheelRadiansPerSecond = &telemetry.GranTurismoTelemetry_CornerSet{
 		FrontLeft:  132.50,
@@ -411,7 +459,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesWheelSpeedRPMReturnsCorr
 	suite.InEpsilon(float32(1264.3268), gotValue.RearRight, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesWaterTemperatureFahrenheitReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestWaterTemperatureFahrenheitReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.RawTelemetry.WaterTemperature = 94.56
 
@@ -422,7 +470,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesWaterTemperatureFahrenhe
 	suite.InEpsilon(float32(202.208), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleLengthInchesReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestVehicleLengthInchesReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
@@ -434,7 +482,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleLengthInchesRetur
 	suite.InEpsilon(float32(177.165), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleWidthInchesReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestVehicleWidthInchesReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
@@ -446,7 +494,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleWidthInchesReturn
 	suite.InEpsilon(float32(70.866), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleHeightInchesReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestVehicleHeightInchesReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
@@ -458,7 +506,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleHeightInchesRetur
 	suite.InEpsilon(float32(51.181), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleWheelbaseInchesReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestVehicleWheelbaseInchesReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
@@ -470,7 +518,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleWheelbaseInchesRe
 	suite.InEpsilon(float32(106.299), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleTrackFrontInchesReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestVehicleTrackFrontInchesReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234
@@ -482,7 +530,7 @@ func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleTrackFrontInchesR
 	suite.InEpsilon(float32(61.024), gotValue, 1e-5)
 }
 
-func (suite *UnitAlternatesTestSuite) TestUnitAlternatesVehicleTrackRearInchesReturnsCorrectValue() {
+func (suite *UnitAlternatesTestSuite) TestVehicleTrackRearInchesReturnsCorrectValue() {
 	// Arrange
 	suite.transformer.Vehicle = vehicles.Vehicle{}
 	suite.transformer.RawTelemetry.VehicleId = 1234

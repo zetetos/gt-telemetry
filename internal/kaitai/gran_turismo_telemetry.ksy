@@ -144,10 +144,10 @@ seq:
     type: f4
     if: addendum_1_format
     -doc: Steering wheel angular position in radians
-  - id: steering_wheel_force_feedback
+  - id: steering_wheel_angle_radians_per_second
     type: f4
     if: addendum_1_format
-    -doc: Steering wheel force feedback signal (unverified)
+    -doc: Steering wheel angular rate in radians per second
   - id: translational_envelope
     type: translational_envelope
     if: addendum_1_format
@@ -187,11 +187,34 @@ seq:
   - id: energy_recovery
     type: f4
     if: addendum_2_format
-    -doc: Energy recovery value in [unknown units]
+    -doc: Energy recovery value in [unknown units]?
   - id: unknown0x154
     type: f4
     if: addendum_2_format
-    -doc: Unknown value, something related to vehicle motion
+    -doc: Unknown value, possibly engine load?
+  - id: surface_type
+    type: corner_set_char
+    if: addendum_3_format
+  - id: current_laptime
+    type: s4
+    if: addendum_3_format
+    -doc: Current lap time in milliseconds (-1ms when not set)
+  - id: wheel_steering_angle_fl
+    type: f4
+    if: addendum_3_format
+    -doc: Front left wheel steering angle in radians
+  - id: wheel_steering_angle_fr
+    type: f4
+    if: addendum_3_format
+    -doc: Front left wheel steering angle in radians
+  - id: dynamic_wheelbase_left
+    type: f4
+    if: addendum_3_format
+    -doc: Dynamic wheelbase along the left side of the vehicle in metres. Length changes with front left wheel steering angle.
+  - id: vehicle_category
+    type: strz
+    encoding: ASCII
+    if: addendum_3_format
 types:
   header:
     doc: |
@@ -242,7 +265,7 @@ types:
       - id: roll
         type: f4
   corner_set:
-    doc: Data set representing each wheel or suspension component at the corners of the vehicle
+    doc: Data set representing a float for each wheel or suspension component at the corners of the vehicle
     seq:
       - id: front_left
         type: f4
@@ -252,6 +275,25 @@ types:
         type: f4
       - id: rear_right
         type: f4
+  corner_set_char:
+    doc: Data set representing a character for each wheel or suspension component at the corners of the vehicle
+    seq:
+      - id: front_left
+        type: str
+        size: 1
+        encoding: ASCII
+      - id: front_right
+        type: str
+        size: 1
+        encoding: ASCII
+      - id: rear_left
+        type: str
+        size: 1
+        encoding: ASCII
+      - id: rear_right
+        type: str
+        size: 1
+        encoding: ASCII
   flags:
     doc: Various flags for the current state of play and instrument cluster indicators
     seq:
@@ -309,16 +351,19 @@ instances:
     value: _io.size
   header_is_gt6:
     doc: True when the telemetry data is sent from Gran Turismo 6
-    value: header.magic == 810760007
+    value: header.magic == 1194808112
   header_is_gt7:
     doc: True when the telemetry data is sent from Gran Turismo 7 or Sport
-    value: header.magic == 1194808112
+    value: header.magic == 810760007
   standard_format:
     doc: True when the telemetry data contains data requested with format "A"
     value: _io.size >= 296
   addendum_1_format:
     doc: True when the telemetry data contains data requested with format "B"
-    value: _io.size > 296
+    value: _io.size >= 316
   addendum_2_format:
     doc: True when the telemetry data contains data requested with format "~"
-    value: _io.size > 316
+    value: _io.size >= 344
+  addendum_3_format:
+    doc: True when the telemetry data contains data requested with format "C"
+    value: _io.size >= 368

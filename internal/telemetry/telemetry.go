@@ -51,7 +51,7 @@ type GranTurismoTelemetry struct {
 	TransmissionGearRatio *GranTurismoTelemetry_GearRatio
 	VehicleId uint32
 	SteeringWheelAngleRadians float32
-	SteeringWheelForceFeedback float32
+	SteeringWheelAngleRadiansPerSecond float32
 	TranslationalEnvelope *GranTurismoTelemetry_TranslationalEnvelope
 	ThrottleInput uint8
 	BrakeOutput uint8
@@ -63,11 +63,19 @@ type GranTurismoTelemetry struct {
 	Unknown0x14c float32
 	EnergyRecovery float32
 	Unknown0x154 float32
+	SurfaceType *GranTurismoTelemetry_CornerSetChar
+	CurrentLaptime int32
+	WheelSteeringAngleFl float32
+	WheelSteeringAngleFr float32
+	DynamicWheelbaseLeft float32
+	VehicleCategory string
 	_io *kaitai.Stream
 	_root *GranTurismoTelemetry
 	_parent interface{}
 	_f_headerIsGt7 bool
 	headerIsGt7 bool
+	_f_addendum3Format bool
+	addendum3Format bool
 	_f_addendum1Format bool
 	addendum1Format bool
 	_f_packetSize bool
@@ -349,7 +357,7 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 		if err != nil {
 			return err
 		}
-		this.SteeringWheelForceFeedback = float32(tmp49)
+		this.SteeringWheelAngleRadiansPerSecond = float32(tmp49)
 	}
 	tmp50, err := this.Addendum1Format()
 	if err != nil {
@@ -473,6 +481,73 @@ func (this *GranTurismoTelemetry) Read(io *kaitai.Stream, parent interface{}, ro
 		}
 		this.Unknown0x154 = float32(tmp71)
 	}
+	tmp72, err := this.Addendum3Format()
+	if err != nil {
+		return err
+	}
+	if (tmp72) {
+		tmp73 := NewGranTurismoTelemetry_CornerSetChar()
+		err = tmp73.Read(this._io, this, this._root)
+		if err != nil {
+			return err
+		}
+		this.SurfaceType = tmp73
+	}
+	tmp74, err := this.Addendum3Format()
+	if err != nil {
+		return err
+	}
+	if (tmp74) {
+		tmp75, err := this._io.ReadS4le()
+		if err != nil {
+			return err
+		}
+		this.CurrentLaptime = int32(tmp75)
+	}
+	tmp76, err := this.Addendum3Format()
+	if err != nil {
+		return err
+	}
+	if (tmp76) {
+		tmp77, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.WheelSteeringAngleFl = float32(tmp77)
+	}
+	tmp78, err := this.Addendum3Format()
+	if err != nil {
+		return err
+	}
+	if (tmp78) {
+		tmp79, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.WheelSteeringAngleFr = float32(tmp79)
+	}
+	tmp80, err := this.Addendum3Format()
+	if err != nil {
+		return err
+	}
+	if (tmp80) {
+		tmp81, err := this._io.ReadF4le()
+		if err != nil {
+			return err
+		}
+		this.DynamicWheelbaseLeft = float32(tmp81)
+	}
+	tmp82, err := this.Addendum3Format()
+	if err != nil {
+		return err
+	}
+	if (tmp82) {
+		tmp83, err := this._io.ReadBytesTerm(0, false, true, true)
+		if err != nil {
+			return err
+		}
+		this.VehicleCategory = string(tmp83)
+	}
 	return err
 }
 
@@ -483,9 +558,25 @@ func (this *GranTurismoTelemetry) HeaderIsGt7() (v bool, err error) {
 	if (this._f_headerIsGt7) {
 		return this.headerIsGt7, nil
 	}
-	this.headerIsGt7 = bool(this.Header.Magic == 1194808112)
+	this.headerIsGt7 = bool(this.Header.Magic == 810760007)
 	this._f_headerIsGt7 = true
 	return this.headerIsGt7, nil
+}
+
+/**
+ * True when the telemetry data contains data requested with format "C"
+ */
+func (this *GranTurismoTelemetry) Addendum3Format() (v bool, err error) {
+	if (this._f_addendum3Format) {
+		return this.addendum3Format, nil
+	}
+	tmp84, err := this._io.Size()
+	if err != nil {
+		return false, err
+	}
+	this.addendum3Format = bool(tmp84 >= 368)
+	this._f_addendum3Format = true
+	return this.addendum3Format, nil
 }
 
 /**
@@ -495,11 +586,11 @@ func (this *GranTurismoTelemetry) Addendum1Format() (v bool, err error) {
 	if (this._f_addendum1Format) {
 		return this.addendum1Format, nil
 	}
-	tmp72, err := this._io.Size()
+	tmp85, err := this._io.Size()
 	if err != nil {
 		return false, err
 	}
-	this.addendum1Format = bool(tmp72 > 296)
+	this.addendum1Format = bool(tmp85 >= 316)
 	this._f_addendum1Format = true
 	return this.addendum1Format, nil
 }
@@ -511,11 +602,11 @@ func (this *GranTurismoTelemetry) PacketSize() (v int, err error) {
 	if (this._f_packetSize) {
 		return this.packetSize, nil
 	}
-	tmp73, err := this._io.Size()
+	tmp86, err := this._io.Size()
 	if err != nil {
 		return 0, err
 	}
-	this.packetSize = int(tmp73)
+	this.packetSize = int(tmp86)
 	this._f_packetSize = true
 	return this.packetSize, nil
 }
@@ -527,7 +618,7 @@ func (this *GranTurismoTelemetry) HeaderIsGt6() (v bool, err error) {
 	if (this._f_headerIsGt6) {
 		return this.headerIsGt6, nil
 	}
-	this.headerIsGt6 = bool(this.Header.Magic == 810760007)
+	this.headerIsGt6 = bool(this.Header.Magic == 1194808112)
 	this._f_headerIsGt6 = true
 	return this.headerIsGt6, nil
 }
@@ -539,11 +630,11 @@ func (this *GranTurismoTelemetry) StandardFormat() (v bool, err error) {
 	if (this._f_standardFormat) {
 		return this.standardFormat, nil
 	}
-	tmp74, err := this._io.Size()
+	tmp87, err := this._io.Size()
 	if err != nil {
 		return false, err
 	}
-	this.standardFormat = bool(tmp74 >= 296)
+	this.standardFormat = bool(tmp87 >= 296)
 	this._f_standardFormat = true
 	return this.standardFormat, nil
 }
@@ -555,13 +646,62 @@ func (this *GranTurismoTelemetry) Addendum2Format() (v bool, err error) {
 	if (this._f_addendum2Format) {
 		return this.addendum2Format, nil
 	}
-	tmp75, err := this._io.Size()
+	tmp88, err := this._io.Size()
 	if err != nil {
 		return false, err
 	}
-	this.addendum2Format = bool(tmp75 > 316)
+	this.addendum2Format = bool(tmp88 >= 344)
 	this._f_addendum2Format = true
 	return this.addendum2Format, nil
+}
+
+/**
+ * Data set representing a character for each wheel or suspension component at the corners of the vehicle
+ */
+type GranTurismoTelemetry_CornerSetChar struct {
+	FrontLeft string
+	FrontRight string
+	RearLeft string
+	RearRight string
+	_io *kaitai.Stream
+	_root *GranTurismoTelemetry
+	_parent *GranTurismoTelemetry
+}
+func NewGranTurismoTelemetry_CornerSetChar() *GranTurismoTelemetry_CornerSetChar {
+	return &GranTurismoTelemetry_CornerSetChar{
+	}
+}
+
+func (this *GranTurismoTelemetry_CornerSetChar) Read(io *kaitai.Stream, parent *GranTurismoTelemetry, root *GranTurismoTelemetry) (err error) {
+	this._io = io
+	this._parent = parent
+	this._root = root
+
+	tmp89, err := this._io.ReadBytes(int(1))
+	if err != nil {
+		return err
+	}
+	tmp89 = tmp89
+	this.FrontLeft = string(tmp89)
+	tmp90, err := this._io.ReadBytes(int(1))
+	if err != nil {
+		return err
+	}
+	tmp90 = tmp90
+	this.FrontRight = string(tmp90)
+	tmp91, err := this._io.ReadBytes(int(1))
+	if err != nil {
+		return err
+	}
+	tmp91 = tmp91
+	this.RearLeft = string(tmp91)
+	tmp92, err := this._io.ReadBytes(int(1))
+	if err != nil {
+		return err
+	}
+	tmp92 = tmp92
+	this.RearRight = string(tmp92)
+	return err
 }
 
 /**
@@ -598,86 +738,86 @@ func (this *GranTurismoTelemetry_Flags) Read(io *kaitai.Stream, parent *GranTuri
 	this._parent = parent
 	this._root = root
 
-	tmp76, err := this._io.ReadBitsIntLe(1)
+	tmp93, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Live = tmp76 != 0
-	tmp77, err := this._io.ReadBitsIntLe(1)
+	this.Live = tmp93 != 0
+	tmp94, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.GamePaused = tmp77 != 0
-	tmp78, err := this._io.ReadBitsIntLe(1)
+	this.GamePaused = tmp94 != 0
+	tmp95, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Loading = tmp78 != 0
-	tmp79, err := this._io.ReadBitsIntLe(1)
+	this.Loading = tmp95 != 0
+	tmp96, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.InGear = tmp79 != 0
-	tmp80, err := this._io.ReadBitsIntLe(1)
+	this.InGear = tmp96 != 0
+	tmp97, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.HasTurbo = tmp80 != 0
-	tmp81, err := this._io.ReadBitsIntLe(1)
+	this.HasTurbo = tmp97 != 0
+	tmp98, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.RevLimiterAlert = tmp81 != 0
-	tmp82, err := this._io.ReadBitsIntLe(1)
+	this.RevLimiterAlert = tmp98 != 0
+	tmp99, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.HandBrakeActive = tmp82 != 0
-	tmp83, err := this._io.ReadBitsIntLe(1)
+	this.HandBrakeActive = tmp99 != 0
+	tmp100, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.HeadlightsActive = tmp83 != 0
-	tmp84, err := this._io.ReadBitsIntLe(1)
+	this.HeadlightsActive = tmp100 != 0
+	tmp101, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.HighBeamActive = tmp84 != 0
-	tmp85, err := this._io.ReadBitsIntLe(1)
+	this.HighBeamActive = tmp101 != 0
+	tmp102, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.LowBeamActive = tmp85 != 0
-	tmp86, err := this._io.ReadBitsIntLe(1)
+	this.LowBeamActive = tmp102 != 0
+	tmp103, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.AsmActive = tmp86 != 0
-	tmp87, err := this._io.ReadBitsIntLe(1)
+	this.AsmActive = tmp103 != 0
+	tmp104, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.TcsActive = tmp87 != 0
-	tmp88, err := this._io.ReadBitsIntLe(1)
+	this.TcsActive = tmp104 != 0
+	tmp105, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Flag13 = tmp88 != 0
-	tmp89, err := this._io.ReadBitsIntLe(1)
+	this.Flag13 = tmp105 != 0
+	tmp106, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Flag14 = tmp89 != 0
-	tmp90, err := this._io.ReadBitsIntLe(1)
+	this.Flag14 = tmp106 != 0
+	tmp107, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Flag15 = tmp90 != 0
-	tmp91, err := this._io.ReadBitsIntLe(1)
+	this.Flag15 = tmp107 != 0
+	tmp108, err := this._io.ReadBitsIntLe(1)
 	if err != nil {
 		return err
 	}
-	this.Flag16 = tmp91 != 0
+	this.Flag16 = tmp108 != 0
 	return err
 }
 
@@ -702,21 +842,21 @@ func (this *GranTurismoTelemetry_Vector) Read(io *kaitai.Stream, parent *GranTur
 	this._parent = parent
 	this._root = root
 
-	tmp92, err := this._io.ReadF4le()
+	tmp109, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.VectorX = float32(tmp92)
-	tmp93, err := this._io.ReadF4le()
+	this.VectorX = float32(tmp109)
+	tmp110, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.VectorY = float32(tmp93)
-	tmp94, err := this._io.ReadF4le()
+	this.VectorY = float32(tmp110)
+	tmp111, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.VectorZ = float32(tmp94)
+	this.VectorZ = float32(tmp111)
 	return err
 }
 
@@ -741,26 +881,26 @@ func (this *GranTurismoTelemetry_TranslationalEnvelope) Read(io *kaitai.Stream, 
 	this._parent = parent
 	this._root = root
 
-	tmp95, err := this._io.ReadF4le()
+	tmp112, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.Sway = float32(tmp95)
-	tmp96, err := this._io.ReadF4le()
+	this.Sway = float32(tmp112)
+	tmp113, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.Heave = float32(tmp96)
-	tmp97, err := this._io.ReadF4le()
+	this.Heave = float32(tmp113)
+	tmp114, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.Surge = float32(tmp97)
+	this.Surge = float32(tmp114)
 	return err
 }
 
 /**
- * Data set representing each wheel or suspension component at the corners of the vehicle
+ * Data set representing a float for each wheel or suspension component at the corners of the vehicle
  */
 type GranTurismoTelemetry_CornerSet struct {
 	FrontLeft float32
@@ -781,26 +921,26 @@ func (this *GranTurismoTelemetry_CornerSet) Read(io *kaitai.Stream, parent *Gran
 	this._parent = parent
 	this._root = root
 
-	tmp98, err := this._io.ReadF4le()
+	tmp115, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.FrontLeft = float32(tmp98)
-	tmp99, err := this._io.ReadF4le()
+	this.FrontLeft = float32(tmp115)
+	tmp116, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.FrontRight = float32(tmp99)
-	tmp100, err := this._io.ReadF4le()
+	this.FrontRight = float32(tmp116)
+	tmp117, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.RearLeft = float32(tmp100)
-	tmp101, err := this._io.ReadF4le()
+	this.RearLeft = float32(tmp117)
+	tmp118, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.RearRight = float32(tmp101)
+	this.RearRight = float32(tmp118)
 	return err
 }
 
@@ -825,21 +965,21 @@ func (this *GranTurismoTelemetry_Coordinate) Read(io *kaitai.Stream, parent *Gra
 	this._parent = parent
 	this._root = root
 
-	tmp102, err := this._io.ReadF4le()
+	tmp119, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.CoordinateX = float32(tmp102)
-	tmp103, err := this._io.ReadF4le()
+	this.CoordinateX = float32(tmp119)
+	tmp120, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.CoordinateY = float32(tmp103)
-	tmp104, err := this._io.ReadF4le()
+	this.CoordinateY = float32(tmp120)
+	tmp121, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.CoordinateZ = float32(tmp104)
+	this.CoordinateZ = float32(tmp121)
 	return err
 }
 
@@ -864,16 +1004,16 @@ func (this *GranTurismoTelemetry_TransmissionGear) Read(io *kaitai.Stream, paren
 	this._parent = parent
 	this._root = root
 
-	tmp105, err := this._io.ReadBitsIntLe(4)
+	tmp122, err := this._io.ReadBitsIntLe(4)
 	if err != nil {
 		return err
 	}
-	this.Current = tmp105
-	tmp106, err := this._io.ReadBitsIntLe(4)
+	this.Current = tmp122
+	tmp123, err := this._io.ReadBitsIntLe(4)
 	if err != nil {
 		return err
 	}
-	this.Suggested = tmp106
+	this.Suggested = tmp123
 	return err
 }
 
@@ -898,11 +1038,11 @@ func (this *GranTurismoTelemetry_Header) Read(io *kaitai.Stream, parent *GranTur
 	this._parent = parent
 	this._root = root
 
-	tmp107, err := this._io.ReadU4le()
+	tmp124, err := this._io.ReadU4le()
 	if err != nil {
 		return err
 	}
-	this.Magic = uint32(tmp107)
+	this.Magic = uint32(tmp124)
 	if !( ((this.Magic == 810760007) || (this.Magic == 1194808112)) ) {
 		return kaitai.NewValidationNotAnyOfError(this.Magic, this._io, "/types/header/seq/0")
 	}
@@ -930,11 +1070,11 @@ func (this *GranTurismoTelemetry_GearRatio) Read(io *kaitai.Stream, parent *Gran
 
 	for i := 0; i < int(8); i++ {
 		_ = i
-		tmp108, err := this._io.ReadF4le()
+		tmp125, err := this._io.ReadF4le()
 		if err != nil {
 			return err
 		}
-		this.Gear = append(this.Gear, tmp108)
+		this.Gear = append(this.Gear, tmp125)
 	}
 	return err
 }
@@ -960,20 +1100,20 @@ func (this *GranTurismoTelemetry_RotationalEnvelope) Read(io *kaitai.Stream, par
 	this._parent = parent
 	this._root = root
 
-	tmp109, err := this._io.ReadF4le()
+	tmp126, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.Pitch = float32(tmp109)
-	tmp110, err := this._io.ReadF4le()
+	this.Pitch = float32(tmp126)
+	tmp127, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.Yaw = float32(tmp110)
-	tmp111, err := this._io.ReadF4le()
+	this.Yaw = float32(tmp127)
+	tmp128, err := this._io.ReadF4le()
 	if err != nil {
 		return err
 	}
-	this.Roll = float32(tmp111)
+	this.Roll = float32(tmp128)
 	return err
 }

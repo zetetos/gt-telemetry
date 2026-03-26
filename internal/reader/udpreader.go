@@ -155,6 +155,8 @@ func getIVSeedForFormat(format models.Name) uint32 {
 		return 0xDEADBEEF
 	case models.Addendum2:
 		return 0x55FABB4F
+	case models.Addendum3:
+		return 0xDEADBEEF
 	}
 
 	return 0x00

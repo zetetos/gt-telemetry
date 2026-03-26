@@ -7,9 +7,11 @@ import (
 type Name string
 
 const (
+	Unknown   Name = "unknown"
 	Standard  Name = "A" // Original telemetry format
 	Addendum1 Name = "B" // Adds steering wheel data and translational envelope
 	Addendum2 Name = "~" // Adds throttle input and brake output data and more (unknown)
+	Addendum3 Name = "C" // Adds ? TODO: determine new fields
 )
 
 type GameState int
@@ -38,6 +40,38 @@ const (
 	CoordinateTypeCircuit
 )
 
+type SurfaceType int
+
+const (
+	SurfaceTypeUnknown SurfaceType = iota
+	SurfaceTypeTarmac
+	SurfaceTypeConcrete
+	SurfaceTypeGrass
+	SurfaceTypeDirt
+	SurfaceTypeSand
+	SurfaceTypeSnow
+)
+
+var surfaceTypeName = map[SurfaceType]string{
+	SurfaceTypeUnknown:  "unknown",
+	SurfaceTypeTarmac:   "tarmac",
+	SurfaceTypeConcrete: "concrete",
+	SurfaceTypeGrass:    "grass",
+	SurfaceTypeDirt:     "dirt",
+	SurfaceTypeSand:     "sand",
+	SurfaceTypeSnow:     "snow",
+}
+
+var surfaceTypeIDs = map[string]SurfaceType{
+	"T": SurfaceTypeTarmac,
+	"C": SurfaceTypeConcrete,
+	"G": SurfaceTypeGrass,
+	"D": SurfaceTypeDirt,
+	"S": SurfaceTypeSand,
+	"s": SurfaceTypeSnow,
+}
+
+// String returns a string representation of the GameState.
 // Coordinate represents a coordinate in 3D space.
 type Coordinate struct {
 	X float32 `json:"x"`
@@ -59,6 +93,18 @@ type CornerSet struct {
 	FrontRight float32 `json:"frontRight"`
 	RearLeft   float32 `json:"rearLeft"`
 	RearRight  float32 `json:"rearRight"`
+}
+
+type CornerSetValue interface {
+	float32 | ~int
+}
+
+// CornerSetGenerics represents individual generic values at each corner or wheel of a vehicle.
+type CornerSetGeneric[T CornerSetValue] struct {
+	FrontLeft  T `json:"frontLeft"`
+	FrontRight T `json:"frontRight"`
+	RearLeft   T `json:"rearLeft"`
+	RearRight  T `json:"rearRight"`
 }
 
 // RotationalEnvelope represents the rotational orientation of a body.
@@ -94,4 +140,24 @@ func (c *Coordinate) Normalise(resX, resY, resZ int16) CoordinateNorm {
 // String returns a string representation of the CoordinateNorm of the form "x:<X>,y:<Y>,z:<Z>".
 func (c *CoordinateNorm) String() string {
 	return fmt.Sprintf("x:%d,y:%d,z:%d", c.X, c.Y, c.Z)
+}
+
+// String returns a string representation of the SurfaceType.
+func (s *SurfaceType) String() string {
+	if name, ok := surfaceTypeName[*s]; ok {
+		return name
+	}
+
+	return surfaceTypeName[SurfaceTypeUnknown]
+}
+
+// SurfaceTypeFromID converts a surface type character representation to a SurfaceType.
+// It returns SurfaceTypeUnknown if the string is not recognised.
+// Valid character values are "T" for tarmac, "C" for concrete, "G" for grass, "D" for dirt, and "S" for sand.
+func SurfaceTypeFromID(id string) SurfaceType {
+	if surfaceType, ok := surfaceTypeIDs[id]; ok {
+		return surfaceType
+	}
+
+	return SurfaceTypeUnknown
 }

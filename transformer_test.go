@@ -2,6 +2,7 @@ package gttelemetry_test
 
 import (
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -257,6 +258,19 @@ func (suite *TransformerTestSuite) TestCurrentLapReturnsCorrectValue() {
 	suite.Equal(wantValue, gotValue)
 }
 
+func (suite *TransformerTestSuite) TestCurrentLaptimeReturnsCorrectValue() {
+	// Arrange
+	laptime := 123456
+	wantValue := time.Duration(laptime) * time.Millisecond
+	suite.transformer.RawTelemetry.CurrentLaptime = int32(laptime)
+
+	// Act
+	gotValue := suite.transformer.CurrentLaptime()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
 func (suite *TransformerTestSuite) TestDifferentialRatioReturnsCorrectValueForDrivetrain() {
 	tests := []struct {
 		drivetrain string
@@ -304,6 +318,18 @@ func (suite *TransformerTestSuite) TestDifferentialRatioReturnsCorrectValueForDr
 			suite.InEpsilon(wantValue, gotValue, 1e-5)
 		})
 	}
+}
+
+func (suite *TransformerTestSuite) TestDynamicWheelbaseLeftReturnsCorrectValue() {
+	// Arrange
+	wantValue := float32(1.23456)
+	suite.transformer.RawTelemetry.DynamicWheelbaseLeft = wantValue
+
+	// Act
+	gotValue := suite.transformer.DynamicWheelbaseLeftMetres()
+
+	// Assert
+	suite.InEpsilon(wantValue, gotValue, 1e-5)
 }
 
 func (suite *TransformerTestSuite) TestEnergyRecoveryReturnsCorrectValue() {
@@ -455,15 +481,43 @@ func (suite *TransformerTestSuite) TestFuelLevelPercentReturnsCorrectValue() {
 	suite.InEpsilon(wantValue, gotValue, 1e-5)
 }
 
-func (suite *TransformerTestSuite) TestGameVersionFIXME() {
-	// Arrange
-	// wantValue := "gt6"
+func (suite *TransformerTestSuite) TestGameVersion() {
+	testCases := []struct {
+		name      string
+		header    uint32
+		wantValue string
+	}{
+		{
+			header:    0x47375330,
+			wantValue: "gt6",
+		},
+		{
+			header:    0x30533747,
+			wantValue: "gt7",
+		},
+		{
+			header:    0x00,
+			wantValue: "unknown",
+		},
+	}
 
-	// Act
-	// suite.transformer.GameVersion()
+	for _, testCase := range testCases {
+		name := strings.ToUpper(testCase.wantValue)
+		suite.Run(name, func() {
+			// Arrange
+			suite.transformer.RawTelemetry = telemetry.GranTurismoTelemetry{
+				Header: &telemetry.GranTurismoTelemetry_Header{
+					Magic: testCase.header,
+				},
+			}
 
-	// Assert
-	// suite.Equal(wantValue, gotValue)
+			// Act
+			gotValue := suite.transformer.GameVersion()
+
+			// Assert
+			suite.Equal(testCase.wantValue, gotValue)
+		})
+	}
 }
 
 func (suite *TransformerTestSuite) TestIsInMainMenuReturnsTrueWhenInMainMenu() {
@@ -578,6 +632,21 @@ func (suite *TransformerTestSuite) TestIsOnCircuitReturnsFalseWhenInRaceMenu() {
 
 	// Act
 	gotValue := suite.transformer.IsOnCircuit()
+
+	// Assert
+	suite.Equal(wantValue, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestNilTransmissionReturnsCorrectValue() {
+	// Arrange
+	wantValue := gttelemetry.Transmission{
+		Gears:      0,
+		GearRatios: make([]float32, 8),
+	}
+	suite.transformer.RawTelemetry.TransmissionGearRatio = nil
+
+	// Act
+	gotValue := suite.transformer.Transmission()
 
 	// Assert
 	suite.Equal(wantValue, gotValue)
@@ -792,13 +861,13 @@ func (suite *TransformerTestSuite) TestSteeringWheelAngleRadiansReturnsCorrectVa
 	suite.InEpsilon(wantValue, gotValue, 1e-5)
 }
 
-func (suite *TransformerTestSuite) TestSteeringWheelAngleDegreesReturnsCorrectValue() {
+func (suite *TransformerTestSuite) TestSteeringWheelAngleRadiansPerSecondReturnsCorrectValue() {
 	// Arrange
-	wantValue := float32(125.096176)
-	suite.transformer.RawTelemetry.SteeringWheelAngleRadians = float32(2.18334)
+	wantValue := float32(0.56789)
+	suite.transformer.RawTelemetry.SteeringWheelAngleRadiansPerSecond = wantValue
 
 	// Act
-	gotValue := suite.transformer.SteeringWheelAngleDegrees()
+	gotValue := suite.transformer.SteeringWheelAngleRadiansPerSecond()
 
 	// Assert
 	suite.InEpsilon(wantValue, gotValue, 1e-5)
@@ -836,6 +905,72 @@ func (suite *TransformerTestSuite) TestSuggestedGearReturnsCorrectValue() {
 	}
 }
 
+func (suite *TransformerTestSuite) TestSurfaceTypeRetursCorrectValue() {
+	testCases := []struct {
+		name          string
+		surfaceType   string
+		expectedValue models.SurfaceType
+	}{
+		{
+			name:          "Unknown",
+			surfaceType:   "",
+			expectedValue: models.SurfaceTypeUnknown,
+		},
+		{
+			name:          "Tarmac",
+			surfaceType:   "T",
+			expectedValue: models.SurfaceTypeTarmac,
+		},
+		{
+			name:          "Concrete",
+			surfaceType:   "C",
+			expectedValue: models.SurfaceTypeConcrete,
+		},
+		{
+			name:          "Grass",
+			surfaceType:   "G",
+			expectedValue: models.SurfaceTypeGrass,
+		},
+		{
+			name:          "Dirt",
+			surfaceType:   "D",
+			expectedValue: models.SurfaceTypeDirt,
+		},
+		{
+			name:          "Sand",
+			surfaceType:   "S",
+			expectedValue: models.SurfaceTypeSand,
+		},
+		{
+			name:          "Snow",
+			surfaceType:   "s",
+			expectedValue: models.SurfaceTypeSnow,
+		},
+	}
+
+	for _, testCase := range testCases {
+		suite.Run(testCase.name, func() {
+			// Arrange
+			suite.transformer.RawTelemetry.SurfaceType = &telemetry.GranTurismoTelemetry_CornerSetChar{
+				FrontLeft:  testCase.surfaceType,
+				FrontRight: testCase.surfaceType,
+				RearLeft:   testCase.surfaceType,
+				RearRight:  testCase.surfaceType,
+			}
+
+			// Act
+			gotValue := suite.transformer.SurfaceType()
+
+			// Assert
+			suite.Equal(testCase.expectedValue, gotValue.FrontLeft)
+			suite.Equal(testCase.expectedValue, gotValue.FrontRight)
+			suite.Equal(testCase.expectedValue, gotValue.RearLeft)
+			suite.Equal(testCase.expectedValue, gotValue.RearRight)
+		},
+		)
+	}
+}
+
 func (suite *TransformerTestSuite) TestSuspensionHeightMetresReturnsEmptyCornerSetWhenTelemetryNil() {
 	// Arrange
 	suite.transformer.RawTelemetry.SuspensionHeight = nil
@@ -866,49 +1001,105 @@ func (suite *TransformerTestSuite) TestSuspensionHeightMetresRetursCorrectValue(
 	suite.InEpsilon(float32(0.104), gotValue.RearRight, 1e-5)
 }
 
-func (suite *TransformerTestSuite) TestTelemetryFormatIndicatorsFIXME() {
+func (suite *TransformerTestSuite) TestTelemetryFormatIndicators() {
 	tests := []struct {
-		name    string
-		format  string
-		results []bool
+		name      string
+		setFormat func()
+		results   []bool
 	}{
 		{
-			name:    "format_a",
-			format:  "A",
-			results: []bool{true, false, false},
+			name:      "format_a",
+			setFormat: suite.transformer.SetFormatStandard,
+			results:   []bool{true, false, false, false},
 		},
 		{
-			name:    "format_b",
-			format:  "B",
-			results: []bool{true, true, false},
+			name:      "format_b",
+			setFormat: suite.transformer.SetFormatAddendum1,
+			results:   []bool{true, true, false, false},
 		},
 		{
-			name:    "format_tilde",
-			format:  "~",
-			results: []bool{true, true, true},
+			name:      "format_tilde",
+			setFormat: suite.transformer.SetFormatAddendum2,
+			results:   []bool{true, true, true, false},
+		},
+		{
+			name:      "format_c",
+			setFormat: suite.transformer.SetFormatAddendum3,
+			results:   []bool{true, true, true, true},
 		},
 	}
 
 	for _, test := range tests {
 		suite.Run(test.name, func() {
 			// Arrange
-			// TODO: setup telemetry with format `test.format`
+			test.setFormat()
 
 			// Act
-			// gotValueA, err := suite.transformer.RawTelemetry.HasSectionA()
-			// suite.Require().NoError(err)
+			gotValueA, err := suite.transformer.RawTelemetry.StandardFormat()
+			suite.Require().NoError(err)
 
-			// gotValueB, err := suite.transformer.RawTelemetry.HasSectionA()
-			// suite.Require().NoError(err)
+			gotValueB, err := suite.transformer.RawTelemetry.Addendum1Format()
+			suite.Require().NoError(err)
 
-			// gotValueTilde, err := suite.transformer.RawTelemetry.HasSectionA()
-			// suite.Require().NoError(err)
+			gotValueTilde, err := suite.transformer.RawTelemetry.Addendum2Format()
+			suite.Require().NoError(err)
+
+			gotValueC, err := suite.transformer.RawTelemetry.Addendum3Format()
+			suite.Require().NoError(err)
 
 			// Assert
-			// suite.Equal(test.results[0], gotValueA)
-			// suite.Equal(test.results[1], gotValueB)
-			// suite.Equal(test.results[2], gotValueTilde)
-			suite.True(test.results[0])
+			suite.Equal(test.results[0], gotValueA)
+			suite.Equal(test.results[1], gotValueB)
+			suite.Equal(test.results[2], gotValueTilde)
+			suite.Equal(test.results[3], gotValueC)
+		})
+	}
+}
+
+func (suite *TransformerTestSuite) TestTelemetryFormatReturnsCorrectName() {
+	tests := []struct {
+		name      string
+		setFormat func()
+		size      int
+		wantValue models.Name
+	}{
+		{
+			name:      "Standard",
+			setFormat: suite.transformer.SetFormatStandard,
+			wantValue: models.Standard,
+		},
+		{
+			name:      "Addendum1",
+			setFormat: suite.transformer.SetFormatAddendum1,
+			wantValue: models.Addendum1,
+		},
+		{
+			name:      "Addendum2",
+			setFormat: suite.transformer.SetFormatAddendum2,
+			wantValue: models.Addendum2,
+		},
+		{
+			name:      "Addendum3",
+			setFormat: suite.transformer.SetFormatAddendum3,
+			wantValue: models.Addendum3,
+		},
+		{
+			name:      "Unknown",
+			setFormat: suite.transformer.SetFormatInvalid,
+			wantValue: models.Unknown,
+		},
+	}
+
+	for _, test := range tests {
+		suite.Run(test.name, func() {
+			// Arrange
+			test.setFormat()
+
+			// Act
+			gotValue := suite.transformer.TelemetryFormat()
+
+			// Assert
+			suite.Equal(test.wantValue, gotValue)
 		})
 	}
 }
@@ -928,10 +1119,10 @@ func (suite *TransformerTestSuite) TestThrottleInputPercentReturnsCorrectValue()
 func (suite *TransformerTestSuite) TestThrottleOutputPercentReturnsCorrectValue() {
 	// Arrange
 	wantValue := float32(37.64706)
-	suite.transformer.RawTelemetry.ThrottleInput = uint8(96)
+	suite.transformer.RawTelemetry.ThrottleOutput = uint8(96)
 
 	// Act
-	gotValue := suite.transformer.ThrottleInputPercent()
+	gotValue := suite.transformer.ThrottleOutputPercent()
 
 	// Assert
 	suite.InEpsilon(wantValue, gotValue, 1e-5)
@@ -1521,4 +1712,332 @@ func (suite *TransformerTestSuite) TestWheelSpeedRadiansPerSecondReturnsCorrectV
 	suite.InEpsilon(float32(132.51), gotValue.FrontRight, 1e-5)
 	suite.InEpsilon(float32(132.45), gotValue.RearLeft, 1e-5)
 	suite.InEpsilon(float32(132.40), gotValue.RearRight, 1e-5)
+}
+
+func (suite *TransformerTestSuite) TestWheelSteeringAngleReturnsCorrectValue() {
+	testCases := []struct {
+		name       string
+		angleRadFL float32
+		angleRadFR float32
+	}{
+		{
+			name:       "0 radians",
+			angleRadFL: 0.00001,
+			angleRadFR: 0.00001,
+		},
+		{
+			name:       "10 degrees left",
+			angleRadFL: -0.111363,
+			angleRadFR: -0.164304,
+		},
+		{
+			name:       "11 degrees right",
+			angleRadFL: 0.191436,
+			angleRadFR: 0.129506,
+		},
+	}
+
+	for _, testCase := range testCases {
+		suite.Run(testCase.name, func() {
+			// Arrange
+			suite.transformer.RawTelemetry.WheelSteeringAngleFl = testCase.angleRadFL
+			suite.transformer.RawTelemetry.WheelSteeringAngleFr = testCase.angleRadFR
+
+			// Act
+			gotValue := suite.transformer.WheelSteeringAngle()
+
+			// Assert
+			suite.InEpsilon(float32(testCase.angleRadFL), gotValue.FrontLeft, 1e-5)
+			suite.InEpsilon(float32(testCase.angleRadFR), gotValue.FrontRight, 1e-5)
+			suite.InDelta(float32(0), gotValue.RearLeft, 1e-5)
+			suite.InDelta(float32(0), gotValue.RearRight, 1e-5)
+		})
+	}
+}
+
+func (suite *TransformerTestSuite) TestGameStateReturnsMainMenuWhenInMainMenu() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = -1
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	gotValue := suite.transformer.GameState()
+
+	// Assert
+	suite.Equal(models.GameStateMainMenu, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestGameStateReturnsRaceMenuWhenInRaceMenu() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	gotValue := suite.transformer.GameState()
+
+	// Assert
+	suite.Equal(models.GameStateRaceMenu, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestGameStateReturnsLiveWhenOnCircuitAndLive() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.RaceEntrants = 16
+	suite.transformer.RawTelemetry.Flags = &telemetry.GranTurismoTelemetry_Flags{
+		Live: true,
+	}
+
+	// Act
+	gotValue := suite.transformer.GameState()
+
+	// Assert
+	suite.Equal(models.GameStateLive, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestGameStateReturnsReplayWhenOnCircuitAndNotLive() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.RaceEntrants = 16
+	suite.transformer.RawTelemetry.Flags = &telemetry.GranTurismoTelemetry_Flags{
+		Live: false,
+	}
+
+	// Act
+	gotValue := suite.transformer.GameState()
+
+	// Assert
+	suite.Equal(models.GameStateReplay, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestGameStateReturnsUnknownWhenStateIndeterminate() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = -1
+	suite.transformer.RawTelemetry.RaceEntrants = 0
+
+	// Act
+	gotValue := suite.transformer.GameState()
+
+	// Assert
+	suite.Equal(models.GameStateUnknown, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceCompleteReturnsFalseWhenRaceLapsLessThanOne() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.CurrentLap = 5
+
+	// Act
+	gotValue := suite.transformer.RaceComplete()
+
+	// Assert
+	suite.False(gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceCompleteReturnsTrueWhenCurrentLapExceedsRaceLaps() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 3
+	suite.transformer.RawTelemetry.CurrentLap = 4
+
+	// Act
+	gotValue := suite.transformer.RaceComplete()
+
+	// Assert
+	suite.True(gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceCompleteReturnsFalseWhenCurrentLapWithinRaceLaps() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.CurrentLap = 3
+
+	// Act
+	gotValue := suite.transformer.RaceComplete()
+
+	// Assert
+	suite.False(gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceCompleteReturnsFalseWhenOnFinalLap() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.CurrentLap = 5
+
+	// Act
+	gotValue := suite.transformer.RaceComplete()
+
+	// Assert
+	suite.False(gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceTypeReturnsUnknownWhenNotOnCircuit() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = -1
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	gotValue := suite.transformer.RaceType()
+
+	// Assert
+	suite.Equal(models.RaceTypeUnknown, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceTypeReturnsTimeTrialForSmallFieldNoLaps() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.RaceEntrants = 1
+
+	// Act
+	gotValue := suite.transformer.RaceType()
+
+	// Assert
+	suite.Equal(models.RaceTypeTimeTrial, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceTypeReturnsEnduranceForLargeFieldNoLaps() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 0
+	suite.transformer.RawTelemetry.RaceEntrants = 16
+
+	// Act
+	gotValue := suite.transformer.RaceType()
+
+	// Assert
+	suite.Equal(models.RaceTypeEndurance, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceTypeReturnsSprintForLargeFieldWithLaps() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.RaceEntrants = 16
+
+	// Act
+	gotValue := suite.transformer.RaceType()
+
+	// Assert
+	suite.Equal(models.RaceTypeSprint, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestRaceTypeReturnsUnknownForSmallFieldWithLaps() {
+	// Arrange
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.RaceEntrants = 1
+
+	// Act
+	gotValue := suite.transformer.RaceType()
+
+	// Assert
+	suite.Equal(models.RaceTypeUnknown, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestSurfaceTypeReturnsEmptyObjectWhenTelemetryIsNil() {
+	// Arrange
+	suite.transformer.RawTelemetry.SurfaceType = nil
+
+	// Act
+	gotValue := suite.transformer.SurfaceType()
+
+	// Assert
+	suite.Equal(models.CornerSetGeneric[models.SurfaceType]{}, gotValue)
+}
+
+func (suite *TransformerTestSuite) TestTelemetryStartedReturnsTrueWhenSequenceIdPositive() {
+	// Arrange
+	suite.transformer.RawTelemetry.SequenceId = 1
+
+	// Act
+	gotValue := suite.transformer.TelemetryStarted()
+
+	// Assert
+	suite.True(gotValue)
+}
+
+func (suite *TransformerTestSuite) TestTelemetryStartedReturnsFalseWhenSequenceIdZero() {
+	// Arrange
+	suite.transformer.RawTelemetry.SequenceId = 0
+
+	// Act
+	gotValue := suite.transformer.TelemetryStarted()
+
+	// Assert
+	suite.False(gotValue)
+}
+
+func (suite *TransformerTestSuite) TestUpdateVehicleClearsVehicleWhenInMainMenu() {
+	// Arrange
+	suite.transformer.Vehicle = vehicles.Vehicle{
+		CarID:        1234,
+		Manufacturer: "Dummy Manufacturer",
+	}
+	suite.transformer.RawTelemetry.RaceLaps = -1
+	suite.transformer.RawTelemetry.RaceEntrants = -1
+
+	// Act
+	suite.transformer.UpdateVehicle()
+
+	// Assert
+	suite.Equal(vehicles.Vehicle{}, suite.transformer.Vehicle)
+}
+
+func (suite *TransformerTestSuite) TestUpdateVehicleLoadsVehicleFromInventoryWhenIDChanges() {
+	// Arrange
+	suite.transformer.Vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.RaceEntrants = 16
+
+	// Act
+	suite.transformer.UpdateVehicle()
+
+	// Assert
+	suite.Equal(1234, suite.transformer.Vehicle.CarID)
+	suite.Equal("Dummy Model", suite.transformer.Vehicle.Model)
+	suite.Equal("Dummy Manufacturer", suite.transformer.Vehicle.Manufacturer)
+}
+
+func (suite *TransformerTestSuite) TestUpdateVehicleCreatesMinimalVehicleForUnknownID() {
+	// Arrange
+	suite.transformer.Vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 9999
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.RaceEntrants = 16
+
+	// Act
+	suite.transformer.UpdateVehicle()
+
+	// Assert
+	suite.Equal(9999, suite.transformer.Vehicle.CarID)
+	suite.Empty(suite.transformer.Vehicle.Model)
+	suite.Empty(suite.transformer.Vehicle.Manufacturer)
+}
+
+func (suite *TransformerTestSuite) TestUpdateVehicleUpdatesCategoryFromTelemetry() {
+	// Arrange
+	suite.transformer.Vehicle = vehicles.Vehicle{}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+	suite.transformer.RawTelemetry.VehicleCategory = "Gr.3"
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.RaceEntrants = 16
+
+	// Act
+	suite.transformer.UpdateVehicle()
+
+	// Assert
+	suite.Equal("Gr.3", suite.transformer.Vehicle.Category)
+}
+
+func (suite *TransformerTestSuite) TestUpdateVehicleDoesNotReloadWhenSameVehicleID() {
+	// Arrange
+	suite.transformer.Vehicle = vehicles.Vehicle{
+		CarID:        1234,
+		Manufacturer: "Custom Manufacturer",
+	}
+	suite.transformer.RawTelemetry.VehicleId = 1234
+	suite.transformer.RawTelemetry.RaceLaps = 5
+	suite.transformer.RawTelemetry.RaceEntrants = 16
+
+	// Act
+	suite.transformer.UpdateVehicle()
+
+	// Assert
+	suite.Equal("Custom Manufacturer", suite.transformer.Vehicle.Manufacturer)
 }

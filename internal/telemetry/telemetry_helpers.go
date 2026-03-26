@@ -9,28 +9,36 @@ func (this *GranTurismoTelemetry) SetFormatStandard() { //nolint:revive,staticch
 	this.addendum1Format = false
 	this._f_addendum2Format = true
 	this.addendum2Format = false
+	this._f_addendum3Format = true
+	this.addendum3Format = false
 }
 
 // SetFormatAddendum1 sets the telemetry format to Addendum1 (format "B") for testing purposes.
 // This allows tests to set the format without parsing a binary packet.
 func (this *GranTurismoTelemetry) SetFormatAddendum1() { //nolint:revive,staticcheck // meatches kaitai generated code style
-	this._f_standardFormat = true
-	this.standardFormat = false
-	this._f_addendum1Format = true
+	this.SetFormatStandard()
 	this.addendum1Format = true
-	this._f_addendum2Format = true
-	this.addendum2Format = false
 }
 
 // SetFormatAddendum2 sets the telemetry format to Addendum2 (format "~") for testing purposes.
 // This allows tests to set the format without parsing a binary packet.
 func (this *GranTurismoTelemetry) SetFormatAddendum2() { //nolint:revive,staticcheck // meatches kaitai generated code style
-	this._f_standardFormat = true
-	this.standardFormat = false
-	this._f_addendum1Format = true
-	this.addendum1Format = true
-	this._f_addendum2Format = true
+	this.SetFormatAddendum1()
 	this.addendum2Format = true
+}
+
+// SetFormatAddendum3 sets the telemetry format to Addendum3 (format "C") for testing purposes.
+// This allows tests to set the format without parsing a binary packet.
+func (this *GranTurismoTelemetry) SetFormatAddendum3() { //nolint:revive,staticcheck // matches kaitai generated code style
+	this.SetFormatAddendum2()
+	this.addendum3Format = true
+}
+
+// SetFormatInvalid sets an invalid telemetry format for testing purposes.
+// This allows tests to set the format without parsing a binary packet.
+func (this *GranTurismoTelemetry) SetFormatInvalid() { //nolint:revive,staticcheck // matches kaitai generated code style
+	this.SetFormatStandard()
+	this.standardFormat = false
 }
 
 // SetAngularVelocityVector sets the angular velocity vector for testing purposes.
