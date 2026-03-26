@@ -393,7 +393,7 @@ func (t *Transformer) SteeringWheelAngleRadiansPerSecond() float32 {
 	return t.RawTelemetry.SteeringWheelAngleRadiansPerSecond
 }
 
-// deprecated: value is steering angular velocity, not force feedback
+// Deprecated: value is steering angular velocity, not force feedback.
 func (t *Transformer) SteeringWheelForceFeedback() float32 {
 	return t.RawTelemetry.SteeringWheelAngleRadiansPerSecond
 }

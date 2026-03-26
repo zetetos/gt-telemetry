@@ -52,7 +52,7 @@ const (
 	SurfaceTypeSnow
 )
 
-var surfaceTypeName = map[SurfaceType]string{
+var surfaceTypeName = map[SurfaceType]string{ //nolint:gochecknoglobals // helper for string representation of SurfaceType
 	SurfaceTypeUnknown:  "unknown",
 	SurfaceTypeTarmac:   "tarmac",
 	SurfaceTypeConcrete: "concrete",
@@ -62,7 +62,7 @@ var surfaceTypeName = map[SurfaceType]string{
 	SurfaceTypeSnow:     "snow",
 }
 
-var surfaceTypeIDs = map[string]SurfaceType{
+var surfaceTypeIDs = map[string]SurfaceType{ //nolint:gochecknoglobals // helper for parsing SurfaceType from telemetry
 	"T": SurfaceTypeTarmac,
 	"C": SurfaceTypeConcrete,
 	"G": SurfaceTypeGrass,
@@ -71,7 +71,6 @@ var surfaceTypeIDs = map[string]SurfaceType{
 	"s": SurfaceTypeSnow,
 }
 
-// String returns a string representation of the GameState.
 // Coordinate represents a coordinate in 3D space.
 type Coordinate struct {
 	X float32 `json:"x"`
@@ -99,7 +98,7 @@ type CornerSetValue interface {
 	float32 | ~int
 }
 
-// CornerSetGenerics represents individual generic values at each corner or wheel of a vehicle.
+// CornerSetGeneric represents individual generic values at each corner or wheel of a vehicle.
 type CornerSetGeneric[T CornerSetValue] struct {
 	FrontLeft  T `json:"frontLeft"`
 	FrontRight T `json:"frontRight"`

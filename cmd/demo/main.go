@@ -368,14 +368,14 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 	}
 }
 
-func formatDuration(d time.Duration) string {
+func formatDuration(duration time.Duration) string {
 	sign := ""
-	if d < 0 {
+	if duration < 0 {
 		sign = "-"
-		d = -d
+		duration = -duration
 	}
 
-	totalMs := d.Milliseconds()
+	totalMs := duration.Milliseconds()
 	ms := totalMs % 1000
 	totalSecs := totalMs / 1000
 	secs := totalSecs % 60
@@ -413,7 +413,7 @@ func renderFlag(value bool, output string, trueColour string, fColour string) st
 	return output
 }
 
-func truncate(str string, length int) string {
+func truncate(str string, length int) string { //nolint:unparam
 	if length <= 0 {
 		return ""
 	}
