@@ -1,4 +1,4 @@
-FROM librespace/kaitai:latest as builder
+FROM librespace/kaitai:latest AS builder
 WORKDIR /src
 RUN mkdir -p /out/gttelemetry
 RUN --mount=type=bind,target=.,readwrite \
