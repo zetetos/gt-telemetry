@@ -1,0 +1,21 @@
+{
+  "carId": 3373,
+  "manufacturer": "Porsche",
+  "model": "962 C '88",
+  "year": 1988,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4770,
+  "width": 1990,
+  "height": 1080,
+  "wheelbase": 2650,
+  "trackFront": 1634,
+  "trackRear": 1548,
+  "engineLayout": "H6",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

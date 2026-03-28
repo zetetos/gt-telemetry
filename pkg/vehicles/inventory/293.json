@@ -1,0 +1,21 @@
+{
+  "carId": 293,
+  "manufacturer": "Honda",
+  "model": "NSX Type R '92",
+  "year": 1992,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4430,
+  "width": 1810,
+  "height": 1160,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

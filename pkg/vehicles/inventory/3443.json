@@ -1,0 +1,21 @@
+{
+  "carId": 3443,
+  "manufacturer": "Ferrari",
+  "model": "308 GTB '75",
+  "year": 1975,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4230,
+  "width": 1720,
+  "height": 1120,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

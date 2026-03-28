@@ -1,0 +1,21 @@
+{
+  "carId": 2087,
+  "manufacturer": "BMW",
+  "model": "BMW VGT",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4558,
+  "width": 1922,
+  "height": 1332,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

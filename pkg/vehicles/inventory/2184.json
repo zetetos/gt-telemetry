@@ -1,0 +1,21 @@
+{
+  "carId": 2184,
+  "manufacturer": "Jaguar",
+  "model": "F-type Gr.3",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "SC",
+  "length": 4674,
+  "width": 1989,
+  "height": 1216,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

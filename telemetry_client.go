@@ -10,6 +10,7 @@ import (
 	"iter"
 	"net/url"
 	"os"
+	"path/filepath"
 	"sync"
 	"time"
 
@@ -20,6 +21,11 @@ import (
 	"github.com/zetetos/gt-telemetry/v2/pkg/circuits"
 	"github.com/zetetos/gt-telemetry/v2/pkg/models"
 	"github.com/zetetos/gt-telemetry/v2/pkg/vehicles"
+)
+
+const (
+	autoDiscoveryURL = "udp://255.255.255.255:33739"
+	defaultCachePath = "data/cache"
 )
 
 var (
@@ -47,13 +53,14 @@ type statistics struct {
 }
 
 type Options struct {
-	Source       string
-	Format       models.Name
-	LogLevel     string
-	Logger       *zerolog.Logger
-	StatsEnabled bool
-	CircuitDB    string
-	VehicleDB    string
+	Source        string
+	Format        models.Name
+	LogLevel      string
+	Logger        *zerolog.Logger
+	StatsEnabled  bool
+	CachePath     string
+	UpdateBaseURL string
+	VehicleDB     string // TODO: remove in future release, overrides can be added to cache
 }
 
 type Client struct {
@@ -74,28 +81,32 @@ type Client struct {
 }
 
 func New(opts Options) (*Client, error) {
-	log := setupLogger(opts)
+	logger := setupLogger(opts)
 
 	if opts.Source == "" {
-		opts.Source = "udp://255.255.255.255:33739"
+		opts.Source = autoDiscoveryURL
 	}
 
 	if opts.Format == "" {
 		opts.Format = models.Addendum3
 	}
 
-	circuitDB, err := loadCircuitDB(opts.CircuitDB)
+	circuitDB, err := loadCircuitDB(opts.CachePath, opts.UpdateBaseURL, &logger)
 	if err != nil {
 		return nil, err
 	}
 
-	vehicleDB, err := loadVehicleDB(opts.VehicleDB)
+	vehicleDB, err := loadVehicleDB(opts.VehicleDB, opts.CachePath, opts.UpdateBaseURL, &logger)
 	if err != nil {
 		return nil, err
+	}
+
+	if opts.UpdateBaseURL != "" {
+		go checkForUpdates(context.Background(), opts.UpdateBaseURL, vehicleDB, circuitDB, &logger)
 	}
 
 	return &Client{
-		log:              log,
+		log:              logger,
 		source:           opts.Source,
 		format:           opts.Format,
 		DecipheredPacket: []byte{},
@@ -139,20 +150,18 @@ func setupLogger(opts Options) zerolog.Logger {
 	return log
 }
 
-// loadCircuitDB loads the circuit database from file if provided.
-func loadCircuitDB(path string) (*circuits.CircuitDB, error) {
-	var circuitsJSON []byte
-
-	var err error
-
-	if path != "" {
-		circuitsJSON, err = os.ReadFile(path)
-		if err != nil {
-			return nil, fmt.Errorf("reading circuit DB from file: %w", err)
-		}
+// loadCircuitDB loads the circuit database from embedded inventory files,
+// overlaid by any cached circuit files found in cachePath.
+func loadCircuitDB(cachePath, updateBaseURL string, logger *zerolog.Logger) (*circuits.CircuitDB, error) {
+	if cachePath == "" {
+		cachePath = filepath.Join(defaultCachePath, "circuits")
 	}
 
-	circuitDB, err := circuits.NewDB(circuitsJSON)
+	circuitDB, err := circuits.NewDB(circuits.CircuitDBOptions{
+		CacheDir:      cachePath,
+		UpdateBaseURL: updateBaseURL,
+		Logger:        logger,
+	})
 	if err != nil {
 		return nil, fmt.Errorf("setting up new circuit database: %w", err)
 	}
@@ -161,24 +170,53 @@ func loadCircuitDB(path string) (*circuits.CircuitDB, error) {
 }
 
 // loadVehicleDB loads the vehicle database from file if provided.
-func loadVehicleDB(path string) (*vehicles.VehicleDB, error) {
+func loadVehicleDB(dbPath string, cachePath string, updateURL string, logger *zerolog.Logger) (*vehicles.VehicleDB, error) {
 	var vehiclesJSON []byte
 
 	var err error
 
-	if path != "" {
-		vehiclesJSON, err = os.ReadFile(path)
+	if dbPath != "" {
+		vehiclesJSON, err = os.ReadFile(dbPath)
 		if err != nil {
 			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
 		}
 	}
 
-	vehicleDB, err := vehicles.NewDB(vehiclesJSON)
+	if cachePath == "" {
+		cachePath = filepath.Join(defaultCachePath, "vehicles")
+	}
+
+	DBOptions := vehicles.DBOptions{
+		CacheDir:      cachePath,
+		UpdateBaseURL: updateURL,
+		Logger:        logger,
+	}
+
+	vehicleDB, err := vehicles.NewDB(vehiclesJSON, DBOptions)
 	if err != nil {
 		return nil, fmt.Errorf("setting up new vehicle database: %w", err)
 	}
 
 	return vehicleDB, nil
+}
+
+// checkForUpdates fetches the remote version.json and triggers vehicle/circuit
+// updates only when the remote data is newer than the local inventory.
+func checkForUpdates(ctx context.Context, updateBaseURL string, vehicleDB *vehicles.VehicleDB, circuitDB *circuits.CircuitDB, logger *zerolog.Logger) {
+	version, err := fetchVersion(ctx, updateBaseURL)
+	if err != nil {
+		logger.Warn().Err(err).Msg("failed to fetch remote version")
+
+		return
+	}
+
+	if version.Vehicles.LastModified.After(vehicleDB.LatestModified()) {
+		vehicleDB.CheckForUpdates(ctx)
+	}
+
+	if version.Circuits.LastModified.After(circuitDB.LatestModified()) {
+		circuitDB.CheckForUpdates(ctx)
+	}
 }
 
 // Stream starts the telemetry client to read and process a live data stream.

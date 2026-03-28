@@ -1,0 +1,21 @@
+{
+  "carId": 1925,
+  "manufacturer": "Shelby",
+  "model": "G.T.350 '65",
+  "year": 1965,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4613,
+  "width": 1732,
+  "height": 1326,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

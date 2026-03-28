@@ -1,0 +1,21 @@
+{
+  "carId": 3531,
+  "manufacturer": "AMG",
+  "model": "Mercedes-AMG GT3 '20",
+  "year": 2020,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4746,
+  "width": 2049,
+  "height": 1238,
+  "wheelbase": 2624,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

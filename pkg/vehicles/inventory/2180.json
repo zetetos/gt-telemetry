@@ -1,0 +1,21 @@
+{
+  "carId": 2180,
+  "manufacturer": "Hyundai",
+  "model": "HYUNDAI N 2025 VGT (Gr.1)",
+  "year": 2025,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4678,
+  "width": 2265,
+  "height": 933,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

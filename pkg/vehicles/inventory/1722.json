@@ -1,0 +1,21 @@
+{
+  "carId": 1722,
+  "manufacturer": "McLaren",
+  "model": "MP4-12C '10",
+  "year": 2010,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4509,
+  "width": 1908,
+  "height": 1199,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

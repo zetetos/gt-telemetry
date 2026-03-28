@@ -1,0 +1,21 @@
+{
+  "carId": 1365,
+  "manufacturer": "Audi",
+  "model": "R8 4.2 '07",
+  "year": 2007,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4431,
+  "width": 1904,
+  "height": 1249,
+  "wheelbase": 2650,
+  "trackFront": 1645,
+  "trackRear": 1599,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

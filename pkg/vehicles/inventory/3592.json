@@ -1,0 +1,21 @@
+{
+  "carId": 3592,
+  "manufacturer": "Chevrolet",
+  "model": "Camaro 1969 Race-Mod",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "tuned",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "SC",
+  "length": 4724,
+  "width": 1880,
+  "height": 1311,
+  "wheelbase": 2743,
+  "trackFront": 1514,
+  "trackRear": 1499,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

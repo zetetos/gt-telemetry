@@ -1,0 +1,21 @@
+{
+  "carId": 3261,
+  "manufacturer": "Subaru",
+  "model": "WRX Gr.4",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.4",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4595,
+  "width": 1795,
+  "height": 1428,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H4",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3551,
+  "manufacturer": "BMW",
+  "model": "M3 '97",
+  "year": 1997,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4433,
+  "width": 1710,
+  "height": 1335,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

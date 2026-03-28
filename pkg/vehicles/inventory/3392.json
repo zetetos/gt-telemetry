@@ -1,0 +1,21 @@
+{
+  "carId": 3392,
+  "manufacturer": "Lamborghini",
+  "model": "Aventador LP 750-4 SV '15",
+  "year": 2015,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4835,
+  "width": 2030,
+  "height": 1136,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

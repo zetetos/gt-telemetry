@@ -1,0 +1,21 @@
+{
+  "carId": 489,
+  "manufacturer": "Nissan",
+  "model": "R33 GT-R V･spec '97",
+  "year": 1997,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4675,
+  "width": 1780,
+  "height": 1360,
+  "wheelbase": 2720,
+  "trackFront": 1486,
+  "trackRear": 1490,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

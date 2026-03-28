@@ -1,0 +1,21 @@
+{
+  "carId": 3569,
+  "manufacturer": "Nismo",
+  "model": "R34 GT-R Z-tune '05",
+  "year": 2005,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4600,
+  "width": 1810,
+  "height": 1330,
+  "wheelbase": 2665,
+  "trackFront": 1480,
+  "trackRear": 1490,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

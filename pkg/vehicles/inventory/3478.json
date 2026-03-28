@@ -1,0 +1,21 @@
+{
+  "carId": 3478,
+  "manufacturer": "Porsche",
+  "model": "Porsche VGT",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "EV",
+  "length": 4325,
+  "width": 1890,
+  "height": 1020,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

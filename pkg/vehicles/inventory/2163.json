@@ -1,0 +1,21 @@
+{
+  "carId": 2163,
+  "manufacturer": "Hyundai",
+  "model": "Genesis Gr.4",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.4",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4735,
+  "width": 1864,
+  "height": 1344,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

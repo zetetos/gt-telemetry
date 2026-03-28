@@ -1,0 +1,21 @@
+{
+  "carId": 3585,
+  "manufacturer": "Hyundai",
+  "model": "ELANTRA N '23",
+  "year": 2023,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "TC",
+  "length": 4675,
+  "width": 1825,
+  "height": 1415,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 48,
+  "manufacturer": "Nissan",
+  "model": "Fairlady 240ZG (HS30) '71",
+  "year": 1971,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4305,
+  "width": 1690,
+  "height": 1285,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

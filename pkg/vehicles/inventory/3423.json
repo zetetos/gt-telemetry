@@ -1,0 +1,21 @@
+{
+  "carId": 3423,
+  "manufacturer": "Wicked Fabrication",
+  "model": "Wicked Fabrication GT 51",
+  "year": 1951,
+  "openCockpit": false,
+  "carType": "tuned",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4750,
+  "width": 1778,
+  "height": 1321,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3446,
+  "manufacturer": "Porsche",
+  "model": "Spyder type 550/1500RS '55",
+  "year": 1955,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 3600,
+  "width": 1550,
+  "height": 1015,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H4",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

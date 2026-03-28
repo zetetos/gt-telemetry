@@ -1,0 +1,21 @@
+{
+  "carId": 3468,
+  "manufacturer": "RUF",
+  "model": "RGT 4.2 '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "RR",
+  "aspiration": "NA",
+  "length": 4491,
+  "width": 2012,
+  "height": 1295,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H6",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3601,
+  "manufacturer": "Renault",
+  "model": "Captur S Edition '21",
+  "year": 2021,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "TC",
+  "length": 4227,
+  "width": 1797,
+  "height": 1576,
+  "wheelbase": 2639,
+  "trackFront": 1547,
+  "trackRear": 1547,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 1671,
+  "manufacturer": "Volkswagen",
+  "model": "Sambabus Typ 2 '62",
+  "year": 1962,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "RR",
+  "aspiration": "NA",
+  "length": 4290,
+  "width": 1750,
+  "height": 1940,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

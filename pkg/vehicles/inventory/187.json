@@ -1,0 +1,21 @@
+{
+  "carId": 187,
+  "manufacturer": "TVR",
+  "model": "Tuscan Speed 6 '00",
+  "year": 2000,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4235,
+  "width": 1810,
+  "height": 1200,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

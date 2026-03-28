@@ -1,0 +1,21 @@
+{
+  "carId": 2141,
+  "manufacturer": "Volkswagen",
+  "model": "Golf VII GTI '14",
+  "year": 2014,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "TC",
+  "length": 4275,
+  "width": 1800,
+  "height": 1450,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

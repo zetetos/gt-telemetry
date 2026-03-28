@@ -1,0 +1,21 @@
+{
+  "carId": 3342,
+  "manufacturer": "Gran Turismo",
+  "model": "F1500T-A",
+  "year": 0,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4235,
+  "width": 2146,
+  "height": 1003,
+  "wheelbase": 2875,
+  "trackFront": 1824,
+  "trackRear": 1670,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3223,
+  "manufacturer": "Dodge",
+  "model": "Viper SRT GT3-R '15",
+  "year": 2015,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4540,
+  "width": 2068,
+  "height": 1160,
+  "wheelbase": 2504,
+  "trackFront": 1741,
+  "trackRear": 1716,
+  "engineLayout": "V10",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 72,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

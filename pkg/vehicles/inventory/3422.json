@@ -1,0 +1,21 @@
+{
+  "carId": 3422,
+  "manufacturer": "BMW",
+  "model": "3.0 CSL '73",
+  "year": 1973,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4660,
+  "width": 1730,
+  "height": 1370,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

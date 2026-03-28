@@ -1,0 +1,21 @@
+{
+  "carId": 1985,
+  "manufacturer": "Pontiac",
+  "model": "Firebird Trans Am '78",
+  "year": 1978,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4999,
+  "width": 1864,
+  "height": 1257,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

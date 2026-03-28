@@ -1,0 +1,21 @@
+{
+  "carId": 1927,
+  "manufacturer": "Audi",
+  "model": "Sport quattro S1 Pikes Peak '87",
+  "year": 1987,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.B",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4240,
+  "width": 1860,
+  "height": 1344,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I5",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 72,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3224,
+  "manufacturer": "AMG",
+  "model": "Mercedes-AMG GT3 '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4569,
+  "width": 2049,
+  "height": 1250,
+  "wheelbase": 2624,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

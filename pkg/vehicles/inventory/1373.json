@@ -1,0 +1,21 @@
+{
+  "carId": 1373,
+  "manufacturer": "Dodge",
+  "model": "Viper GTS '02",
+  "year": 2002,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4488,
+  "width": 1923,
+  "height": 1219,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V10",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 72,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

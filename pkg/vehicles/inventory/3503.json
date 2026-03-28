@@ -1,0 +1,21 @@
+{
+  "carId": 3503,
+  "manufacturer": "Mazda",
+  "model": "RX-VISION GT3 CONCEPT Stealth Model",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 0,
+  "width": 0,
+  "height": 0,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "K4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

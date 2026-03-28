@@ -1,0 +1,21 @@
+{
+  "carId": 3376,
+  "manufacturer": "Jaguar",
+  "model": "D-type '54",
+  "year": 1954,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 3912,
+  "width": 1660,
+  "height": 1170,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3525,
+  "manufacturer": "Honda",
+  "model": "RA272 '65",
+  "year": 1965,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 3950,
+  "width": 1675,
+  "height": 793,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

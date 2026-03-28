@@ -1,0 +1,21 @@
+{
+  "carId": 3410,
+  "manufacturer": "Porsche",
+  "model": "917K '70",
+  "year": 1970,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4120,
+  "width": 1980,
+  "height": 940,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H12",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

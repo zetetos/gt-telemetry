@@ -1,0 +1,21 @@
+{
+  "carId": 818,
+  "manufacturer": "Chevrolet",
+  "model": "Corvette (C2) '63",
+  "year": 1963,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4453,
+  "width": 1768,
+  "height": 1265,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3391,
+  "manufacturer": "Ford",
+  "model": "Shelby GT350R '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4818,
+  "width": 1928,
+  "height": 1361,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

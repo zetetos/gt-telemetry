@@ -1,0 +1,21 @@
+{
+  "carId": 2098,
+  "manufacturer": "Volkswagen",
+  "model": "GTI Roadster VGT",
+  "year": 0,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4130,
+  "width": 1870,
+  "height": 1325,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 15,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

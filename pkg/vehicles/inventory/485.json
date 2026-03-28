@@ -1,0 +1,21 @@
+{
+  "carId": 485,
+  "manufacturer": "Nissan",
+  "model": "GT-R GT500 '99",
+  "year": 1999,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4600,
+  "width": 1885,
+  "height": 1220,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

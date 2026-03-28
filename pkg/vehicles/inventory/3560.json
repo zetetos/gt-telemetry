@@ -1,0 +1,21 @@
+{
+  "carId": 3560,
+  "manufacturer": "Porsche",
+  "model": "Mission X '23",
+  "year": 2023,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "RR",
+  "aspiration": "EV",
+  "length": 4555,
+  "width": 1950,
+  "height": 1180,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

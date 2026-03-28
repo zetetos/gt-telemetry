@@ -1,0 +1,21 @@
+{
+  "carId": 709,
+  "manufacturer": "Nissan",
+  "model": "Fairlady Z 300ZX TT 2seater '89",
+  "year": 1989,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4310,
+  "width": 1790,
+  "height": 1250,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

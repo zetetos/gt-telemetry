@@ -1,0 +1,21 @@
+{
+  "carId": 3475,
+  "manufacturer": "McLaren",
+  "model": "MP4/4 '88",
+  "year": 1988,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4394,
+  "width": 2134,
+  "height": 940,
+  "wheelbase": 2875,
+  "trackFront": 1824,
+  "trackRear": 1670,
+  "engineLayout": "V6",
+  "engineBankAngle": 80,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

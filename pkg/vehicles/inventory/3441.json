@@ -1,0 +1,21 @@
+{
+  "carId": 3441,
+  "manufacturer": "Mercedes-Benz",
+  "model": "300 SL (W194) '52",
+  "year": 1952,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4220,
+  "width": 1790,
+  "height": 1265,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

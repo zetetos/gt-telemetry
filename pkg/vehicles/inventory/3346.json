@@ -1,0 +1,21 @@
+{
+  "carId": 3346,
+  "manufacturer": "Eckert's Rod \u0026 Custom",
+  "model": "Mach Forty",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "tuned",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "SC",
+  "length": 4561,
+  "width": 1983,
+  "height": 1196,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

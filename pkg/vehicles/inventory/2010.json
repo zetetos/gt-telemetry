@@ -1,0 +1,21 @@
+{
+  "carId": 2010,
+  "manufacturer": "Ferrari",
+  "model": "250 GTO '62",
+  "year": 1962,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4325,
+  "width": 1600,
+  "height": 1210,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

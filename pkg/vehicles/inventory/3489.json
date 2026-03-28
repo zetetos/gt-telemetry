@@ -1,0 +1,21 @@
+{
+  "carId": 3489,
+  "manufacturer": "Maserati",
+  "model": "A6GCS/53 Spyder '54",
+  "year": 1954,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 3840,
+  "width": 1530,
+  "height": 1400,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

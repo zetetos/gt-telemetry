@@ -1,0 +1,21 @@
+{
+  "carId": 1545,
+  "manufacturer": "Lamborghini",
+  "model": "Murciélago LP 640 '09",
+  "year": 2009,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4610,
+  "width": 2058,
+  "height": 1135,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

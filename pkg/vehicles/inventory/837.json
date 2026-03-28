@@ -1,0 +1,21 @@
+{
+  "carId": 837,
+  "manufacturer": "Nissan",
+  "model": "Skyline Hard Top 2000GT-R (KPGC10) '70",
+  "year": 1970,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4330,
+  "width": 1665,
+  "height": 1370,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

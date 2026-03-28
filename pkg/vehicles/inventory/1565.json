@@ -1,0 +1,21 @@
+{
+  "carId": 1565,
+  "manufacturer": "Ford",
+  "model": "Mark IV Race Car '67",
+  "year": 1967,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4343,
+  "width": 1791,
+  "height": 978,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 1523,
+  "manufacturer": "FIAT",
+  "model": "500 F '68",
+  "year": 1968,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "RR",
+  "aspiration": "NA",
+  "length": 2970,
+  "width": 1320,
+  "height": 1335,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I2",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

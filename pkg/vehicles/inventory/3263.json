@@ -1,0 +1,21 @@
+{
+  "carId": 3263,
+  "manufacturer": "Ferrari",
+  "model": "458 Italia Gr.4",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.4",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4554,
+  "width": 1937,
+  "height": 1158,
+  "wheelbase": 2650,
+  "trackFront": 1672,
+  "trackRear": 1606,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 2158,
+  "manufacturer": "Ferrari",
+  "model": "458 Italia GT3 '13",
+  "year": 2013,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4599,
+  "width": 2034,
+  "height": 1157,
+  "wheelbase": 2650,
+  "trackFront": 1728,
+  "trackRear": 1691,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

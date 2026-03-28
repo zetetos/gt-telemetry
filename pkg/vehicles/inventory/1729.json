@@ -1,0 +1,21 @@
+{
+  "carId": 1729,
+  "manufacturer": "Ford",
+  "model": "Mustang Mach 1 '71",
+  "year": 1971,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4813,
+  "width": 1882,
+  "height": 1273,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

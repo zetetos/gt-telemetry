@@ -1,0 +1,21 @@
+{
+  "carId": 296,
+  "manufacturer": "Mazda",
+  "model": "787B '91",
+  "year": 1991,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4782,
+  "width": 1994,
+  "height": 1003,
+  "wheelbase": 2662,
+  "trackFront": 1534,
+  "trackRear": 1504,
+  "engineLayout": "K4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

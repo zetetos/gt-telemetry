@@ -1,0 +1,21 @@
+{
+  "carId": 2182,
+  "manufacturer": "McLaren",
+  "model": "650S GT3 '15",
+  "year": 2015,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4534,
+  "width": 2040,
+  "height": 1200,
+  "wheelbase": 2670,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

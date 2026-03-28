@@ -1,0 +1,21 @@
+{
+  "carId": 2156,
+  "manufacturer": "Honda",
+  "model": "2\u00264 powered by RC213V",
+  "year": 2015,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 3020,
+  "width": 1820,
+  "height": 995,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V4",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

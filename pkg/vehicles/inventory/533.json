@@ -1,0 +1,21 @@
+{
+  "carId": 533,
+  "manufacturer": "Lancia",
+  "model": "Stratos '73",
+  "year": 1973,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 3710,
+  "width": 1750,
+  "height": 1114,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 65,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

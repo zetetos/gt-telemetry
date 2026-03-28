@@ -1,0 +1,21 @@
+{
+  "carId": 1067,
+  "manufacturer": "Jaguar",
+  "model": "XJR-9 '88",
+  "year": 1988,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4800,
+  "width": 2000,
+  "height": 1030,
+  "wheelbase": 2780,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

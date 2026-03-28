@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"slices"
 	"strings"
+	"time"
 	"unicode"
 
 	"github.com/santhosh-tekuri/jsonschema/v5"
@@ -26,15 +28,18 @@ type CircuitData struct {
 	Default       bool               `json:"default"`
 	Country       string             `json:"country"`
 	LengthMetres  int                `json:"lengthMetres"`
+	LastModified  string             `json:"lastModified"`
 	Coordinates   CircuitCoordinates `json:"coordinates"`
 }
 
 // CircuitProcessingResult holds the results of processing circuit files during analysis.
 type CircuitProcessingResult struct {
-	CoordinateMap       map[string][]string
-	CircuitsMap         map[string]map[string]any
-	CircuitStartLines   map[string]gtmodels.CoordinateNorm
-	RawCoordinateCounts map[string]int // Track raw coordinate counts per circuit
+	CoordinateMap          map[string][]string
+	CircuitsMap            map[string]map[string]any
+	CircuitStartLines      map[string]gtmodels.CoordinateNorm
+	CircuitCoordinatesNorm map[string][]gtmodels.CoordinateNorm
+	RawCoordinateCounts    map[string]int // Track raw coordinate counts per circuit
+	LastModified           time.Time      // Most recent modification time of any source circuit file
 }
 
 // CircuitStats holds statistical information about a circuit.
@@ -49,24 +54,43 @@ type CircuitStats struct {
 	StartLineUnique       bool
 }
 
+const usage = `Usage:
+  %[1]s update   <circuits_directory> <output_directory>   Process circuit files and write inventory
+  %[1]s manifest <inventory_directory>                     Generate manifest JSON from inventory (stdout)
+`
+
 func main() {
-	if len(os.Args) != 3 {
-		fmt.Fprintf(os.Stderr, "Usage: %s <circuits_directory> <output_file>\n", os.Args[0])
+	if len(os.Args) < 2 {
+		fmt.Fprintf(os.Stderr, usage, os.Args[0])
 		os.Exit(1)
 	}
 
-	circuitsDir := os.Args[1]
-	outputFile := os.Args[2]
+	switch os.Args[1] {
+	case "update":
+		if len(os.Args) != 4 {
+			fmt.Fprintf(os.Stderr, usage, os.Args[0])
+			os.Exit(1)
+		}
 
-	// Load and compile the JSON schema
-	schema, err := loadCircuitSchema(circuitsDir)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error loading schema: %v\n", err)
+		runUpdate(os.Args[2], os.Args[3])
+	case "manifest":
+		if len(os.Args) != 3 {
+			fmt.Fprintf(os.Stderr, usage, os.Args[0])
+			os.Exit(1)
+		}
+
+		runManifest(os.Args[2])
+	default:
+		fmt.Fprintf(os.Stderr, "Error: Unknown action '%s'. Supported actions: update, manifest\n\n", os.Args[1])
+		fmt.Fprintf(os.Stderr, usage, os.Args[0])
 		os.Exit(1)
 	}
+}
 
+// runUpdate processes circuit source files and writes per-circuit inventory files.
+func runUpdate(circuitsDir, outputDir string) {
 	// Process all circuit files
-	processed, err := processCircuitFiles(circuitsDir, outputFile, schema)
+	processed, err := processCircuitFiles(circuitsDir, outputDir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error processing circuits: %v\n", err)
 		os.Exit(1)
@@ -78,14 +102,66 @@ func main() {
 	// Display analysis results
 	displayAnalysisResults(stats)
 
-	// Write output file
-	err = writeInventoryFile(processed, outputFile)
+	// Write per-circuit inventory files
+	inventoryDir := filepath.Join(filepath.Dir(outputDir), "inventory")
+
+	count, err := writeCircuitInventoryFiles(processed, inventoryDir)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to write output: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Failed to write circuit inventory files: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("Wrote inventory to %s\n", outputFile)
+	fmt.Printf("Wrote %d circuit files to %s\n", count, inventoryDir)
+}
+
+// runManifest loads an inventory directory and writes manifest JSON to stdout.
+func runManifest(inventoryDir string) {
+	entries, err := os.ReadDir(inventoryDir)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to read inventory directory: %v\n", err)
+		os.Exit(1)
+	}
+
+	processed := &CircuitProcessingResult{
+		CircuitsMap: make(map[string]map[string]any),
+	}
+
+	for _, entry := range entries {
+		if entry.IsDir() || filepath.Ext(entry.Name()) != ".json" || entry.Name() == "manifest.json" {
+			continue
+		}
+
+		data, err := os.ReadFile(filepath.Join(inventoryDir, entry.Name()))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to read %s: %v\n", entry.Name(), err)
+			os.Exit(1)
+		}
+
+		var circuit gtcircuits.CircuitInfo
+
+		err = json.Unmarshal(data, &circuit)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to parse %s: %v\n", entry.Name(), err)
+			os.Exit(1)
+		}
+
+		circuitID := strings.TrimSuffix(entry.Name(), ".json")
+		processed.CircuitsMap[circuitID] = map[string]any{
+			"lastModified": circuit.LastModified,
+		}
+
+		if circuit.LastModified.After(processed.LastModified) {
+			processed.LastModified = circuit.LastModified
+		}
+	}
+
+	out, err := buildCircuitManifestJSON(processed)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to build manifest: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Print(string(out))
 }
 
 // loadCircuitSchema loads and compiles the JSON schema for circuit validation.
@@ -121,16 +197,24 @@ func loadCircuitSchema(circuitsDir string) (*jsonschema.Schema, error) {
 	return schema, nil
 }
 
-// processCircuitFiles reads and processes all circuit JSON files in the given directory.
-func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Schema) (*CircuitProcessingResult, error) {
-	processed := &CircuitProcessingResult{
-		CoordinateMap:       make(map[string][]string),
-		CircuitsMap:         make(map[string]map[string]any),
-		CircuitStartLines:   make(map[string]gtmodels.CoordinateNorm),
-		RawCoordinateCounts: make(map[string]int),
+// processCircuitFiles reads all circuit JSON files in the given directory and compiles them into a single structured object.
+func processCircuitFiles(circuitsDir, outputFile string) (*CircuitProcessingResult, error) {
+	// Load and compile the JSON schema
+	schema, err := loadCircuitSchema(circuitsDir)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error loading schema: %v\n", err)
+		os.Exit(1)
 	}
 
-	err := filepath.Walk(circuitsDir, func(path string, fileInfo os.FileInfo, err error) error {
+	processed := &CircuitProcessingResult{
+		CoordinateMap:          make(map[string][]string),
+		CircuitsMap:            make(map[string]map[string]any),
+		CircuitStartLines:      make(map[string]gtmodels.CoordinateNorm),
+		CircuitCoordinatesNorm: make(map[string][]gtmodels.CoordinateNorm),
+		RawCoordinateCounts:    make(map[string]int),
+	}
+
+	err = filepath.Walk(circuitsDir, func(path string, fileInfo os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -152,7 +236,7 @@ func processCircuitFiles(circuitsDir, outputFile string, schema *jsonschema.Sche
 
 // processSingleCircuitFile processes a single circuit JSON file and updates the processed result.
 func processSingleCircuitFile(path string, processed *CircuitProcessingResult, schema *jsonschema.Schema) error {
-	data, err := os.ReadFile(path)
+	jsonContent, err := readCircuitFile(path, schema)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to read %s: %v\n", path, err)
 
@@ -161,40 +245,40 @@ func processSingleCircuitFile(path string, processed *CircuitProcessingResult, s
 
 	var circuitData CircuitData
 
-	err = json.Unmarshal(data, &circuitData)
+	err = json.Unmarshal(jsonContent, &circuitData)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to parse %s: %v\n", path, err)
 
 		return nil
 	}
 
-	// Validate against JSON schema
-	var jsonData any
-
-	err = json.Unmarshal(data, &jsonData)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to parse JSON for validation %s: %v\n", path, err)
-
-		return nil
-	}
-
-	err = schema.Validate(jsonData)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Schema validation failed for %s: %v\n", path, err)
-
-		return nil
-	}
-
 	circuitID := nameToID(circuitData.VariationName)
 
-	// Track raw coordinate count
+	circuitLastModified, err := time.Parse(time.RFC3339, circuitData.LastModified)
+	if err != nil {
+		return fmt.Errorf("failed to parse lastModified for %s: %w", path, err)
+	}
+
+	// Track most recent lastModified value across all circuit files
+	if circuitLastModified.After(processed.LastModified) {
+		processed.LastModified = circuitLastModified
+	}
+
 	processed.RawCoordinateCounts[circuitID] = len(circuitData.Coordinates.Circuit)
+
+	processed.CircuitCoordinatesNorm[circuitID] = []gtmodels.CoordinateNorm{}
+	lastCoordinateNorm := gtmodels.CoordinateNorm{}
 
 	// Build coordinate map
 	for _, coordinate := range circuitData.Coordinates.Circuit {
 		coordinateNorm := gtcircuits.NormaliseCircuitCoordinate(coordinate)
-		key := coordinateNorm.String()
 
+		if coordinateNorm != lastCoordinateNorm {
+			processed.CircuitCoordinatesNorm[circuitID] = append(processed.CircuitCoordinatesNorm[circuitID], coordinateNorm)
+			lastCoordinateNorm = coordinateNorm
+		}
+
+		key := coordinateNorm.String()
 		if !slices.Contains(processed.CoordinateMap[key], circuitID) {
 			processed.CoordinateMap[key] = append(processed.CoordinateMap[key], circuitID)
 		}
@@ -206,16 +290,40 @@ func processSingleCircuitFile(path string, processed *CircuitProcessingResult, s
 
 	// Store circuit info
 	processed.CircuitsMap[circuitID] = map[string]any{
-		"id":        circuitID,
-		"name":      circuitData.Name,
-		"variation": circuitData.VariationName,
-		"default":   circuitData.Default,
-		"country":   circuitData.Country,
-		"length":    uint16(circuitData.LengthMetres), //nolint:gosec // Length will always be positive and less than max uint16
-		"startline": startingLineNorm,
+		"id":           circuitID,
+		"name":         circuitData.Name,
+		"variation":    circuitData.VariationName,
+		"default":      circuitData.Default,
+		"country":      circuitData.Country,
+		"length":       uint16(circuitData.LengthMetres), //nolint:gosec // Length will always be positive and less than max uint16
+		"startline":    startingLineNorm,
+		"lastModified": circuitLastModified,
+		"coordinates":  processed.CircuitCoordinatesNorm[circuitID],
 	}
 
 	return nil
+}
+
+// readCircuitFile reads and validates a circuit JSON file, returning the raw data when valid.
+func readCircuitFile(path string, schema *jsonschema.Schema) ([]byte, error) {
+	fileContent, err := os.ReadFile(path)
+	if err != nil {
+		return []byte{}, fmt.Errorf("failed to read %s: %w", path, err)
+	}
+
+	var jsonData any
+
+	err = json.Unmarshal(fileContent, &jsonData)
+	if err != nil {
+		return []byte{}, fmt.Errorf("failed to parse JSON for validation %s: %w", path, err)
+	}
+
+	err = schema.Validate(jsonData)
+	if err != nil {
+		return []byte{}, fmt.Errorf("schema validation failed for %s: %w", path, err)
+	}
+
+	return fileContent, nil
 }
 
 // analyzeCircuitCoordinates performs statistical analysis on circuit coordinates.
@@ -397,61 +505,91 @@ func printSummary(circuitsWithoutUniqueCoords, nonUniqueStartLines int) {
 	}
 }
 
-// writeInventoryFile writes the processed circuit data to the output file.
-func writeInventoryFile(processed *CircuitProcessingResult, outputFile string) error {
-	// Filter coordinates to only include those with a single entry (unique to one circuit)
-	// Store as single string values instead of arrays
-	filteredCoordinateMap := make(map[string]string)
-
-	for coord, circuits := range processed.CoordinateMap {
-		if len(circuits) == 1 {
-			filteredCoordinateMap[coord] = circuits[0]
-		}
+// writeCircuitInventoryFiles writes one JSON file per circuit into inventoryDir.
+func writeCircuitInventoryFiles(processed *CircuitProcessingResult, inventoryDir string) (int, error) {
+	err := os.MkdirAll(inventoryDir, 0o755)
+	if err != nil {
+		return 0, fmt.Errorf("failed to create inventory directory: %w", err)
 	}
 
-	// Convert processed circuit maps to CircuitInfo structs
-	circuits := make(map[string]gtcircuits.CircuitInfo)
+	count := 0
+
 	for circuitID, circuitData := range processed.CircuitsMap {
-		circuits[circuitID] = gtcircuits.CircuitInfo{ //nolint:forcetypeassert // Safe due to controlled data source
-			ID:                    circuitData["id"].(string),
-			Name:                  circuitData["name"].(string),
-			Variation:             circuitData["variation"].(string),
-			Default:               circuitData["default"].(bool),
-			Country:               circuitData["country"].(string),
-			Length:                int(circuitData["length"].(uint16)),
-			StartLine:             circuitData["startline"].(gtmodels.CoordinateNorm),
-			UniqueCoordinateCount: getUniqCoordCount(processed, circuitID),
+		file := gtcircuits.CircuitInfo{ //nolint:forcetypeassert // Safe due to controlled data source
+			ID:           circuitData["id"].(string),
+			Name:         circuitData["name"].(string),
+			Variation:    circuitData["variation"].(string),
+			Country:      circuitData["country"].(string),
+			Default:      circuitData["default"].(bool),
+			Length:       int(circuitData["length"].(uint16)),
+			StartLine:    circuitData["startline"].(gtmodels.CoordinateNorm),
+			LastModified: circuitData["lastModified"].(time.Time),
+			Coordinates:  circuitData["coordinates"].([]gtmodels.CoordinateNorm),
 		}
+
+		outData, err := marshalCircuitJSON(file)
+		if err != nil {
+			return count, fmt.Errorf("failed to marshal circuit %s: %w", circuitID, err)
+		}
+
+		outPath := filepath.Join(inventoryDir, circuitID+".json")
+
+		err = os.WriteFile(outPath, outData, 0o644) //nolint:gosec // File permission is acceptable for this use case
+		if err != nil {
+			return count, fmt.Errorf("failed to write circuit file %s: %w", outPath, err)
+		}
+
+		count++
 	}
 
-	inventory := gtcircuits.CircuitInventory{
-		Coordinates: filteredCoordinateMap,
-		Circuits:    circuits,
-	}
-
-	outData, err := json.MarshalIndent(inventory, "", "  ")
-	if err != nil {
-		return fmt.Errorf("failed to marshal output: %w", err)
-	}
-
-	err = os.WriteFile(outputFile, outData, 0o644) //nolint:gosec // File permission is acceptable for this use case
-	if err != nil {
-		return fmt.Errorf("failed to write output: %w", err)
-	}
-
-	return nil
+	return count, nil
 }
 
-func getUniqCoordCount(processed *CircuitProcessingResult, id string) int {
-	uniqueCoordCount := 0
+// coordObjectPattern matches a multi-line JSON object containing only x, y, z fields.
+var coordObjectPattern = regexp.MustCompile(`\{\s*\n\s*"x":\s*(-?\d+),\s*\n\s*"y":\s*(-?\d+),\s*\n\s*"z":\s*(-?\d+)\s*\n\s*\}`)
 
-	for _, circuitList := range processed.CoordinateMap {
-		if len(circuitList) == 1 && circuitList[0] == id {
-			uniqueCoordCount++
-		}
+// marshalCircuitJSON marshals a CircuitInfo to indented JSON with coordinate objects inlined.
+func marshalCircuitJSON(file gtcircuits.CircuitInfo) ([]byte, error) {
+	data, err := json.MarshalIndent(file, "", "    ")
+	if err != nil {
+		return nil, err
 	}
 
-	return uniqueCoordCount
+	result := coordObjectPattern.ReplaceAllString(string(data), `{ "x": $1, "y": $2, "z": $3 }`)
+
+	return []byte(result), nil
+}
+
+// circuitManifestEntry holds per-circuit metadata in the manifest.
+type circuitManifestEntry struct {
+	LastModified time.Time `json:"lastModified"`
+}
+
+// circuitManifest is the structure written to manifest.json.
+type circuitManifest struct {
+	Circuits map[string]circuitManifestEntry `json:"circuits"`
+}
+
+// buildCircuitManifestJSON generates manifest JSON from a CircuitProcessingResult and returns the encoded bytes.
+func buildCircuitManifestJSON(processed *CircuitProcessingResult) ([]byte, error) {
+	circuits := make(map[string]circuitManifestEntry, len(processed.CircuitsMap))
+
+	for circuitID, circuitData := range processed.CircuitsMap {
+		circuits[circuitID] = circuitManifestEntry{LastModified: circuitData["lastModified"].(time.Time)} //nolint:forcetypeassert // Safe due to controlled data source
+	}
+
+	manifest := circuitManifest{
+		Circuits: circuits,
+	}
+
+	outData, err := json.MarshalIndent(manifest, "", "  ")
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal manifest: %w", err)
+	}
+
+	outData = append(outData, '\n')
+
+	return outData, nil
 }
 
 // nameToID converts a circuit name to an ID using Go Pascal case.

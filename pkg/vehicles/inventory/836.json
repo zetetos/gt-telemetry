@@ -1,0 +1,21 @@
+{
+  "carId": 836,
+  "manufacturer": "Nissan",
+  "model": "Skyline 2000GT-R (KPGC110) '73",
+  "year": 1973,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4460,
+  "width": 1695,
+  "height": 1380,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

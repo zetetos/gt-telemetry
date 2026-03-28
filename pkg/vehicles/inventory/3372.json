@@ -1,0 +1,21 @@
+{
+  "carId": 3372,
+  "manufacturer": "Super Formula",
+  "model": "SF19 Super Formula / Honda '19",
+  "year": 2019,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 5233,
+  "width": 1910,
+  "height": 960,
+  "wheelbase": 3115,
+  "trackFront": 1600,
+  "trackRear": 1550,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

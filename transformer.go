@@ -786,7 +786,7 @@ func (t *Transformer) UpdateVehicle() {
 
 	vehicleID := int(t.RawTelemetry.VehicleId)
 
-	if t.Vehicle.CarID != vehicleID {
+	if t.Vehicle.CarID != vehicleID || t.Vehicle.Manufacturer == "" {
 		vehicle, err := t.inventory.GetVehicleByID(vehicleID)
 		if err != nil {
 			vehicle = vehicles.Vehicle{

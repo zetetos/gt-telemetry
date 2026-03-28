@@ -1,0 +1,21 @@
+{
+  "carId": 3316,
+  "manufacturer": "Daihatsu",
+  "model": "COPEN RJ VGT",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "FF",
+  "aspiration": "TC",
+  "length": 3542,
+  "width": 1534,
+  "height": 1330,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I3",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

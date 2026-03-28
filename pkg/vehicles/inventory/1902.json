@@ -1,0 +1,21 @@
+{
+  "carId": 1902,
+  "manufacturer": "BMW",
+  "model": "Z4 GT3 '11",
+  "year": 2011,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4387,
+  "width": 2012,
+  "height": 1210,
+  "wheelbase": 2509,
+  "trackFront": 1623,
+  "trackRear": 1667,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3411,
+  "manufacturer": "Alfa Romeo",
+  "model": "Giulia GTAm '20",
+  "year": 2020,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4669,
+  "width": 1923,
+  "height": 1397,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

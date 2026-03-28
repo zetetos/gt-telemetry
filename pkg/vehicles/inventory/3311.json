@@ -1,0 +1,21 @@
+{
+  "carId": 3311,
+  "manufacturer": "Porsche",
+  "model": "911 RSR (991) '17",
+  "year": 2017,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4557,
+  "width": 2048,
+  "height": 1290,
+  "wheelbase": 2516,
+  "trackFront": 1742,
+  "trackRear": 1738,
+  "engineLayout": "H6",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

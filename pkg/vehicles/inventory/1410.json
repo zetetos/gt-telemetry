@@ -1,0 +1,21 @@
+{
+  "carId": 1410,
+  "manufacturer": "Ferrari",
+  "model": "512 BB '76",
+  "year": 1976,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4400,
+  "width": 1830,
+  "height": 1120,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H12",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

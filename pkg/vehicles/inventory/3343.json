@@ -1,0 +1,21 @@
+{
+  "carId": 3343,
+  "manufacturer": "Aston Martin",
+  "model": "DB11 '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4739,
+  "width": 2060,
+  "height": 1279,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

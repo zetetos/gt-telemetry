@@ -1,0 +1,21 @@
+{
+  "carId": 1549,
+  "manufacturer": "Amuse",
+  "model": "Amuse NISMO 380RS Super Leggera",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "tuned",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4520,
+  "width": 1845,
+  "height": 1316,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

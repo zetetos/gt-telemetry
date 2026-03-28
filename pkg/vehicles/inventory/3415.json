@@ -1,0 +1,21 @@
+{
+  "carId": 3415,
+  "manufacturer": "Alfa Romeo",
+  "model": "8C 2900B Touring Berlinetta '38",
+  "year": 1938,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "SC",
+  "length": 5000,
+  "width": 1700,
+  "height": 1500,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I8",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3450,
+  "manufacturer": "Nissan",
+  "model": "GT-R NISMO GT3 '18",
+  "year": 2018,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4832,
+  "width": 2036,
+  "height": 1350,
+  "wheelbase": 2817,
+  "trackFront": 1690,
+  "trackRear": 1700,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

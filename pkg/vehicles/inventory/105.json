@@ -1,0 +1,21 @@
+{
+  "carId": 105,
+  "manufacturer": "Peugeot",
+  "model": "205 Turbo 16 Evolution 2 '86",
+  "year": 1986,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.B",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 3820,
+  "width": 1700,
+  "height": 1353,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

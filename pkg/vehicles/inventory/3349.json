@@ -1,0 +1,21 @@
+{
+  "carId": 3349,
+  "manufacturer": "Lexus",
+  "model": "RC F GT500 '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.2",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 5100,
+  "width": 1950,
+  "height": 1228,
+  "wheelbase": 2730,
+  "trackFront": 1555,
+  "trackRear": 1560,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

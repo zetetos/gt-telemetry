@@ -1,0 +1,21 @@
+{
+  "carId": 315,
+  "manufacturer": "Shelby",
+  "model": "Cobra 427 '66",
+  "year": 1966,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 3962,
+  "width": 1727,
+  "height": 1245,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3412,
+  "manufacturer": "Audi",
+  "model": "R8 Coupé V10 plus '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4425,
+  "width": 1940,
+  "height": 1240,
+  "wheelbase": 2650,
+  "trackFront": 1645,
+  "trackRear": 1599,
+  "engineLayout": "V10",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 72,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

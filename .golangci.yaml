@@ -42,6 +42,7 @@ linters:
             - github.com/santhosh-tekuri/jsonschema
             - github.com/stretchr/testify
             - golang.org/x/crypto/salsa20
+            - golang.org/x/sync
             - github.com/zetetos/gt-telemetry/v2
     lll:
       line-length: 180
@@ -63,6 +64,7 @@ formatters:
       - third_party$
       - builtin$
       - examples$
+      - internal/telemetry/telemetry.go # generated code
 
 issues:
   max-issues-per-linter: 0

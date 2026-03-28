@@ -1,0 +1,21 @@
+{
+  "carId": 3334,
+  "manufacturer": "Audi",
+  "model": "R18 '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4650,
+  "width": 1900,
+  "height": 1050,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 120,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

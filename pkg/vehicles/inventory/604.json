@@ -1,0 +1,21 @@
+{
+  "carId": 604,
+  "manufacturer": "Toyota",
+  "model": "2000GT '67",
+  "year": 1967,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4175,
+  "width": 1600,
+  "height": 1160,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

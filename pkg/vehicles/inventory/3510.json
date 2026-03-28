@@ -1,0 +1,21 @@
+{
+  "carId": 3510,
+  "manufacturer": "Ferrari",
+  "model": "Ferrari VGT",
+  "year": 2022,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4688,
+  "width": 2330,
+  "height": 1045,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 120,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

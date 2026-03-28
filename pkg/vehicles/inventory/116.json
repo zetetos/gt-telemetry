@@ -1,0 +1,21 @@
+{
+  "carId": 116,
+  "manufacturer": "Toyota",
+  "model": "GT-One (TS020) '99",
+  "year": 1999,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.2",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4840,
+  "width": 2000,
+  "height": 1125,
+  "wheelbase": 2850,
+  "trackFront": 1600,
+  "trackRear": 1644,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

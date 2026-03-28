@@ -1,0 +1,21 @@
+{
+  "carId": 3393,
+  "manufacturer": "Porsche",
+  "model": "Carrera GT '04",
+  "year": 2004,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4613,
+  "width": 1921,
+  "height": 1166,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V10",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 72,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3534,
+  "manufacturer": "Toyota",
+  "model": "Himedic '21",
+  "year": 2021,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 5600,
+  "width": 1895,
+  "height": 2490,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 2143,
+  "manufacturer": "Audi",
+  "model": "R8 LMS '15",
+  "year": 2015,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4583,
+  "width": 1997,
+  "height": 1171,
+  "wheelbase": 2700,
+  "trackFront": 1680,
+  "trackRear": 1685,
+  "engineLayout": "V10",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 72,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

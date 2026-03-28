@@ -1,0 +1,21 @@
+{
+  "carId": 3540,
+  "manufacturer": "Tesla",
+  "model": "Model 3 Performance '23",
+  "year": 2023,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "EV",
+  "length": 4695,
+  "width": 1850,
+  "height": 1445,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

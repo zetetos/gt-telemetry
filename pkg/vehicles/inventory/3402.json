@@ -1,0 +1,21 @@
+{
+  "carId": 3402,
+  "manufacturer": "Ford",
+  "model": "Ford GT '17",
+  "year": 2017,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4763,
+  "width": 2004,
+  "height": 1110,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

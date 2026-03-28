@@ -1,0 +1,21 @@
+{
+  "carId": 3532,
+  "manufacturer": "Aston Martin",
+  "model": "Valkyrie '21",
+  "year": 2021,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4506,
+  "width": 1920,
+  "height": 1060,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 65,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

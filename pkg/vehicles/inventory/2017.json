@@ -1,0 +1,21 @@
+{
+  "carId": 2017,
+  "manufacturer": "Ferrari",
+  "model": "GTO '84",
+  "year": 1984,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4290,
+  "width": 1910,
+  "height": 1120,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

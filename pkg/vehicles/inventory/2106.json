@@ -1,0 +1,21 @@
+{
+  "carId": 2106,
+  "manufacturer": "Toyota",
+  "model": "FT-1 VGT",
+  "year": 2014,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 0,
+  "width": 0,
+  "height": 0,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

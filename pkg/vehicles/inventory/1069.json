@@ -1,0 +1,21 @@
+{
+  "carId": 1069,
+  "manufacturer": "Chaparral",
+  "model": "2J '70",
+  "year": 1970,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 3683,
+  "width": 1981,
+  "height": 964,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

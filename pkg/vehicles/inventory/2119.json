@@ -1,0 +1,21 @@
+{
+  "carId": 2119,
+  "manufacturer": "Italdesign",
+  "model": "Italdesign VGT Street Mode",
+  "year": 2023,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4600,
+  "width": 2100,
+  "height": 1200,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V10",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

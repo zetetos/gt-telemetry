@@ -1,0 +1,21 @@
+{
+  "carId": 3332,
+  "manufacturer": "Peugeot",
+  "model": "L500R HYbrid VGT 2017",
+  "year": 2017,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4936,
+  "width": 2000,
+  "height": 1003,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

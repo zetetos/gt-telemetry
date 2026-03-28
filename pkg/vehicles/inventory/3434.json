@@ -1,0 +1,21 @@
+{
+  "carId": 3434,
+  "manufacturer": "Ferrari",
+  "model": "Testarossa '91",
+  "year": 1991,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4485,
+  "width": 1976,
+  "height": 1130,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H12",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

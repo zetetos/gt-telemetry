@@ -1,0 +1,21 @@
+{
+  "carId": 655,
+  "manufacturer": "BMW",
+  "model": "Z4 3.0i '03",
+  "year": 2003,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4091,
+  "width": 1781,
+  "height": 1299,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

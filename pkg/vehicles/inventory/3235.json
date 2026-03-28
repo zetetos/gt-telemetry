@@ -1,0 +1,21 @@
+{
+  "carId": 3235,
+  "manufacturer": "Honda",
+  "model": "NSX Gr.3",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4613,
+  "width": 2036,
+  "height": 1169,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 75,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

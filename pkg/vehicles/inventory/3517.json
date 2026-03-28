@@ -1,0 +1,21 @@
+{
+  "carId": 3517,
+  "manufacturer": "Gran Turismo",
+  "model": "Red Bull x2019 25th Anniversary",
+  "year": 2019,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 5098,
+  "width": 2164,
+  "height": 1000,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

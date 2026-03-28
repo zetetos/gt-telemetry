@@ -1,0 +1,21 @@
+{
+  "carId": 1504,
+  "manufacturer": "Ferrari",
+  "model": "458 Italia '09",
+  "year": 2009,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4527,
+  "width": 1937,
+  "height": 1213,
+  "wheelbase": 2650,
+  "trackFront": 1672,
+  "trackRear": 1606,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

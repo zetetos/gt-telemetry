@@ -1,0 +1,21 @@
+{
+  "carId": 1466,
+  "manufacturer": "Nissan",
+  "model": "GT-R GT500 '08",
+  "year": 2008,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.2",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4800,
+  "width": 2000,
+  "height": 1100,
+  "wheelbase": 2720,
+  "trackFront": 1685,
+  "trackRear": 1675,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

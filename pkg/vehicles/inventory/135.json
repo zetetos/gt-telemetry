@@ -1,0 +1,21 @@
+{
+  "carId": 135,
+  "manufacturer": "Honda",
+  "model": "S800 '66",
+  "year": 1966,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 3335,
+  "width": 1400,
+  "height": 1215,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

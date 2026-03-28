@@ -1,0 +1,21 @@
+{
+  "carId": 3432,
+  "manufacturer": "Subaru",
+  "model": "Impreza Sedan WRX STi '04",
+  "year": 2004,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4415,
+  "width": 1740,
+  "height": 1425,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H4",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

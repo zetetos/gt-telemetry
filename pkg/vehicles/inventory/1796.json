@@ -1,0 +1,21 @@
+{
+  "carId": 1796,
+  "manufacturer": "Alpine",
+  "model": "A110 '72",
+  "year": 1972,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "RR",
+  "aspiration": "NA",
+  "length": 3850,
+  "width": 1520,
+  "height": 1130,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

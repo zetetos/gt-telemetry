@@ -8,11 +8,15 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 
 ## Features
 
-* Support for all known fields contained within the telemetry data packet.
-* Support for all current telemetry formats (A, B, ~, and C)
-* Access data in both metric and imperial units.
-* Recording capability to capture telemetry data to files.
-* An additional field for the differential gear ratio is computed based on the rolling wheel diameter of the driven wheels.
+* Support for all known fields in the telemetry data packet.
+* Support for all current telemetry formats (A, B, ~, and C).
+* Access to data in both metric and imperial units.
+* Live streaming from UDP network sources or playback from recorded files.
+* Batch file scanning via an iterator for high-speed processing of telemetry data.
+* Recording of telemetry data to plain or compressed files.
+* Live update of vehicle and circuit inventory databases from a remote server.
+* Custom vehicle and circuit definitions to override the embedded database and data provided by live updates.
+* Computed differential gear ratio based on the rolling wheel diameter of the driven wheels.
 * A vehicle inventory database with methods for providing the following information on a given vehicle ID:
   * Manufacturer
   * Model
@@ -39,7 +43,7 @@ go get github.com/zetetos/gt-telemetry/v2
 
 ## Usage ##
 
-Construct a new GT client and start reading the telemetry stream. All configuration fields in the example are optional and use the default values that would be used when not provided.
+Construct a new GT client and start reading the telemetry stream. All configuration fields in the example are optional and use the default values that would be used when not provided, with the exception of `UpdateBaseURL` which defaults to an empty string, resulting in auto-update being disabled.
 
 ```go
 import "github.com/zetetos/gt-telemetry/v2"
@@ -50,8 +54,8 @@ main() {
         Format: telemetryformat.Addendum3,
         LogLevel: "warn",
         StatsEnabled: false,
-        VehicleDB: "./pkg/vehicles/vehicles.json",
-        CircuitDB: "./pkg/circuits/circuits.json",
+        CachePath: "data/cache",
+        UpdateBaseURL: "https://static.zetetos.com/gt7/data",
     }
     gtclient, _ := gttelemetry.New(options)
     go func() {
@@ -67,7 +71,7 @@ main() {
 }
 ```
 
-_If the PlayStation is on the same network segment then you will probably find that the default broadcast address `255.255.255.255` will be sufficient to start reading data. If it does not work then enter the IP address of the PlayStation device instead._
+_If the PlayStation is on the same network segment, then you will probably find that the default broadcast address `255.255.255.255` will be sufficient to start reading data. If it does not work then enter the IP address of the PlayStation device instead._
 
 Read some data from the stream:
 
@@ -78,6 +82,37 @@ Read some data from the stream:
         gt.Telemetry.EngineRPM(),
     )
 ```
+
+### Live update of circuit and vehicle inventory ###
+
+Vehicle and circuit definitions can be downloaded over the web at runtime without needing to update the Simtezilo version.
+Updated vehicle and circuit definitions are stored in the cache directory under `vehicles` and `circuits` subdirectories.
+
+Along with circuit and vehicle-specific files, an additional `manifest.json` file is stored in each of the directories
+listing all of the available identifiers along with the last modified time. GT Telemetry uses this file to determine which
+vehicles and circuits are newer and only downloads those required.
+
+A `version.json` file is also stored in the base directory of the object store which contains separate latest modified
+times for the circuit and vehicle definitions. This file allows GT Telemetry to quickly determine if there are any new
+circuits or vehicles without having to download large manifest files and helps keep data transfer costs to a minimum.
+
+#### Publishing vehicle and circuit data ####
+
+Vehicle and circuit data can be published to any HTTP accessible object store supported by [Rclone](https://rclone.org).
+First, you will need to [configure Rclone](https://rclone.org/docs/) to access the object store of choice and, once complete, the JSON data in `pkg/vehicles/inventory` and `pkg/circuits/inventory` can be synchronised using the following command (in this example, an Rclone profile for Cloudflare R2 named r2:gt7):
+
+```bash
+R2_REMOTE=r2:gt7 make release/all
+```
+
+### Custom vehicle and circuit definitions
+
+Vehicle and circuit definitions stored in the cache directory will override the embedded database. Typically the files in
+these directories are populated by automatic updates, however, if you would like to create your own custom definitions then
+simply add a file to the appropriate directory and make sure the `lastModified` timestamp is far in the future and it will
+not be overwritten by the automatic update feature.
+
+Note that these files will be deleted if the cache is cleared via the web UI, so make sure to back up the custom files beforehand.
 
 ### Replay files ###
 
@@ -151,23 +186,18 @@ if client.IsRecording() {
 
 The `vehicle_inventory` CLI tool allows you to sync data with the [Gran Turismo website](https://www.gran-turismo.com/au/gt7/carlist/) and also import and export vehicle inventory data between JSON and CSV formats. The tool uses action-based commands and outputs to stdout, making it compatible with Unix pipes and redirections.
 
-The output format is automatically determined by the input file extension:
-- `.json` files are converted to CSV format
-- `.csv` files are converted to JSON format
-
-
-#### Synchronising the local DB file with the Gran Turismo website ####
+#### Synchronising the inventory with the Gran Turismo website ####
 
 Synchronisation will default to vehicle data in British English.
 
 ```bash
-go run tool/vehicle_inventory/*.go update internal/vehicles/inventory.json
+go run tools/vehicle_inventory/*.go update pkg/vehicles/inventory
 ```
 
-To synchronise in another language add the country code to the command:
+To synchronise in another language, add the locale code to the command:
 
 ```bash
-go run tool/vehicle_inventory/*.go update internal/vehicles/inventory.json jp
+go run tools/vehicle_inventory/*.go update pkg/vehicles/inventory jp
 ```
 
 Most data is synchronised with the exception of the following fields which need to be manually updated by searching for vehicle specifications on the Internet:
@@ -180,17 +210,24 @@ Most data is synchronised with the exception of the following fields which need 
 - EngineBankAngle
 - EngineCrankPlaneAngle
 
-
-#### Converting JSON to CSV ####
+#### Exporting inventory to CSV ####
 
 ```bash
-go run tool/vehicle_inventory/*.go convert internal/vehicles/inventory.json
+go run tools/vehicle_inventory/*.go convert pkg/vehicles/inventory > inventory.csv
 ```
 
-#### Converting CSV to JSON ####
+#### Importing CSV into inventory ####
 
 ```bash
-go run tool/vehicle_inventory/*.go convert data/inventory.csv
+go run tools/vehicle_inventory/*.go convert inventory.csv pkg/vehicles/inventory
+```
+
+#### Generating the manifest ####
+
+The generated manifest is printed to stdout.
+
+```bash
+go run tools/vehicle_inventory/*.go manifest pkg/vehicles/inventory
 ```
 
 #### CSV Format ####
@@ -216,21 +253,22 @@ The CSV format includes the following columns:
 - EngineCrankPlaneAngle: Engine crank plane angle in degrees
 
 
-
 ### Circuit Inventory Management ###
+
+The `circuit_capture` and `circuit_inventory` CLI tools are used to capture circuit coordinate data from live telemetry and compile it into the inventory database.
 
 #### Capture Circuit Data ####
 
-To capture a circuit do the following preparations:
+To capture a circuit, do the following preparations:
 
-1. In GT7 select a Gr.3 vehicle for general consistency with existing Captures
+1. In GT7 select a Gr.3 vehicle for general consistency with existing captures
 2. Navigate to the circuit in World Circuits
-2. Enter a time trial for the specific track layout (variation), any time of day. Don't enter the event by clicking start as the console will be driving a car around the circuit in the background.
+3. Enter a time trial for the specific track layout (variation), any time of day. Don't enter the event by clicking start, as the console will be driving a car around the circuit in the background.
 
 Once preparations are complete, run the following command with appropriate circuit details. The capture will start when the vehicle passes the start line and end when a full lap is completed.
 
 ```bash
-go run tool/circuit_capture/main.go \
+go run tools/circuit_capture/main.go \
     -d "data/circuits" \
     -n "Suzuka Circuit" \
     -v "Suzuka Circuit East Course" \
@@ -239,10 +277,20 @@ go run tool/circuit_capture/main.go \
 
 #### Compile Circuit Data Into Inventory ####
 
-The following command will convert all of the circuit capture data into the `circuits.json` database.
+The `circuit_inventory` tool processes captured circuit files and writes per-circuit inventory JSON files.
+
+To compile all captured circuit data into per-circuit inventory files:
 
 ```bash
-go run tool/circuit_inventory/main.go data/circuits pkg/circuits/circuits.json
+go run tools/circuit_inventory/main.go update data/circuits pkg/circuits/inventory
+```
+
+#### Generating the manifest ####
+
+The generated manifest is printed to stdout.
+
+```bash
+go run tools/circuit_inventory/main.go manifest pkg/circuits/inventory
 ```
 
 ## Examples ##

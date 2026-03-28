@@ -1,0 +1,21 @@
+{
+  "carId": 1984,
+  "manufacturer": "McLaren",
+  "model": "McLaren F1 GTR - BMW '95",
+  "year": 1995,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4292,
+  "width": 1820,
+  "height": 1140,
+  "wheelbase": 2718,
+  "trackFront": 1558,
+  "trackRear": 1488,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

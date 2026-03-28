@@ -1,0 +1,21 @@
+{
+  "carId": 1646,
+  "manufacturer": "Peugeot",
+  "model": "908 HDi FAP '10",
+  "year": 2010,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4610,
+  "width": 2000,
+  "height": 1030,
+  "wheelbase": 2950,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 100,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

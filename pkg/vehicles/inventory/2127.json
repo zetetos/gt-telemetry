@@ -1,0 +1,21 @@
+{
+  "carId": 2127,
+  "manufacturer": "Nissan",
+  "model": "GT-R LM NISMO '15",
+  "year": 2015,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4650,
+  "width": 1896,
+  "height": 1050,
+  "wheelbase": 2720,
+  "trackFront": 1560,
+  "trackRear": 1535,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

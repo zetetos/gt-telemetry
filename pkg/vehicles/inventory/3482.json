@@ -1,0 +1,21 @@
+{
+  "carId": 3482,
+  "manufacturer": "Volvo",
+  "model": "V40 T5 R-Design '13",
+  "year": 2013,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "TC",
+  "length": 4370,
+  "width": 1800,
+  "height": 1440,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I5",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 72,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

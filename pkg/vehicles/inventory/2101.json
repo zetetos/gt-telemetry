@@ -1,0 +1,21 @@
+{
+  "carId": 2101,
+  "manufacturer": "Toyota",
+  "model": "TS030 Hybrid '12",
+  "year": 2012,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4650,
+  "width": 2000,
+  "height": 1150,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

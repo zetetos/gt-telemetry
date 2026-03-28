@@ -1,0 +1,21 @@
+{
+  "carId": 1409,
+  "manufacturer": "Ferrari",
+  "model": "F40 '92",
+  "year": 1992,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4358,
+  "width": 1970,
+  "height": 1124,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

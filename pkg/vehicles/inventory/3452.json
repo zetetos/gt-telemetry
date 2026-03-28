@@ -1,0 +1,21 @@
+{
+  "carId": 3452,
+  "manufacturer": "Porsche",
+  "model": "917 LIVING LEGEND",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4776,
+  "width": 2056,
+  "height": 1025,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

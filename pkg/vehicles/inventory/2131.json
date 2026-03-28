@@ -1,0 +1,21 @@
+{
+  "carId": 2131,
+  "manufacturer": "Aston Martin",
+  "model": "V12 Vantage GT3 '12",
+  "year": 2012,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4760,
+  "width": 1979,
+  "height": 1340,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 75,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

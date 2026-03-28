@@ -1,0 +1,21 @@
+{
+  "carId": 3447,
+  "manufacturer": "Aston Martin",
+  "model": "Vantage '18",
+  "year": 2018,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4465,
+  "width": 1942,
+  "height": 1273,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

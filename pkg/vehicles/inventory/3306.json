@@ -1,0 +1,21 @@
+{
+  "carId": 3306,
+  "manufacturer": "Mazda",
+  "model": "Atenza Gr.3 Road Car",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4990,
+  "width": 2050,
+  "height": 1380,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

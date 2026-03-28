@@ -1,0 +1,21 @@
+{
+  "carId": 2122,
+  "manufacturer": "Zagato",
+  "model": "IsoRivolta Zagato VGT",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4390,
+  "width": 2008,
+  "height": 1096,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}
