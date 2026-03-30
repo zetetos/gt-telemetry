@@ -7,7 +7,7 @@ require (
 	github.com/fatih/color v1.19.0
 	github.com/gocarina/gocsv v0.0.0-20240520201108-78e41c74b4b1
 	github.com/kaitai-io/kaitai_struct_go_runtime v0.11.0
-	github.com/rs/zerolog v1.34.0
+	github.com/rs/zerolog v1.35.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/crypto v0.49.0
