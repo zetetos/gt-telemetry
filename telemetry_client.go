@@ -81,7 +81,7 @@ func New(opts Options) (*Client, error) {
 	}
 
 	if opts.Format == "" {
-		opts.Format = models.Addendum2
+		opts.Format = models.Addendum3
 	}
 
 	circuitDB, err := loadCircuitDB(opts.CircuitDB)

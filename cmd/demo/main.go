@@ -14,7 +14,7 @@ import (
 func main() {
 	clientConfig := gttelemetry.Options{
 		// Source:       "file://data/replays/demo.gtz",
-		Format:       gtmodels.Addendum2,
+		Format:       gtmodels.Addendum3,
 		StatsEnabled: true,
 	}
 
@@ -126,14 +126,17 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 		client.Telemetry.SequenceID(),
 		client.Telemetry.TimeOfDay(),
 	)
-	fmt.Printf("Race          Lap: %d of %d  Last lap: %+v  Best lap: %+v  Grid position: %d  Race entrants: %d  Race Type: %s\n",
+	fmt.Printf("Race          Lap: %d of %d Grid position: %d  Race entrants: %d  Race Type: %s\n",
 		client.Telemetry.CurrentLap(),
 		client.Telemetry.RaceLaps(),
-		client.Telemetry.LastLaptime(),
-		client.Telemetry.BestLaptime(),
 		client.Telemetry.GridPosition(),
 		client.Telemetry.RaceEntrants(),
 		raceType,
+	)
+	fmt.Printf("Lap Times     Current Lap: %-10s  Last lap: %-10s  Best lap: %-10s\n",
+		formatDuration(client.Telemetry.CurrentLaptime()),
+		formatDuration(client.Telemetry.LastLaptime()),
+		formatDuration(client.Telemetry.BestLaptime()),
 	)
 	fmt.Printf("Circuit	      Length: %d m   Name: %s\n",
 		circuit.Length,
@@ -141,12 +144,13 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 	)
 
 	fmt.Println()
-	fmt.Printf("Vehicle       ID: %d  Name: %s  %s  Drivetrain: %s  Aspiration: %s\n",
+	fmt.Printf("Vehicle       ID: %d  Name: %s  %s  Drivetrain: %s  Aspiration: %s  Category: %s\n",
 		client.Telemetry.VehicleID(),
 		client.Telemetry.VehicleManufacturer(),
 		client.Telemetry.VehicleModel(),
 		client.Telemetry.VehicleDrivetrain(),
 		client.Telemetry.VehicleAspirationExpanded(),
+		client.Telemetry.VehicleCategory(),
 	)
 	fmt.Printf("Dimensions    Length: %d mm  Width: %d mm  Height: %d mm  Wheelbase: %d mm  Track Front: %d mm  Track Rear: %d mm\n",
 		client.Telemetry.VehicleLengthMillimetres(),
@@ -156,6 +160,10 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 		client.Telemetry.VehicleTrackFrontMillimetres(),
 		client.Telemetry.VehicleTrackRearMillimetres(),
 	)
+	fmt.Printf("              Dynamic Wheelbase Left: %0.2f mm\n",
+		client.Telemetry.DynamicWheelbaseLeftMillimetres(),
+	)
+
 	fmt.Printf("Engine        Layout: %s  Bank angle: %3.0f°  Crank plane: %3.0f°\n",
 		client.Telemetry.VehicleEngineLayout(),
 		client.Telemetry.VehicleEngineBankAngle(),
@@ -163,14 +171,14 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 	)
 
 	fmt.Println()
-	fmt.Printf("Inputs        Throttle: %3.0f%% ➔ %3.0f%%  Brake: %3.0f%% ➔ %3.0f%%  Clutch: %3.0f%%  Steering: %+3.0f°  FFB: %+0.3f\n",
+	fmt.Printf("Inputs        Throttle: %3.0f%% ➔ %3.0f%%  Brake: %3.0f%% ➔ %3.0f%%  Clutch: %3.0f%%  Steering: %+3.2f°  Steering rate: %+0.3f rad/s\n",
 		client.Telemetry.ThrottleInputPercent(),
 		client.Telemetry.ThrottleOutputPercent(),
 		client.Telemetry.BrakeInputPercent(),
 		client.Telemetry.BrakeOutputPercent(),
 		client.Telemetry.ClutchActuationPercent(),
 		client.Telemetry.SteeringWheelAngleDegrees(),
-		client.Telemetry.SteeringWheelForceFeedback(),
+		client.Telemetry.SteeringWheelAngleRadiansPerSecond(),
 	)
 
 	fmt.Printf("              Speed: %d kph  RPM: %s rpm  %s  Energy recovery: %+3.03f\n",
@@ -217,6 +225,10 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 
 	fmt.Println()
 	fmt.Println("                    [  FL  ]  [  FR  ]  [  RL  ]  [  RR  ]")
+	fmt.Printf("Steering:           [%+0.6f]  [%+0.6f]                     rad\n",
+		client.Telemetry.WheelSteeringAngle().FrontLeft,
+		client.Telemetry.WheelSteeringAngle().FrontRight,
+	)
 	fmt.Printf("Suspension height:  [%5.0f ]  [%5.0f ]  [%5.0f ]  [%5.0f ] mm   Ride height: %0.02f mm\n",
 		client.Telemetry.SuspensionHeightMillimetres().FrontLeft,
 		client.Telemetry.SuspensionHeightMillimetres().FrontRight,
@@ -261,10 +273,17 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 		client.Telemetry.Unknown0x148(),
 		client.Telemetry.Unknown0x14C(),
 	)
+	surfaceType := client.Telemetry.SurfaceType()
+	fmt.Printf("Surface:            [%s]  [%s]  [%s]  [%s]\n",
+		truncate(surfaceType.FrontLeft.String(), 6),
+		truncate(surfaceType.FrontRight.String(), 6),
+		truncate(surfaceType.RearLeft.String(), 6),
+		truncate(surfaceType.RearRight.String(), 6),
+	)
 
 	fmt.Println()
 	fmt.Println("                    [    X    ]  [    Y    ]  [    Z    ]")
-	fmt.Printf("Position on map:    [%9s]  [%9s]  [%9s] m  Heading: %d\n",
+	fmt.Printf("Position on map:    [%9s]  [%9s]  [%9s] m  Heading: %d°\n",
 		fmt.Sprintf("%+f", client.Telemetry.PositionalMapCoordinates().X)[0:9],
 		fmt.Sprintf("%+f", client.Telemetry.PositionalMapCoordinates().Y)[0:9],
 		fmt.Sprintf("%+f", client.Telemetry.PositionalMapCoordinates().Z)[0:9],
@@ -331,7 +350,7 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 
 	if clientConfig.StatsEnabled {
 		fmt.Println()
-		fmt.Printf("Packet Size:  %d\n", client.Statistics.PacketSize)
+		fmt.Printf("Packet Size:  %d  Format: %s\n", client.Statistics.PacketSize, client.Telemetry.TelemetryFormat())
 		fmt.Printf("Packets       Total: %9d    Dropped: %9d     Invalid: %9d\n",
 			client.Statistics.PacketsTotal,
 			client.Statistics.PacketsDropped,
@@ -347,6 +366,22 @@ func renderTelemetry(client *gttelemetry.Client, clientConfig gttelemetry.Option
 			client.Statistics.DecodeTimeMax.Microseconds(),
 		)
 	}
+}
+
+func formatDuration(duration time.Duration) string {
+	sign := ""
+	if duration < 0 {
+		sign = "-"
+		duration = -duration
+	}
+
+	totalMs := duration.Milliseconds()
+	ms := totalMs % 1000
+	totalSecs := totalMs / 1000
+	secs := totalSecs % 60
+	mins := totalSecs / 60
+
+	return fmt.Sprintf("%s%d:%02d.%03d", sign, mins, secs, ms)
 }
 
 func renderFlag(value bool, output string, trueColour string, fColour string) string {
@@ -376,4 +411,17 @@ func renderFlag(value bool, output string, trueColour string, fColour string) st
 	}
 
 	return output
+}
+
+func truncate(str string, length int) string { //nolint:unparam
+	if length <= 0 {
+		return ""
+	}
+
+	runes := []rune(str)
+	if len(runes) > length {
+		return string(runes[:length])
+	}
+
+	return str
 }

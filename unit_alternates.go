@@ -19,6 +19,14 @@ func (t *Transformer) CurrentGearString() string {
 	return gear
 }
 
+func (t *Transformer) DynamicWheelbaseLeftInches() float32 {
+	return units.MetresToInches(t.RawTelemetry.DynamicWheelbaseLeft)
+}
+
+func (t *Transformer) DynamicWheelbaseLeftMillimetres() float32 {
+	return units.MetresToMillimetres(t.RawTelemetry.DynamicWheelbaseLeft)
+}
+
 func (t *Transformer) GroundSpeedKPH() float32 {
 	return units.MetresPerSecondToKilometresPerHour(t.GroundSpeedMetresPerSecond())
 }
@@ -29,6 +37,14 @@ func (t *Transformer) OilTemperatureFahrenheit() float32 {
 
 func (t *Transformer) RideHeightMillimetres() float32 {
 	return units.MetresToMillimetres(t.RideHeightMetres())
+}
+
+func (t *Transformer) SteeringWheelAngleDegrees() float32 {
+	return units.RadiansToDegrees(t.RawTelemetry.SteeringWheelAngleRadians)
+}
+
+func (t *Transformer) SteeringWheelAngleDegreesPerSecond() float32 {
+	return units.RadiansToDegrees(t.RawTelemetry.SteeringWheelAngleRadiansPerSecond)
 }
 
 func (t *Transformer) SuspensionHeightFeet() models.CornerSet {

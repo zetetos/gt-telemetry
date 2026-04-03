@@ -18,6 +18,18 @@ func (t *Transformer) SetFormatAddendum2() {
 	t.RawTelemetry.SetFormatAddendum2()
 }
 
+// SetFormatAddendum3 sets the telemetry format to Addendum3 (format "C") for testing purposes.
+// This allows tests to set the format without parsing a binary packet.
+func (t *Transformer) SetFormatAddendum3() {
+	t.RawTelemetry.SetFormatAddendum3()
+}
+
+// SetFormatInvalid sets the telemetry format to an invalid format for testing purposes.
+// This allows tests to set the format without parsing a binary packet.
+func (t *Transformer) SetFormatInvalid() {
+	t.RawTelemetry.SetFormatInvalid()
+}
+
 // SetAngularVelocityVector sets the angular velocity vector for testing purposes.
 // This allows tests to set telemetry values without parsing a binary packet.
 func (t *Transformer) SetAngularVelocityVector(x, y, z float32) {

@@ -47,15 +47,15 @@ type Vmax struct {
 
 type Transformer struct {
 	RawTelemetry telemetry.GranTurismoTelemetry
-	inventory    *vehicles.VehicleDB
 	Vehicle      vehicles.Vehicle
+	inventory    *vehicles.VehicleDB
 }
 
 func NewTransformer(inventory *vehicles.VehicleDB) *Transformer {
 	return &Transformer{
 		RawTelemetry: telemetry.GranTurismoTelemetry{},
-		inventory:    inventory,
 		Vehicle:      vehicles.Vehicle{},
+		inventory:    inventory,
 	}
 }
 
@@ -130,6 +130,10 @@ func (t *Transformer) CurrentLap() int16 {
 	return t.RawTelemetry.CurrentLap
 }
 
+func (t *Transformer) CurrentLaptime() time.Duration {
+	return time.Duration(t.RawTelemetry.CurrentLaptime) * time.Millisecond
+}
+
 func (t *Transformer) DifferentialRatio() float32 {
 	t.UpdateVehicle()
 
@@ -155,6 +159,10 @@ func (t *Transformer) DifferentialRatio() float32 {
 	diffRatio := (float32(vMax.RPM) / highestRatio) / wheelRpm
 
 	return diffRatio
+}
+
+func (t *Transformer) DynamicWheelbaseLeftMetres() float32 {
+	return t.RawTelemetry.DynamicWheelbaseLeft
 }
 
 func (t *Transformer) EnergyRecovery() float32 {
@@ -247,12 +255,12 @@ func (t *Transformer) GameState() models.GameState {
 
 func (t *Transformer) GameVersion() string {
 	isGT7, err := t.RawTelemetry.HeaderIsGt7()
-	if err != nil && isGT7 {
+	if err == nil && isGT7 {
 		return "gt7"
 	}
 
 	isGT6, err := t.RawTelemetry.HeaderIsGt6()
-	if err != nil && isGT6 {
+	if err == nil && isGT6 {
 		return "gt6"
 	}
 
@@ -377,16 +385,17 @@ func (t *Transformer) SequenceID() uint32 {
 	return t.RawTelemetry.SequenceId
 }
 
-func (t *Transformer) SteeringWheelAngleDegrees() float32 {
-	return units.RadiansToDegrees(t.RawTelemetry.SteeringWheelAngleRadians)
-}
-
 func (t *Transformer) SteeringWheelAngleRadians() float32 {
 	return t.RawTelemetry.SteeringWheelAngleRadians
 }
 
+func (t *Transformer) SteeringWheelAngleRadiansPerSecond() float32 {
+	return t.RawTelemetry.SteeringWheelAngleRadiansPerSecond
+}
+
+// Deprecated: value is steering angular velocity, not force feedback.
 func (t *Transformer) SteeringWheelForceFeedback() float32 {
-	return t.RawTelemetry.SteeringWheelForceFeedback
+	return t.RawTelemetry.SteeringWheelAngleRadiansPerSecond
 }
 
 func (t *Transformer) SuggestedGear() uint64 {
@@ -396,6 +405,20 @@ func (t *Transformer) SuggestedGear() uint64 {
 	}
 
 	return gear.Suggested
+}
+
+func (t *Transformer) SurfaceType() models.CornerSetGeneric[models.SurfaceType] {
+	surfaceType := t.RawTelemetry.SurfaceType
+	if surfaceType == nil {
+		return models.CornerSetGeneric[models.SurfaceType]{}
+	}
+
+	return models.CornerSetGeneric[models.SurfaceType]{
+		FrontLeft:  models.SurfaceTypeFromID(surfaceType.FrontLeft),
+		FrontRight: models.SurfaceTypeFromID(surfaceType.FrontRight),
+		RearLeft:   models.SurfaceTypeFromID(surfaceType.RearLeft),
+		RearRight:  models.SurfaceTypeFromID(surfaceType.RearRight),
+	}
 }
 
 func (t *Transformer) SuspensionHeightMetres() models.CornerSet {
@@ -413,18 +436,23 @@ func (t *Transformer) SuspensionHeightMetres() models.CornerSet {
 }
 
 func (t *Transformer) TelemetryFormat() models.Name {
+	isAddendum3Format, err := t.RawTelemetry.Addendum3Format()
+	if err == nil && isAddendum3Format {
+		return models.Addendum3
+	}
+
 	isAddendum2Format, err := t.RawTelemetry.Addendum2Format()
-	if err != nil && isAddendum2Format {
+	if err == nil && isAddendum2Format {
 		return models.Addendum2
 	}
 
 	isAddendum1Format, err := t.RawTelemetry.Addendum1Format()
-	if err != nil && isAddendum1Format {
+	if err == nil && isAddendum1Format {
 		return models.Addendum1
 	}
 
 	isStandardFormat, err := t.RawTelemetry.StandardFormat()
-	if err != nil && isStandardFormat {
+	if err == nil && isStandardFormat {
 		return models.Standard
 	}
 
@@ -710,6 +738,15 @@ func (t *Transformer) VelocityVector() models.Vector {
 	}
 }
 
+func (t *Transformer) WheelSteeringAngle() models.CornerSet {
+	return models.CornerSet{
+		FrontLeft:  t.RawTelemetry.WheelSteeringAngleFl,
+		FrontRight: t.RawTelemetry.WheelSteeringAngleFr,
+		RearLeft:   0,
+		RearRight:  0,
+	}
+}
+
 func (t *Transformer) WheelSpeedMetresPerSecond() models.CornerSet {
 	radius := t.TyreRadiusMetres()
 	rps := t.WheelSpeedRadiansPerSecond()
@@ -758,5 +795,11 @@ func (t *Transformer) UpdateVehicle() {
 		}
 
 		t.Vehicle = vehicle
+	}
+
+	vehicleCategory := t.RawTelemetry.VehicleCategory
+
+	if vehicleCategory != "" && t.Vehicle.Category != vehicleCategory {
+		t.Vehicle.Category = vehicleCategory
 	}
 }

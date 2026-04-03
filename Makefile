@@ -82,7 +82,7 @@ upgradeable:
 ## build/kaitai: compile the GT telemetry package from the Kaitai Struct
 .PHONY: build/kaitai
 build/kaitai:
-	@docker build --output=internal/telemetry --progress=plain -f build/Dockerfile .
+	@docker build --platform=linux/amd64 --output=internal/telemetry --progress=plain -f build/Dockerfile .
 
 ## build: build the demo application for the local platform
 .PHONY: build
