@@ -9,7 +9,7 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 ## Features
 
 * Support for all known fields contained within the telemetry data packet.
-* Support for all current telemetry formats (A, B and ~)
+* Support for all current telemetry formats (A, B, ~, and C)
 * Access data in both metric and imperial units.
 * Recording capability to capture telemetry data to files.
 * An additional field for the differential gear ratio is computed based on the rolling wheel diameter of the driven wheels.
@@ -31,7 +31,7 @@ GT Telemetry is a module for reading Gran Turismo race telemetry streams in Go.
 
 ## Installation ##
 
-To start using gt-telemetry, install Go 1.25.6 or above. From your project, run the following command to retrieve the module:
+To start using gt-telemetry, install Go 1.25.0 or above. From your project, run the following command to retrieve the module:
 
 ```bash
 go get github.com/zetetos/gt-telemetry/v2
@@ -47,7 +47,7 @@ import "github.com/zetetos/gt-telemetry/v2"
 main() {
     options := gttelemetry.Options{
         Source: "udp://255.255.255.255:33739"
-        Format: telemetryformat.Addendum2,
+        Format: telemetryformat.Addendum3,
         LogLevel: "warn",
         StatsEnabled: false,
         VehicleDB: "./pkg/vehicles/vehicles.json",
@@ -55,7 +55,7 @@ main() {
     }
     gtclient, _ := gttelemetry.New(options)
     go func() {
-        err, recoverable = gtclient.Run()
+        err, recoverable = gtclient.Stream(context.Background())
         if err != nil {
             if recoverable {
                 log.Printf("Recoverable error: %s", err.Error())
