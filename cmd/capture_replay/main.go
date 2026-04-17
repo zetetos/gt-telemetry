@@ -14,8 +14,13 @@ import (
 )
 
 func main() {
-	var outFile string
+	var (
+		outFile    string
+		lapCapture bool
+	)
+
 	flag.StringVar(&outFile, "o", "gt7-replay.gtz", "Output file name. Default: gt7-replay.gtz")
+	flag.BoolVar(&lapCapture, "lap", false, "Capture a single lap from live telemetry, starting and stopping at the start/finish line")
 	flag.Parse()
 
 	validateFileExtension(outFile)
@@ -26,9 +31,13 @@ func main() {
 
 	sigChan := setupSignalHandling()
 
-	fmt.Println("Waiting for replay to start...")
-
-	captureReplayLoop(client, outFile, sigChan)
+	if lapCapture {
+		fmt.Println("Waiting for start/finish line crossing...")
+		captureLapLoop(client, outFile, sigChan)
+	} else {
+		fmt.Println("Waiting for replay to start...")
+		captureReplayLoop(client, outFile, sigChan)
+	}
 }
 
 func setupSignalHandling() chan os.Signal {
@@ -142,11 +151,24 @@ func isFirstFrame(lastTimeOfDay time.Duration) bool {
 }
 
 func shouldStopRecording(recordingStarted bool, client *gttelemetry.Client, startTime time.Duration, framesCaptured int) bool {
-	return recordingStarted && client.Telemetry.TimeOfDay() <= startTime && framesCaptured >= 60
+	if !recordingStarted {
+		return false
+	}
+
+	if !client.IsRecording() {
+		return true
+	}
+
+	return client.Telemetry.TimeOfDay() <= startTime && framesCaptured >= 60
 }
 
 func handleReplayRestart(client *gttelemetry.Client, framesCaptured int) {
-	fmt.Println("Replay restart detected, stopping recording...")
+	if client.IsRecording() {
+		fmt.Println("Replay restart detected, stopping recording...")
+	} else {
+		fmt.Println("Recording stopped externally...")
+	}
+
 	stopRecordingIfNeeded(client)
 	fmt.Printf("Capture complete, total frames: %d\n", framesCaptured)
 }
@@ -189,4 +211,106 @@ func printSessionInfo(client *gttelemetry.Client, outFile string) {
 	fmt.Printf("Vehicle: %s %s\n",
 		client.Telemetry.VehicleManufacturer(),
 		client.Telemetry.VehicleModel())
+}
+
+func updateLapStabilisation(currentLap int16, startLap *int16, stableFrames *int, lapStabilised *bool) {
+	const stableFramesRequired = 60
+
+	switch {
+	case *startLap == -1, currentLap != *startLap:
+		*startLap = currentLap
+		*stableFrames = 1
+	default:
+		*stableFrames++
+
+		if *stableFrames >= stableFramesRequired {
+			*lapStabilised = true
+		}
+	}
+}
+
+func handleActiveLapRecording(client *gttelemetry.Client, currentLap, startLap int16, framesCaptured *int) bool {
+	if !client.IsRecording() {
+		fmt.Printf("\nRecording stopped, exiting...\n")
+		fmt.Printf("Capture complete, total frames: %d\n", *framesCaptured)
+
+		return true
+	}
+
+	if currentLap != startLap && *framesCaptured >= 60 {
+		fmt.Printf("\nLap complete, stopping recording...\n")
+		stopRecordingIfNeeded(client)
+		fmt.Printf("Capture complete, total frames: %d\n", *framesCaptured)
+
+		return true
+	}
+
+	(*framesCaptured)++
+	printFrameCount(*framesCaptured)
+
+	return false
+}
+
+func captureLapLoop(client *gttelemetry.Client, outFile string, sigChan chan os.Signal) {
+	framesCaptured := 0
+	sequenceID := ^uint32(0)
+	startLap := int16(-1)
+	stableFrames := 0
+	lapStabilised := false
+	recordingStarted := false
+
+	for {
+		select {
+		case <-sigChan:
+			handleInterrupt(client)
+
+			return
+		default:
+			if shouldSkipFrame(sequenceID, client) {
+				time.Sleep(4 * time.Millisecond)
+
+				continue
+			}
+
+			sequenceID = client.Telemetry.SequenceID()
+
+			currentLap := client.Telemetry.CurrentLap()
+
+			if !recordingStarted {
+				if client.Telemetry.IsInMainMenu() {
+					time.Sleep(4 * time.Millisecond)
+
+					continue
+				}
+
+				if !lapStabilised {
+					updateLapStabilisation(currentLap, &startLap, &stableFrames, &lapStabilised)
+					time.Sleep(4 * time.Millisecond)
+
+					continue
+				}
+
+				// Lap is stabilised — wait for the next crossing.
+				if currentLap != startLap {
+					startRecording(client, outFile)
+
+					startLap = currentLap
+					recordingStarted = true
+
+					printSessionInfo(client, outFile)
+					fmt.Printf("Lap %d started, recording...\n", currentLap)
+				}
+
+				time.Sleep(4 * time.Millisecond)
+
+				continue
+			}
+
+			if handleActiveLapRecording(client, currentLap, startLap, &framesCaptured) {
+				return
+			}
+
+			time.Sleep(4 * time.Millisecond)
+		}
+	}
 }

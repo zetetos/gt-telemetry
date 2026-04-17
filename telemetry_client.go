@@ -28,6 +28,15 @@ const (
 	defaultCachePath = "data/cache"
 )
 
+// recordingState represents the game state at the time recording was started.
+type recordingState int
+
+const (
+	recordingStateNone      recordingState = iota
+	recordingStateOnCircuit                // vehicle is live on circuit, not in any menu
+	recordingStateRaceMenu                 // vehicle is loaded but in the race menu
+)
+
 var (
 	ErrInvalidURLScheme           = reader.ErrInvalidURLScheme
 	ErrNotAFileSource             = errors.New("Scan() requires a file:// source")
@@ -74,10 +83,11 @@ type Client struct {
 	CircuitDB        *circuits.CircuitDB
 
 	// Recording state
-	recordingMutex  sync.RWMutex
-	recordingFile   io.WriteCloser
-	recordingBuffer io.Writer
-	isRecording     bool
+	recordingMutex     sync.RWMutex
+	recordingFile      io.WriteCloser
+	recordingBuffer    io.Writer
+	isRecording        bool
+	recordingInitState recordingState
 }
 
 func New(opts Options) (*Client, error) {
@@ -390,6 +400,15 @@ func (c *Client) StartRecording(filePath string) error {
 	c.recordingBuffer = buffer
 	c.isRecording = true
 
+	switch {
+	case c.Telemetry.IsInRaceMenu():
+		c.recordingInitState = recordingStateRaceMenu
+	case !c.Telemetry.IsInMainMenu():
+		c.recordingInitState = recordingStateOnCircuit
+	default:
+		c.recordingInitState = recordingStateNone
+	}
+
 	c.log.Info().Str("file", filePath).Msg("started recording telemetry data")
 
 	return nil
@@ -415,6 +434,7 @@ func (c *Client) StopRecording() error {
 	c.recordingFile = nil
 	c.recordingBuffer = nil
 	c.isRecording = false
+	c.recordingInitState = recordingStateNone
 
 	c.log.Info().Msg("stopped recording telemetry data")
 
@@ -559,30 +579,57 @@ func (c *Client) processTelemetry(rawTelemetry *telemetry.GranTurismoTelemetry, 
 	c.recordPacket()
 }
 
+// currentGameState returns the recording state that corresponds to the current game state.
+func (c *Client) currentGameState() recordingState {
+	switch {
+	case c.Telemetry.IsInRaceMenu():
+		return recordingStateRaceMenu
+	case !c.Telemetry.IsInMainMenu():
+		return recordingStateOnCircuit
+	default:
+		return recordingStateNone
+	}
+}
+
 // recordPacket writes the current packet to the recording file if recording is active.
 func (c *Client) recordPacket() {
 	c.recordingMutex.RLock()
-	defer c.recordingMutex.RUnlock()
+	active := c.isRecording && c.recordingBuffer != nil && len(c.DecipheredPacket) > 0
+	initState := c.recordingInitState
+	c.recordingMutex.RUnlock()
 
-	if !c.isRecording || c.recordingBuffer == nil {
+	if !active {
 		return
 	}
 
-	if len(c.DecipheredPacket) == 0 {
-		return
-	}
-
-	// Skip writing if the game is paused
 	if c.Telemetry.Flags().GamePaused {
 		return
 	}
 
-	// Skip writing if in main menu or race menu
-	if c.Telemetry.IsInMainMenu() || c.Telemetry.IsInRaceMenu() {
+	// Recording started in the main menu (no vehicle present) — never write packets.
+	if initState == recordingStateNone {
 		return
 	}
 
+	// Stop recording when the game state has changed from when recording began.
+	if currentState := c.currentGameState(); currentState != initState {
+		c.log.Info().
+			Int("initialState", int(initState)).
+			Int("currentState", int(currentState)).
+			Msg("game state changed, stopping recording")
+
+		err := c.StopRecording()
+		if err != nil {
+			c.log.Error().Err(err).Msg("failed to stop recording on state change")
+		}
+
+		return
+	}
+
+	c.recordingMutex.RLock()
 	_, err := c.recordingBuffer.Write(c.DecipheredPacket)
+	c.recordingMutex.RUnlock()
+
 	if err != nil {
 		c.log.Error().Err(err).Msg("failed to write packet to recording file")
 	}

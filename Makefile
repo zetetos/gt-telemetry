@@ -135,10 +135,16 @@ run/watch:
 		--build.send_interrupt "true" \
 		--misc.clean_on_exit "true"
 
+## run/capture-lap: capture a lap and save to gt7-lap.gtz
+.PHONY: run/capture-lap
+run/capture-lap:
+	@go run cmd/capture_replay/main.go -lap -o gt7-lap.gtz
+	@echo "Replay saved to gt7-lap.gtz"
+
 ## run/capture-replay: capture a replay and save to gt7-replay.gtz
 .PHONY: run/capture-replay
 run/capture-replay:
-	@go run cmd/capture_replay/main.go
+	@go run cmd/capture_replay/main.go -o gt7-replay.gtz
 	@echo "Replay saved to gt7-replay.gtz"
 
 ## update/vehicledb: update the vehicle inventory from GT7 website
