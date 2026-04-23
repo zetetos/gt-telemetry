@@ -13,7 +13,8 @@ import (
 	"github.com/rs/zerolog"
 )
 
-const packetInterval = (1000 / 60) * time.Millisecond
+// PacketInterval is the time between packets at the standard 60 Hz telemetry rate.
+const PacketInterval = (1000 / 60) * time.Millisecond
 
 var (
 	ErrFilenameTooShort         = errors.New("filename too short")
@@ -23,7 +24,6 @@ var (
 // FileReader reads GT7 replay files packet by packet.
 type FileReader struct {
 	fileContent *bufio.Scanner
-	lastRead    time.Time
 	log         zerolog.Logger
 	closer      func() error
 }
@@ -52,7 +52,6 @@ func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 
 	return &FileReader{
 		fileContent: scanner,
-		lastRead:    time.Unix(0, 0),
 		log:         log,
 		closer:      fileHandle.Close,
 	}, nil
@@ -145,13 +144,8 @@ func packetSplitFunc(data []byte, atEOF bool) (advance int, token []byte, err er
 	return 0, nil, nil
 }
 
-// Read reads the next packet from the file, simulating real-time intervals.
+// Read reads the next packet from the file.
 func (r *FileReader) Read() (int, []byte, error) {
-	if r.lastRead.IsZero() {
-		r.log.Debug().Msg("reset last read time")
-		r.lastRead = time.Now()
-	}
-
 	ok := r.fileContent.Scan()
 	if !ok {
 		err := r.fileContent.Err()
@@ -166,16 +160,6 @@ func (r *FileReader) Read() (int, []byte, error) {
 	if len(packet) == 4 {
 		return 0, nil, nil
 	}
-
-	elapsed := time.Since(r.lastRead)
-	waitTime := packetInterval - elapsed
-
-	if waitTime > 0 {
-		timer := time.NewTimer(waitTime)
-		<-timer.C
-	}
-
-	r.lastRead = time.Now()
 
 	return len(packet), packet, nil
 }

@@ -7,10 +7,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net"
+	"iter"
 	"net/url"
 	"os"
-	"strconv"
 	"sync"
 	"time"
 
@@ -24,7 +23,8 @@ import (
 )
 
 var (
-	ErrInvalidURLScheme           = errors.New("invalid URL scheme")
+	ErrInvalidURLScheme           = reader.ErrInvalidURLScheme
+	ErrNotAFileSource             = errors.New("Scan() requires a file:// source")
 	ErrRecordingAlreadyInProgress = errors.New("recording already in progress")
 	ErrUnsupportedFileExtension   = errors.New("unsupported file extension, use either .gtr or .gtz")
 	ErrNoRecordingInProgress      = errors.New("no recording in progress")
@@ -181,10 +181,10 @@ func loadVehicleDB(path string) (*vehicles.VehicleDB, error) {
 	return vehicleDB, nil
 }
 
-// Run starts the telemetry client to read and process telemetry data.
+// Stream starts the telemetry client to read and process a live data stream.
 // The context parameter allows for graceful cancellation.
-func (c *Client) Run(ctx context.Context) (recoverable bool, err error) {
-	// Ensure recording is stopped when Run exits
+func (c *Client) Stream(ctx context.Context) (recoverable bool, err error) {
+	// Ensure recording is stopped when Stream exits
 	defer func() {
 		if c.IsRecording() {
 			stopErr := c.StopRecording()
@@ -199,12 +199,16 @@ func (c *Client) Run(ctx context.Context) (recoverable bool, err error) {
 		return false, fmt.Errorf("parse source URL: %w", err)
 	}
 
-	telemetryReader, recoverable, err := c.setupTelemetryReader(sourceURL)
+	readerCfg, err := reader.New(sourceURL, c.format, c.log)
 	if err != nil {
-		return recoverable, err
+		return readerCfg.Recoverable, err
 	}
 
-	// Ensure the reader is closed when Run exits
+	recoverable = readerCfg.Recoverable
+	telemetryReader := readerCfg.Reader
+	throttle := readerCfg.Throttle
+
+	// Ensure the reader is closed when Stream exits
 	defer func() {
 		closeErr := telemetryReader.Close()
 		if closeErr != nil {
@@ -232,6 +236,57 @@ func (c *Client) Run(ctx context.Context) (recoverable bool, err error) {
 			if done, recovErr := c.readAndProcessPacket(telemetryReader, rawTelemetry); done {
 				return recoverable, recovErr
 			}
+
+			time.Sleep(throttle)
+		}
+	}
+}
+
+// Run starts the telemetry client to read and process a live data stream.
+//
+// Deprecated: Use Stream instead.
+func (c *Client) Run(ctx context.Context) (recoverable bool, err error) {
+	return c.Stream(ctx)
+}
+
+// Scan returns an iterator for batch processing of a file source. Each iteration
+// reads one packet, parses it, and yields the updated Transformer. The caller
+// drives the loop so no packets are dropped. Only valid for file:// sources.
+// The returned Transformer pointer is reused across iterations; callers must
+// copy any needed data before advancing.
+func (c *Client) Scan(ctx context.Context) iter.Seq2[*Transformer, error] {
+	return func(yield func(*Transformer, error) bool) {
+		telemetryReader, err := c.openFileReader()
+		if err != nil {
+			yield(nil, err)
+
+			return
+		}
+
+		defer func() {
+			closeErr := telemetryReader.Close()
+			if closeErr != nil {
+				c.log.Error().Err(closeErr).Msg("failed to close telemetry reader")
+			}
+		}()
+
+		rawTelemetry := telemetry.NewGranTurismoTelemetry()
+
+		for ctx.Err() == nil {
+			done, readErr := c.scanNextPacket(telemetryReader, rawTelemetry)
+			if done {
+				if readErr != nil {
+					yield(nil, readErr)
+				}
+
+				return
+			}
+
+			if len(c.DecipheredPacket) > 0 {
+				if !yield(c.Telemetry, nil) {
+					return
+				}
+			}
 		}
 	}
 }
@@ -244,9 +299,9 @@ func (c *Client) IsReplaySource() (bool, error) {
 	}
 
 	switch sourceURL.Scheme {
-	case "file":
+	case reader.SchemeFile:
 		return true, nil
-	case "udp":
+	case reader.SchemeUDP:
 		return false, nil
 	default:
 		return false, fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme)
@@ -336,33 +391,51 @@ func (c *Client) IsRecording() bool {
 	return c.isRecording
 }
 
-// setupTelemetryReader initializes the telemetry reader based on the URL scheme.
-func (c *Client) setupTelemetryReader(sourceURL *url.URL) (reader.Reader, bool, error) { //nolint:ireturn
-	switch sourceURL.Scheme {
-	case "udp":
-		host, portStr, _ := net.SplitHostPort(sourceURL.Host)
-
-		port, err := strconv.Atoi(portStr)
-		if err != nil {
-			return nil, false, fmt.Errorf("parse URL port: %w", err)
-		}
-
-		telemetryReader, err := reader.NewUDPReader(host, port, c.format, c.log)
-		if err != nil {
-			return nil, true, fmt.Errorf("setup UDP reader: %w", err)
-		}
-
-		return telemetryReader, true, nil
-	case "file":
-		telemetryReader, err := reader.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
-		if err != nil {
-			return nil, false, fmt.Errorf("setup file reader: %w", err)
-		}
-
-		return telemetryReader, false, nil
-	default:
-		return nil, false, fmt.Errorf("%w: %q", ErrInvalidURLScheme, sourceURL.Scheme)
+// openFileReader parses the client source URL and opens a FileReader.
+// Returns ErrNotAFileSource if the source is not a file:// URL.
+func (c *Client) openFileReader() (*reader.FileReader, error) {
+	sourceURL, err := url.Parse(c.source)
+	if err != nil {
+		return nil, fmt.Errorf("parse source URL: %w", err)
 	}
+
+	if sourceURL.Scheme != reader.SchemeFile {
+		return nil, ErrNotAFileSource
+	}
+
+	r, err := reader.NewFileReader(sourceURL.Host+sourceURL.Path, c.log)
+	if err != nil {
+		return nil, fmt.Errorf("setup file reader: %w", err)
+	}
+
+	return r, nil
+}
+
+// scanNextPacket reads and processes one packet for the Scan iterator.
+// Returns done=true when scanning is complete. A non-nil error should be yielded to the caller.
+func (c *Client) scanNextPacket(r reader.Reader, raw *telemetry.GranTurismoTelemetry) (done bool, err error) {
+	bufLen, buffer, readErr := r.Read()
+	if readErr != nil {
+		if errors.Is(readErr, io.EOF) {
+			c.Finished = true
+
+			return true, nil
+		}
+
+		return true, readErr
+	}
+
+	if len(buffer[:bufLen]) == 0 {
+		return false, nil
+	}
+
+	c.DecipheredPacket = buffer[:bufLen]
+
+	stream := kaitai.NewStream(bytes.NewReader(c.DecipheredPacket))
+
+	c.processTelemetry(raw, stream, time.Now())
+
+	return false, nil
 }
 
 // readAndProcessPacket reads a single packet and processes it.

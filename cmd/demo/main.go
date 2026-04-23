@@ -51,7 +51,7 @@ func main() {
 
 func runClient(client *gttelemetry.Client) {
 	for {
-		recoverable, err := client.Run(context.Background())
+		recoverable, err := client.Stream(context.Background())
 		if err != nil {
 			if recoverable {
 				log.Printf("Recoverable error: %s", err.Error())
