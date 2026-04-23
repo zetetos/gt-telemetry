@@ -1,21 +1,21 @@
 {
-  "carId": 3431,
+  "carId": 3440,
   "manufacturer": "Porsche",
-  "model": "911 Carrera RS (964) '92",
-  "year": 1992,
+  "model": "911 Turbo S Leichtbau (964) '93",
+  "year": 1993,
   "openCockpit": false,
   "carType": "street",
   "category": "Gr.N",
   "drivetrain": "RR",
-  "aspiration": "NA",
+  "aspiration": "TC",
   "length": 4250,
-  "width": 1660,
+  "width": 1775,
   "height": 1270,
-  "wheelbase": 2770,
+  "wheelbase": 2270,
   "trackFront": 1380,
   "trackRear": 1373,
   "engineLayout": "H6",
   "engineBankAngle": 180,
   "engineCrankPlaneAngle": 120,
-  "lastModified": "2026-03-15T12:24:40Z"
+  "lastModified": "2026-04-23T07:53:13.677012Z"
 }

@@ -1,0 +1,21 @@
+{
+  "carId": 3603,
+  "manufacturer": "Renault",
+  "model": "Twingo '93",
+  "year": 1993,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "NA",
+  "length": 3433,
+  "width": 1630,
+  "height": 1423,
+  "wheelbase": 2345,
+  "trackFront": 1416,
+  "trackRear": 1416,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-04-23T07:53:13.680636Z"
+}
