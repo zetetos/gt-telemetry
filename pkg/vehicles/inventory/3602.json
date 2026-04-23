@@ -1,0 +1,21 @@
+{
+  "carId": 3602,
+  "manufacturer": "Yangwang",
+  "model": "U9 '24",
+  "year": 2024,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "EV",
+  "length": 4966,
+  "width": 2029,
+  "height": 1295,
+  "wheelbase": 2900,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-04-23T07:53:13.694679Z"
+}
