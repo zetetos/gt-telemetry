@@ -1,0 +1,21 @@
+{
+  "carId": 3428,
+  "manufacturer": "Mercedes-Benz",
+  "model": "S Barker Tourer '29",
+  "year": 1929,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "SC",
+  "length": 4700,
+  "width": 1700,
+  "height": 1600,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

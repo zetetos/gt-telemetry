@@ -1,0 +1,21 @@
+{
+  "carId": 3439,
+  "manufacturer": "Porsche",
+  "model": "911 Carrera RS (993) '95",
+  "year": 1995,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "RR",
+  "aspiration": "NA",
+  "length": 4245,
+  "width": 1730,
+  "height": 1270,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H6",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

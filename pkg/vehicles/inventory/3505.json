@@ -1,0 +1,21 @@
+{
+  "carId": 3505,
+  "manufacturer": "De Tomaso",
+  "model": "Mangusta (Christian Dior)",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 0,
+  "width": 0,
+  "height": 0,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

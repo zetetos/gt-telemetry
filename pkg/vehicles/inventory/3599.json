@@ -1,0 +1,21 @@
+{
+  "carId": 3599,
+  "manufacturer": "Xiaomi",
+  "model": "SU7 Ultra '25",
+  "year": 2025,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "EV",
+  "length": 5070,
+  "width": 1970,
+  "height": 1465,
+  "wheelbase": 3000,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

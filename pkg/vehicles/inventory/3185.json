@@ -1,0 +1,21 @@
+{
+  "carId": 3185,
+  "manufacturer": "Alfa Romeo",
+  "model": "4C Gr.3",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4340,
+  "width": 1950,
+  "height": 1182,
+  "wheelbase": 2380,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

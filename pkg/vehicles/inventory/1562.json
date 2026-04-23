@@ -1,0 +1,21 @@
+{
+  "carId": 1562,
+  "manufacturer": "Lexus",
+  "model": "LFA '10",
+  "year": 2010,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4505,
+  "width": 1895,
+  "height": 1220,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V10",
+  "engineBankAngle": 72,
+  "engineCrankPlaneAngle": 72,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

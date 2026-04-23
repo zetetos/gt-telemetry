@@ -1,0 +1,21 @@
+{
+  "carId": 1551,
+  "manufacturer": "Ferrari",
+  "model": "330 P4 '67",
+  "year": 1967,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4185,
+  "width": 1810,
+  "height": 1000,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

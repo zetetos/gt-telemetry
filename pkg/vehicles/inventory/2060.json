@@ -1,0 +1,21 @@
+{
+  "carId": 2060,
+  "manufacturer": "Gran Turismo",
+  "model": "Racing Kart 125 Shifter",
+  "year": 0,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 2030,
+  "width": 1368,
+  "height": 545,
+  "wheelbase": 1372,
+  "trackFront": 1270,
+  "trackRear": 1270,
+  "engineLayout": "S1",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

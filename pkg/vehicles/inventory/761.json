@@ -1,0 +1,21 @@
+{
+  "carId": 761,
+  "manufacturer": "Lancia",
+  "model": "Delta HF Integrale Rally Car '92",
+  "year": 1992,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.B",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 3900,
+  "width": 1770,
+  "height": 1360,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

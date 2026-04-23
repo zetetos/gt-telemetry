@@ -9,4 +9,7 @@ out/
 *.out
 
 # Temporary files
-tmp/
+pkg/vehicles/inventory/manifest.json
+pkg/circuits/inventory/manifest.json
+data/cache/
+_tmp/

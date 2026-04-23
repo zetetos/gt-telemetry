@@ -1,0 +1,21 @@
+{
+  "carId": 1027,
+  "manufacturer": "DMC",
+  "model": "DeLorean S2 '04",
+  "year": 2004,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "RR",
+  "aspiration": "NA",
+  "length": 4267,
+  "width": 1857,
+  "height": 1140,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

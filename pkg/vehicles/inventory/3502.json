@@ -1,0 +1,21 @@
+{
+  "carId": 3502,
+  "manufacturer": "Genesis",
+  "model": "Genesis X GR3",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4924,
+  "width": 1992,
+  "height": 1330,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 2139,
+  "manufacturer": "Lexus",
+  "model": "RC F '14",
+  "year": 2014,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4705,
+  "width": 1850,
+  "height": 1390,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

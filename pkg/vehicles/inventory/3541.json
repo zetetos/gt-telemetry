@@ -1,0 +1,21 @@
+{
+  "carId": 3541,
+  "manufacturer": "BVLGARI",
+  "model": "BVLGARI Aluminium VGT",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4196,
+  "width": 1910,
+  "height": 1032,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

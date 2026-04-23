@@ -1,0 +1,21 @@
+{
+  "carId": 3557,
+  "manufacturer": "Mercedes-Benz",
+  "model": "W 196 R '55",
+  "year": 1955,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4025,
+  "width": 1625,
+  "height": 1040,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I8",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

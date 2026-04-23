@@ -1,0 +1,21 @@
+{
+  "carId": 2116,
+  "manufacturer": "Alpine",
+  "model": "Alpine VGT Race",
+  "year": 2015,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 5047,
+  "width": 2100,
+  "height": 940,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

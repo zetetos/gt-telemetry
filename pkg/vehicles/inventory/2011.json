@@ -1,0 +1,21 @@
+{
+  "carId": 2011,
+  "manufacturer": "Ferrari",
+  "model": "500 Mondial Pinin Farina Coupe '54",
+  "year": 1954,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 3937,
+  "width": 1638,
+  "height": 965,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

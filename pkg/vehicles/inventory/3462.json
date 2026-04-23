@@ -1,0 +1,21 @@
+{
+  "carId": 3462,
+  "manufacturer": "Pontiac",
+  "model": "GTO 'The Judge' '69",
+  "year": 1969,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 5118,
+  "width": 1925,
+  "height": 1328,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

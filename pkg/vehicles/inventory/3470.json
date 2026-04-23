@@ -1,0 +1,21 @@
+{
+  "carId": 3470,
+  "manufacturer": "Ferrari",
+  "model": "812 Superfast '17",
+  "year": 2017,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4657,
+  "width": 1971,
+  "height": 1276,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 65,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

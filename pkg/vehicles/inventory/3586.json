@@ -1,0 +1,21 @@
+{
+  "carId": 3586,
+  "manufacturer": "Polestar",
+  "model": "Polestar 5 Performance '26",
+  "year": 2026,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "EV",
+  "length": 5087,
+  "width": 1979,
+  "height": 1425,
+  "wheelbase": 3054,
+  "trackFront": 1716,
+  "trackRear": 1684,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

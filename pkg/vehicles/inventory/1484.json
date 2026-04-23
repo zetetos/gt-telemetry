@@ -1,0 +1,21 @@
+{
+  "carId": 1484,
+  "manufacturer": "Lamborghini",
+  "model": "Countach LP400 '74",
+  "year": 1974,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4140,
+  "width": 1890,
+  "height": 1070,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

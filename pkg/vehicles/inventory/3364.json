@@ -1,0 +1,21 @@
+{
+  "carId": 3364,
+  "manufacturer": "GReddy",
+  "model": "GReddy Fugu Z",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "tuned",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4140,
+  "width": 1826,
+  "height": 1285,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

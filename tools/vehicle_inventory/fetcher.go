@@ -17,7 +17,7 @@ import (
 )
 
 // fetchAndMergeGTData fetches car data from Gran Turismo website and merges it with local inventory.
-func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) error {
+func fetchAndMergeGTData(inventoryDir, locale string, noColor, dryRun bool) error {
 	fmt.Fprintf(os.Stderr, "Fetching Gran Turismo car data for locale: %s\n", locale)
 
 	gtCarsMap, gtTunersMap, err := fetchGTWebsiteData(locale)
@@ -42,7 +42,7 @@ func fetchAndMergeGTData(inventoryFile, locale string, noColor, dryRun bool) err
 
 	fmt.Fprintf(os.Stderr, "Merging with local inventory...\n")
 
-	return mergeInventories(inventoryFile, tempFileName, noColor, dryRun)
+	return mergeInventories(inventoryDir, tempFileName, noColor, dryRun)
 }
 
 // fetchGTWebsiteData fetches and parses GT data from the website.

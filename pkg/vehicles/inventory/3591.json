@@ -1,0 +1,21 @@
+{
+  "carId": 3591,
+  "manufacturer": "Renault",
+  "model": "Espace F1 '95",
+  "year": 1995,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4430,
+  "width": 2050,
+  "height": 1773,
+  "wheelbase": 2718,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V10",
+  "engineBankAngle": 67,
+  "engineCrankPlaneAngle": 72,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

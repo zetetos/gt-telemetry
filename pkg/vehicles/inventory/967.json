@@ -1,0 +1,21 @@
+{
+  "carId": 967,
+  "manufacturer": "Mazda",
+  "model": "ɛ̃fini RX-7 Type R (FD) '91",
+  "year": 1991,
+  "openCockpit": false,
+  "carType": "",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4280,
+  "width": 1760,
+  "height": 1230,
+  "wheelbase": 2446,
+  "trackFront": 1460,
+  "trackRear": 1460,
+  "engineLayout": "K2",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

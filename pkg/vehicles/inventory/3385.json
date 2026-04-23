@@ -1,0 +1,21 @@
+{
+  "carId": 3385,
+  "manufacturer": "Porsche",
+  "model": "911 Turbo (930) '81",
+  "year": 1981,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "RR",
+  "aspiration": "TC",
+  "length": 4291,
+  "width": 1775,
+  "height": 1280,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H6",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

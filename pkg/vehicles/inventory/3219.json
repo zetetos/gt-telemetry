@@ -1,0 +1,21 @@
+{
+  "carId": 3219,
+  "manufacturer": "Honda",
+  "model": "NSX '17",
+  "year": 2017,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4490,
+  "width": 1940,
+  "height": 1215,
+  "wheelbase": 2630,
+  "trackFront": 1655,
+  "trackRear": 1615,
+  "engineLayout": "V6",
+  "engineBankAngle": 75,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

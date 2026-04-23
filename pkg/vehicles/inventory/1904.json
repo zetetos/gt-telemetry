@@ -1,0 +1,21 @@
+{
+  "carId": 1904,
+  "manufacturer": "BMW",
+  "model": "M3 GT '11",
+  "year": 2011,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4714,
+  "width": 1917,
+  "height": 1289,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

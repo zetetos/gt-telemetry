@@ -1,0 +1,21 @@
+{
+  "carId": 1536,
+  "manufacturer": "Pagani",
+  "model": "Zonda R '09",
+  "year": 2009,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4886,
+  "width": 2014,
+  "height": 1141,
+  "wheelbase": 2785,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 1563,
+  "manufacturer": "Renault",
+  "model": "Mégane Trophy '11",
+  "year": 2011,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.4",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4375,
+  "width": 1910,
+  "height": 1240,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

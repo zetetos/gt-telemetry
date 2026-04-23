@@ -1,0 +1,21 @@
+{
+  "carId": 3218,
+  "manufacturer": "BMW",
+  "model": "M6 GT3 Endurance Model '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4944,
+  "width": 2046,
+  "height": 1277,
+  "wheelbase": 2855,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

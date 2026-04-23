@@ -1,0 +1,21 @@
+{
+  "carId": 1540,
+  "manufacturer": "McLaren",
+  "model": "McLaren F1 '94",
+  "year": 1994,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4288,
+  "width": 1820,
+  "height": 1140,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

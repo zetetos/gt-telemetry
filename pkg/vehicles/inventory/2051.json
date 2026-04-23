@@ -1,0 +1,21 @@
+{
+  "carId": 2051,
+  "manufacturer": "Hyundai",
+  "model": "Genesis Coupe 3.8 '13",
+  "year": 2013,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4630,
+  "width": 1864,
+  "height": 1384,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

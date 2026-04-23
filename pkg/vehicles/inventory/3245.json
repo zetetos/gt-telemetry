@@ -1,0 +1,21 @@
+{
+  "carId": 3245,
+  "manufacturer": "BMW",
+  "model": "M4 Gr.4",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.4",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4777,
+  "width": 1869,
+  "height": 1355,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

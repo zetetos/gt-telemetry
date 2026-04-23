@@ -1,0 +1,21 @@
+{
+  "carId": 1527,
+  "manufacturer": "FIAT",
+  "model": "500 1.2 8V Lounge SS '08",
+  "year": 2008,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "NA",
+  "length": 3545,
+  "width": 1625,
+  "height": 1515,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 1916,
+  "manufacturer": "Chevrolet",
+  "model": "Corvette C7 '14",
+  "year": 2014,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4495,
+  "width": 1877,
+  "height": 1235,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

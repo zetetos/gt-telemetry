@@ -1,0 +1,21 @@
+{
+  "carId": 3344,
+  "manufacturer": "BMW",
+  "model": "M3 Sport Evolution '89",
+  "year": 1989,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4345,
+  "width": 1680,
+  "height": 1385,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

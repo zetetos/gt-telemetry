@@ -1,0 +1,21 @@
+{
+  "carId": 2161,
+  "manufacturer": "Nissan",
+  "model": "GT-R Gr.4",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.4",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4780,
+  "width": 1895,
+  "height": 1340,
+  "wheelbase": 2780,
+  "trackFront": 1590,
+  "trackRear": 1600,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

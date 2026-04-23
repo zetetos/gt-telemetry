@@ -1,0 +1,21 @@
+{
+  "carId": 3469,
+  "manufacturer": "Ferrari",
+  "model": "F8 Tributo '19",
+  "year": 2019,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4611,
+  "width": 1979,
+  "height": 1206,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

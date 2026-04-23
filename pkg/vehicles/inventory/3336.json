@@ -1,0 +1,21 @@
+{
+  "carId": 3336,
+  "manufacturer": "Ford",
+  "model": "F-150 SVT Raptor '11",
+  "year": 2011,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 5603,
+  "width": 2192,
+  "height": 1994,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

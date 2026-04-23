@@ -1,0 +1,21 @@
+{
+  "carId": 843,
+  "manufacturer": "Toyota",
+  "model": "Supra 3.0GT Turbo A '88",
+  "year": 1988,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4620,
+  "width": 1745,
+  "height": 1300,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

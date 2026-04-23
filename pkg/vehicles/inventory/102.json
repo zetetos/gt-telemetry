@@ -1,0 +1,21 @@
+{
+  "carId": 102,
+  "manufacturer": "Nissan",
+  "model": "Skyline GTS-R (R31) '87",
+  "year": 1987,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4660,
+  "width": 1690,
+  "height": 1365,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

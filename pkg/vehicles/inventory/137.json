@@ -1,0 +1,21 @@
+{
+  "carId": 137,
+  "manufacturer": "Honda",
+  "model": "Beat '91",
+  "year": 1991,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 3295,
+  "width": 1395,
+  "height": 1175,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I3",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

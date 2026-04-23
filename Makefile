@@ -3,7 +3,9 @@
 MAIN_PACKAGE_PATH := ./cmd/demo
 BINARY_PATH := ./bin
 BINARY_NAME := demo
-
+TMP_DIR := ./_tmp
+CIRCUIT_INVENTORY_PATH := ./pkg/circuits/inventory
+VEHICLE_INVENTORY_PATH := ./pkg/vehicles/inventory
 
 # ==================================================================================== #
 # HELPERS
@@ -133,22 +135,30 @@ run/watch:
 		--build.send_interrupt "true" \
 		--misc.clean_on_exit "true"
 
+## run/capture-lap: capture a lap and save to gt7-lap.gtz
+.PHONY: run/capture-lap
+run/capture-lap:
+	@go run cmd/capture_replay/main.go -lap -o gt7-lap.gtz
+	@echo "Replay saved to gt7-lap.gtz"
 
 ## run/capture-replay: capture a replay and save to gt7-replay.gtz
 .PHONY: run/capture-replay
 run/capture-replay:
-	@go run cmd/capture_replay/main.go
+	@go run cmd/capture_replay/main.go -o gt7-replay.gtz
 	@echo "Replay saved to gt7-replay.gtz"
 
-## update/vehicledb: update the vehicle inventory JSON file from GT7 website
+## update/vehicledb: update the vehicle inventory from GT7 website
 .PHONY: update/vehicledb
 update/vehicledb:
-	@go run tools/vehicle_inventory/*.go update pkg/vehicles/vehicles.json
+	@go run tools/vehicle_inventory/*.go update pkg/vehicles/inventory
 
 ## update/circuitdb: update the circuit inventory JSON file from saved circuit data
 .PHONY: update/circuitdb
 update/circuitdb:
-	@ go run tools/circuit_inventory/main.go data/circuits pkg/circuits/circuits.json
+	@touch pkg/circuits/inventory/_tmp.json
+	@go run tools/circuit_inventory/main.go update data/circuits pkg/circuits/inventory
+	@rm -f pkg/circuits/inventory/_tmp.json
+	@go run tools/circuit_inventory/main.go manifest pkg/circuits/inventory > pkg/circuits/inventory/manifest.json
 
 ## clean: clean up project and return to a pristine state
 .PHONY: clean
@@ -156,3 +166,54 @@ clean:
 	@go clean
 	@rm -rf ./bin
 	@rm -f coverage.out
+
+# ==================================================================================== #
+# RELEASE
+# ==================================================================================== #
+
+## release/all: upload all circuit, vehicle and version artifacts to Cloudflare R2
+# R2_REMOTE must be set to the rclone remote name for the R2 bucket
+# e.g., "R2_REMOTE=r2:mybucket make release/all"
+.PHONY: release/all
+release/all: release/vehicles release/circuits release/version
+
+## release/vehicles: upload vehicle artifacts to Cloudflare R2
+# R2_REMOTE must be set to the rclone remote name for the R2 bucket
+# e.g., "R2_REMOTE=r2:mybucket make release/vehicles"
+.PHONY: release/vehicles
+release/vehicles:
+	@if [ -z "$(R2_REMOTE)" ]; then echo "Error: R2_REMOTE is not set"; exit 1; fi
+	@go run tools/vehicle_inventory/*.go manifest $(VEHICLE_INVENTORY_PATH) > $(VEHICLE_INVENTORY_PATH)/manifest.json
+	@echo "Uploading vehicles to Cloudflare R2..."
+	@rclone sync $(VEHICLE_INVENTORY_PATH)/ $(R2_REMOTE)/gt7/data/vehicles/ \
+		--exclude ".DS_Store" \
+		--progress
+	@rm -f $(VEHICLE_INVENTORY_PATH)/manifest.json
+	@echo "Vehicle data published to R2 remote: $(R2_REMOTE)"
+
+## release/circuits: upload circuit artifacts to Cloudflare R2
+# R2_REMOTE must be set to the rclone remote name for the R2 bucket
+# e.g., "R2_REMOTE=r2:mybucket make release/circuits"
+.PHONY: release/circuits
+release/circuits:
+	@if [ -z "$(R2_REMOTE)" ]; then echo "Error: R2_REMOTE is not set"; exit 1; fi
+	@echo "Uploading circuits to Cloudflare R2..."
+	@go run tools/circuit_inventory/main.go manifest $(CIRCUIT_INVENTORY_PATH) > $(CIRCUIT_INVENTORY_PATH)/manifest.json
+	@rclone sync $(CIRCUIT_INVENTORY_PATH)/ $(R2_REMOTE)/gt7/data/circuits/ \
+		--exclude ".DS_Store" \
+		--progress
+	@rm -f $(CIRCUIT_INVENTORY_PATH)/manifest.json
+	@echo "Circuit data published to R2 remote: $(R2_REMOTE)"
+
+## release/version: upload version.json to Cloudflare R2
+# R2_REMOTE must be set to the rclone remote name for the R2 bucket
+# e.g., "R2_REMOTE=r2:mybucket make release/version"
+.PHONY: release/version
+release/version:
+	@echo "Uploading version.json to Cloudflare R2..."
+	@mkdir -p $(TMP_DIR)
+	@tools/inventory_version/inventory_version.sh $(CIRCUIT_INVENTORY_PATH) $(VEHICLE_INVENTORY_PATH) > $(TMP_DIR)/version.json
+	@rclone copy $(TMP_DIR)/version.json $(R2_REMOTE)/gt7/data/ \
+		--progress
+	@rm -rf $(TMP_DIR)
+	@echo "Version data published to R2 remote: $(R2_REMOTE)"

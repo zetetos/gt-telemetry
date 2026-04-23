@@ -1,0 +1,21 @@
+{
+  "carId": 365,
+  "manufacturer": "Alfa Romeo",
+  "model": "155 2.5 V6 TI '93",
+  "year": 1993,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.4",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4576,
+  "width": 1750,
+  "height": 1380,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3553,
+  "manufacturer": "Nissan",
+  "model": "GT-R Premium edition T-spec '24",
+  "year": 2024,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4710,
+  "width": 1895,
+  "height": 1370,
+  "wheelbase": 2780,
+  "trackFront": 1590,
+  "trackRear": 1600,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

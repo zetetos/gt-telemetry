@@ -1,0 +1,21 @@
+{
+  "carId": 954,
+  "manufacturer": "Nissan",
+  "model": "R92CP '92",
+  "year": 1992,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4800,
+  "width": 1990,
+  "height": 1100,
+  "wheelbase": 2795,
+  "trackFront": 1600,
+  "trackRear": 1560,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

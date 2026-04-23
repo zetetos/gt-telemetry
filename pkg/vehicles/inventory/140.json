@@ -1,0 +1,21 @@
+{
+  "carId": 140,
+  "manufacturer": "Honda",
+  "model": "NSX GT500 '00",
+  "year": 2000,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4430,
+  "width": 1910,
+  "height": 1090,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 2103,
+  "manufacturer": "Aston Martin",
+  "model": "DP-100 VGT",
+  "year": 2014,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4576,
+  "width": 2007,
+  "height": 1112,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

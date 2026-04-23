@@ -1,0 +1,21 @@
+{
+  "carId": 3494,
+  "manufacturer": "Toyota",
+  "model": "Alphard Executive Lounge '18",
+  "year": 2018,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4945,
+  "width": 1850,
+  "height": 1950,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

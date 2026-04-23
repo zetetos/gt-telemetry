@@ -1,0 +1,21 @@
+{
+  "carId": 3187,
+  "manufacturer": "Alpine",
+  "model": "Alpine VGT '17",
+  "year": 2017,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.1",
+  "drivetrain": "RR",
+  "aspiration": "NA",
+  "length": 5282,
+  "width": 2100,
+  "height": 940,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

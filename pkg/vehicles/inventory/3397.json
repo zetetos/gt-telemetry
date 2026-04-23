@@ -1,0 +1,21 @@
+{
+  "carId": 3397,
+  "manufacturer": "Mercedes-Benz",
+  "model": "CLK-LM '98",
+  "year": 1998,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.2",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4900,
+  "width": 1999,
+  "height": 1129,
+  "wheelbase": 2670,
+  "trackFront": 1610,
+  "trackRear": 1650,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

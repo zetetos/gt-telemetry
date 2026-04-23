@@ -1,0 +1,21 @@
+{
+  "carId": 3387,
+  "manufacturer": "Chevrolet",
+  "model": "Camaro ZL1 1LE Package '18",
+  "year": 2018,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "SC",
+  "length": 4784,
+  "width": 1897,
+  "height": 1330,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

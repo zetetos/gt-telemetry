@@ -1,0 +1,21 @@
+{
+  "carId": 216,
+  "manufacturer": "BMW",
+  "model": "McLaren F1 GTR Race Car '97",
+  "year": 1997,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.2",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4924,
+  "width": 1920,
+  "height": 1120,
+  "wheelbase": 2723,
+  "trackFront": 1617,
+  "trackRear": 1582,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

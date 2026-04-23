@@ -1,0 +1,21 @@
+{
+  "carId": 3427,
+  "manufacturer": "Mazda",
+  "model": "RX-8 Spirit R '12",
+  "year": 2012,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4470,
+  "width": 1770,
+  "height": 1340,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "K2",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

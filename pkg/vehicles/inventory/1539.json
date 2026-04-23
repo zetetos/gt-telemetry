@@ -1,0 +1,21 @@
+{
+  "carId": 1539,
+  "manufacturer": "Maserati",
+  "model": "GranTurismo S '08",
+  "year": 2008,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4881,
+  "width": 1915,
+  "height": 1353,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 1931,
+  "manufacturer": "Ferrari",
+  "model": "250 GT Berlinetta passo corto '61",
+  "year": 1961,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4150,
+  "width": 1690,
+  "height": 1260,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

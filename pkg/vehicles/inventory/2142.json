@@ -1,0 +1,21 @@
+{
+  "carId": 2142,
+  "manufacturer": "Nissan",
+  "model": "NISSAN CONCEPT 2020 VGT",
+  "year": 2020,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 0,
+  "width": 0,
+  "height": 0,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

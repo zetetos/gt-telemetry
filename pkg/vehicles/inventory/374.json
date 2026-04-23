@@ -1,0 +1,21 @@
+{
+  "carId": 374,
+  "manufacturer": "Mazda",
+  "model": "RX-7 GT-X (FC) '90",
+  "year": 1990,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4335,
+  "width": 1690,
+  "height": 1270,
+  "wheelbase": 2431,
+  "trackFront": 1450,
+  "trackRear": 1450,
+  "engineLayout": "K2",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

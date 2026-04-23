@@ -1,0 +1,21 @@
+{
+  "carId": 3571,
+  "manufacturer": "Suzuki",
+  "model": "Carry KC '12",
+  "year": 2012,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 3395,
+  "width": 1475,
+  "height": 1790,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I3",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

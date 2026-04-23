@@ -1,0 +1,21 @@
+{
+  "carId": 1933,
+  "manufacturer": "Alfa Romeo",
+  "model": "MiTo '09",
+  "year": 2009,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "TC",
+  "length": 4070,
+  "width": 1720,
+  "height": 1475,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

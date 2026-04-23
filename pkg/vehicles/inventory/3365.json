@@ -1,0 +1,21 @@
+{
+  "carId": 3365,
+  "manufacturer": "Porsche",
+  "model": "356 A/1500 GS GT Carrera Speedster '56",
+  "year": 1956,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "RR",
+  "aspiration": "NA",
+  "length": 3950,
+  "width": 1670,
+  "height": 1220,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H4",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

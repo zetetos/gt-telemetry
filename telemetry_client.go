@@ -10,6 +10,7 @@ import (
 	"iter"
 	"net/url"
 	"os"
+	"path/filepath"
 	"sync"
 	"time"
 
@@ -20,6 +21,20 @@ import (
 	"github.com/zetetos/gt-telemetry/v2/pkg/circuits"
 	"github.com/zetetos/gt-telemetry/v2/pkg/models"
 	"github.com/zetetos/gt-telemetry/v2/pkg/vehicles"
+)
+
+const (
+	autoDiscoveryURL = "udp://255.255.255.255:33739"
+	defaultCachePath = "data/cache"
+)
+
+// recordingState represents the game state at the time recording was started.
+type recordingState int
+
+const (
+	recordingStateNone      recordingState = iota
+	recordingStateOnCircuit                // vehicle is live on circuit, not in any menu
+	recordingStateRaceMenu                 // vehicle is loaded but in the race menu
 )
 
 var (
@@ -47,13 +62,14 @@ type statistics struct {
 }
 
 type Options struct {
-	Source       string
-	Format       models.Name
-	LogLevel     string
-	Logger       *zerolog.Logger
-	StatsEnabled bool
-	CircuitDB    string
-	VehicleDB    string
+	Source        string
+	Format        models.Name
+	LogLevel      string
+	Logger        *zerolog.Logger
+	StatsEnabled  bool
+	CachePath     string
+	UpdateBaseURL string
+	VehicleDB     string // TODO: remove in future release, overrides can be added to cache
 }
 
 type Client struct {
@@ -67,35 +83,40 @@ type Client struct {
 	CircuitDB        *circuits.CircuitDB
 
 	// Recording state
-	recordingMutex  sync.RWMutex
-	recordingFile   io.WriteCloser
-	recordingBuffer io.Writer
-	isRecording     bool
+	recordingMutex     sync.RWMutex
+	recordingFile      io.WriteCloser
+	recordingBuffer    io.Writer
+	isRecording        bool
+	recordingInitState recordingState
 }
 
 func New(opts Options) (*Client, error) {
-	log := setupLogger(opts)
+	logger := setupLogger(opts)
 
 	if opts.Source == "" {
-		opts.Source = "udp://255.255.255.255:33739"
+		opts.Source = autoDiscoveryURL
 	}
 
 	if opts.Format == "" {
 		opts.Format = models.Addendum3
 	}
 
-	circuitDB, err := loadCircuitDB(opts.CircuitDB)
+	circuitDB, err := loadCircuitDB(opts.CachePath, opts.UpdateBaseURL, &logger)
 	if err != nil {
 		return nil, err
 	}
 
-	vehicleDB, err := loadVehicleDB(opts.VehicleDB)
+	vehicleDB, err := loadVehicleDB(opts.VehicleDB, opts.CachePath, opts.UpdateBaseURL, &logger)
 	if err != nil {
 		return nil, err
+	}
+
+	if opts.UpdateBaseURL != "" {
+		go checkForUpdates(context.Background(), opts.UpdateBaseURL, vehicleDB, circuitDB, &logger)
 	}
 
 	return &Client{
-		log:              log,
+		log:              logger,
 		source:           opts.Source,
 		format:           opts.Format,
 		DecipheredPacket: []byte{},
@@ -139,20 +160,18 @@ func setupLogger(opts Options) zerolog.Logger {
 	return log
 }
 
-// loadCircuitDB loads the circuit database from file if provided.
-func loadCircuitDB(path string) (*circuits.CircuitDB, error) {
-	var circuitsJSON []byte
-
-	var err error
-
-	if path != "" {
-		circuitsJSON, err = os.ReadFile(path)
-		if err != nil {
-			return nil, fmt.Errorf("reading circuit DB from file: %w", err)
-		}
+// loadCircuitDB loads the circuit database from embedded inventory files,
+// overlaid by any cached circuit files found in cachePath.
+func loadCircuitDB(cachePath, updateBaseURL string, logger *zerolog.Logger) (*circuits.CircuitDB, error) {
+	if cachePath == "" {
+		cachePath = filepath.Join(defaultCachePath, "circuits")
 	}
 
-	circuitDB, err := circuits.NewDB(circuitsJSON)
+	circuitDB, err := circuits.NewDB(circuits.CircuitDBOptions{
+		CacheDir:      cachePath,
+		UpdateBaseURL: updateBaseURL,
+		Logger:        logger,
+	})
 	if err != nil {
 		return nil, fmt.Errorf("setting up new circuit database: %w", err)
 	}
@@ -161,24 +180,53 @@ func loadCircuitDB(path string) (*circuits.CircuitDB, error) {
 }
 
 // loadVehicleDB loads the vehicle database from file if provided.
-func loadVehicleDB(path string) (*vehicles.VehicleDB, error) {
+func loadVehicleDB(dbPath string, cachePath string, updateURL string, logger *zerolog.Logger) (*vehicles.VehicleDB, error) {
 	var vehiclesJSON []byte
 
 	var err error
 
-	if path != "" {
-		vehiclesJSON, err = os.ReadFile(path)
+	if dbPath != "" {
+		vehiclesJSON, err = os.ReadFile(dbPath)
 		if err != nil {
 			return nil, fmt.Errorf("reading vehicle DB from file: %w", err)
 		}
 	}
 
-	vehicleDB, err := vehicles.NewDB(vehiclesJSON)
+	if cachePath == "" {
+		cachePath = filepath.Join(defaultCachePath, "vehicles")
+	}
+
+	DBOptions := vehicles.DBOptions{
+		CacheDir:      cachePath,
+		UpdateBaseURL: updateURL,
+		Logger:        logger,
+	}
+
+	vehicleDB, err := vehicles.NewDB(vehiclesJSON, DBOptions)
 	if err != nil {
 		return nil, fmt.Errorf("setting up new vehicle database: %w", err)
 	}
 
 	return vehicleDB, nil
+}
+
+// checkForUpdates fetches the remote version.json and triggers vehicle/circuit
+// updates only when the remote data is newer than the local inventory.
+func checkForUpdates(ctx context.Context, updateBaseURL string, vehicleDB *vehicles.VehicleDB, circuitDB *circuits.CircuitDB, logger *zerolog.Logger) {
+	version, err := fetchVersion(ctx, updateBaseURL)
+	if err != nil {
+		logger.Warn().Err(err).Msg("failed to fetch remote version")
+
+		return
+	}
+
+	if version.Vehicles.LastModified.After(vehicleDB.LatestModified()) {
+		vehicleDB.CheckForUpdates(ctx)
+	}
+
+	if version.Circuits.LastModified.After(circuitDB.LatestModified()) {
+		circuitDB.CheckForUpdates(ctx)
+	}
 }
 
 // Stream starts the telemetry client to read and process a live data stream.
@@ -352,6 +400,15 @@ func (c *Client) StartRecording(filePath string) error {
 	c.recordingBuffer = buffer
 	c.isRecording = true
 
+	switch {
+	case c.Telemetry.IsInRaceMenu():
+		c.recordingInitState = recordingStateRaceMenu
+	case !c.Telemetry.IsInMainMenu():
+		c.recordingInitState = recordingStateOnCircuit
+	default:
+		c.recordingInitState = recordingStateNone
+	}
+
 	c.log.Info().Str("file", filePath).Msg("started recording telemetry data")
 
 	return nil
@@ -377,6 +434,7 @@ func (c *Client) StopRecording() error {
 	c.recordingFile = nil
 	c.recordingBuffer = nil
 	c.isRecording = false
+	c.recordingInitState = recordingStateNone
 
 	c.log.Info().Msg("stopped recording telemetry data")
 
@@ -521,30 +579,57 @@ func (c *Client) processTelemetry(rawTelemetry *telemetry.GranTurismoTelemetry, 
 	c.recordPacket()
 }
 
+// currentGameState returns the recording state that corresponds to the current game state.
+func (c *Client) currentGameState() recordingState {
+	switch {
+	case c.Telemetry.IsInRaceMenu():
+		return recordingStateRaceMenu
+	case !c.Telemetry.IsInMainMenu():
+		return recordingStateOnCircuit
+	default:
+		return recordingStateNone
+	}
+}
+
 // recordPacket writes the current packet to the recording file if recording is active.
 func (c *Client) recordPacket() {
 	c.recordingMutex.RLock()
-	defer c.recordingMutex.RUnlock()
+	active := c.isRecording && c.recordingBuffer != nil && len(c.DecipheredPacket) > 0
+	initState := c.recordingInitState
+	c.recordingMutex.RUnlock()
 
-	if !c.isRecording || c.recordingBuffer == nil {
+	if !active {
 		return
 	}
 
-	if len(c.DecipheredPacket) == 0 {
-		return
-	}
-
-	// Skip writing if the game is paused
 	if c.Telemetry.Flags().GamePaused {
 		return
 	}
 
-	// Skip writing if in main menu or race menu
-	if c.Telemetry.IsInMainMenu() || c.Telemetry.IsInRaceMenu() {
+	// Recording started in the main menu (no vehicle present) — never write packets.
+	if initState == recordingStateNone {
 		return
 	}
 
+	// Stop recording when the game state has changed from when recording began.
+	if currentState := c.currentGameState(); currentState != initState {
+		c.log.Info().
+			Int("initialState", int(initState)).
+			Int("currentState", int(currentState)).
+			Msg("game state changed, stopping recording")
+
+		err := c.StopRecording()
+		if err != nil {
+			c.log.Error().Err(err).Msg("failed to stop recording on state change")
+		}
+
+		return
+	}
+
+	c.recordingMutex.RLock()
 	_, err := c.recordingBuffer.Write(c.DecipheredPacket)
+	c.recordingMutex.RUnlock()
+
 	if err != nil {
 		c.log.Error().Err(err).Msg("failed to write packet to recording file")
 	}

@@ -13,9 +13,11 @@ import (
 
 func main() {
 	clientConfig := gttelemetry.Options{
-		// Source:       "file://data/replays/demo.gtz",
-		Format:       gtmodels.Addendum3,
-		StatsEnabled: true,
+		// Source:        "file://data/replays/demo.gtz",
+		Format:        gtmodels.Addendum3,
+		StatsEnabled:  true,
+		CachePath:     "data/cache",
+		UpdateBaseURL: "https://static.zetetos.com/data/gt7",
 	}
 
 	client, err := gttelemetry.New(clientConfig)

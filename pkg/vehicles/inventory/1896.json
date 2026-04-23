@@ -1,0 +1,21 @@
+{
+  "carId": 1896,
+  "manufacturer": "Tesla",
+  "model": "Model S Signature Performance '12",
+  "year": 2012,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "RR",
+  "aspiration": "EV",
+  "length": 4978,
+  "width": 1964,
+  "height": 1435,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

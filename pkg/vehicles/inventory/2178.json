@@ -1,0 +1,21 @@
+{
+  "carId": 2178,
+  "manufacturer": "Toyota",
+  "model": "S-FR Racing Concept '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "tuned",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4100,
+  "width": 1735,
+  "height": 1270,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 1458,
+  "manufacturer": "Nissan",
+  "model": "Fairlady Z (Z34) '08",
+  "year": 2008,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4250,
+  "width": 1845,
+  "height": 1315,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

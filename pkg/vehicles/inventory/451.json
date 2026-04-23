@@ -1,0 +1,21 @@
+{
+  "carId": 451,
+  "manufacturer": "Subaru",
+  "model": "Impreza 22B-STi '98",
+  "year": 1998,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4365,
+  "width": 1770,
+  "height": 1390,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H4",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

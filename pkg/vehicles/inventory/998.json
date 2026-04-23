@@ -1,0 +1,21 @@
+{
+  "carId": 998,
+  "manufacturer": "Mercedes-Benz",
+  "model": "Sauber Mercedes C9 '89",
+  "year": 1989,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4700,
+  "width": 1980,
+  "height": 1050,
+  "wheelbase": 2770,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3588,
+  "manufacturer": "Ferrari",
+  "model": "296 GT3 '23",
+  "year": 2023,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4565,
+  "width": 2050,
+  "height": 1191,
+  "wheelbase": 2600,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 120,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

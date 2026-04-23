@@ -1,0 +1,21 @@
+{
+  "carId": 3416,
+  "manufacturer": "AMG",
+  "model": "Mercedes-AMG GT R '17",
+  "year": 2017,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4550,
+  "width": 2005,
+  "height": 1285,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

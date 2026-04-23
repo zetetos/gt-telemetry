@@ -1,0 +1,21 @@
+{
+  "carId": 821,
+  "manufacturer": "Honda",
+  "model": "Civic Type R (EK) '97",
+  "year": 1997,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "NA",
+  "length": 4180,
+  "width": 1695,
+  "height": 1360,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 1895,
+  "manufacturer": "Ferrari",
+  "model": "Dino 246 GT '71",
+  "year": 1971,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4235,
+  "width": 1700,
+  "height": 1135,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 65,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

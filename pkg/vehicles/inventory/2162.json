@@ -1,0 +1,21 @@
+{
+  "carId": 2162,
+  "manufacturer": "Ferrari",
+  "model": "LaFerrari '13",
+  "year": 2013,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4702,
+  "width": 1992,
+  "height": 1116,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 65,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

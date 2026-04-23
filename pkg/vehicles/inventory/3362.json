@@ -1,0 +1,21 @@
+{
+  "carId": 3362,
+  "manufacturer": "Ferrari",
+  "model": "F50 '95",
+  "year": 1995,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4480,
+  "width": 1986,
+  "height": 1120,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 65,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

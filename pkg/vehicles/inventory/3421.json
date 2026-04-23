@@ -1,0 +1,21 @@
+{
+  "carId": 3421,
+  "manufacturer": "Maserati",
+  "model": "Merak SS '80",
+  "year": 1980,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4330,
+  "width": 1768,
+  "height": 1134,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

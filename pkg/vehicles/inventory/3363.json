@@ -1,0 +1,21 @@
+{
+  "carId": 3363,
+  "manufacturer": "Aston Martin",
+  "model": "DB3S '53",
+  "year": 1953,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 3905,
+  "width": 1620,
+  "height": 1054,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

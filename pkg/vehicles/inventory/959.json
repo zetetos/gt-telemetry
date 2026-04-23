@@ -1,0 +1,21 @@
+{
+  "carId": 959,
+  "manufacturer": "Audi",
+  "model": "TT Coupé 3.2 quattro '03",
+  "year": 2003,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4041,
+  "width": 1764,
+  "height": 1345,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 15,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

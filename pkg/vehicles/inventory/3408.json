@@ -1,0 +1,21 @@
+{
+  "carId": 3408,
+  "manufacturer": "Toyota",
+  "model": "Crown Athlete G Safety Car",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4895,
+  "width": 1800,
+  "height": 1450,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3500,
+  "manufacturer": "Genesis",
+  "model": "G70 3.3T AWD P.Package '22",
+  "year": 2022,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4684,
+  "width": 1849,
+  "height": 1400,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

@@ -1,0 +1,21 @@
+{
+  "carId": 3228,
+  "manufacturer": "Lexus",
+  "model": "RC F GT3 prototype '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4900,
+  "width": 2040,
+  "height": 1310,
+  "wheelbase": 2730,
+  "trackFront": 1555,
+  "trackRear": 1560,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

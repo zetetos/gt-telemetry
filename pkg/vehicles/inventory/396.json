@@ -1,0 +1,21 @@
+{
+  "carId": 396,
+  "manufacturer": "Honda",
+  "model": "NSX Type R '02",
+  "year": 2002,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4430,
+  "width": 1810,
+  "height": 1160,
+  "wheelbase": 2530,
+  "trackFront": 1510,
+  "trackRear": 1530,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

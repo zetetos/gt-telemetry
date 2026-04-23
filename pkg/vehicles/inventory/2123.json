@@ -1,0 +1,21 @@
+{
+  "carId": 2123,
+  "manufacturer": "Lexus",
+  "model": "LF-LC GT VGT",
+  "year": 2015,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 5040,
+  "width": 2103,
+  "height": 1216,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

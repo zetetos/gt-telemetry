@@ -1,0 +1,21 @@
+{
+  "carId": 942,
+  "manufacturer": "Chevrolet",
+  "model": "Corvette ZR-1 (C4) '89",
+  "year": 1989,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4506,
+  "width": 1880,
+  "height": 1186,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

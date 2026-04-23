@@ -1,0 +1,21 @@
+{
+  "carId": 3368,
+  "manufacturer": "Toyota",
+  "model": "Tundra TRD Pro '19",
+  "year": 2019,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 5815,
+  "width": 2030,
+  "height": 1930,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

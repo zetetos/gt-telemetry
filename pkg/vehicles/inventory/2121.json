@@ -1,0 +1,21 @@
+{
+  "carId": 2121,
+  "manufacturer": "Honda",
+  "model": "Honda Sports VGT",
+  "year": 2017,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4250,
+  "width": 1845,
+  "height": 1195,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

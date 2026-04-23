@@ -1,0 +1,21 @@
+{
+  "carId": 3266,
+  "manufacturer": "BMW",
+  "model": "i3 '15",
+  "year": 2015,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "EV",
+  "length": 4010,
+  "width": 1775,
+  "height": 1550,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

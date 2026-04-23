@@ -1,0 +1,21 @@
+{
+  "carId": 3499,
+  "manufacturer": "Toyota",
+  "model": "GR010 HYBRID '21",
+  "year": 2021,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4900,
+  "width": 2000,
+  "height": 1150,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

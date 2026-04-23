@@ -1,0 +1,21 @@
+{
+  "carId": 3394,
+  "manufacturer": "Aston Martin",
+  "model": "DBR9 GT1 '10",
+  "year": 2010,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4687,
+  "width": 1978,
+  "height": 1195,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

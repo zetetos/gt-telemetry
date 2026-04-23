@@ -1,0 +1,21 @@
+{
+  "carId": 82,
+  "manufacturer": "Toyota",
+  "model": "Supra RZ '97",
+  "year": 1997,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4520,
+  "width": 1810,
+  "height": 1275,
+  "wheelbase": 2550,
+  "trackFront": 1519,
+  "trackRear": 1524,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

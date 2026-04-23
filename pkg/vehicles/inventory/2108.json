@@ -1,0 +1,21 @@
+{
+  "carId": 2108,
+  "manufacturer": "Dodge",
+  "model": "SRT Tomahawk X VGT",
+  "year": 2035,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 5039,
+  "width": 2250,
+  "height": 950,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 144,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

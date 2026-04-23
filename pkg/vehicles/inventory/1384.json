@@ -1,0 +1,21 @@
+{
+  "carId": 1384,
+  "manufacturer": "Nissan",
+  "model": "Fairlady Z Version S (Z33) '07",
+  "year": 2007,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4315,
+  "width": 1815,
+  "height": 1315,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

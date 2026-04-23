@@ -1,0 +1,21 @@
+{
+  "carId": 3406,
+  "manufacturer": "Dodge",
+  "model": "Charger SRT Hellcat Safety Car",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "FR",
+  "aspiration": "SC",
+  "length": 5088,
+  "width": 1885,
+  "height": 1478,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

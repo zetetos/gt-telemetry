@@ -1,0 +1,21 @@
+{
+  "carId": 1431,
+  "manufacturer": "RE Amemiya",
+  "model": "RE Amemiya FD3S RX-7",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "tuned",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4300,
+  "width": 1760,
+  "height": 1200,
+  "wheelbase": 2446,
+  "trackFront": 1460,
+  "trackRear": 1460,
+  "engineLayout": "K2",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

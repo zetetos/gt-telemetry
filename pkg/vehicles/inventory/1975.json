@@ -1,0 +1,21 @@
+{
+  "carId": 1975,
+  "manufacturer": "Mazda",
+  "model": "RX500 '70",
+  "year": 1970,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4330,
+  "width": 1720,
+  "height": 1065,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "K2",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

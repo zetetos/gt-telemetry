@@ -1,0 +1,21 @@
+{
+  "carId": 201,
+  "manufacturer": "Mazda",
+  "model": "Eunos Roadster (NA) '89",
+  "year": 1989,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 3970,
+  "width": 1675,
+  "height": 1235,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

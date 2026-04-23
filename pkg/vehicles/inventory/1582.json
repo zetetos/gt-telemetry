@@ -1,0 +1,21 @@
+{
+  "carId": 1582,
+  "manufacturer": "Lamborghini",
+  "model": "Miura P400 Bertone Prototype '67",
+  "year": 1967,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4360,
+  "width": 1760,
+  "height": 1050,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V12",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

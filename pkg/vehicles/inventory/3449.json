@@ -1,0 +1,21 @@
+{
+  "carId": 3449,
+  "manufacturer": "Chevrolet",
+  "model": "Corvette C7 ZR1 '19",
+  "year": 2019,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "SC",
+  "length": 4567,
+  "width": 1965,
+  "height": 1232,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

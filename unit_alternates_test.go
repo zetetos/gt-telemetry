@@ -44,7 +44,7 @@ func (suite *UnitAlternatesTestSuite) SetupTest() {
 			"TrackRear": 1600
 		}
 	}`)
-	inventory, _ := vehicles.NewDB(inventoryJSON)
+	inventory, _ := vehicles.NewDB(inventoryJSON, vehicles.DBOptions{})
 	transformer := gttelemetry.NewTransformer(inventory)
 	transformer.RawTelemetry = telemetry.GranTurismoTelemetry{}
 

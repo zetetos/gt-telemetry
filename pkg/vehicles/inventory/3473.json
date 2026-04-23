@@ -1,0 +1,21 @@
+{
+  "carId": 3473,
+  "manufacturer": "Bugatti",
+  "model": "Chiron '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4544,
+  "width": 2038,
+  "height": 1212,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "W16",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 45,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

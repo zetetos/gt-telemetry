@@ -1,0 +1,21 @@
+{
+  "carId": 729,
+  "manufacturer": "Renault",
+  "model": "Avantime 3.0 V6 24V '02",
+  "year": 2002,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "NA",
+  "length": 4642,
+  "width": 1835,
+  "height": 1627,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

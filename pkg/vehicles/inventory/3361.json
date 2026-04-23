@@ -1,0 +1,21 @@
+{
+  "carId": 3361,
+  "manufacturer": "Jaguar",
+  "model": "E-type Coupé '61",
+  "year": 1961,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4455,
+  "width": 1657,
+  "height": 1222,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

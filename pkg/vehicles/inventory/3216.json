@@ -1,0 +1,21 @@
+{
+  "carId": 3216,
+  "manufacturer": "Renault",
+  "model": "R.S.01 '16",
+  "year": 2016,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4705,
+  "width": 2000,
+  "height": 1230,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

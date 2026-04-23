@@ -1,0 +1,21 @@
+{
+  "carId": 3545,
+  "manufacturer": "Suzuki",
+  "model": "Jimny XC '18",
+  "year": 2018,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 3395,
+  "width": 1475,
+  "height": 1725,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I3",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

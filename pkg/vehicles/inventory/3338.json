@@ -1,0 +1,21 @@
+{
+  "carId": 3338,
+  "manufacturer": "Chris Holstrom Concepts",
+  "model": "CHC 1967 Chevy Nova",
+  "year": 1967,
+  "openCockpit": false,
+  "carType": "tuned",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "SC",
+  "length": 4760,
+  "width": 1811,
+  "height": 1367,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

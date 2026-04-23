@@ -1,0 +1,21 @@
+{
+  "carId": 2175,
+  "manufacturer": "Aston Martin",
+  "model": "V8 Vantage S '15",
+  "year": 2015,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4385,
+  "width": 2022,
+  "height": 1260,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

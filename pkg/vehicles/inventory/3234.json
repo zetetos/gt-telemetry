@@ -1,0 +1,21 @@
+{
+  "carId": 3234,
+  "manufacturer": "Hyundai",
+  "model": "Genesis Gr.B Rally Car",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.B",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4806,
+  "width": 2080,
+  "height": 1424,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

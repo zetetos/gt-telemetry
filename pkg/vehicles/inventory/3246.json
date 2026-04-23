@@ -1,0 +1,21 @@
+{
+  "carId": 3246,
+  "manufacturer": "Bugatti",
+  "model": "Veyron Gr.4",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.4",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4496,
+  "width": 2000,
+  "height": 1168,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "W16",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 45,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

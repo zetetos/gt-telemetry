@@ -1,0 +1,21 @@
+{
+  "carId": 3384,
+  "manufacturer": "Mitsubishi",
+  "model": "GTO Twin Turbo '91",
+  "year": 1991,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4555,
+  "width": 1840,
+  "height": 1285,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

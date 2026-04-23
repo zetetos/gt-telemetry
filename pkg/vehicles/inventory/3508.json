@@ -1,0 +1,21 @@
+{
+  "carId": 3508,
+  "manufacturer": "Suzuki",
+  "model": "SUZUKI VGT (Gr.3)",
+  "year": 2022,
+  "openCockpit": true,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4200,
+  "width": 1840,
+  "height": 1145,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

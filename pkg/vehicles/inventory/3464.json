@@ -1,0 +1,21 @@
+{
+  "carId": 3464,
+  "manufacturer": "Chevrolet",
+  "model": "Corvette (C1) '58",
+  "year": 1958,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4501,
+  "width": 1849,
+  "height": 1298,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

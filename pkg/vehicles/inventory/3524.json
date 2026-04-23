@@ -1,0 +1,21 @@
+{
+  "carId": 3524,
+  "manufacturer": "Nissan",
+  "model": "R32 GT-R NISMO '90",
+  "year": 1990,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4545,
+  "width": 1755,
+  "height": 1340,
+  "wheelbase": 2615,
+  "trackFront": 1481,
+  "trackRear": 1481,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

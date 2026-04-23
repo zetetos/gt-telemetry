@@ -45,6 +45,7 @@ type CircuitData struct {
 	Default       bool               `json:"default"`
 	CountryCode   string             `json:"country"`
 	LengthMetres  int                `json:"lengthMetres"`
+	LastModified  string             `json:"lastModified"`
 	Coordinates   CircuitCoordinates `json:"coordinates"`
 }
 
@@ -322,6 +323,8 @@ func (c *CircuitCapture) processCapture() error {
 
 // saveCircuitData saves the captured circuit data to a JSON file.
 func (c *CircuitCapture) saveCircuitData(dropped int) error {
+	c.circuitData.LastModified = time.Now().UTC().Format(time.RFC3339)
+
 	// Ensure output directory exists
 	err := os.MkdirAll(c.config.OutputDir, 0o755)
 	if err != nil {

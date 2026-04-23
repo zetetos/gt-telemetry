@@ -1,0 +1,21 @@
+{
+  "carId": 3533,
+  "manufacturer": "Maserati",
+  "model": "MC20 '20",
+  "year": 2020,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4669,
+  "width": 1965,
+  "height": 1224,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

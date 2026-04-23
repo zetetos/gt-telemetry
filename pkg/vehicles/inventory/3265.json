@@ -1,0 +1,21 @@
+{
+  "carId": 3265,
+  "manufacturer": "Toyota",
+  "model": "86 Gr.B Rally Car",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.B",
+  "drivetrain": "4WD",
+  "aspiration": "NA",
+  "length": 4340,
+  "width": 1990,
+  "height": 1599,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H4",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

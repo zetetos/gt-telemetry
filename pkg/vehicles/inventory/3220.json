@@ -1,0 +1,21 @@
+{
+  "carId": 3220,
+  "manufacturer": "Renault",
+  "model": "Clio R.S. 220 Trophy '15",
+  "year": 2015,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "TC",
+  "length": 4090,
+  "width": 1732,
+  "height": 1432,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

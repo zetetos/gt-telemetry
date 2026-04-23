@@ -1,0 +1,21 @@
+{
+  "carId": 2113,
+  "manufacturer": "Peugeot",
+  "model": "PEUGEOT VGT",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4640,
+  "width": 2280,
+  "height": 1040,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 60,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

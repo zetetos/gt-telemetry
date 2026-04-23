@@ -1,0 +1,21 @@
+{
+  "carId": 3479,
+  "manufacturer": "Jaguar",
+  "model": "Jaguar VGT Roadster",
+  "year": 0,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "EV",
+  "length": 4679,
+  "width": 2218,
+  "height": 1033,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

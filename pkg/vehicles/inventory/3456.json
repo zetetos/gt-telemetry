@@ -1,0 +1,21 @@
+{
+  "carId": 3456,
+  "manufacturer": "Suzuki",
+  "model": "Swift Sport '17",
+  "year": 2017,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "TC",
+  "length": 3890,
+  "width": 1735,
+  "height": 1500,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

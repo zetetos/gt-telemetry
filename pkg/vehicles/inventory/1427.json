@@ -1,0 +1,21 @@
+{
+  "carId": 1427,
+  "manufacturer": "Mine's",
+  "model": "BNR34 GT-R N1 base",
+  "year": 1999,
+  "openCockpit": false,
+  "carType": "tuned",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4600,
+  "width": 1785,
+  "height": 1290,
+  "wheelbase": 2665,
+  "trackFront": 1480,
+  "trackRear": 1490,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

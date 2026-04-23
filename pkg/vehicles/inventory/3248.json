@@ -1,0 +1,21 @@
+{
+  "carId": 3248,
+  "manufacturer": "Citroën",
+  "model": "GT by Citroën Gr.4",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.4",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4957,
+  "width": 2250,
+  "height": 1211,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-03-15T12:24:40Z"
+}

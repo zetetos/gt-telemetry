@@ -1,0 +1,21 @@
+{
+  "carId": 3400,
+  "manufacturer": "Porsche",
+  "model": "911 GT1 Strassenversion '97",
+  "year": 1997,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4710,
+  "width": 1950,
+  "height": 1173,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H6",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-03-15T12:24:40Z"
+}
