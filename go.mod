@@ -2,7 +2,7 @@ module github.com/zetetos/gt-telemetry/v2
 
 go 1.25.0
 
-toolchain go1.25.9
+toolchain go1.25.10
 
 require (
 	github.com/dop251/goja v0.0.0-20260106131823-651366fbe6e3
