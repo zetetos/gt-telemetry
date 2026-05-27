@@ -102,7 +102,7 @@ Vehicle and circuit data can be published to any HTTP accessible object store su
 First, you will need to [configure Rclone](https://rclone.org/docs/) to access the object store of choice and, once complete, the JSON data in `pkg/vehicles/inventory` and `pkg/circuits/inventory` can be synchronised using the following command (in this example, an Rclone profile for Cloudflare R2 named r2:gt7):
 
 ```bash
-R2_REMOTE=r2:gt7 make release/all
+R2_REMOTE=r2:gt7 make release
 ```
 
 ### Custom vehicle and circuit definitions

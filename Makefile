@@ -38,7 +38,7 @@ tidy:
 
 ## audit: run quality control checks
 .PHONY: audit
-audit:
+audit: release/preflight
 	go mod verify
 	go vet ./pkg/... ./internal/reader ./internal/salsa20 ./internal/units # ignore generated Kaitai Struct files as they trip some rules
 	go run honnef.co/go/tools/cmd/staticcheck@latest ./...
@@ -171,17 +171,22 @@ clean:
 # RELEASE
 # ==================================================================================== #
 
-## release/all: upload all circuit, vehicle and version artifacts to Cloudflare R2
+## release: upload all circuit, vehicle and version artifacts to Cloudflare R2
 # R2_REMOTE must be set to the rclone remote name for the R2 bucket
-# e.g., "R2_REMOTE=r2:mybucket make release/all"
-.PHONY: release/all
-release/all: release/vehicles release/circuits release/version
+# e.g., "R2_REMOTE=r2:mybucket make release"
+.PHONY: release
+release: release/vehicles release/circuits release/version
+
+## release/preflight: perform pre-flight checks for a release
+.PHONY: release/preflight
+release/preflight:
+	@bash tools/check_lastmodified.sh $(VEHICLE_INVENTORY_PATH) $(CIRCUIT_INVENTORY_PATH)
 
 ## release/vehicles: upload vehicle artifacts to Cloudflare R2
 # R2_REMOTE must be set to the rclone remote name for the R2 bucket
 # e.g., "R2_REMOTE=r2:mybucket make release/vehicles"
 .PHONY: release/vehicles
-release/vehicles:
+release/vehicles: release/preflight
 	@if [ -z "$(R2_REMOTE)" ]; then echo "Error: R2_REMOTE is not set"; exit 1; fi
 	@go run tools/vehicle_inventory/*.go manifest $(VEHICLE_INVENTORY_PATH) > $(VEHICLE_INVENTORY_PATH)/manifest.json
 	@echo "Uploading vehicles to Cloudflare R2..."
@@ -195,7 +200,7 @@ release/vehicles:
 # R2_REMOTE must be set to the rclone remote name for the R2 bucket
 # e.g., "R2_REMOTE=r2:mybucket make release/circuits"
 .PHONY: release/circuits
-release/circuits:
+release/circuits: release/preflight
 	@if [ -z "$(R2_REMOTE)" ]; then echo "Error: R2_REMOTE is not set"; exit 1; fi
 	@echo "Uploading circuits to Cloudflare R2..."
 	@go run tools/circuit_inventory/main.go manifest $(CIRCUIT_INVENTORY_PATH) > $(CIRCUIT_INVENTORY_PATH)/manifest.json
@@ -209,10 +214,10 @@ release/circuits:
 # R2_REMOTE must be set to the rclone remote name for the R2 bucket
 # e.g., "R2_REMOTE=r2:mybucket make release/version"
 .PHONY: release/version
-release/version:
+release/version: release/preflight
 	@echo "Uploading version.json to Cloudflare R2..."
 	@mkdir -p $(TMP_DIR)
-	@tools/inventory_version/inventory_version.sh $(CIRCUIT_INVENTORY_PATH) $(VEHICLE_INVENTORY_PATH) > $(TMP_DIR)/version.json
+	@tools/inventory_version.sh $(CIRCUIT_INVENTORY_PATH) $(VEHICLE_INVENTORY_PATH) > $(TMP_DIR)/version.json
 	@rclone copy $(TMP_DIR)/version.json $(R2_REMOTE)/gt7/data/ \
 		--progress
 	@rm -rf $(TMP_DIR)
