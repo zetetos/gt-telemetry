@@ -1,3 +1,6 @@
+# Source local env when it exists.
+-include .env
+export
 
 # Change these variables as necessary.
 MAIN_PACKAGE_PATH := ./cmd/demo
@@ -23,7 +26,7 @@ confirm:
 
 .PHONY: no-dirty
 no-dirty:
-	git diff --exit-code
+	@git diff --quiet || (echo "Error: working tree has uncommitted changes. Commit or stash before releasing."; exit 1)
 
 
 # ==================================================================================== #
@@ -109,7 +112,7 @@ build/rpi/v6:
 ## build: build the application for Raspberry Pi ARMv7
 .PHONY: build/rpi/v7
 build/rpi/v7:
-	@GOOS=linux GOARCH=arm GOARM=7 go build -o ${BINARY_PATH}/${BINARY_NAME}-rpi-armv6 ${MAIN_PACKAGE_PATH}
+	@GOOS=linux GOARCH=arm GOARM=7 go build -o ${BINARY_PATH}/${BINARY_NAME}-rpi-armv7 ${MAIN_PACKAGE_PATH}
 
 ## build/rpi/v8: build the application for Raspberry Pi ARMv8
 .PHONY: build/rpi/v8
@@ -175,50 +178,37 @@ clean:
 # R2_REMOTE must be set to the rclone remote name for the R2 bucket
 # e.g., "R2_REMOTE=r2:mybucket make release"
 .PHONY: release
-release: release/vehicles release/circuits release/version
+release: release/preflight
+	@VEHICLE_INVENTORY_PATH=$(VEHICLE_INVENTORY_PATH) \
+		CIRCUIT_INVENTORY_PATH=$(CIRCUIT_INVENTORY_PATH) \
+		tools/release.sh all
 
 ## release/preflight: perform pre-flight checks for a release
 .PHONY: release/preflight
-release/preflight:
-	@bash tools/check_lastmodified.sh $(VEHICLE_INVENTORY_PATH) $(CIRCUIT_INVENTORY_PATH)
+release/preflight: no-dirty 
+	@tools/check_lastmodified.sh $(VEHICLE_INVENTORY_PATH) $(CIRCUIT_INVENTORY_PATH)
 
 ## release/vehicles: upload vehicle artifacts to Cloudflare R2
 # R2_REMOTE must be set to the rclone remote name for the R2 bucket
 # e.g., "R2_REMOTE=r2:mybucket make release/vehicles"
 .PHONY: release/vehicles
 release/vehicles: release/preflight
-	@if [ -z "$(R2_REMOTE)" ]; then echo "Error: R2_REMOTE is not set"; exit 1; fi
-	@go run tools/vehicle_inventory/*.go manifest $(VEHICLE_INVENTORY_PATH) > $(VEHICLE_INVENTORY_PATH)/manifest.json
-	@echo "Uploading vehicles to Cloudflare R2..."
-	@rclone sync $(VEHICLE_INVENTORY_PATH)/ $(R2_REMOTE)/gt7/data/vehicles/ \
-		--exclude ".DS_Store" \
-		--progress
-	@rm -f $(VEHICLE_INVENTORY_PATH)/manifest.json
-	@echo "Vehicle data published to R2 remote: $(R2_REMOTE)"
+	@VEHICLE_INVENTORY_PATH=$(VEHICLE_INVENTORY_PATH) \
+		tools/release.sh vehicles
 
 ## release/circuits: upload circuit artifacts to Cloudflare R2
 # R2_REMOTE must be set to the rclone remote name for the R2 bucket
 # e.g., "R2_REMOTE=r2:mybucket make release/circuits"
 .PHONY: release/circuits
 release/circuits: release/preflight
-	@if [ -z "$(R2_REMOTE)" ]; then echo "Error: R2_REMOTE is not set"; exit 1; fi
-	@echo "Uploading circuits to Cloudflare R2..."
-	@go run tools/circuit_inventory/main.go manifest $(CIRCUIT_INVENTORY_PATH) > $(CIRCUIT_INVENTORY_PATH)/manifest.json
-	@rclone sync $(CIRCUIT_INVENTORY_PATH)/ $(R2_REMOTE)/gt7/data/circuits/ \
-		--exclude ".DS_Store" \
-		--progress
-	@rm -f $(CIRCUIT_INVENTORY_PATH)/manifest.json
-	@echo "Circuit data published to R2 remote: $(R2_REMOTE)"
+	@CIRCUIT_INVENTORY_PATH=$(CIRCUIT_INVENTORY_PATH) \
+		tools/release.sh circuits
 
 ## release/version: upload version.json to Cloudflare R2
 # R2_REMOTE must be set to the rclone remote name for the R2 bucket
 # e.g., "R2_REMOTE=r2:mybucket make release/version"
 .PHONY: release/version
 release/version: release/preflight
-	@echo "Uploading version.json to Cloudflare R2..."
-	@mkdir -p $(TMP_DIR)
-	@tools/inventory_version.sh $(CIRCUIT_INVENTORY_PATH) $(VEHICLE_INVENTORY_PATH) > $(TMP_DIR)/version.json
-	@rclone copy $(TMP_DIR)/version.json $(R2_REMOTE)/gt7/data/ \
-		--progress
-	@rm -rf $(TMP_DIR)
-	@echo "Version data published to R2 remote: $(R2_REMOTE)"
+	@VEHICLE_INVENTORY_PATH=$(VEHICLE_INVENTORY_PATH) \
+		CIRCUIT_INVENTORY_PATH=$(CIRCUIT_INVENTORY_PATH) \
+		tools/release.sh version
