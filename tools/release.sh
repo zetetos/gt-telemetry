@@ -173,7 +173,7 @@ release_vehicles() {
     rclone sync "${VEHICLE_INVENTORY_PATH}/" "${R2_REMOTE}/gt7/data/vehicles/" \
         --config "${RCLONE_CONFIG}" \
         --exclude ".DS_Store" \
-        --progress
+        --stats-one-line --stats 1h
 }
 
 release_circuits() {
@@ -203,7 +203,7 @@ release_circuits() {
     rclone sync "${CIRCUIT_INVENTORY_PATH}/" "${R2_REMOTE}/gt7/data/circuits/" \
         --config "${RCLONE_CONFIG}" \
         --exclude ".DS_Store" \
-        --progress
+        --stats-one-line --stats 1h
 }
 
 release_version() {
@@ -223,7 +223,7 @@ release_version() {
     echo "Publishing updated version.json"
     rclone copy "${TMP_DIR}/version.json" "${R2_REMOTE}/gt7/data/" \
         --config "${RCLONE_CONFIG}" \
-        --progress
+        --stats-one-line --stats 1h
 
     echo "${CLOUDFLARE_CDN_BASEURL}/gt7/data/version.json" >> "${TMP_DIR}/cdn_purge.txt"
 }
