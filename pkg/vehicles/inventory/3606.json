@@ -1,0 +1,21 @@
+{
+  "carId": 3606,
+  "manufacturer": "Peugeot",
+  "model": "9X8 '25",
+  "year": 2025,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4995,
+  "width": 2000,
+  "height": 1145,
+  "wheelbase": 3045,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V6",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-06-11T08:03:33Z"
+}
