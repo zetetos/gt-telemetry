@@ -62,7 +62,7 @@ func writeInventoryDir(vehicleMap map[string]vehicles.Vehicle, outputDir string)
 
 		zero := time.Time{}
 		if vehicle.LastModified.Equal(zero) {
-			vehicle.LastModified = time.Now().UTC()
+			vehicle.LastModified = time.Now().UTC().Truncate(time.Second)
 		}
 
 		data, err := json.MarshalIndent(vehicle, "", "  ")
@@ -105,7 +105,7 @@ func buildManifestJSON(vehicleMap map[string]vehicles.Vehicle) ([]byte, error) {
 		}
 
 		key := strconv.Itoa(vehicle.CarID)
-		entries[key] = vehicleManifestEntry{LastModified: vehicle.LastModified.UTC()}
+		entries[key] = vehicleManifestEntry{LastModified: vehicle.LastModified.UTC().Truncate(time.Second)}
 	}
 
 	// Sort keys for stable output

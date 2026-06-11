@@ -1,0 +1,21 @@
+{
+  "carId": 3604,
+  "manufacturer": "BMW",
+  "model": "M Hybrid V8 '25",
+  "year": 2025,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.1",
+  "drivetrain": "MR",
+  "aspiration": "TC",
+  "length": 4991,
+  "width": 1994,
+  "height": 1200,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 90,
+  "lastModified": "2026-06-11T08:03:33Z"
+}
