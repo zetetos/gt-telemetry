@@ -377,7 +377,7 @@ func (db *VehicleDB) fetchAndStore(vehicleID int) {
 		}
 
 		if vehicle.LastModified.IsZero() {
-			vehicle.LastModified = time.Now().UTC()
+			vehicle.LastModified = time.Now().UTC().Truncate(time.Second)
 		}
 
 		db.mu.Lock()
