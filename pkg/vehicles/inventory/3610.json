@@ -1,0 +1,21 @@
+{
+  "carId": 3610,
+  "manufacturer": "Hyundai",
+  "model": "IONIQ 6 N '25",
+  "year": 2025,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "EV",
+  "length": 4935,
+  "width": 1940,
+  "height": 1495,
+  "wheelbase": 2965,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-08-20T08:12:19Z"
+}

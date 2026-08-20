@@ -1,0 +1,21 @@
+{
+  "carId": 3611,
+  "manufacturer": "Toyota",
+  "model": "Mark II Tourer V '97",
+  "year": 1997,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "TC",
+  "length": 4760,
+  "width": 1755,
+  "height": 1400,
+  "wheelbase": 2729,
+  "trackFront": 1484,
+  "trackRear": 1491,
+  "engineLayout": "I6",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 120,
+  "lastModified": "2026-08-20T08:12:19Z"
+}

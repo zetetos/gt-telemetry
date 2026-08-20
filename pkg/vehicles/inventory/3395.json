@@ -1,0 +1,21 @@
+{
+  "carId": 3395,
+  "manufacturer": "Caterham",
+  "model": "Seven Superlight R500 '08",
+  "year": 2008,
+  "openCockpit": true,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 3100,
+  "width": 1575,
+  "height": 800,
+  "wheelbase": 2225,
+  "trackFront": 1336,
+  "trackRear": 1336,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-08-20T08:12:19Z"
+}
