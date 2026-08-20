@@ -251,12 +251,12 @@ func parseGTJSData[T any](body []byte, varNotFoundErr, objNotFoundErr error, dat
 func prepareJSCode(body []byte) string {
 	jsCode := string(body)
 
-	return regexp.MustCompile(`;\s*export\s*{[^}]*}\s*;?\s*$`).ReplaceAllString(jsCode, "")
+	return regexp.MustCompile(`;?\s*export\s*{[^}]*}\s*;?\s*$`).ReplaceAllString(jsCode, "")
 }
 
 // extractVariableName extracts the variable name from JavaScript code.
 func extractVariableName(jsCode string, notFoundErr error) (string, error) {
-	varNamePattern := regexp.MustCompile(`^const\s+(\w+)\s*=`)
+	varNamePattern := regexp.MustCompile(`^\s*(?:const|let|var)\s+(\w+)\s*=`)
 
 	varNameMatches := varNamePattern.FindStringSubmatch(jsCode)
 	if len(varNameMatches) < 2 {
