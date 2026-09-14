@@ -1,8 +1,6 @@
 module github.com/zetetos/gt-telemetry/v2
 
-go 1.25.0
-
-toolchain go1.25.13
+go 1.26.0
 
 require (
 	github.com/dop251/goja v0.0.0-20260806115107-493f22071ef6
@@ -13,7 +11,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/stretchr/testify v1.12.1
 	golang.org/x/crypto v0.55.0
-	golang.org/x/sync v0.22.0
+	golang.org/x/sync v0.23.0
 )
 
 require (
