@@ -17,7 +17,7 @@ func EmbeddedInventoryCount() (int, error) {
 	count := 0
 
 	for _, entry := range entries {
-		if !entry.IsDir() && filepath.Ext(entry.Name()) == ".json" { //nolint:goconst // readability
+		if !entry.IsDir() && filepath.Ext(entry.Name()) == ".json" {
 			count++
 		}
 	}
