@@ -1,0 +1,21 @@
+{
+  "carId": 3609,
+  "manufacturer": "Mazda",
+  "model": "RX-VISION GT3 EVO '26",
+  "year": 2026,
+  "openCockpit": false,
+  "carType": "race",
+  "category": "Gr.3",
+  "drivetrain": "FR",
+  "aspiration": "NA",
+  "length": 4590,
+  "width": 2075,
+  "height": 1120,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "K4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-10-15T06:20:22Z"
+}

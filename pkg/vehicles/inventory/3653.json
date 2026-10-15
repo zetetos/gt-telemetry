@@ -1,0 +1,21 @@
+{
+  "carId": 3653,
+  "manufacturer": "Citroën",
+  "model": "2 CV 6 Charleston '86",
+  "year": 1986,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "FF",
+  "aspiration": "NA",
+  "length": 3830,
+  "width": 1480,
+  "height": 1600,
+  "wheelbase": 2400,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "H2",
+  "engineBankAngle": 180,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-10-15T06:20:22Z"
+}

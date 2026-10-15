@@ -1,0 +1,21 @@
+{
+  "carId": 3654,
+  "manufacturer": "Ferrari",
+  "model": "F355 Berlinetta '94",
+  "year": 1994,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "MR",
+  "aspiration": "NA",
+  "length": 4250,
+  "width": 1900,
+  "height": 1170,
+  "wheelbase": 2451,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "V8",
+  "engineBankAngle": 90,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-10-15T06:20:22Z"
+}
