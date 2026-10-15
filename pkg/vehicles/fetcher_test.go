@@ -33,7 +33,7 @@ func (suite *FetcherTestSuite) TestFetchVehicleWithValidID() {
 		Drivetrain:   "4WD",
 		Aspiration:   "TC",
 		EngineLayout: "V6",
-		CarType:      "street",
+		CarType:      "street", //nolint:goconst // Test data
 	}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

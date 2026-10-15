@@ -1,0 +1,21 @@
+{
+  "carId": 3656,
+  "manufacturer": "Xiaomi",
+  "model": "Xiaomi VGT",
+  "year": 0,
+  "openCockpit": false,
+  "carType": "",
+  "category": "Gr.X",
+  "drivetrain": "4WD",
+  "aspiration": "EV",
+  "length": 4734,
+  "width": 2077,
+  "height": 1071,
+  "wheelbase": 0,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 0,
+  "lastModified": "2026-10-15T06:20:22Z"
+}

@@ -35,8 +35,10 @@ func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 		return nil, err
 	}
 
-	fileHandle, err := os.Open(file)
-	if err != nil {
+	fileHandle, err := os.Open(file) //nolint:gosec // G703: caller supplies the replay path by design
+	if os.IsNotExist(err) {
+		return nil, fmt.Errorf("file does not exist: %w", err)
+	} else if err != nil {
 		return nil, fmt.Errorf("open file: %w", err)
 	}
 
@@ -57,15 +59,8 @@ func NewFileReader(file string, log zerolog.Logger) (*FileReader, error) {
 	}, nil
 }
 
-// validateFile checks file existence and length.
+// validateFile checks the file name length.
 func validateFile(file string) error {
-	_, err := os.Stat(file)
-	if os.IsNotExist(err) {
-		return fmt.Errorf("file does not exist: %w", err)
-	} else if err != nil {
-		return fmt.Errorf("stat file: %w", err)
-	}
-
 	if len(file) < 3 {
 		return ErrFilenameTooShort
 	}

@@ -1,0 +1,21 @@
+{
+  "carId": 3655,
+  "manufacturer": "Honda",
+  "model": "Step WGN Spada Premium Line '23",
+  "year": 2023,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.N",
+  "drivetrain": "4WD",
+  "aspiration": "TC",
+  "length": 4830,
+  "width": 1750,
+  "height": 1855,
+  "wheelbase": 2890,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-10-15T06:20:22Z"
+}

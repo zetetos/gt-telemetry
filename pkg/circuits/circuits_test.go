@@ -66,8 +66,8 @@ func (suite *CircuitsTestSuite) TestGetCircuitByIDWithInvalidIDReturnsNotFound()
 func (suite *CircuitsTestSuite) TestGetCircuitByIDWithValidIDReturnsCircuit() {
 	// Arrange
 	testDB := circuits.NewDBFromCircuits(map[string]circuits.CircuitInfo{
-		"TestCircuit": {
-			Name:      "Test Circuit",
+		"TestCircuit": { //nolint:goconst // Test data
+			Name:      "Test Circuit", //nolint:goconst // Test data
 			Country:   "au",
 			Length:    1234,
 			StartLine: models.CoordinateNorm{X: 100, Y: 0, Z: 200},
@@ -251,7 +251,7 @@ func (suite *CircuitsTestSuite) TestCheckForUpdatesDoesNothingWithoutUpdateBaseU
 func (suite *CircuitsTestSuite) TestCheckForUpdatesDownloadsUpdatesFromRemote() {
 	// Arrange
 	cachedCircuit := circuits.CircuitInfo{
-		ID:           "TestTrack",
+		ID:           "TestTrack", //nolint:goconst // Test data
 		Name:         "Test Track Remote",
 		Country:      "de",
 		LastModified: time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC),

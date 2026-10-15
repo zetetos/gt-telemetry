@@ -67,7 +67,7 @@ func (suite *LoaderTestSuite) TestLoadFromFSLoadsCircuitFiles() {
 	)
 
 	fsys := fstest.MapFS{
-		"circuits/TestTrack.json": &fstest.MapFile{Data: mustMarshal(suite.T(), circuit)},
+		"circuits/TestTrack.json": &fstest.MapFile{Data: mustMarshal(suite.T(), circuit)}, //nolint:goconst // Test data
 	}
 
 	// Act
@@ -194,11 +194,11 @@ func (suite *LoaderTestSuite) TestLoadFromFSFallsBackToFilenameForEmptyID() {
 func (suite *LoaderTestSuite) TestBuildLookupMapsCreatesUniqueCoordinateEntries() {
 	// Arrange
 	circuitMap := map[string]circuits.CircuitInfo{
-		"TrackA": newTestCircuit("TrackA", "Track A", "jp",
+		"TrackA": newTestCircuit("TrackA", "Track A", "jp", //nolint:goconst // Test data
 			models.CoordinateNorm{X: 100, Y: 0, Z: 200},
 			[]models.CoordinateNorm{{X: 10, Y: 0, Z: 20}, {X: 30, Y: 0, Z: 40}},
 		),
-		"TrackB": newTestCircuit("TrackB", "Track B", "uk",
+		"TrackB": newTestCircuit("TrackB", "Track B", "uk", //nolint:goconst // Test data
 			models.CoordinateNorm{X: 500, Y: 0, Z: 600},
 			[]models.CoordinateNorm{{X: 50, Y: 0, Z: 60}, {X: 70, Y: 0, Z: 80}},
 		),
@@ -473,7 +473,7 @@ func (suite *LoaderTestSuite) TestDownloadUpdatedCircuitsReturnsFalseWhenCircuit
 			return &circuits.Manifest{
 				Circuits: map[string]circuits.ManifestEntry{
 					// Same date as the circuit in the cache — not newer
-					"TestTrack": {LastModified: circuit.LastModified},
+					"TestTrack": {LastModified: circuit.LastModified}, //nolint:goconst // Test data
 				},
 			}, nil
 		},
@@ -537,7 +537,7 @@ func (suite *LoaderTestSuite) TestDownloadUpdatedCircuitsReturnsTrueForUnknownCi
 		onFetchManifest: func(_ context.Context) (*circuits.Manifest, error) {
 			return &circuits.Manifest{
 				Circuits: map[string]circuits.ManifestEntry{
-					"NewCircuit": {LastModified: time.Date(2025, 6, 1, 0, 0, 0, 0, time.UTC)},
+					"NewCircuit": {LastModified: time.Date(2025, 6, 1, 0, 0, 0, 0, time.UTC)}, //nolint:goconst // Test data
 				},
 			}, nil
 		},

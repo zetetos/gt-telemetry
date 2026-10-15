@@ -116,7 +116,7 @@ func (suite *VehiclesTestSuite) TestGetVehicleWIthValidIDReturnsVehicle() {
 		EngineCrankPlaneAngle: 0,
 		Year:                  0,
 		OpenCockpit:           false,
-		CarType:               "street",
+		CarType:               "street", //nolint:goconst // Test data
 		Length:                4500,
 		Width:                 1800,
 		Height:                1300,

@@ -7,11 +7,13 @@ linters:
   default: all
   disable:
     - exhaustruct # too noisy
+    - exhaustruct_v5 # too noisy
     - exhaustive # not bothered by missing enum cases
     - forbidigo # TODO: extensive use in cli code
     - funlen # TODO: enable and fix
     - gocyclo # use cyclop instead
     - godox # TODO: enable and fix
+    - gomodguard # use gomodguard_v2 instead
     - mnd # TODO: enable and fix
     - nilnil # not bothered by nil val+err
     - nonamedreturns # prefer named returns in some cases
@@ -24,6 +26,11 @@ linters:
       - common-false-positives
       - legacy
       - std-error-handling
+    rules:
+      - path: ^tools/ # developer CLIs read paths from their arguments
+        linters:
+          - gosec
+        text: G703
     paths:
       - third_party$
       - builtin$

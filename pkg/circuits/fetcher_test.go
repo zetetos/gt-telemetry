@@ -52,8 +52,8 @@ func (suite *FetcherTestSuite) TestFetchManifestReturnsManifestData() {
 	// Arrange
 	wantManifest := circuits.Manifest{
 		Circuits: map[string]circuits.ManifestEntry{
-			"TrackA": {LastModified: time.Date(2025, 6, 1, 0, 0, 0, 0, time.UTC)},
-			"TrackB": {LastModified: time.Date(2025, 7, 1, 0, 0, 0, 0, time.UTC)},
+			"TrackA": {LastModified: time.Date(2025, 6, 1, 0, 0, 0, 0, time.UTC)}, //nolint:goconst // Test data
+			"TrackB": {LastModified: time.Date(2025, 7, 1, 0, 0, 0, 0, time.UTC)}, //nolint:goconst // Test data
 		},
 	}
 
@@ -161,8 +161,8 @@ func (suite *FetcherTestSuite) TestFetchManifestReturnsErrorOnCancelledContext()
 func (suite *FetcherTestSuite) TestFetchCircuitReturnsCircuitInfo() {
 	// Arrange
 	wantCircuit := circuits.CircuitInfo{
-		ID:        "TestCircuit",
-		Name:      "Test Circuit",
+		ID:        "TestCircuit",  //nolint:goconst // Test data
+		Name:      "Test Circuit", //nolint:goconst // Test data
 		Country:   "jp",
 		StartLine: models.CoordinateNorm{X: 100, Y: 0, Z: 200},
 	}

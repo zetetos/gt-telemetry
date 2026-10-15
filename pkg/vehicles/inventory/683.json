@@ -1,0 +1,21 @@
+{
+  "carId": 683,
+  "manufacturer": "Honda",
+  "model": "Civic Si Group A version '87",
+  "year": 1987,
+  "openCockpit": false,
+  "carType": "street",
+  "category": "Gr.X",
+  "drivetrain": "FF",
+  "aspiration": "NA",
+  "length": 3810,
+  "width": 1630,
+  "height": 1310,
+  "wheelbase": 2380,
+  "trackFront": 0,
+  "trackRear": 0,
+  "engineLayout": "I4",
+  "engineBankAngle": 0,
+  "engineCrankPlaneAngle": 180,
+  "lastModified": "2026-10-15T06:20:22Z"
+}
